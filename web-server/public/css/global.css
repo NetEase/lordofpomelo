@@ -1,0 +1,538 @@
+body > div::selection, body > div div::selection {
+    background-color:#fff;
+    color:#361700;
+}
+/* 背景调用 */
+.m-layer{background:url(../image/layer.png) no-repeat 9999px 9999px;}
+.u-close{background:url(../image/close.png) no-repeat 9999px 9999px;}
+.m-tab li{background:url(../image/tab.png) no-repeat 9999px 9999px;}
+.m-asset{background:url(../image/assetbg.png) no-repeat 9999px 9999px;}
+.m-player,.u-levbar,.u-levbar span{background:url(../image/player.png) no-repeat 9999px 9999px;}
+.icon{background:url(../image/icon.png) no-repeat 9999px 9999px;}
+.m-hylst li{background:url(../image/bar.png) no-repeat 9999px 9999px;}
+.u-area,.u-txt,.u-face,.u-back,.u-arr,.m-chat .topbar,.m-chat .btmbar,.m-chat .chat .arr{background:url(../image/chat.png) no-repeat 9999px 9999px;}
+.m-skill li,.m-wlst li,.player .wtype li,.m-pglst li,.m-pglst li .lock,.m-detllay,.m-emenu{background:url(../image/box.png) no-repeat 9999px 9999px;}
+.m-nav li,.m-nav li span{background:url(../image/global.png) no-repeat 9999px 9999px;}
+.m-window{background:url(../image/window.png) no-repeat 9999px 9999px;}/* 对话框 */
+.m-window-1{background:url(../image/window1.png) no-repeat 9999px 9999px;}
+.u-btn,.u-btn1,.u-btn2,.m-pager .prev,.m-pager .next{background:url(../image/btn.png) no-repeat 9999px 9999px;}
+.player .zj{background:url(../image/laybg_zj.jpg) no-repeat 9999px 9999px;}/*主角层背景*/
+.player .jn{background:url(../image/laybg_jn.jpg) no-repeat 9999px 9999px;}/*技能层背景*/
+.friend .hy,.friend .pb{background:url(../image/laybg_hy.jpg) no-repeat 9999px 9999px;}/*好友层背景*/
+.package .bb1{background:url(../image/laybg_bb1.jpg) no-repeat 9999px 9999px;}/* 背包一层背景*/
+.shop .sd{background:url(../image/laybg_sd.jpg) no-repeat 9999px 9999px;}/* 商店 */
+.task .zx{background:url(../image/laybg_zx.jpg) no-repeat 9999px 9999px;}/* 主线 */
+.gang .join{background:url(../image/laybg_jr.jpg) no-repeat 9999px 9999px;}/* 加入 */
+.gang .member{background:url(../image/laybg_cy.jpg) no-repeat 9999px 9999px;}/* 成员 */
+.gang .science{background:url(../image/laybg_kj.jpg) no-repeat 9999px 9999px;}/* 科技 */
+.gang .overview{background:url(../image/laybg_gk.jpg) no-repeat 9999px 9999px;}/* 概况  */
+.gang .apply{background:url(../image/laybg_sq.jpg) no-repeat 9999px 9999px;}/* 申请 */
+.m-pager .page,.player .wtype span,.player .info .changbtn,.player .zj .bar,.u-three,.m-hylst li .state,.shop .subtab li,.m-post .post{background:url(../image/lay_zj.png) no-repeat 9999px 9999px;}
+
+/* icon position */
+/* asset icon */
+.pos1{width:48px;background-position:-12px 0;}
+.pos2{width:82px;background-position:-12px -30px;}
+.pos3{width:56px;background-position:-12px -60px;}
+.pos4{width:60px;background-position:-9px -90px;}
+.pos5{width:40px;background-position:-12px -120px;}
+.pos6{background-position:-12px -150px;}
+
+/* 布局 */
+html,body{width:100%;height:100%;overflow:hidden;-webkit-user-select:none;-moz-user-select:none;user-select:none;}
+.g-game{position:absolute;top:0;right:0;bottom:0;left:0;}
+/* 模块 */
+/* 主场景 */
+.m-main,.m-main canvas{position:absolute;top:0;right:0;bottom:0;left:0;}
+/*------------------------index.html -----------------------------  */
+/* nav */
+.m-nav{position:absolute;bottom:0;right:20px;}
+.m-nav li{float:left;width:47px;padding-top:40px;margin-right:20px;cursor:pointer;}
+.m-nav li span{display:block;width:100%;height:20px;text-indent:-9999px;overflow:hidden;}
+.m-nav li.selected,.m-nav li.disabled{cursor:default;}
+.m-nav .itm01{background-position:0 0;}/* ÈËÎï */
+.m-nav .itm01:hover,.m-nav .itm01.selected,.m-nav .itm01.selected:active{background-position:0 -60px;}
+.m-nav .itm01:active{background-position:0 -120px;}
+.m-nav .itm01.disabled{background-position:0 -180px;}
+.m-nav .itm01 span{background-position:1px -235px;}
+.m-nav .itm02{background-position:-45px 0px;}/* ×°±¸ */
+.m-nav .itm02:hover,.m-nav .itm02.selected,.m-nav .itm02.selected:active{background-position:-45px -60px;}
+.m-nav .itm02:active{background-position:-45px -120px;}
+.m-nav .itm02.disabled{background-position:-45px -180px;}
+.m-nav .itm02 span{background-position:-48px -235px;}
+.m-nav .itm03{background-position:-95px 0px;}/* ÈÎÎñ */
+.m-nav .itm03:hover,.m-nav .itm03.selected,.m-nav .itm03.selected:active{background-position:-95px -60px;}
+.m-nav .itm03:active{background-position:-95px -120px;}
+.m-nav .itm03.disabled{background-position:-95px -180px;}
+.m-nav .itm03 span{background-position:-104px -235px;}
+.m-nav .itm04{background-position:-145px 0px;}/* Éç½» */
+.m-nav .itm04:hover,.m-nav .itm04.selected,.m-nav .itm04.selected:active{background-position:-145px -60px;}
+.m-nav .itm04:active{background-position:-145px -120px;}
+.m-nav .itm04.disabled{background-position:-145px -180px;}
+.m-nav .itm04 span{background-position:-166px -235px;}
+.m-nav .itm05{background-position:-195px 0px;}/* °ïÅÉ */
+.m-nav .itm05:hover,.m-nav .itm05.selected,.m-nav .itm05.selected:active{background-position:-195px -60px;}
+.m-nav .itm05:active{background-position:-195px -120px;}
+.m-nav .itm05.disabled{background-position:-195px -180px;}
+.m-nav .itm05 span{background-position:-227px -236px;}
+
+
+/* 资产状态条 */
+.m-asset{position:absolute;top:0;height:32px;left:50%;width:586px;margin-left:-293px;;background-position:center 0;}
+.m-asset .wrap{padding:0 68px;}
+.m-asset ul{width:446px;height:32px;}
+.m-asset li{float:left;padding-left:20px;height:16px;} 
+
+/* 游戏玩家 */
+.m-player{position:absolute;top:0;left:0;width:256px;height:74px;background-position:0 0;}
+.m-player .avatar{float:left;padding:5px 0 0 5px;width:60px;}
+.m-player .info{margin-left:74px;height:70px;} 
+.m-player .info p{height:16px;padding-left:5px;}
+.m-player .name span{float:left;width:75px;height:16px;}
+.m-player .info .level{height:28px;width:133px;} 
+
+/* 聊天窗口 */
+.m-chat{position:absolute;left:0;bottom:0;width:312px;height:222px;}
+.m-chat .type{position:absolute;left:0;bottom:20px;width:36px;height:96px;padding:2px;border-radius:4px;background-color:rgba(0,0,0,0.8);}
+.m-chat .type span{display:block;width:34px;margin:1px 0;text-align:center;line-height:17px;cursor:pointer;border:1px solid #1f1915;border-radius:4px;}
+.m-chat .type span:hover{background-color:#222;}
+.m-chat .basebar{position:absolute;left:0;bottom:0;height:18px;padding:2px 0 0 3px;width:100%;border-radius:4px;background-color:rgba(0,0,0,0.8);}
+.m-chat .chat{position:absolute;bottom:20px;left:40px; width:225px;}
+.m-chat .chat .tab{height:22px;}
+.m-chat .tab .itm{float:left;height:22px;padding:0 10px;line-height:22px;border-left:1px solid #594230;cursor:pointer;color:#bbbbaa;background:rgba(0,0,0,0.8);}
+.m-chat .tab .itm:hover,.m-chat .tab .itm.selected{height:23px;color:#fff;}
+.m-chat .chatport{background-color:rgba(0,0,0,0.8);}
+.m-chat .topbar{position:relative;height:10px;background-position:0 -151px;}
+.m-chat .btmbar{position:relative;height:9px;background-position:0 -172px;}
+.m-chat .body{height:165px;margin:0 3px;overflow-y:auto;overflow-x:hidden;border-left:1px solid #5d5e57;-webkit-user-select:text;}
+.m-chat .body .inner{padding:3px 0 3px 3px;line-height:16px;word-wrap: break-word;}
+.m-chat .chat .arr{position:absolute;left:105px;top:0;width:15px;height:7px;cursor:pointer;}
+.m-chat .topbar .arr{background-position:-165px 0;}
+.m-chat .topbar .arr:hover{background-position:-165px -15px;}
+.m-chat .btmbar .arr{background-position:-150px 1px;}
+.m-chat .btmbar .arr:hover{background-position:-150px -15px;}
+
+/* skill列表 */ 
+.m-skill{position:absolute;bottom:0;left:50%;height:45px;width:444px;margin-left:-222px;}
+.m-skill li{position:relative;float:left;width:41px;margin-right:3px;height:41px;cursor:pointer;background-position:0 0;}
+.m-skill li .num{position:absolute;top:3px;left:5px;color:#fff;text-shadow: 0 0 2px #000;}
+.m-skill li img{position:absolute;width:38px;height:38px;top:1px;left:1px;}  
+
+/* -----------------------弹出层--------------------------- */
+/* base */
+.m-layer{position:absolute;top:50%;left:50%;width:726px;height:427px;margin:-210px 0 0 -363px;background-position:0 0;}
+.m-layer .layercnt{position:absolute;top:54px;left:56px;width:615px;height:316px;}
+.m-layer .m-tab{position:absolute;top:-16px;left:50px;}
+
+/* tab */
+.m-tab{height:47px;}
+.m-tab li{float:left;width:94px;height:47px;overflow:hidden;text-indent:-2000px;cursor:pointer;}
+
+/* ------------人物层---------------- */
+.player{}
+.player .m-tab .itm1{background-position:-1200px 0;} /* tab主角 */
+.player .m-tab .itm1:hover{background-position:-1200px -57px;}
+.player .m-tab .itm1:active{background-position:-1200px -114px;}
+.player .m-tab .itm1.selected{background-position:-1200px -171px;cursor:default;}
+.player .m-tab .itm2{background-position:-1300px 0;} /* tab技能 */
+.player .m-tab .itm2:hover{background-position:-1300px -57px;}
+.player .m-tab .itm2:active{background-position:-1300px -114px;}
+.player .m-tab .itm2.selected{background-position:-1300px -171px;cursor:default;}
+/* 主角 */
+.player .zj{background-position:0 0;}
+.player .zj .info{width:175px;padding:15px;}
+.player .zj .face{width:50px;height:50px;padding:2px;}
+.player .zj .name{margin-left:58px;line-height:18px;width:112px;}
+.player .name p:first-child{font-weight:bolder;}
+.player .zj p{height:18px;line-height:18px;}
+.player .zj .tlt{overflow:hidden;display:inline-block;width:50px;height:18px;line-height:18px;color:#090000;font-size:14px;font-family:"隶书","微软雅黑";text-shadow:0 0 1px #261C0C;}
+.player .zj .tlt-1{width:40px;}
+.player .zj .val{display:inline-block;width:55px;overflow:hidden;height:15px;margin-left:2px;padding-left:5px;color:#000;background-color:rgba(215,200,145,0.8);}
+.player .zj .val-1{width:75px; padding-left: 9px;}
+.player .zj .val-2{width:103px;}
+.player .zj .val-3{width:30px;}
+.player .zj .level{margin-top:3px;padding-left:5px;}
+.player .zj .levbar{position:relative;display:inline-block;width:120px;margin-left:8px;height:18px;text-align:center;color:#f7df9b;}
+.player .zj .bar{position:absolute;left:3px;top:0;height:18px;z-index:-1;background-position:0 -428px;}
+.player .zj .bar-1{background-position:0 -404px;}
+.player .zj .detail{margin-top:15px;}
+.player .zj .detail p,.player .zj .detail .tlt{height:19px;line-height:19px;}
+.player .zj .detail p{ margin-bottom: 2px;}
+.player .zj .detail .tlt{width: 88px;}
+.player .zj .three *{vertical-align:middle;}
+.player .zj .three{padding:0 0 5px;margin:0 0 3px;border-bottom:1px solid #baad7c;}
+.player .info .carry{margin-top:5px;font-size:13px;line-height:22px;font-weight:bolder;color:#000;}
+.player .info .changbtn{display:inline-block;width:45px;height:22px;cursor:pointer;background-position:0 -276px;text-indent:-9999px;overflow:hidden;}
+.player .info .changbtn:hover{background-position:0 -302px;} /* 更换 */
+.player .info .changbtn:active{background-position:-68px -276px;}
+.player .info .changbtn.disbaled{background-position:-68px -302px;}
+.player .zj .weapon{width:410px;}
+.player .zj .wtype{padding:15px 20px;}
+.player .zj .type1,.player .zj .type2{width:56px;float:left;}
+.player .zj .type1{padding:85px 0;} 
+.player .zj .wtype li,.player .zj .wtype li > span{display:block;width:56px;height:56px;cursor:pointer;}
+.player .zj .wtype li > span > img{background-color: rgba(11, 11, 11, .2)}
+.player .zj .wtype li{background-position:-50px 0;}
+.player .zj .wtype li:hover{background-position:-112px 0;}
+.player .zj .wroom{width:180px;padding:10px;}
+/* 技能 & 商店 */
+.player .jn{background-position:0 0;}
+.player .jn .wxlst,.shop .sd .wxlst,.gang .join .wxlst{padding:5px;width:380px;}
+.player .wxlst ul,.shop .wxlst ul{height:235px;}
+.player .wxlst .m-pager .page,.shop .wxlst .m-pager .page{background-position:-9999px -9999px;}
+.player .jn .wxdetl,.shop .sd .wxdetl,.gang .join .wxdetl{margin-left:3px;width:192px;padding:15px;}
+.player .wxdetl .show,.shop .wxdetl .show,.gang .wxdetl .show{width:60px;height:60px;padding:5px;}
+.player .wxdetl .name,.shop .wxdetl .name,.gang .wxdetl .name{margin-left:80px;line-height:30px;color:#180900;font-size:14px;font-weight:bolder;}
+.player .wxdetl .detl,.shop .wxdetl .detl,.gang .wxdetl .detl{padding:12px 0 0 4px;clear:both;}
+.player .wxdetl .detl p{margin:0 0 4px;}
+.player .wxdetl .detl span{color:#180900;}  
+.player .wxdetl .opt,.shop .wxdetl .opt,.gang .wxdetl .opt{margin-top:20px;text-align:center;}
+/* 装备类型 名称  position*/
+.player .wtype .name1{background-position:-60px 5px;}
+.player .wtype .name2{background-position:-62px -51px;}
+.player .wtype .name3{background-position:3px 5px;}
+.player .wtype .name4{background-position:2px -52px;}
+.player .wtype .name5{background-position:2px -110px;}
+.player .wtype .name6{background-position:2px -163px;}
+.player .wtype .name7{background-position:5px -218px;}
+.player .wtype .name8{background-position:-61px -104px;}
+.player .wtype .name9{background-position:-58px -160px;}
+
+/* ------------好友层---------------- */
+.friend{}
+.friend .m-tab .itm1{background-position:-400px 0;} /* tab好友*/
+.friend .m-tab .itm1:hover{background-position:-400px -57px;}
+.friend .m-tab .itm1:active{background-position:-400px -114px;}
+.friend .m-tab .itm1.selected{background-position:-400px -171px;cursor:default;}
+.friend .m-tab .itm2{background-position:-500px 0;} /* tab屏蔽 */
+.friend .m-tab .itm2:hover{background-position:-500px -57px;}
+.friend .m-tab .itm2:active{background-position:-500px -114px;}
+.friend .m-tab .itm2.selected{background-position:-500px -171px;cursor:default;}
+.friend .hy,.friend .pb{background-position:0 0;}
+.friend .addhy{margin:12px 4px 0;text-align:right;}
+.friend .addhy .txt{width:125px;margin-right:5px;height:21px;line-height:21px;padding:0 5px;color:#F7DF9B;border:none;background:transparent;}
+
+/* ------------背包层---------------- */
+.package{}
+.package .m-tab .itm1{background-position:-100px 0;} /* tab背包1*/
+.package .m-tab .itm1:hover{background-position:-100px -57px;}
+.package .m-tab .itm1:active{background-position:-100px -114px;}
+.package .m-tab .itm1.selected{background-position:-100px -171px;cursor:default;}
+.package .m-tab .itm2{background-position:-200px 0;} /* tab背包2 */
+.package .m-tab .itm2:hover{background-position:-200px -57px;}
+.package .m-tab .itm2:active{background-position:-200px -114px;}
+.package .m-tab .itm2.selected{background-position:-200px -171px;cursor:default;}
+.package .m-tab .itm3{background-position:-300px 0;} /* tab背包3 */
+.package .m-tab .itm3:hover{background-position:-300px -57px;}
+.package .m-tab .itm3:active{background-position:-300px -114px;}
+.package .m-tab .itm3.selected{background-position:-300px -171px;cursor:default;}
+.package .bb1{background-position:0 0;}
+.package .packcnt{padding:5px 12px;height:268px;}
+.package .opt{22px;padding:0 12px 0 15px;}
+.package .opt .u-ttvl{margin:8px 0 0;text-align:center;}
+
+/* ------------商店层---------------- */
+.shop{}
+.shop .m-tab .itm1{background-position:-600px 0;} /* tab商店*/
+.shop .m-tab .itm1:hover{background-position:-600px -57px;}
+.shop .m-tab .itm1:active{background-position:-600px -114px;}
+.shop .m-tab .itm1.selected{background-position:-600px -171px;cursor:default;}
+.shop .m-tab .itm2{background-position:-700px 0;} /* tab商城 */
+.shop .m-tab .itm2:hover{background-position:-700px -57px;}
+.shop .m-tab .itm2:active{background-position:-700px -114px;}
+.shop .m-tab .itm2.selected{background-position:-700px -171px;cursor:default;}
+.shop .m-tab .itm3{background-position:-800px 0;} /* tab淘宝 */
+.shop .m-tab .itm3:hover{background-position:-800px -57px;}
+.shop .m-tab .itm3:active{background-position:-800px -114px;}
+.shop .m-tab .itm3.selected{background-position:-800px -171px;cursor:default;}
+.shop .sd{background-position:0 0;}
+.shop .wxdetl .show .area{display: table-cell;width:60px;height:60px;text-align: center;vertical-align: middle;background-color: rgba(110, 110, 110, 0.5);border-radius: 3px;}
+.shop .wxdetl .detl p{margin:0 0 7px;color:#180900;}
+.shop .wxdetl .s-fc5{color: #279106;}
+.shop .sd .tlt{margin:0 0 0 4px;height:27px;line-height:27px;}
+.shop .subtab{width:245px;padding:3px;}
+.shop .subtab li{float:left;width:40px;height:15px;line-height:15px;text-align:center;color:#47a71d;cursor:pointer;font-family:"隶书","微软雅黑";font-size:13px;}
+.shop .subtab li.selected,.shop .subtab li:hover{background-position:0 -386px;color:#000;}
+.shop .wxdetl .lev{font-weight:bolder;font-size:13px;margin:20px 0 0 80px;}
+
+/* ------------任务层---------------- */
+.task{}
+.task .m-tab .itm1{background-position:-900px 0;} /* tab主线 */
+.task .m-tab .itm1:hover{background-position:-900px -57px;}
+.task .m-tab .itm1:active{background-position:-900px -114px;}
+.task .m-tab .itm1.selected{background-position:-900px -171px;cursor:default;}
+.task .m-tab .itm2{background-position:-1000px 0;} /* tab每日 */
+.task .m-tab .itm2:hover{background-position:-1000px -57px;}
+.task .m-tab .itm2:active{background-position:-1000px -114px;}
+.task .m-tab .itm2.selected{background-position:-1000px -171px;cursor:default;}
+.task .m-tab .itm3{background-position:-1100px 0;} /* tab活动 */
+.task .m-tab .itm3:hover{background-position:-1100px -57px;}
+.task .m-tab .itm3:active{background-position:-1100px -114px;}
+.task .m-tab .itm3.selected{background-position:-1100px -171px;cursor:default;}
+.task .zx{background-position:0 0;}
+.task .tsk{width:208px;padding:10px 5px;}
+.task .intro{width:383px;padding:5px;}
+.task .tsk .tlt{height:20px;margin:0 0 5px;}
+.task .drama,.task .grow{line-height:16px;overflow:hidden;padding:3px;color:#F7DF9B;}
+.task .drama{height:50px;margin:0 0 10px;}
+.task .grow{height:103px;}
+.task .intro .tlt{width:25px;float:left;height:85px;}
+.task .introduce,.task .adward{height:85px;padding:5px 0 0 5px;}
+.task .introcnt,.task .adwardcnt{margin-left:28px;width:340px;height:80px;padding:3px;line-height:16px;overflow:hidden;}
+.task .adward,.task .adwardcnt{height:95px;}
+
+/* ------------帮派层---------------- */
+.gang{}
+.gang .m-tab .itm1{background-position:-1400px 0;} /* tab加入*/
+.gang .m-tab .itm1:hover{background-position:-1400px -57px;}
+.gang .m-tab .itm1:active{background-position:-1400px -114px;}
+.gang .m-tab .itm1.selected{background-position:-1400px -171px;cursor:default;}
+.gang .m-tab .itm2{background-position:-1500px 0;} /* tab成员 */
+.gang .m-tab .itm2:hover{background-position:-1500px -57px;}
+.gang .m-tab .itm2:active{background-position:-1500px -114px;}
+.gang .m-tab .itm2.selected{background-position:-1500px -171px;cursor:default;}
+.gang .m-tab .itm3{background-position:-1600px 0;} /* tab科技 */
+.gang .m-tab .itm3:hover{background-position:-1600px -57px;}
+.gang .m-tab .itm3:active{background-position:-1600px -114px;}
+.gang .m-tab .itm3.selected{background-position:-1600px -171px;cursor:default;}
+.gang .m-tab .itm4{background-position:-1700px 0;} /* tab概况 */
+.gang .m-tab .itm4:hover{background-position:-1700px -57px;}
+.gang .m-tab .itm4:active{background-position:-1700px -114px;}
+.gang .m-tab .itm4.selected{background-position:-1700px -171px;cursor:default;}
+.gang .m-tab .itm5{background-position:-1800px 0;} /* tab申请 */
+.gang .m-tab .itm5:hover{background-position:-1800px -57px;}
+.gang .m-tab .itm5:active{background-position:-1800px -114px;}
+.gang .m-tab .itm5.selected{background-position:-1800px -171px;cursor:default;}
+.gang .join,.gang .member,.gang .science,.gang .apply,.gang .overview{background-position:0 0;}
+.gang .join .wxlst li{margin:8px 0 0 6px;}
+.gang .join .m-wlst1 span{color:#F7DF9B;}
+.gang .join .show span{display: table-cell;width: 50px;height: 50px;text-align: center;vertical-align: middle;}
+.gang .join .m-wlst1{height:263px;}
+.gang .m-pager .page{background-position:-9999px -9999px;}
+.gang .join .show span{width:65px;height:56px;}
+.gang .join .detl{padding-top:9px;}
+.gang .join .detl p{margin:0 0 5px;height:21px;}
+.gang .join .s-fc9{color:#06a9c1;}
+.gang .left{width:390px;}
+.gang .left .wrap{height:270px;}
+.gang .right{margin-left:3px;width:192px;padding:14px;}
+.gang .m-hylst li{background-position:0 -30px;}
+.gang .member .body{overflow-y:hidden;}
+.gang .m-table li div{color:#8754F3;text-align:center;}
+.gang .m-table{margin:0 0 13px;}
+.gang .member .col1{width:19%;padding:0;}
+.gang .member .col2{width:33%;}
+.gang .member .col3,.gang .member .col4{width:24%;}
+.gang .right .face,.gang .top .face{width:60px;height:60px;padding:5px;}
+.gang .right .name{margin-left:80px;height:73px;font-weight:bolder;}
+.gang .right .name p{margin:0 0 15px;}
+.gang .right .detl{padding-top:7px;height:180px;}
+.gang .right .detl p,.gang .top .info p{height:21px;margin:0 0 5px;}
+.gang .right .opt{text-align:center;}
+.gang .apply .col1{width:19%;padding:0;}
+.gang .apply .col2{width:42%;}
+.gang .apply .col3{width:38%;}
+.gang .apply .body{height:262px;margin-right:8px;}
+.gang .top{padding:15px;height:95px; }
+.gang .top .face{margin:15px 0 0 29px;}
+.gang .top .info{margin:15px 0 0 25px;}
+.gang .top .info .s-fc9{color: #06A9C1;}
+.gang .top .opt{margin:20px 0 0 10px;text-align:center;}
+.gang .top .opt p{margin-top:5px;}
+.gang .foot .tlt{height:25px;}
+.gang .foot .m-post{margin:10px 0 0 20px;height:140px;width:580px;}
+
+/* -----------------------弹出层--------------------------- */ 
+/* 装备列表 */
+.m-wlst{}
+.m-wlst li{position:relative;float:left;width:50px;height:52px;padding:2px;margin:3px 5px 0 0;cursor:pointer;background-position:-113px 0;}
+.m-wlst1 li{float:left;position:relative;width:50px;height:70px;padding:3px 3px 0;margin:0 0 3px 6px;cursor:pointer;border-radius:3px;background-color:#1a0f00;}
+.m-wlst1 li:hover,.m-wlst1 li.selected{box-shadow:0 0 2px 2px #b75400;}
+.m-wlst1 li img{width:50px;height:50px;}
+.m-wlst1 li .name{display:block;height:18px;text-align:center;line-height:18px;overflow: hidden;text-overflow: ellipsis;color:#faedc0;}
+.m-wlst1 li .num{position:absolute;top:3px;left:5px;width:20px;height:15px;text-align: center;line-height:15px;color:#ff6600;background-color:rgba(0,0,0,0.4);}
+.m-wlst1 li .area{display: table-cell;width: 50px;height: 50px;text-align: center;vertical-align: middle;background-color:rgba(110,110,110,0.5);border-radius: 3px;}
+.m-wlst li:hover .m-detllay,.m-wlst1 li:hover .m-detllay{display:block;}
+/* 翻页器 */
+.m-pager{width:155px;height:40px;margin:2px auto;}
+.m-pager .prev,.m-pager .next{float:left;width:36px;height:36px;cursor:pointer;}
+.m-pager .page{float:left;margin:0 8px;width:63px;height:36px;font-weight:bold;line-height:36px;color:#f7df9b;text-align:center;background-position:0 -336px;}
+.m-pager .prev{background-position:-7px -207px;}
+.m-pager .prev:hover{background-position:-57px -207px;}
+.m-pager .prev:active{background-position:-107px -207px;}
+.m-pager .prev.disabled{background-position:-157px -207px;cursor:default;}
+.m-pager .next{background-position:-7px -257px;}
+.m-pager .next:hover{background-position:-57px -257px;}
+.m-pager .next:active{background-position:-107px -257px;}
+.m-pager .next.disabled{background-position:-157px -257px;cursor:default;}
+
+/* m-table 好友表格 */
+.m-table{line-height:26px;} 
+.m-table .caption .th{float:left;text-indent:-9999px;overflow:hidden;height:26px;}
+.m-table .col1{width:19%;}
+.m-table .col2{width:19%;}
+.m-table .col3{width:21%;}
+.m-table .col4{width:40%;}
+.m-table .body{padding:0 0 0 10px;margin-right:5px;height:230px;overflow-x:hidden;overflow-y:scroll;}
+
+/* 好友列表 */
+.m-hylst li{height:25px;margin-top:5px;line-height:25px;background-position:0 0;}
+.m-hylst li div{float:left;text-align:center;color:#f7df9b;}
+.m-hylst li .col1{text-align:left;padding-left:2%;width:18%;}
+.m-hylst li .state{display:inline-block;width:35px;height:20px;text-indent:-9999px;overflow:hidden;}
+.m-hylst li .off{background-position:-70px -193px;}
+.m-hylst li .on{background-position:-70px -221px;}
+
+/* 背包列表 */
+.m-pglst{}
+.m-pglst li{position:relative;float:left;width:50px;height:50px;padding:5px;margin:5px 0 0 5px;cursor:pointer;background-position:0 -60px;}
+.m-pglst li:hover{background-position:-70px -130px;}
+.m-pglst li.selected{background-position:0 -130px;}
+.m-pglst li.selected:hover{background-position:-70px -60px;}
+.m-pglst li.locked .lock{display:block;width: 30px;height: 30px;margin: 10px auto;background-position:-193px 0;}
+.m-pglst li:hover .m-detllay{display:block;}
+/* 职位表格 */
+.m-post {overflow-y:scroll;color:#f7df9b;}
+.m-post li{height:26px;}
+.m-post .post{width:85px;height:26px;overflow:hidden;text-indent:-9999px;}
+.m-post .post1{background-position:0 -430px;}
+.m-post .post2{background-position:0 -460px;}
+.m-post .post3{background-position:0 -490px;}
+.m-post .post4{background-position:0 -520px;}
+.m-post .post5{background-position:0 -550px;}
+.m-post .val{width:475px;height:20px;padding-top:5px;line-height:21px;font-weight:bolder;}
+.m-post .val-1{height:38px;line-height:16px;} 
+ 
+/* 装备详细浮层  鼠标悬浮时 */
+.m-detllay{display:none;position:absolute;right:-185px;top:-30px;width:185px;height:146px;background-position:0 -200px;z-index:10;}
+.m-detllay .wrap{padding:10px 18px 10px 20px;}
+.m-detllay h4{height:23px;line-height:23px;font-weight:normal;}
+.m-detllay p{height:17px;line-height:17px;overflow:hidden;}
+
+/* 装备点击后 弹出菜单 */
+.m-emenu{position:absolute;top:50%;left:50%;width:86px;height:100px;margin:-50px 0 0 -43px;background-position:-136px -75px;}
+.m-emenu .mwrap{display:table-cell;padding:5px;text-align:center;height:90px;vertical-align:middle;}
+.m-emenu .mwrap .menu{display:block;height:17px;width:72px;line-height:17px;cursor:pointer;color:#F7DF9B;}
+.m-emenu .mwrap .menu:hover{text-decoration:underline;}
+
+/* 对话框 */
+.m-window{position:absolute;top:50%;left:50%;width:533px;height:230px;margin:-115px 0 0 -266px;background-position:0 0;}
+.m-window .u-close{top:7px;}
+.m-window .wincnt{padding-top:60px;text-align:center;}
+.m-window .opt{width:175px;margin:75px auto 0;height:30px;}  
+.m-window-1{width:356px;height:222px;margin:-111px 0 0 -178px;}/* 消耗元宝确认对话框 */
+.m-window-1 .wincnt{padding-top:35px;}
+.m-window-1 .tlt{height:18px;line-height:20px;margin-bottom:30px;font-size:14px;color:#190300;font-weight:bolder;}
+.m-window-1 .opt{margin-top:45px;}
+
+/* 元件 */
+.u-close{position:absolute;top:17px;right:25px;width:74px;height:30px;overflow:hidden;text-indent:-2000px;cursor:pointer;background-position:0 0;}
+.u-close:hover{background-position:0 -40px;}
+.u-close:active{background-position:0 -80px;}
+.u-levbar{display:block;float:left;width:115px;height:12px;padding:2px 0 0 12px;}
+.u-levbar .outer{display:block;height:12px;padding-right:5px;background-position:right -73px;}
+.u-levbar .inner{display:block;height:12px;margin-left:-12px;text-align:center;color:#fff;font-size:10px;background-position:-123px -73px;}
+.u-levbar-1{width:95px;}
+.u-levbar-1 .outer{background-position:right -88px;}
+.u-levbar-1 .inner{background-position:-144px -88px;}
+
+.u-txt{float:left;margin:1px 5px 1px 7px;padding-left:3px;width:200px;height:16px;border:none;background-position:-5px -122px;}
+/* 地区按钮 */
+.u-area{float:left;width:36px;height:18px;text-align:center;cursor:pointer;line-height:20px;background-position:-3px -1px;}
+.u-area:hover{background-position:-3px -32px;}
+.u-area:active{background-position:-3px -61px;}
+/* 表情按钮 */
+.u-face,.u-back,.u-arr{float:left;width:18px;height:18px;margin-left:2px;cursor:pointer;}
+.u-face{background-position:-60px 1px;}
+.u-face:hover{background-position:-60px -29px;}
+.u-face:active{background-position:-60px -59px;}
+.u-face.disabled{background-position:-60px -90px;cursor:default;}
+/* 返回按钮 */
+.u-back{background-position:-90px 1px;}
+.u-back:hover{background-position:-90px -29px;}
+.u-back:active{background-position:-90px -59px;}
+.u-back.disabled{background-position:-90px -90px;cursor:default;}
+/* 箭头按钮 */
+.u-arr{background-position:-120px 1px;}
+.u-arr:hover{background-position:-120px -29px;}
+.u-arr:active{background-position:-120px -59px;}
+.u-arr.disabled{background-position:-120px -89px;cursor:default;}
+/* 按钮 70*30 '习武 、布阵' */
+.u-btn,.u-btn1,.u-btn2{display:inline-block;font-size:14px;font-weight:bolder;text-align:center;cursor:pointer;color:#190300;}
+.u-btn{width:70px;height:30px;line-height:30px;background-position:0 0;}
+.u-btn:hover{background-position:0 -50px;}
+.u-btn:active{background-position:1px -99px;}
+.u-btn.disabled{background-position:0 -150px;}
+/* 按钮 85*35 '升级' */
+.u-btn1{width:85px;height:35px;line-height:35px;background-position:-180px -100px;}
+.u-btn1:hover{background-position:-180px -50px;}
+.u-btn1:active{background-position:-180px 0px;}
+.u-btn1.disabled{background-position:-180px -150px;}
+/* 按钮 54*21  */
+.u-btn2{width:54px;height:23px;line-height:23px;margin:0 2px;background-position:-102px -99px;}
+.u-btn2:hover{background-position:-102px -50px;}
+.u-btn2:active{background-position:-101px 1px;}
+.u-btn2.disabled{background-position:-102px -150px;}
+
+/* u-ttvl 左题右值 */
+.u-ttvl{height: 19px;}
+.u-ttvl .tt{display:inline-block;text-indent:-9999px;overflow:hidden;}
+.u-ttvl .vl{display:inline-block;padding-left:5px;color:#000;line-height: 19px;}
+.u-ttvl .vl-1{height:50px;overflow:hidden;line-height:15px;}
+
+/* 力 勇 法 */
+.u-three{display:inline-block;width:20px;height:20px;}
+.icop1{background-position:-1px -252px;}/* 力 */
+.icop2{background-position:-39px -252px;}/* 勇 */
+.icop3{background-position:-77px -252px;}/* 法 */
+/* 弹出浮层中的标题 */
+.u-tlt{height:24px;margin:0 0 4px;text-indent:-9999px;overflow:hidden;}
+
+/* 功能类 */
+.f-cb:after{clear:both;display:block;visibility:hidden;height:0;overflow:hidden;content:".";}
+.f-cb{zoom:1;}
+.f-fl{float:left;}
+.f-fr{float:right;}
+.f-hide{text-indent:-9999px;overflw:hidden;}
+.f-pr{position:relative;}
+.f-pa{position:absolute;}
+.f-fw0{font-weight:normal;}
+.f-fw1{font-weight:bolder;}
+.f-fs0{font-size:12px;}
+.f-fs1{font-size:14px;}
+
+/* skin s-  */
+.s-fc00,.s-fc00:hover{color:#fff;}
+.s-fc0,.s-fc0:hover{color:#000;}
+.s-fc1,.s-fc1:hover{color:#333;}
+.s-fc2,.s-fc2:hover{color:#666;}
+.s-fc3,.s-fc3:hover{color:#999;}
+.s-fc4,.s-fc4:hover{color:#bbbbaa;}
+.s-fc5,.s-fc5:hover{color:#279106;/* 绿色 */}
+.s-fc6,.s-fc6:hover{color:#d41313;/* 红色 */}
+.s-fc7,.s-fc7:hover{color:#8754f3;/* 紫色 */}
+.s-fc8,.s-fc8:hover{color:#f7a900;/* 橘色 */}
+.s-fc9,.s-fc9:hover{color:#06a9c1;/* 蓝色 */}
+.s-fc10,.s-fc10:hover{color:#ff6600;/* deep橘色 */}
+.s-fc11,.s-fc11:hover{color:#f7df9b;/* 亮粉色 */}
+.s-fc12,.s-fc12:hover{color:#b50603;/* 深红色 */}
+.s-fc13,.s-fc13:hover{color:#800909;/* 酒红色 */} 
+/* 自定义滚动条 only for webkit  */
+
+
+.icon{background:url(../image/icon.png) no-repeat 9999px 9999px;}
+.icon-l{background:url(../image/icon-l.png) no-repeat 0 0;}
+.icon-ll{background:url(../image/icon-l.png) no-repeat bottom right;}
+
+.pos5{width:40px;background-position:-12px -120px;}
+.pos6{min-width:64px; max-width:89px;background-position:-12px -150px;font-size:10px;line-height:16px;white-space:nowrap;overflow:hidden;}
+.pos6 span{margin-left: 10px;}
+
+/* 资产状态条 */
+.m-asset{position:absolute;top:0;height:32px;left:50%;width:586px;margin-left:-293px;;background-position:center 0;}
+.m-asset .wrap{padding:0 68px;}
+.m-asset ul{width:446px;height:32px;}
+.m-asset li{float:left;padding-left:10px;height:16px;}
+.m-asset li .icon-l{position:relative;top:4px;width:330px;height:8px;}
+.m-asset li .icon-l .wrapper{position:absolute;left:2px;top:0;padding:0;margin:0;width:328px;height:8px;}
+.m-asset li .icon-l .icon-ll{width:1%;height:8px;-webkit-transition: width 1s ease;}

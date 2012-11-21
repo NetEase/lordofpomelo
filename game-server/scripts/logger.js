@@ -1,0 +1,1 @@
+result = logger.info("hello");fd

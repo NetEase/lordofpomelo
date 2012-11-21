@@ -1,0 +1,30 @@
+{
+  "weibo": {
+    "appId": "3174132933",
+    "appSecret": "08c432a4e2f94e78789d3f0add136d52"
+  },
+
+  "github": {
+    "appId": "5d8a5bb21d67cb3b9697",
+    "appSecret": "4e235f7f9363f67b48939b9529857e9fc8bac8d9"
+  },
+
+  "facebook": {
+    "appId": "460381747329258",
+    "appSecret": "bdb93b4a2beb6022505e3476cd7edec7"
+  },
+
+  "google": {
+    "clientId": "878096227571.apps.googleusercontent.com",
+    "clientSecret": "xDD0dGlNXjCMVofqY72ZvW4-"
+  },
+
+  "twitter": {
+    "consumerKey": "DspkrMeY28INKjuUxHn8Xw",
+    "consumerSecret": "QgmsjnvudFsnVPSgYmoprNKAu5fKjxFQpEHyrOw7no"
+  },
+
+  "hostname" : "http://pomelo.netease.com/lordofpomelo",
+  
+  "redirectPath": "/lordofpomelo/auth_success"
+}

@@ -1,0 +1,12 @@
+<p>auth <%= code == 200 ? 'success' : 'fail' %>!</p>
+<% if (code == 200) { %>
+  <script>
+    if (window.opener && window.opener.pomelo) {
+      window.opener.pomelo.authEntry(<%= uid %>, '<%= token %>', function(data) {
+        window.close();
+      });
+    } else {
+      window.location.href = window.location.origin;
+    }
+  </script>
+<% } %>
