@@ -240,6 +240,9 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 				area.addEntity(data.entity);				
 				player = area.getEntity(data.entityId);
 			}
+			if (!player) {
+				console.log('!player:', data);
+			}
 			player.died = false;
 			player.set('hp', data.hp);
 			var sprite = player.getSprite();
