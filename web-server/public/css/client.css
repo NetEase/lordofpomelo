@@ -395,7 +395,7 @@ body .skill-box {
 .m-loadframe .wrap{position:relative;width:530px;height:96px;overflow:hidden;}
 .m-loadframe .bg0{position:absolute;left:10px;top:8px;z-index:0;width:510px;height:79px;background:url("../image/tattoo2.png") no-repeat right top;}
 .m-loadframe .bg0-1{position:absolute;left:0;top:0;z-index:1;width:510px;height:79px;background:url("../image/loadframebg0.png") no-repeat 0 0;filter:alpha(opacity=20);-moz-opacity:0.2;-khtml-opacity:0.2;opacity:0.2;}
-.m-loadframe .cnt{posttion:absolute;left:0;top:0;z-index:2;width:510px;height:79px;}
+.m-loadframe .cnt{position:absolute;left:0;top:0;z-index:2;width:510px;height:79px;}
 .m-loadframe .cnt .hd{width:510px;height:27px;}
 .m-loadframe .cnt .bd{width:510px;height:52px;}
 .m-loadframe .bg1{position:absolute;left:0;top:0;z-index:10;width:530px;height:96px;background:url("../image/loadframebg1.png") no-repeat 0 0;}
@@ -456,7 +456,7 @@ body .skill-box {
 .m-targetrole .targetrolebg0-1{position:absolute;left:63px;top:0;width:100px;height:95px;background:url(../image/tattoo2.png) no-repeat 0 0;}
 .m-targetrole .targetrolebg0-2{position:absolute;left:0;top:111px;width:100px;height:95px;background:url(../image/tattoo2.png) no-repeat 0 0;}
 .m-targetrole .targetrolebg1{position:absolute;z-index:7;left:2px;top:13px;width:163px;height:206px;background:url(../image/targetrolebg1.png) no-repeat 0 0;filter:alpha(opacity=30);-moz-opacity:0.3;-khtml-opacity:0.3;opacity:0.3;}
-.m-targetrole .targetrolecnt{position:absolute;z-index:8;left;0;top:0;width:173px;height:220px;background:url(../image/rolelst.png) no-repeat -692px -240px;}
+.m-targetrole .targetrolecnt{position:absolute;z-index:8;left:0;top:0;width:173px;height:220px;background:url(../image/rolelst.png) no-repeat -692px -240px;}
 .m-targetrole .targetrolecover{position:absolute;z-index:10;left:0;top:0;width:173px;height:222px;background:url(../image/targetrolecover.png) no-repeat 0 0;}
 
 
