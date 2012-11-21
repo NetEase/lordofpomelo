@@ -6,6 +6,14 @@ which is a fast, scalable, distributed game server framework for node.js. The fr
 the map and renders the animations by colorbox, which is a client side game engine written in JavaScript based on HTML5.
 In this game, the client communicates via websockets with the server. 
 
+ * Homepage: <http://pomelo.netease.com/>
+ * Mailing list: <https://groups.google.com/group/pomelo>
+ * Documentation: <http://github.com/netease/pomelo>
+ * Wiki: <https://github.com/netease/pomelo/wiki/>
+ * Issues: <https://github.com/netease/pomelo/issues/>
+ * Tags: game, nodejs 
+
+
 ## How to install
 
 You can install lordofpomelo with the guiding of the document 
