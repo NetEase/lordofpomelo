@@ -246,8 +246,8 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			sprite.revive(data);
 			if (player.entityId === app.getCurPlayer().entityId) {
 				area.map.centerTo(data.x, data.y);
-			} 
-			mainPanel.reviveMaskHide();
+				mainPanel.reviveMaskHide();
+			}
 		});
 	}	
 
