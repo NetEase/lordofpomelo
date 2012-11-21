@@ -6,6 +6,7 @@ logs/*
 */node-log.log
 /game-server/logs/*
 /shared/config/*
+/web-server/config/*
 !.gitignore
 /web-server/logs/*
 !.gitignore
