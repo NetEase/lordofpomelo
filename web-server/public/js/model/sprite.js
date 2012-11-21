@@ -689,7 +689,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	Sprite.prototype.destory = function() {
 		this.stopWholeAnimations();
 		if (this.curNode) {
-			//this.mapNode.removeChild(this.curNode);
+			this.mapNode.removeChild(this.curNode);
 			if (this.entity.type !== EntityType.PLAYER) {
 				this.curNode = null;
 			}
