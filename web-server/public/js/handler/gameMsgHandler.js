@@ -247,7 +247,6 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			if (player.entityId === app.getCurPlayer().entityId) {
 				area.map.centerTo(data.x, data.y);
 				mainPanel.reviveMaskHide();
-				console.log('curPlayer revives!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1');
 			}
 		});
 	}	
@@ -273,9 +272,6 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 	 * @param {Object} data 
 	 */
 	var killedAction = function(data) {
-		if (data.target.entityId == app.getCurArea().getCurPlayer().entityId) {
-			console.log('curPlayer died!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!');
-		}
 		data.target.died = true;
 		if (data.target.type === EntityType.MOB) {
 			data.target = null;
