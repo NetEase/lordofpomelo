@@ -9,7 +9,7 @@ var createMysqlPool = function(app) {
 		name: 'mysql',
 		create: function(callback) {
 			var mysql = require('mysql');
-			var client = mysql.createClient({
+			var client = mysql.createConnection({
 				host: mysqlConfig.host,
 				user: mysqlConfig.user,
 				password: mysqlConfig.password,
