@@ -56,7 +56,7 @@ __resources__["/app.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 		}
 
 		gv = new view.HonestView(skch);
-		//gv.showUnloadedImage(false);
+		gv.showUnloadedImage(false);
 		gd = director.director({
 			view: gv
 		});
