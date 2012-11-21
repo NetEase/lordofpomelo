@@ -1,0 +1,27 @@
+{
+  "name": "lord_of_pomelo",
+  "version": "0.1.0",
+  "private": false,
+  "dependencies": {
+  "express": "2.5.2"
+  , "connect": ">=0.0.1"
+  , "socket.io": ">=0.9.6"
+  , "generic-pool": ">=1.0.9"
+  , "mysql": ">=2.0"
+  , "pomelo": "0.2.0"
+  , "async": ">=0.0.1"
+  , "socket.io-client" : ">=0.9.6"
+  , "pomelo-aoi" : ">=0.3.2"
+  , "crc" : ">=0.0.1"
+  , "pomelo-bt": ">=0.0.1"
+  , "pomelo-pathfinding": ">=0.1.0"
+  , "pomelo-collection": ">=0.1.0"
+  , "pomelo-logger": "0.0.2" 
+  , "pomelo-monitor": ">=0.3.3"
+  },
+  "devDependencies": {
+      "should": ">=0.0.1"
+    , "mocha": ">=0.0.1"
+  }
+}
+

@@ -1,0 +1,25 @@
+#!/bin/bash
+logfile="rsync.log"
+errlog="errsysn.log"
+
+src=127.0.0.1:3000
+dest=172.31.133.110:81
+
+replace() {
+  file="$1"
+
+  echo >> $logfile
+  echo "############################################" >> $logfile
+  echo "`date '+%F %T'` start to replace to $file..." >> $logfile
+
+  sed -i 's/'$src'/'$dest'/g' $file  >> $logfile 2>$errlog
+
+ 
+}
+
+
+for i in $(cat file.txt) ;do 
+
+replace $i
+
+done

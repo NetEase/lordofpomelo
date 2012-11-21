@@ -1,0 +1,38 @@
+{
+	"1":{
+		"name": "jiangnanyewai",
+		"level": 0,
+		"map":{
+			"width":3200,
+			"height":2400
+		},
+		"tower":{
+			"width": 300,
+			"height":300
+		}
+	},
+	"2":{
+		"name": "jianye",
+		"level": 10,	
+		"map":{
+			"width":5760,
+			"height":2880
+		},
+		"tower":{
+			"width": 300,
+			"height":300
+		}
+	},
+	"3":{
+		"name": "jiangzhou",
+		"level": 30,	
+		"map":{
+			"width":7040,
+			"height":6720
+		},
+		"tower":{
+			"width": 300,
+			"height":300
+		}
+	}
+}

@@ -1,0 +1,12 @@
+[
+["id","名称","英文名称","描述","英文描述","类型","加血","加气","价格","英雄等级","图片id"],
+["id","name","englishName","desc","englishDesc","kind","hp","mp","price","heroLevel","imgId"],
+["0300","包子","Stuffed bun","精面粉制作的肉包子","Delicious steamed meat dumpling。","food",100,0,10,"1","0300"],
+["0303","臭豆腐","Bean curd","常见的一道小菜","A common snack food.","food",250,0,20,10,"0303"],
+["0301","烤鸭","Roast duck","北方特产，油滑可口","Chinese specialties, crispy  and delicious.","food",500,0,40,20,"0301"],
+["0240","四叶花","Lucky Clover","长了四片叶子的小花","Clover with four leaves.","medicine",800,0,100,30,"0240"],
+["0303","七叶莲","Snow lotus","七片叶子的莲花","Lotus in snow montain.","medicine",1500,0,150,50,"0303"],
+["0246","人参","Ginseng","产于北方的药草","A famous and precious traditional Chinese medicine.","medicine",3000,60,200,70,"0246"],
+["0241","草果","草果","乌色的小果子","乌色的小果子","medicine",0,20,50,200,"0241"],
+["0244","九香虫","九香虫","带有药性的早","带有药性的早","medicine",0,40,100,200,"0244"]
+]
