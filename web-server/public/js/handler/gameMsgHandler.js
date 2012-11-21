@@ -272,6 +272,9 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 	 * @param {Object} data 
 	 */
 	var killedAction = function(data) {
+		if (app.getCurPlayer().entityId == data.target.entityId) {
+			console.log('curPlayer died~~~~~~~~~~~~~~~!');
+		}
 		data.target.died = true;
 		if (data.target.type === EntityType.MOB) {
 			data.target = null;
