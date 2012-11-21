@@ -1,1 +1,0 @@
-result = app.serverId;
