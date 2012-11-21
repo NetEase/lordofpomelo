@@ -1,0 +1,2 @@
+../public/css/client.css
+../public/js/config.js

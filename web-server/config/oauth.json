@@ -1,0 +1,30 @@
+{
+  "weibo": {
+    "appId": "test",
+    "appSecret": "test"
+  },
+
+  "github": {
+    "appId": "test",
+    "appSecret": "test"
+  },
+
+  "facebook": {
+    "appId": "test",
+    "appSecret": "test"
+  },
+
+  "google": {
+    "clientId": "test",
+    "clientSecret": "test"
+  },
+
+  "twitter": {
+    "consumerKey": "test",
+    "consumerSecret": "test"
+  },
+
+  "hostname" : "http://pomelo.netease.com/lordofpomelo",
+  
+  "redirectPath": "/lordofpomelo/auth_success"
+}

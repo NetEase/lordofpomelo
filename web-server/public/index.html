@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+
+    <!-- @STYLE -->
+    <link href="css/client.css" rel="stylesheet" type="text/css">
+    <link href="css/global.css" rel="stylesheet" type="text/css">
+
+    <title>Lord of Pomelo</title>
+
+    <!-- @DEFINE {nodep:true} -->
+    <script src='./js/lib/colorbox/colorbox_header.js'></script>
+    <script src='./js/lib/colorbox/Box2dWeb-2.1.a.3.js'></script>
+    <script src='./js/lib/colorbox/JXGUtil.js'></script>
+    <script src='./js/lib/colorbox/base.js'></script>
+    <script src='./js/lib/colorbox/base64.js'></script>
+    <script src='./js/lib/colorbox/clocker.js'></script>
+    <script src='./js/lib/colorbox/debug.js'></script>
+    <script src='./js/lib/colorbox/geometry.js'></script>
+    <script src='./js/lib/colorbox/gzip.js'></script>
+    <script src='./js/lib/colorbox/helper.js'></script>
+    <script src='./js/lib/colorbox/oo.js'></script>
+    <script src='./js/lib/colorbox/path.js'></script>
+    <script src='./js/lib/colorbox/pathfinding.js'></script>
+    <script src='./js/lib/colorbox/platform.js'></script>
+    <script src='./js/lib/colorbox/processing.js'></script>
+    <script src='./js/lib/colorbox/util.js'></script>
+    <script src='./js/lib/colorbox/xmlload.js'></script>
+    <script src='./js/lib/colorbox/resmgr.js'></script>
+    <script src='./js/lib/colorbox/canvaseventdecider.js'></script>
+    <script src='./js/lib/colorbox/component.js'></script>
+    <script src='./js/lib/colorbox/gui/button.js'></script>
+    <script src='./js/lib/colorbox/gui/slidebar.js'></script>
+    <script src='./js/lib/colorbox/logic.js'></script>
+    <script src='./js/lib/colorbox/matrix.js'></script>
+    <script src='./js/lib/colorbox/model.js'></script>
+    <script src='./js/lib/colorbox/node.js'></script>
+    <script src='./js/lib/colorbox/particle.js'></script>
+    <script src='./js/lib/colorbox/physicsnode.js'></script>
+    <script src='./js/lib/colorbox/pipe.js'></script>
+    <script src='./js/lib/colorbox/scene.js'></script>
+    <script src='./js/lib/colorbox/sound.js'></script>
+    <script src='./js/lib/colorbox/tiled_map.js'></script>
+    <script src='./js/lib/colorbox/frameanimation.js'></script>
+    <script src='./js/lib/colorbox/view/index.js'></script>
+    <script src='./js/lib/colorbox/view/honestview.js'></script>
+    <script src='./js/lib/colorbox/view/processingview.js'></script>
+    <script src='./js/lib/colorbox/animate.js'></script>
+    <script src='./js/lib/colorbox/director.js'></script>
+    <script src='./js/lib/colorbox/level.js'></script>
+    <script src='./js/lib/colorbox/leveltransition.js'></script>
+    <script src='./js/lib/colorbox/colorbox_module.js'></script>
+    <script src="js/lib/pomelo-client.js" type="text/javascript"></script>
+    <script src="js/lib/jquery-1.8.0.min.js" type="text/javascript"></script>
+    <script src="js/lib/socket.io.js" type="text/javascript"></script>
+    <script src="js/ui/clientManager.js" type="text/javascript"></script>
+    <script src="js/ui/switchManager.js" type="text/javascript"></script>
+    <script src="js/ui/heroSelectView.js" type="text/javascript"></script>
+    <script src="js/ui/mainPanelView.js" type="text/javascript"></script>
+    <script src="js/ui/playerPanelView.js" type="text/javascript"></script>
+    <script src="js/ui/equipmentsPanelView.js" type="text/javascript"></script>
+    <script src="js/ui/bagPanelView.js" type="text/javascript"></script>
+    <script src="js/ui/taskPanelView.js" type="text/javascript"></script>
+    <script src="js/ui/dialogPanelView.js" type="text/javascript"></script>
+    <script src="js/main.js"></script>
+    <script src="js/handler/loginMsgHandler.js" type="text/javascript"></script>
+    <script src="js/handler/gameMsgHandler.js" type="text/javascript"></script>
+    <script src="js/handler/npcHandler.js" type="text/javascript"></script>
+    <script src="js/handler/taskHandler.js" type="text/javascript"></script>
+    <script src="js/utils/dataApi.js" type="text/javascript"></script>
+    <script src="js/utils/resourceLoader.js" type="text/javascript"></script>
+    <script src="js/app.js" type="text/javascript"></script>
+    <script src="js/model/area.js" type="text/javascript"></script>
+    <script src="js/config/config.js"></script>
+    <script src="js/model/skillEffect.js" type="text/javascript"></script>
+    <script src="js/model/map.js" type="text/javascript"></script>
+    <script src="js/model/entity.js" type="text/javascript"></script>
+    <script src="js/model/equipment.js" type="text/javascript"></script>
+    <script src="js/model/equipments.js" type="text/javascript"></script>
+    <script src="js/model/character.js" type="text/javascript"></script>
+    <script src="js/model/bag.js" type="text/javascript"></script>
+    <script src="js/model/mob.js" type="text/javascript"></script>
+    <script src="js/model/npc.js" type="text/javascript"></script>
+    <script src="js/model/item.js" type="text/javascript"></script>
+    <script src="js/model/bag.js" type="text/javascript"></script>
+    <script src="js/model/player.js" type="text/javascript"></script>
+    <script src="js/model/curPlayer.js" type="text/javascript"></script>
+    <script src="js/model/sprite.js" type="text/javascript"></script>
+    <script src="js/ui/ui.js" type="text/javascript"></script>
+    <script src="js/ui/chat.js" type="text/javascript"></script>
+    <script src="js/model/noEntityNode.js" type="text/javascript"></script>
+    <script src="js/componentAdder.js" type="text/javascript"></script>
+    <script src="js/config/consts.js" type="text/javascript"></script>
+    <script src="js/utils/utils.js" type="text/javascript"></script>
+    <script src="js/model/task.js" type="text/javascript"></script>
+    <script src="js/model/animation.js" type="text/javascript"></script>
+    <script src="js/utils/pool/objectPool.js" type="text/javascript"></script>
+    <script src="js/utils/pool/objectPoolFactory.js" type="text/javascript"></script>
+    <script src="js/utils/pool/objectPoolManager.js" type="text/javascript"></script>
+    <script src="js/utils/timeSync.js" type="text/javascript"></script>
+
+  </head>
+
+  <body>
+  <div class="g-doc">
+    <!-- 登陆和注册页面 -->
+    <div id="loginPanel" class="m-index">
+      <div class="m-logo fiximg"></div>
+      <!-- 登陆框 -->
+      <div class="m-lrframe" id="id_loginFrame">
+        <div class="wrap">
+          <div class="bg0 fiximg"></div>
+          <div class="bg1 fiximg">
+            <div class="bg1-1 fiximg"></div>
+            <div class="bg1-2"></div>
+          </div>
+          <div class="bg2 fiximg"></div>
+          <div class="cnt">
+            <div class="m-login">
+              <div class="hd">
+                <div class="tt">
+                  <img class="fiximg" alt="" src="image/loginTT.png" />
+                </div>
+              </div>
+              <div class="bd">
+                <!-- 登陆输入 -->
+                <div class="m-input" title="username"><div class="caption">Username</div><div class="input fiximg"><input id="loginUser" type="text" /></div></div>
+                <div class="m-input" title="password"><div class="caption">Password</div><div class="input fiximg"><input id="loginPwd" type="password"/></div></div>
+                <div class="m-3col"><div class="col1" style="display:none;">Remember password：</div><div style="display:none;" class="col2 fiximg"><div class="checkbox" checked="checked"></div></div><div class="col3" title="login"><button id="loginBtn"></button></div></div>
+              </div>
+              <div class="ft">
+                <div class="m-3col2"><div class="col1">Login with: </div><div class="col2"><ul id="authBtn" class="f-cb"><li title="weibo"><a class="a1 weibo" href="/lordofpomelo/auth/weibo">&nbsp;&nbsp;&nbsp;&nbsp;</a></li><li title="github"><a class="a2 fiximg github" href="/lordofpomelo/auth/github">&nbsp;&nbsp;&nbsp;&nbsp;</a></li><li style="display:none;"><a class="a3 fiximg" href="#">&nbsp;&nbsp;&nbsp;&nbsp;</a></li><li title="facebook"><a class="a4 facebook" href="/lordofpomelo/auth/facebook">&nbsp;&nbsp;&nbsp;&nbsp;</a></li><li title="twitter"><a class="a5 twitter" href="/lordofpomelo/auth/twitter">&nbsp;&nbsp;&nbsp;&nbsp;</a></li><li title="google"><a class="a6 google" href="/lordofpomelo/auth/google">&nbsp;&nbsp;&nbsp;&nbsp;</a></li><li class="lastli"><div class="sep"></div></li></ul></div><div class="col3" title="register"><button id="id_toRegisterBnt"></button></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- 注册框 -->
+      <div class="m-lrframe f-dn" id="id_registerFrame">
+        <div class="wrap">
+          <div class="bg0 fiximg"></div>
+          <div class="bg1 fiximg">
+            <div class="bg1-1 fiximg"></div>
+            <div class="bg1-2"></div>
+          </div>
+          <div class="bg2 fiximg"></div>
+          <div class="bg3 fiximg" title="Back to login"></div>
+          <div class="cnt">
+            <div class="m-login">
+              <div class="hd">
+                <div class="tt">
+                  <img class="fiximg" src="image/registerTT.png" />    
+                </div>
+              </div>
+              <div class="bd">
+                <!-- 注册输入 -->
+                <div class="m-input m-input-1"><div class="caption">Username</div><div class="input fiximg"><input id="reg-name" type="text" /></div></div>
+                <div class="m-input m-input-1"><div class="caption">Password</div><div class="input fiximg"><input id="reg-pwd" type="password" /></div></div>
+                <div class="m-input m-input-1"><div class="caption">Confirm Password</div><div class="input fiximg"><input id="reg-cpwd" type="password" /></div></div>
+              </div>
+              <div class="ft">
+                <div class="m-3col m-3col-1"><div class="col1 f-dn">read and agree the statement</div><div class="col2 fiximg f-dn"><div class="checkbox" checked="checked"></div></div><div class="col3 col3-1"><button id="registerBtn"></button></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div> 
+    </div>
+    
+    <div id="gamePrelude" class="m-admissionanima f-dn">
+      <div class="logo"><div class="m-logo fiximg"></div></div>
+      <div class="showimg">
+        <div class="img"><img src="image/admissionanimabg.jpg"></div>
+        <div class="text a-fadeinB"><img src="image/admissionanimatext.png"></div>
+        <div class="mask"></div>                  
+      </div>
+      <button class="skipbnt" id="id_skipbnt">SKIP</button>
+    </div>
+
+    <!-- 人物选择页面 -->
+    <div id="heroSelectPanel" class="m-choose f-dn">
+      <div class="logo"><img class="fiximg" src="image/logo2.png" /></div>
+      <div class="m-chooserole">
+        <div class="wrap">
+          <div class="bg fiximg"></div>
+          <div class="cover a6 fiximg"></div>
+          <div class="choosewrap">
+            <div class="choose">
+              <div class="role role-1 fiximg"></div>
+              <div class="role role-2 fiximg"></div>
+              <div class="role role-3 fiximg"></div>
+              <div class="role role-4 fiximg"></div>
+              <div class="role role-5 fiximg"></div>
+              <div class="role role-6 fiximg"></div>
+              <div class="role role-7 fiximg"></div>
+              <div class="role role-8 fiximg"></div>
+              <div class="role role-9 fiximg"></div>
+              <div class="role role-10 fiximg"></div>
+              <div class="role role-11 fiximg"></div>
+              <div class="role role-12 fiximg"></div>
+              <div class="m-targetrole">
+                <div class="targetrolebg0">
+                  <div class="targetrolebg0-1 fiximg"></div>    
+                  <div class="targetrolebg0-2 fiximg"></div>    
+                </div>
+                <div class="targetrolebg1 fiximg"></div>
+                <div class="targetrolecnt fiximg"></div>
+                <div class="targetrolecover fiximg"></div>
+              </div>
+            </div> 
+          </div>
+        </div>
+        <div class="order">
+          <div class="left fiximg">Name</div>
+          <div class="middle"><div class="input fiximg"><input id="gameUserName" type="text"></div></div>
+          <div class="right"><button id="heroSelectBtn"></button></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 游戏加载页面 -->
+    <div id="loadingPanel" class="m-loading f-dn">
+      <div class="m-logo fiximg"></div>
+      <div class="m-loadframe">
+        <div class="wrap">
+          <div class="bg0 fiximg">
+            <div class="bg0-1 fiximg"></div>
+            <div class="cnt">
+              <div class="hd">
+                <div class="m-loadtt">
+                  <img class="fiximg" src="image/loadtt.png"><span class="percent"><span>(</span><span id="id_loadPercent">58</span><span>%)</span></span>
+                </div>
+              </div>
+              <div class="bd">
+                <div class="m-loadrate">
+                  <div class="loadbg fiximg"></div>
+                  <div class="loadcover fiximg" id="id_loadRate"></div>    
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="bg1 fiximg"></div>  
+        </div>
+      </div>
+    </div>
+
+    <!-- 游戏页面 -->
+    <div id="gamePanel" class="m-game f-dn">
+      <div id="mainPanel" class="g-game">
+        <div class="m-main" id="m-main">
+          <canvas></canvas>
+        </div>
+
+        <div id="frame-rate"></div>
+        <!-- 导航 -->
+        <nav class="m-nav">
+          <ul>
+            <li class="itm01"><span>Role</span></li>
+            <li class="itm02"><span>Equip</span></li>
+            <li class="itm03"><span>Quest</span><span class="flag"></span></li>
+          </ul>
+        </nav>
+        <!-- 玩家 -->
+        <section class="m-player">
+          <div class="avatar"><img src="image/avatar.png" /></div>
+          <div class="info">
+            <p class="name"><span>pp001</span><span>60级</span></p>
+            <div class="level">
+              <div class="u-levbar">
+                <span class="outer" style="width:80%"><span class="inner"></span></span>
+              </div>
+              <div class="u-levbar u-levbar-1">
+                <span class="outer" style="width:30%"><span class="inner"></span></span>
+              </div>
+            </div>
+          </div>
+        </section>
+        <!-- ----------------------------top资产---------------------------- -->
+        <section class="m-asset">
+          <div class="wrap">
+            <ul>
+              <li class="icon pos6"><span>48710</span></li>
+              <li>
+                <div class="icon-l"><div class="wrapper"><div class="icon-ll"></div></div></div>
+              </li>
+            </ul>
+          </div>
+        </section>
+        <!-- ----------------------------聊天浮层------------------------- -->
+        <section class="m-chat">
+          <div class="chatcnt">
+            <div class="chat">
+              <nav class="tab">
+                <ul>
+                  <li class="itm selected">all</li>
+                  <li class="itm">system</li>
+                  <li class="itm">chat</li>
+                </ul>
+              </nav>
+              <div class="chatport">
+                <div class="topbar"><span class="arr"></span></div>
+                <div class="body"></div>
+                <div class="btmbar"><span class="arr"></span></div>
+              </div>
+            </div>
+          </div>
+          <div class="basebar">
+            <div class="form">
+              <div class="f-fl">
+                <span class="u-area">area</span>
+                <input type="text" value="" class="u-txt2 hide" style='margin:2px 1px 1px 5px; border:none' />
+                <div class="type">
+                  <span class="s-fc5">priv</span>
+                  <span class="s-fc6">all</span>
+                  <span class="s-fc7">race</span>
+                  <span class="s-fc8">area</span>
+                  <span class="s-fc9">gang</span>
+                </div>
+              </div>
+              <input type="text" value="" class="u-txt u-content" />
+              <span class="u-face"></span>
+              <span class="u-back"></span>
+              <span class="u-arr disabled"></span>
+            </div>
+          </div>
+        </section>
+        <!-- 技巧 -->
+        <section class="m-skill">
+          <ul>
+            <li class="itm"></li>
+            <li class="itm"></li>
+            <li class="itm"></li>
+            <li class="itm"></li>
+            <li class="itm"></li>
+            <li class="itm"></li>
+            <li class="itm"></li>
+            <li class="itm"></li>
+            <li class="itm"></li>
+            <li class="itm"></li>
+          </ul>
+        </section>
+
+        <!-- 对话框 -->
+        <div id="dialog" class="m-window" style="z-index:1000;display:none;">
+          <section class="wincnt">
+            <p>Learning skill</p>
+            <div class="opt">
+              <span class="u-btn f-fl">Cancel</span>
+              <span class="u-btn f-fr">OK</span>
+            </div>
+          </section>
+          <span class="u-close">close</span>
+        </div>
+        <!-- 弹出层  主角+技能 -->
+        <div id="playerPanel" class="m-layer player" style="display:none;">
+          <nav class="m-tab">
+            <ul>
+              <li class="itm1 selected">Role</li>
+              <li class="itm2">Skills</li>
+            </ul>
+          </nav>
+          <!-- tab主角 -->
+          <section class="layercnt zj" style="z-index:100;">
+            <div class="info f-fl">
+              <div class="face f-fl"><img src="image/avatar.png" alt="player" /></div>
+              <div class="name">
+                <p><span class="s-fc5 f-fl">pp001</span><span class="s-fc6 f-fr">VIP3</span></p>
+                <p><span class="tlt">Level</span><span class="val">60</span></p>
+                <p><span class="tlt">Career</span><span class="val">warrior</span></p>
+              </div>
+              <div class="level">
+                <div class="f-cb"><span class="tlt tlt-1 f-fl">HP</span><p class="levbar f-fl"><span class="num">4/100000</span><span class="bar" style="width:50px;"></span></p></div>
+                <div class="f-cb"><span class="tlt tlt-1 f-fl">MP</span><p class="levbar f-fl"><span class="num">100000/2165050</span><span class="bar bar-1" style="width:50px;"></span></p></div>
+              </div>
+              <div class="detail">
+                <p><span class="tlt">Attack</span><span class="val val-1">21</span></p>
+                <p><span class="tlt">Defense</span><span class="val val-1">0</span></p>
+                <p><span class="tlt">HitRate</span><span class="val val-1">0</span></p>
+                <p><span class="tlt">DodgeRate</span><span class="val val-1">0</span></p>
+                <p><span class="tlt">WalkSpeed</span><span class="val val-1">0</span></p>
+                <p><span class="tlt">AttackSpeed</span><span class="val val-1">0</span></p>
+              </div>
+            </div>
+            <div class="weapon f-fr">
+              <div class="wtype f-fl">
+                <ul class="type1">
+                  <li><span class="name1"><img src="" alt="" /></span></li>
+                  <li><span class="name2"></span></li>
+                </ul>
+                <ul class="type2">
+                  <li><span class="name3"></span></li>
+                  <li><span class="name4"></span></li>
+                  <li><span class="name5"><img src="" alt="" /></span></li>
+                  <li><span class="name6"></li>
+                    <li><span class="name7"></li>
+                    </ul>
+                    <ul class="type1">
+                      <li><span class="name8"></span></li>
+                      <li><span class="name9"></span></li>
+                    </ul>
+                  </div>
+                  <div class="wroom f-fr">
+                    <ul class="m-wlst f-cb">
+                      <li class="blank"></li>
+                      <li class="blank"></li>
+                      <li class="blank"></li>
+                      <li class="blank"></li>
+                      <li class="blank"></li>
+                      <li class="blank"></li>
+                      <li class="blank"></li>
+                      <li class="blank"></li>
+                      <li class="blank"></li>
+                      <li class="blank"></li>
+                      <li class="blank"></li>
+                      <li class="blank"></li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
+              <!-- tab技能 -->
+              <section class="layercnt jn" style="z-index:100; display:none;">
+                <p class="u-tlt">Tech list</p>
+                <div class="wxlst f-fl">
+                  <ul class="m-wlst1 f-cb">
+                    <li class="selected"><img src="image/skill.png" alt="" /><span class="name">strong</span><span class="num">19</span></li>
+                    <li><img src="image/skill.png" alt="" /><span class="name">strong</span><span class="num">19</span></li>
+                    <li></li><li></li><li></li><li></li><li></li><li></li>
+                  </ul>
+                </div>
+                <div class="wxdetl f-fr">
+                  <div class="show f-fl"></div>
+                  <p class="name">strong</p>
+                  <div class="detl">
+                    <p class="u-ttvl"><span class="tt f-fl" style="width:59px;">level</span><span class="vl f-fl" style="width:120px;">60</span></p>
+                    <p class="u-ttvl"><span class="tt f-fl" style="width:59px;">require</span><span class="vl f-fl" style="width:120px;">20</span></p>
+                    <p class="u-ttvl" style="height:82px;"><span class="tt f-fl" style="width:59px;">intro</span><span class="vl vl-1 f-fl" style="width:120px;">increase attack<br />29 minutes cooldown</span></p>
+                  </div>
+                  <p class="opt"><span class="u-btn1">level up</span></p>
+                </div>
+              </section>
+              <span class="u-close">close</span>
+            </div>
+            <!-- 弹出层  背包一+背包二+背包三 -->
+            <div id="bagPanel" class="m-layer package" style="z-index:400; display:none;">
+              <nav class="m-tab">
+                <ul>
+                  <li class="itm1  selected">Bag</li>
+                </ul>
+              </nav>
+              <!-- tab 背包一 -->
+              <section class="layercnt bb1" style="z-index:101;">
+                <div class="packcnt">
+                  <ul class="m-pglst f-cb">
+                    <li class="selected">
+                    <img src="image/avatar.png" alt="" />
+                    <div class="m-detllay">
+                      <div class="wrap">
+                        <h4 class="f-cb"><span class="f-fl s-fc11">方巾</span><span class="f-fr">头盔</span></h4>
+                        <p class="s-fc6">require level：<span>12级</span></p>
+                        <p>level：<span>护城小兵10☆</span></p>
+                        <p>main property：<span class="s-fc9">必杀防御力 +56</span></p>
+                        <p>attack property：<span class="s-fc5">血量上限 +4</span></p>
+                        <p>price：<span>0银两</span></p>
+                        <p class="s-fc6">未绑定</p>
+                      </div>
+                    </div>
+                    </li>
+                    <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+                    <li></li><li></li><li></li><li></li><li></li><li></li><li></li><li></li>
+                    <li class="locked"><span class="lock"></span></li>
+                  </ul>
+                </div>
+                <div class="opt f-cb">
+                  <p class="u-ttvl f-fl"><span class="tt f-fl" style="width:65px;">Bag Space</span><span class="vl f-fl" style="width:70px;">4/18</span></p>
+                  <p></p>
+                </div>
+              </section>
+              <!-- tab 背包二 -->
+              <section class="layercnt bb2" style="z-index:100;">
+              </section>
+              <!-- tab 背包三 -->
+              <section class="layercnt bb3" style="z-index:100;">
+              </section>
+              <span class="u-close">close</span>
+            </div>
+
+            <div id="taskPanel" class="m-layer task" style="z-index: 1600;display:none">
+              <nav class="m-tab">
+                <ul>
+                  <li class="itm1  selected">Quest</li>
+                </ul>
+              </nav>
+              <!-- -------------- tab 主线 ------------>
+              <section class="layercnt zx" style="z-index:101;">
+                <p class="u-tlt"></p>
+                <div class="tsk f-fl">
+                  <p class="tlt f-hide">Quest</p>
+                  <div class="drama">
+                    <ul class="task-list"></ul>
+                  </div>				 
+                  <p class="tlt f-hide">Grow Quest</p>
+                  <div class="grow"></div>
+                </div> 
+                <div class="intro f-fr">
+                  <p class="u-tlt"></p>
+                  <div class="introduce">
+                    <p class="tlt f-hide">Intro</p>
+                    <div class="introcnt"></div>
+                  </div>
+                  <div class="adward">				 	
+                    <p class="tlt f-hide">Reward</p>					
+                    <div class="adwardcnt"></div>
+                  </div>
+                </div> 
+                <div class="opt clear">
+                  <span class="u-btn f-fr">Accept</span>
+                </div>
+              </section>
+              <span class="u-close">关闭</span>
+            </div>
+
+            <!-- 弹出层  好友+屏蔽 -->
+            <div class="m-layer friend" style="z-index:900;display:none;">
+              <nav class="m-tab">
+                <ul>
+                  <li class="itm1  selected">friends</li>
+                  <li class="itm2">shield</li>
+                </ul>
+              </nav>
+              <!--  tab 好友 -->
+              <section class="layercnt hy" style="z-index:100;">
+                <div class="m-table">
+                  <div class="caption f-cb"><div class="th col1">好友</div><div class="th col2">种族</div><div class="th col3">状态</div><div class="th col4">操作</div></div>
+                  <div class="body">
+                    <ul class="m-hylst">
+                      <li><div class="col1">清渠0001</div><div class="col2"><span class="s-fc7">人族</span></div><div class="col3"><span class="state">离线</span></div><div class="col4"><span class="u-btn1">私聊</span></div></li>
+                    </ul>
+                  </div>
+                </div>
+              </section>
+              <!-- ----------------tab屏蔽---------->
+              <section class="layercnt pb" style="z-index:99;">
+
+              </section>
+              <span class="u-close">close</span>
+            </div>
+          </div>
+
+          <div id="game-mask">
+            <div>Reviving ...<span></span></div>
+          </div>
+
+          <div id="notice">
+            <p>notification test</p>
+          </div>
+        </div>
+      </div>
+      </body>
+
+      </html>

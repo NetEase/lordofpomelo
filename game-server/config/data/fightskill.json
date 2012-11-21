@@ -1,0 +1,12 @@
+[
+["id","人物等级","技能名称","技能描述","类型","升级系数","玩家等级升级","冷却时间(s)","消耗法力","攻击力加成","命中率","攻击距离","图片url","特效"],
+["id","playerLevel","name","desc","type","upgradeParam","upgradePlayerLevel","cooltime","mp","attackParam","hitParam","distance","imageUrl","effect"],
+["1","1","Aormal Attack","normal attack","attack","","","1","","1",100,100,"",""],
+["2","1","Sudden Attack","sudden and surprise attack","attack",0.1,"5","5","5","1.2",100,100,"002","EffectBinZou"],
+["3","5","Prison Break","Increase melee attack and  make the target be chaos probability,  the target will  be out of control.","attackBuff",0.1,"5",10,10,"1.5",90,100,"003","EffectDuoHun"],
+["4",15,"Yun Roar","StateSkill, increase melee attack for some time.","buff",0.1,"5",15,15,"1.8",80,100,"004","EffectDuZhou"],
+["5",25,"Blazing Fire","Increase melee attack and  make the target be burned who will lose hit points for some time.","attackBuff",0.1,"5",20,20,"2.1",70,100,"005","EffectFengZou"],
+["6",40,"Stand Fast","StateSkill, increase the defense for some time.","buff",0.1,"5",25,25,"2.4",90,100,"006","EffectFuYuFanYun"],
+["7",60,"Charge","Make instant damage at once.","passive",0.1,"5",30,30,"3",60,100,"007","EffectGeShanDaNiu"],
+["8",80,"Battered-Body","StateSkill,  lose hit points and increase damage.","attack",0.1,"5",35,35,"3",80,200,"008","EffectGuanRiShi"]
+]
