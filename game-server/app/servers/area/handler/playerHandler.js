@@ -45,6 +45,13 @@ handler.enterScene = function(msg, session, next) {
     pomelo.app.rpc.chat.chatRemote.add(session, session.uid,  
     player.name, channelUtil.getAreaChannelName(areaId), null);
 		var map = area.map();
+		
+		if(!map.isReachable(player.x, player.y)){
+			var pos = map.getBornPoint();	
+			player.x = pos.x;
+			player.y = pos.y;
+		}
+		
 		next(null, {
 			code: consts.MESSAGE.RES,
 			data: {

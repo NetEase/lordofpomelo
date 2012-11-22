@@ -26,6 +26,7 @@ var patrolManager = null;
 
 //The map from player to entity
 var players = {};
+var users = {};
 var entities = {};
 var zones = {};
 var items = {};
@@ -130,6 +131,7 @@ exp.addEntity = function(e) {
 		
 		aoi.addWatcher({id: e.entityId, type: e.type}, {x : e.x, y: e.y}, e.range);
 		players[e.id] = e.entityId;
+		users[e.userId] = e.id;
 	}else if(e.type === EntityType.MOB) {
 		aiManager.addCharacters([e]);
 		
@@ -180,6 +182,7 @@ exp.removeEntity = function(entityId) {
 	
 		aoi.removeWatcher(e, {x : e.x, y: e.y}, e.range);
 		delete players[e.id];
+		delete users[e.userId];
 	}else if(e.type === 'mob') {
 		aiManager.removeCharacter(e.entityId);
 		patrolManager.removeCharacter(e.entityId);
@@ -265,6 +268,23 @@ exp.removePlayer = function(playerId) {
 		this.removeEntity(entityId);
 	}
 };
+
+exp.getPlayerByUid = function(uid){
+	if(!!users[uid]){
+		return this.getPlayer(users[uid]);
+	}
+	
+	return null;
+}
+
+exp.removePlayerByUid = function(uid){
+	var playerId = users[uid];
+	
+	if(!!playerId){
+		delete users[uid];
+		this.removePlayer(playerId);
+	}
+}
 
 /**
  * Get area entities for given postion and range.

@@ -209,6 +209,11 @@ Character.prototype.attack = function(target, skillId) {
 		return {result: consts.AttackResult.ATTACKER_CONFUSED};
 	}
 	
+	//You cann't attack a died character!
+	if (target.died){
+		return {result: consts.AttackResult.KILLED};
+	}
+	
 	var skill = this.fightSkills[skillId];
 	this.setTarget(target.entityId);
 
