@@ -154,7 +154,7 @@ Player.prototype.unEquip = function(kind) {
 /**
  * Use Item and update player's state: hp and mp,
  *
- * @param {Number} itemId
+ * @param {Number} index
  * @return {Boolean} 
  * @api public
  */
