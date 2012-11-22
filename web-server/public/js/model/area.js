@@ -159,6 +159,7 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 
 		var eNode = e.getSprite().curNode; 
 		if (!eNode._parent) {
+			console.log('this entity curNode de father is null');
 			this.scene.addNode(eNode, this.map.node);
 		}
 		this.entities[entity.entityId] = e;
