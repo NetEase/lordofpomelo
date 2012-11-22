@@ -84,6 +84,6 @@ var onUserLeave = function (app, session, reason) {
 		return;
 	}
 
-	app.rpc.area.playerRemote.playerLeave(session, {playerId: session.get('playerId'), areaId: session.get('areaId')}, null);
+	//app.rpc.area.playerRemote.playerLeave(session, {playerId: session.get('playerId'), areaId: session.get('areaId')}, null);
 	app.rpc.chat.chatRemote.kick(session, session.uid, null);
 };

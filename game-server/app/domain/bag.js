@@ -21,12 +21,16 @@ util.inherits(Bag, Persistent);
 
 module.exports = Bag;
 
+
+Bag.prototype.get = function(index) {
+  return this.items[index];
+};
+
 /**
  * add item
  *
  * @param {obj} item {id: 123, type: 'item'}
- * @param {number} [index]
- * @return {Boolean}
+ * @return {number}
  * @api public
  */
 Bag.prototype.addItem = function(item) {
@@ -65,34 +69,6 @@ Bag.prototype.removeItem = function(index) {
     delete this.items[index];
     this.save();
     status = true;
-  }
-
-  return status;
-};
-
-/**
- * change the item's position in bag
- *
- * @param {number} from index
- * @param {number} to index
- * @return {Boolean}
- * @api public
- */
-Bag.prototype.exchange = function(from, to) {
-  var status = false;
-  var item = this.items[from];
-
-  if (item && to <= this.itemCount) {
-    var toItem = this.items[to];
-    this.items[to] = item;
-
-    if (!toItem) {
-      delete this.items[from];
-    } else {
-      this.items[from] = toItem;
-    }
-    status = true;
-    this.save();
   }
 
   return status;
