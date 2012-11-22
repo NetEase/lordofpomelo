@@ -158,19 +158,18 @@ Player.prototype.unEquip = function(kind) {
  * @return {Boolean} 
  * @api public
  */
-Player.prototype.useItem = function(itemId) {
-	var status = false;
-	var index = this.bag.checkItem(itemId, 'item');
-	if (!!index) {
-		var item = dataApi.item.findById(itemId);
-		if (item) {
-			this.recoverHp(item.hp);
-			this.recoverMp(item.mp);
-			this.bag.removeItem(index);
-			status = true;
-		}
-	}
-	return status;
+Player.prototype.useItem = function(index) {
+	var item = this.bag.get(index);
+  if (!item || item.type != 'item') {
+    return false;
+  }
+  var itm = dataApi.item.findById(item.id);
+  if (itm) {
+    this.recoverHp(itm.hp);
+    this.recoverMp(itm.mp);
+  }
+  this.bag.removeItem(index);
+	return true;
 };
 
 /**
