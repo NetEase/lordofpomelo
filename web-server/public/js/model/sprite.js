@@ -16,6 +16,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	var Animation = require('animation');
 	var ObjectPoolFactory = require('objectPoolFactory');
 	var app = require('app');
+	var pomelo = window.pomelo;
 
 	/**
 	 * Initialize a new 'Sprite' with the given 'opts'.
@@ -688,7 +689,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	 */
 	Sprite.prototype.destory = function() {
 		this.stopWholeAnimations();
-		if (this.curNode) {
+		if (!!this.curNode) {
 			this.mapNode.removeChild(this.curNode);
 			if (this.entity.type !== EntityType.PLAYER) {
 				this.curNode = null;

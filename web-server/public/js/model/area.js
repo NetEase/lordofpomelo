@@ -157,7 +157,12 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 			return false;
 		}
 
+		var eNode = e.getSprite().curNode; 
+		if (!eNode._parent) {
+			this.scene.addNode(eNode, this.map.node);
+		}
 		this.entities[entity.entityId] = e;
+
 		this.componentAdder.addComponentTo(e);
 		return true;
 	};

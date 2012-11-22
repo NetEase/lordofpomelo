@@ -39,7 +39,7 @@ communicate with it. Task system is very important, which will let you get more 
 
 Lordofpomelo requires the following npm libraries:
 
-* pomelo(http://pomelo.netease.com/)
+* pomelo(https://github.com/NetEase/pomelo  or  http://pomelo.netease.com/)
 * colorbox
 * express(http://expressjs.com/)
 * socket.io(http://socket.io/)
