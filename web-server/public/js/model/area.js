@@ -130,7 +130,7 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 		switch(entity.type){
 			case 'player':
 			entity.walkSpeed = parseInt(entity.walkSpeed);
-			if (entity.id === pomelo.playerId) {
+			if (entity.id == pomelo.playerId) {
 				var player = pomelo.player;
 				player.scene = this.scene;
 				player.map = this.map;
