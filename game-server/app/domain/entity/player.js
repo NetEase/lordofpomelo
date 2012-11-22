@@ -31,8 +31,12 @@ var Player = function(opts) {
 	this.equipments = opts.equipments;
 	this.bag = opts.bag;
 	this.skillPoint = opts.skillPoint || 0;
-	this.nextLevelExp = dataApi.experience.findById(this.level+1).exp;
-
+	var _exp = dataApi.experience.findById(this.level+1);
+	if (!!_exp) {
+		this.nextLevelExp = dataApi.experience.findById(this.level+1).exp;
+	} else {
+		this.nextLevelExp = 999999999;
+	}
 	this.roleData = dataApi.role.findById(this.kindId);
 	this.curTasks = opts.curTasks;
 	this.range = opts.range || 2;
