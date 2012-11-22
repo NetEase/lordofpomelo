@@ -213,12 +213,8 @@ handler.changeArea = function(msg, session, next) {
 //Use item
 handler.useItem = function(msg, session, next) {
   var player = area.getPlayer(session.get('playerId'));
-  var status = false;
-  var item = player.bag.items[msg.index];
 
-  if (item) {
-    status = player.useItem(item.id);
-  }
+  var status = player.useItem(msg.index);
 
   next(null, {code: consts.MESSAGE.RES, status: status});
 };
