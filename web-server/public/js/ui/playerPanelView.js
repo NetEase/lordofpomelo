@@ -91,7 +91,7 @@ __resources__["/playerPanelView.js"] = {
     };
 
     var setName = function(name) {
-      $panel.find('.name .f-fl').html(name);
+      $panel.find('.name .f-fl').text(name);
     };
 
     var setLevel = function(level) {
