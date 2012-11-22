@@ -20,11 +20,11 @@ exp.pushMessageToPlayer = function (route, msg) {
 };
 
 exp.pushMessageByAOI = function (msg, pos, ignoreList) {
-    var uids = timer.getWatcherUids(pos, [EntityType.PLAYER], ignoreList);
+  var uids = timer.getWatcherUids(pos, [EntityType.PLAYER], ignoreList);
 
-    if (uids.length > 0) {
-        exp.pushMessageByUids(msg, uids);
-    }
+  if (uids.length > 0) {
+      exp.pushMessageByUids(msg, uids);
+  }
 };
 
 function errHandler(err, fails){
