@@ -21,12 +21,7 @@ handler.attack = function(msg, session, next) {
 	var player = area.getPlayer(session.get('playerId'));
 	var target = area.getEntity(msg.targetId);
 	
-	if(!target || !player || (player.target === target.entityId)){
-		next();
-		return;
-	}
-
-	if (player.entityId === target.entityId) {
+	if(!target || !player || (player.target === target.entityId) || (player.entityId === target.entityId) || target.died){
 		next();
 		return;
 	}
@@ -35,7 +30,6 @@ handler.attack = function(msg, session, next) {
 	player.target = target.entityId;
 	
 	next();
-	//next();
 };
 
 /**
