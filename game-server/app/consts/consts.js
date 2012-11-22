@@ -32,10 +32,10 @@ module.exports = {
     RECOVER_TIME : 10000     //You need 10s to recover hp from 0 to full.
   },
   BornPlace : {
-    x : 1101,
-    y : 902,
-    width : 201,
-    height : 296
+    x : 346,
+    y : 81,
+    width : 126,
+    height : 129
   }, 
 
 	MESSAGE: {

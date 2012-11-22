@@ -32,7 +32,6 @@ function errHandler(err, fails){
 		logger.error('Push Message error! %j', err.stack);
 	}
 	if(!!fails && fails.length > 0){
-		logger.error('Remove fails : %j', fails);
 		for(var i = 0; i < fails.length; i++){
 			area.removePlayerByUid(fails[i]);
 		}
