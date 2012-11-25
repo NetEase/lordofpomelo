@@ -108,7 +108,7 @@ __resources__["/bagPanelView.js"] = {
               window.alert("Hero's level is not enough!");
             } else {
               pomelo.request('area.equipHandler.equip', {index: index}, function(data) {
-                console.log(data);
+                //console.log(data);
                 if (data.status) {
                   var curEqId = player.equipments.get(eq.kind);
                   player.equipments.equip(eq.kind, eq.id);

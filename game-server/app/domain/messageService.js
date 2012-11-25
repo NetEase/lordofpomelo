@@ -20,11 +20,11 @@ exp.pushMessageToPlayer = function (route, msg) {
 };
 
 exp.pushMessageByAOI = function (msg, pos, ignoreList) {
-    var uids = timer.getWatcherUids(pos, [EntityType.PLAYER], ignoreList);
+  var uids = timer.getWatcherUids(pos, [EntityType.PLAYER], ignoreList);
 
-    if (uids.length > 0) {
-        exp.pushMessageByUids(msg, uids);
-    }
+  if (uids.length > 0) {
+      exp.pushMessageByUids(msg, uids);
+  }
 };
 
 function errHandler(err, fails){
@@ -32,7 +32,6 @@ function errHandler(err, fails){
 		logger.error('Push Message error! %j', err.stack);
 	}
 	if(!!fails && fails.length > 0){
-		logger.error('Remove fails : %j', fails);
 		for(var i = 0; i < fails.length; i++){
 			area.removePlayerByUid(fails[i]);
 		}

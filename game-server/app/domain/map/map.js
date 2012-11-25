@@ -209,13 +209,6 @@ Map.prototype.getBornPoint = function() {
 		y : bornPlace.y + Math.floor(Math.random()*bornPlace.height)
 	};
 	
-	for(var i = 0; i < 100; i++){
-		if(!this.isReachable(pos.x, pos.y)){
-			pos.x = bornPlace.x + Math.floor(Math.random()*bornPlace.width);
-			pos.y = bornPlace.y + Math.floor(Math.random()*bornPlace.height);
-		}
-	}
-	
 	return pos;
 };
 
