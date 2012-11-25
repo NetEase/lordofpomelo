@@ -46,6 +46,9 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 			h : height,
 			totalTime : totalFrames * 50,
 			interval : 50
+			// test for new animation
+			//XSpan: width,
+			//VSpan: height
 		});
 		ani.name = this.name;
 		ani.flipx = this.flipx;
@@ -61,6 +64,9 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 		var id = this.kindId, type = this.type, name = this.name, data;
 		if (type === EntityType.PLAYER || type === EntityType.MOB) {
 			data = dataApi.animation.get(id)[name];
+
+			//test for new animation
+
 		} else if (type === EntityType.NPC) {
 			data = {
 				width: 250,
@@ -85,13 +91,20 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 		var aniIamgeUrl;
 		if (type === EntityType.PLAYER || type === EntityType.MOB) {
 			aniIamgeUrl = imgAndJsonUrl+'animation/character/'+id+'/'+name+'.png';
+
+			//test for new animation
+			//aniIamgeUrl = imgAndJsonUrl + 'animation/BlueDragon/LeftDownAttack.png'
+
 		} else if(type === EntityType.NPC) {
 			if (name === aniOrientation.LEFT) {
 				aniIamgeUrl = imgAndJsonUrl+'npc/'+id+'/stand/frame_0.png';
 			} else {
 				aniIamgeUrl = imgAndJsonUrl+'npc/'+id+'/stand/frame_15.png';
 			}
+			//test for new animation
+			//aniIamgeUrl = imgAndJsonUrl + 'npc/iceNpc/Aran_310.png';
 		}
+
 		var ResMgr = app.getResMgr();
 		var img = ResMgr.loadImage(aniIamgeUrl);
 		if(img) {
