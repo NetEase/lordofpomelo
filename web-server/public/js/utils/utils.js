@@ -1,8 +1,8 @@
 
 __resources__["/utils.js"] = {meta: {mimetype: "application/javascript"}, data: function(exports, require, module, __filename, __dirname) {
 
-  var aniOrientation = require('consts').Orientation;
-  
+  var aniOrientation = require('consts').aniOrientation;
+
   module.exports.distance = function(sx, sy, ex, ey) {
     var dx = ex - sx;
     var dy = ey - sy;
@@ -40,8 +40,8 @@ __resources__["/utils.js"] = {meta: {mimetype: "application/javascript"}, data: 
 		return path;
 	};
 
-	module.exports.getPoolName = function(kindId, name, flipx) {
-		return kindId + '_' + name + '_' + flipx;
+	module.exports.getPoolName = function(kindId, name) {
+		return kindId + '_' + name;
 	};
 
   module.exports.invokeCallback = function(cb) {
@@ -56,8 +56,27 @@ __resources__["/utils.js"] = {meta: {mimetype: "application/javascript"}, data: 
   * else, x1, y1 are the curNode position, x2, y2 are the target position
   */
   module.exports.calculateDirection = function(x1, y1, x2, y2) {
-    var distX = x2 - x1;
-    var distY = y2 - y1;
+    var distX = x2 - x1
+			, distY = y2 - y1
+			, orientation;
+
+    if (distX >= 0 && distY < 0) {//quadrant 1
+
+			orientation = aniOrientation.RIGHT_UP;
+
+    } else if (distX < 0 && distY < 0) {//quadrant 2
+
+			orientation = aniOrientation.LEFT_UP;
+
+    } else if (distX <0 && distY >= 0) {//quadrant 3
+
+			orientation = aniOrientation.LEFT_DOWN;
+
+    } else {//quadrant 4
+
+			orientation = aniOrientation.RIGHT_DOWN;
+    }
+		/**
     if (distX >= 0 && distY < 0) {//quadrant 1
       return {
         orientation:  aniOrientation.LEFT,
@@ -79,5 +98,6 @@ __resources__["/utils.js"] = {meta: {mimetype: "application/javascript"}, data: 
         flipX: true
       };
     }
+		**/
   };
 }};

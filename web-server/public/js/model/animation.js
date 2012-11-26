@@ -44,12 +44,22 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 			image : img,
 			w : width,
 			h : height,
-			totalTime : totalFrames * 50,
-			interval : 50
-			// test for new animation
-			//XSpan: width,
-			//VSpan: height
+			totalTime : totalFrames * 80,
+			interval : 80
 		});
+		// test for new animation
+		if (this.type === EntityType.PLAYER) {
+			ani = new FrameAnimation({
+				image: img,
+				w: width,
+				h: height,
+				totalTime: totalFrames * 50,
+				interval: 50,
+				XSpan: width,
+				VSpan: height + 25
+			});
+		}
+
 		ani.name = this.name;
 		ani.flipx = this.flipx;
 		return ani;
@@ -66,6 +76,13 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 			data = dataApi.animation.get(id)[name];
 
 			//test for new animation
+			if (type === EntityType.PLAYER) {
+				data = {
+					width:500,
+					height: 400,
+					totalFrames: 8
+				};
+			}
 
 		} else if (type === EntityType.NPC) {
 			data = {
@@ -93,7 +110,9 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 			aniIamgeUrl = imgAndJsonUrl+'animation/character/'+id+'/'+name+'.png';
 
 			//test for new animation
-			//aniIamgeUrl = imgAndJsonUrl + 'animation/BlueDragon/LeftDownAttack.png'
+			if (type === EntityType.PLAYER) {
+				aniIamgeUrl = imgAndJsonUrl + 'pomeloArt/animation/Angle/RightDownWalk.png'
+			}
 
 		} else if(type === EntityType.NPC) {
 			if (name === aniOrientation.LEFT) {
@@ -101,8 +120,6 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 			} else {
 				aniIamgeUrl = imgAndJsonUrl+'npc/'+id+'/stand/frame_15.png';
 			}
-			//test for new animation
-			//aniIamgeUrl = imgAndJsonUrl + 'npc/iceNpc/Aran_310.png';
 		}
 
 		var ResMgr = app.getResMgr();

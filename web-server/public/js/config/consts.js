@@ -37,6 +37,13 @@ __resources__["/consts.js"] = {
         RIGHT_UP: 'Right_up'
       },
 
+			aniOrientation:{
+				LEFT_DOWN: 'LeftDown',
+				LEFT_UP: 'LeftUp',
+				RIGHT_DOWN: 'RightDown',
+				RIGHT_UP: 'RightUp'
+			},
+
 			TaskState: {
 				COMPLETED:2,
 				COMPLETED_NOT_DELIVERY:1,
