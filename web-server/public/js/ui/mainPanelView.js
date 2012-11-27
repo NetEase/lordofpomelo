@@ -40,7 +40,7 @@ __resources__["/mainPanelView.js"] = {
       initNav();
 
       var player = app.getCurPlayer();
-      $('#mainPanel .avatar img').attr('src', config.IMAGE_URL + 'character/' + player.characterData.id + '/60.png');
+      $('#mainPanel .avatar img').attr('src', config.IMAGE_URL + 'character/' + player.characterData.id + '.png');
       $('#mainPanel .m-player .name span').eq(0).text(player.name);
       setLevel(player.level);
       setHpBar(player.hp, player.maxHp);

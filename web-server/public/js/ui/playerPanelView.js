@@ -87,7 +87,7 @@ __resources__["/playerPanelView.js"] = {
     };
 
     var setAvatar = function(characterId) {
-      $panel.find('.face img').attr('src', config.IMAGE_URL + 'character/' + characterId + '/50.png');
+      $panel.find('.face img').attr('src', config.IMAGE_URL + 'character/' + characterId + '.png');
     };
 
     var setName = function(name) {
