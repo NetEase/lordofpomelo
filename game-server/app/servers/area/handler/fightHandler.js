@@ -46,7 +46,7 @@ handler.useSkill = function(msg, session, next) {
 	var skillId = msg.skillId;
 	var player = area.getPlayer(msg.playerId);
 	var target = area.getEntity(player.target);
-	if (!target) {
+	if (!target || (target.type != consts.EntityType.PLAYER && target.type != consts.EntityType.MOB)) {
 		next();
 		return;
 	}

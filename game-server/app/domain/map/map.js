@@ -30,11 +30,11 @@ Map.prototype.init = function(opts) {
 	if(!map) {
 		logger.error('Load map failed! ');
 	} else {
-		this.map = map;
-		this.width = map.widthPx;
-		this.height = map.heightPx;
-		this.tileW = map.tilewidth/2;
-		this.tileH = map.tileheight/2;
+		this.configMap(map);
+		this.width = opts.width;
+		this.height = opts.height;
+		this.tileW = 20;
+		this.tileH = 20;
 		this.rectW = Math.ceil(this.width/this.tileW);
 		this.rectH = Math.ceil(this.height/this.tileH);
 		
@@ -45,6 +45,37 @@ Map.prototype.init = function(opts) {
 		}
 	}
 };
+
+Map.prototype.configMap = function(map){
+	this.map = {};
+	var layers = map.layers;
+	for(var i = 0; i < layers.length; i++){
+		var layer = layers[i];
+		if(layer.type == 'objectgroup'){
+			this.map[layer.name] = configObjectGroup(layer.objects);
+		}
+	}
+}
+
+function configProps(obj){
+	if(!!obj && !!obj.properties){
+		for(var key in obj.properties){
+			obj[key] = obj.properties[key];
+		}
+		
+		delete obj.properties;	
+	}
+	
+	return obj;
+}
+
+function configObjectGroup(objs){
+	for(var i = 0; i < objs.length; i++){
+		objs[i] = configProps(objs[i]);	
+	}
+	
+	return objs;
+}
 
 /**
  * Init weight map, which is used to record the collisions info, used for pathfinding
@@ -157,7 +188,7 @@ Map.prototype.getMobZones = function() {
 		logger.error('map not load');
 		return null;
 	}
-	return this.map.mobArea;
+	return this.map.mob;
 };
 
 /**
@@ -184,7 +215,7 @@ Map.prototype.getCollision = function() {
  * @api public
  */
 Map.prototype.getBornPlace = function() {
-	var bornPlace = this.map.bornPlace;
+	var bornPlace = this.map.born[0];
 	if(!bornPlace) {
 		bornPlace = this.map.transPoint;
 	}
