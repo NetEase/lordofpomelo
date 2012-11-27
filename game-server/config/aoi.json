@@ -3,8 +3,8 @@
 		"name": "jiangnanyewai",
 		"level": 0,
 		"map":{
-			"width":3200,
-			"height":2400
+			"width":4200,
+			"height":2800
 		},
 		"tower":{
 			"width": 300,
