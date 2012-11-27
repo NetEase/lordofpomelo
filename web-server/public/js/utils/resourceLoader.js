@@ -96,8 +96,8 @@ __resources__["/resourceLoader.js"] = {
       var self = this;
       ids.forEach(function(id) {
         animation.forEach(function(action) {
-          self.loadImg(imgURL + 'animation/character/' + id + '/Left' + action + '.png');
-          self.loadImg(imgURL + 'animation/character/' + id + '/Right' + action + '.png');
+          self.loadImg(imgURL + 'animation/' + id + '/Left' + action + '.png');
+          self.loadImg(imgURL + 'animation/' + id + '/Right' + action + '.png');
         });
       });
     };
@@ -105,7 +105,7 @@ __resources__["/resourceLoader.js"] = {
     pro.loadNpc = function(ids) {
       var self = this;
       ids.forEach(function(id) {
-        self.loadImg(imgURL + 'npc/' + id + '/stand/frame_0.png');
+        self.loadImg(imgURL + 'npc/' + id + '.png');
       });
     };
 
@@ -114,7 +114,7 @@ __resources__["/resourceLoader.js"] = {
         var self = this;
         var items = dataApi.item.all();
         ids.forEach(function(id) {
-          self.loadImg(imgURL + 'item/' + items[id].imgId + '.png');
+          self.loadImg(imgURL + 'item/item_' + items[id].imgId + '.png');
         });
       }
     };
@@ -124,7 +124,7 @@ __resources__["/resourceLoader.js"] = {
         var self = this;
         var equipments = dataApi.equipment.all();
         ids.forEach(function(id) {
-          self.loadImg(imgURL + 'equipment/60/' + equipments[id].imgId + '.png');
+          self.loadImg(imgURL + 'item/item_' + equipments[id].imgId + '.png');
         });
       }
     };
