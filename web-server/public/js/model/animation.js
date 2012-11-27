@@ -22,7 +22,6 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 		this.kindId = opts.kindId;
 		this.type = opts.type;
 		this.name = opts.name;
-		this.flipx = opts.flipx;
 	};
 
 	/**
@@ -40,7 +39,6 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 		var img = this.getImage();
 
 		var ani = new FrameAnimation({
-			flipX: this.flipx,
 			image : img,
 			w : width,
 			h : height,
@@ -61,7 +59,6 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 		}
 
 		ani.name = this.name;
-		ani.flipx = this.flipx;
 		return ani;
 	};
 

@@ -172,7 +172,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 		//var flipX = dr.flipX;
 		if (!!this.curNode) {
 			var name = dr + actionName;
-			var poolName = utils.getPoolName(this.entity.kindId, name, flipX);
+			var poolName = utils.getPoolName(this.entity.kindId, name);
 			var pool = app.getObjectPoolManager().getPool(poolName);
 			var actionAnimation = null;
 			if (this.entity.type === EntityType.PLAYER || this.entity.type === EntityType.MOB) {
@@ -296,7 +296,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	Sprite.prototype.returnAnimation = function(animation) {
 		if (!!animation) {
 			animation.prepare();
-			var poolName = utils.getPoolName(this.entity.kindId, animation.name, animation.flipx);
+			var poolName = utils.getPoolName(this.entity.kindId, animation.name);
 			var pool = app.getObjectPoolManager().getPool(poolName);
 			if (!!pool) {
 				pool.returnObject(animation);
@@ -579,7 +579,6 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	//Stop moveAnimation
 	Sprite.prototype.stopMove = function() {
 		this.walkName = null;
-		this.walkFlipX = null;
 		if(this.isCurPlayer()) {
 			this.entity.map.stopMove();
 		}
