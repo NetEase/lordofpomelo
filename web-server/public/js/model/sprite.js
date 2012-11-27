@@ -72,13 +72,13 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 		var staticImg = null;
 		switch(this.entity.type) {
 			case EntityType.NPC: 
-			staticImg =  ResMgr.loadImage(imgAndJsonUrl + 'npc/' + this.entity.kindId + '/stand' + '/frame_0.png');
+			staticImg =  ResMgr.loadImage(imgAndJsonUrl + 'npc/' + this.entity.kindId + '.png');
 			break;
 			case EntityType.ITEM:
 			staticImg = ResMgr.loadImage(imgAndJsonUrl + 'item/' + this.entity.imgId + '.png');
 			break;
 			case EntityType.EQUIPMENT:
-			staticImg = ResMgr.loadImage(imgAndJsonUrl + 'equipment/60/' + this.entity.imgId + '.png');
+			staticImg = ResMgr.loadImage(imgAndJsonUrl + 'equipment/' + this.entity.imgId + '.png');
 			break;
 		}
 		var staticModel = new model.ImageModel({
@@ -160,6 +160,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	 * @api private
 	 */
 	Sprite.prototype._action = function(dir, actionName, callback) {
+		console.log('sprite:actionName', actionName);
 		if(!this.curNode) {
 			console.log(this.entity.entityId);
 			return;

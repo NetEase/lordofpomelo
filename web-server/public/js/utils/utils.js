@@ -76,6 +76,7 @@ __resources__["/utils.js"] = {meta: {mimetype: "application/javascript"}, data: 
 
 			orientation = aniOrientation.RIGHT_DOWN;
     }
+		return orientation;
 		/**
     if (distX >= 0 && distY < 0) {//quadrant 1
       return {
