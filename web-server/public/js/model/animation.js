@@ -22,7 +22,6 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 		this.kindId = opts.kindId;
 		this.type = opts.type;
 		this.name = opts.name;
-		this.flipx = opts.flipx;
 	};
 
 	/**
@@ -37,21 +36,29 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 		var height = animationData.height;
 		var totalFrames = animationData.totalFrames;
 
-		var img = this.getImage();
+		var img = this.getImage(), ani;
 
-		var ani = new FrameAnimation({
-			flipX: this.flipx,
-			image : img,
-			w : width,
-			h : height,
-			totalTime : totalFrames * 50,
-			interval : 50
-			// test for new animation
-			//XSpan: width,
-			//VSpan: height
-		});
+		if (this.type === EntityType.PLAYER || this.type === EntityType.MOB) {
+			ani = new FrameAnimation({
+				image: img,
+				w: width,
+				h: height - 40,
+				totalTime: totalFrames * 50,
+				interval: 50,
+				XSpan: width,
+				VSpan: height
+			});
+		} else if (this.type === EntityType.NPC || this.type === EntityType.ITEM) {
+			ani = new FrameAnimation({
+				image: img,
+				w: width,
+				h: height,
+				totalTime: totalFrames * 50,
+				interval: 50
+			});
+		}
+
 		ani.name = this.name;
-		ani.flipx = this.flipx;
 		return ani;
 	};
 
@@ -63,9 +70,8 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 	Animation.prototype.getJsonData= function() {
 		var id = this.kindId, type = this.type, name = this.name, data;
 		if (type === EntityType.PLAYER || type === EntityType.MOB) {
-			data = dataApi.animation.get(id)[name];
 
-			//test for new animation
+			data = dataApi.animation.get(id)[name];
 
 		} else if (type === EntityType.NPC) {
 			data = {
@@ -90,21 +96,10 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 		var id = this.kindId, type = this.type, name = this.name;
 		var aniIamgeUrl;
 		if (type === EntityType.PLAYER || type === EntityType.MOB) {
-			aniIamgeUrl = imgAndJsonUrl+'animation/character/'+id+'/'+name+'.png';
-
-			//test for new animation
-			//aniIamgeUrl = imgAndJsonUrl + 'animation/BlueDragon/LeftDownAttack.png'
-
-		} else if(type === EntityType.NPC) {
-			if (name === aniOrientation.LEFT) {
-				aniIamgeUrl = imgAndJsonUrl+'npc/'+id+'/stand/frame_0.png';
-			} else {
-				aniIamgeUrl = imgAndJsonUrl+'npc/'+id+'/stand/frame_15.png';
-			}
-			//test for new animation
-			//aniIamgeUrl = imgAndJsonUrl + 'npc/iceNpc/Aran_310.png';
+			aniIamgeUrl = imgAndJsonUrl + 'animation/' + id + '/' + name + '.png';
+		} else if (type === EntityType.NPC) {
+			aniIamgeUrl = imgAndJsonUrl + 'npc/' + id + '.png';
 		}
-
 		var ResMgr = app.getResMgr();
 		var img = ResMgr.loadImage(aniIamgeUrl);
 		if(img) {

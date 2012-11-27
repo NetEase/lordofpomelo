@@ -9,6 +9,7 @@ __resources__["/resourceLoader.js"] = {
     var imgURL = require('config').IMAGE_URL;
     var EventEmitter = window.EventEmitter;
 		var EntityType = require('consts').EntityType;
+		var aniOrientation = require('consts').aniOrientation;
 		var ObjectPoolFactory = require('objectPoolFactory');
 
     function ResourceLoader(opt) {
@@ -92,12 +93,13 @@ __resources__["/resourceLoader.js"] = {
     };
 
     pro.loadCharacter = function(ids) {
-      var animation = ['Attack', 'Stand', 'Walk', 'Die'];
+      var animation = ['Attack', 'Stand', 'Walk', 'Dead'];
       var self = this;
       ids.forEach(function(id) {
         animation.forEach(function(action) {
-          self.loadImg(imgURL + 'animation/' + id + '/Left' + action + '.png');
-          self.loadImg(imgURL + 'animation/' + id + '/Right' + action + '.png');
+					for (var key in aniOrientation) {
+						self.loadImg(imgURL + 'animation/' + id + '/' +aniOrientation[key] + action + '.png');
+					}
         });
       });
     };

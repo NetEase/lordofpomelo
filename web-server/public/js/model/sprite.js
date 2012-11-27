@@ -7,7 +7,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	var imgAndJsonUrl = require('config').IMAGE_URL;
 	var consts = require('consts');
 	var aniName = consts.AnimationName;
-	var aniOrientation = consts.Orientation;
+	var aniOrientation = consts.aniOrientation;
 	var EntityType = consts.EntityType;
 	var NodeCoordinate = consts.NodeCoordinate;
 	var utils = require('utils');
@@ -55,7 +55,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 		var startAin = 'Stand';
 		var type = this.entity.type;
 		if (type === EntityType.PLAYER || type === EntityType.MOB) {
-			this._initDynamictNode(aniOrientation.LEFT + startAin);
+			this._initDynamictNode(aniOrientation.LEFT_DOWN + startAin);
 		} else if (type === EntityType.NPC || type === EntityType.ITEM || type === EntityType.EQUIPMENT) {
 			this._initStaticNode();
 		}
@@ -72,13 +72,13 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 		var staticImg = null;
 		switch(this.entity.type) {
 			case EntityType.NPC: 
-			staticImg =  ResMgr.loadImage(imgAndJsonUrl + 'npc/' + this.entity.kindId + '/stand' + '/frame_0.png');
+			staticImg =  ResMgr.loadImage(imgAndJsonUrl + 'npc/' + this.entity.kindId + '.png');
 			break;
 			case EntityType.ITEM:
 			staticImg = ResMgr.loadImage(imgAndJsonUrl + 'item/' + this.entity.imgId + '.png');
 			break;
 			case EntityType.EQUIPMENT:
-			staticImg = ResMgr.loadImage(imgAndJsonUrl + 'equipment/60/' + this.entity.imgId + '.png');
+			staticImg = ResMgr.loadImage(imgAndJsonUrl + 'equipment/' + this.entity.imgId + '.png');
 			break;
 		}
 		var staticModel = new model.ImageModel({
@@ -140,6 +140,9 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			this.reduceBlood();
 		}
 		this._initStand();
+		if (this.entity.type === EntityType.PLAYER) {
+		//	this.curNode.exec('scale', {x: 0.5, y: 0.5});
+		}
 	};
 
 	//Update entity' name.
@@ -157,6 +160,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	 * @api private
 	 */
 	Sprite.prototype._action = function(dir, actionName, callback) {
+		console.log('sprite:actionName', actionName);
 		if(!this.curNode) {
 			console.log(this.entity.entityId);
 			return;
@@ -165,27 +169,20 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			dir = {x1:0, y1: 0, x2:1, y2: 1};
 		}
 		var dr = utils.calculateDirection(dir.x1, dir.y1, dir.x2, dir.y2);
-		var orientation = dr.orientation;
-		var flipX = dr.flipX;
+		//var orientation = dr.orientation;
+		//var flipX = dr.flipX;
 		if (!!this.curNode) {
-			var ori;
-			if (orientation && orientation === aniOrientation.LEFT) {
-				ori = 'LEFT_' + actionName;
-			} else if (orientation && orientation === aniOrientation.RIGHT) {
-				ori = 'RIGHT_' + actionName;
-			}
-			var name = aniName[ori];
-			var poolName = utils.getPoolName(this.entity.kindId, name, flipX);
+			var name = dr + actionName;
+			var poolName = utils.getPoolName(this.entity.kindId, name);
 			var pool = app.getObjectPoolManager().getPool(poolName);
 			var actionAnimation = null;
 			if (this.entity.type === EntityType.PLAYER || this.entity.type === EntityType.MOB) {
-				actionAnimation = this.getAnimationFromPool(this.entity.kindId, name, flipX);
+				actionAnimation = this.getAnimationFromPool(this.entity.kindId, name);
 			} else {
 				actionAnimation = new Animation({
 					kindId: this.entity.kindId,
 					type: this.entity.type,
-					name: name,
-					flipx: flipX
+					name: name
 				}).create();
 			}
 			var actionModel = actionAnimation.target();
@@ -222,9 +219,9 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	};
 
 	//Get animation from objectPool.
-	Sprite.prototype.getAnimationFromPool = function(kindId, name, flipX) {
+	Sprite.prototype.getAnimationFromPool = function(kindId, name) {
 		var returnObject;
-		var poolName = utils.getPoolName(kindId, name, flipX);
+		var poolName = utils.getPoolName(kindId, name);
 		var pool = app.getObjectPoolManager().getPool(poolName);
 		if (!pool) {
 			new ObjectPoolFactory().createPools(kindId, this.entity.type);
@@ -235,8 +232,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			returnObject = new Animation({
 				kindId: this.entity.kindId,
 				type: this.entity.type,
-				name: name,
-				flipx: flipX
+				name: name
 			}).create();
 		}
 		return returnObject;
@@ -245,7 +241,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	//Walk animation, one of four basic animations.
 	Sprite.prototype.walk = function(dir) {
 		this.stopWholeAnimations();
-		var result = this._action(dir, 'WALK');
+		var result = this._action(dir, 'Walk');
 		this.walkAnimation = result.actionAnimation;
 		this.walkFrameLoop = result.loopAnimation;
 	};
@@ -280,7 +276,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 
 	//Initialized animation
 	Sprite.prototype._initStand = function(dir) {  
-		var result = this._action(dir, 'STAND');
+		var result = this._action(dir, 'Stand');
 		this.standAnimation = result.actionAnimation;
 		this.standFrameLoop = result.loopAnimation;
 	};
@@ -301,7 +297,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	Sprite.prototype.returnAnimation = function(animation) {
 		if (!!animation) {
 			animation.prepare();
-			var poolName = utils.getPoolName(this.entity.kindId, animation.name, animation.flipx);
+			var poolName = utils.getPoolName(this.entity.kindId, animation.name);
 			var pool = app.getObjectPoolManager().getPool(poolName);
 			if (!!pool) {
 				pool.returnObject(animation);
@@ -326,7 +322,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	Sprite.prototype.attack = function(dir, killFlag, callback) {
 		this.stopWholeAnimations();
 		var self = this;
-		var attackAnimation = self._action(dir, 'ATTACK').actionAnimation;
+		var attackAnimation = self._action(dir, 'Attack').actionAnimation;
 		attackAnimation.onFrameEnd = function(t, dt) {
 			if (attackAnimation.isDone() && self.entity.type === EntityType.PLAYER && killFlag === 'killed') {
 				self.stand(dir);
@@ -442,7 +438,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			mainPanel.closeAllPanel();
 			mainPanel.reviveMaskShow();
 		}
-		var result = self._action(dir, 'DIE',function() {
+		var result = self._action(dir, 'Dead',function() {
 			if (self.entity.type === EntityType.PLAYER) {
 				var pos = self.getPosition();
 				self.entity.x = pos.x;
@@ -584,7 +580,6 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	//Stop moveAnimation
 	Sprite.prototype.stopMove = function() {
 		this.walkName = null;
-		this.walkFlipX = null;
 		if(this.isCurPlayer()) {
 			this.entity.map.stopMove();
 		}

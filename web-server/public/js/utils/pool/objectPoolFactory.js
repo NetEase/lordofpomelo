@@ -13,8 +13,9 @@ __resources__["/objectPoolFactory.js"] = {meta: {mimetype: "application/javascri
 	 * The factory of creating objectPool.
 	 */
 	var ObjectPoolFactory = function() {
-		this.name = ['LeftStand', 'RightStand', 'LeftWalk', 'RightWalk', 'LeftAttack', 'RightAttack', 'LeftDie', 'RightDie'];
-		this.flipxs = [true, false];
+		this.name = ['LeftUpStand', 'RightUpStand', 'LeftUpWalk', 'RightUpWalk', 'LeftUpAttack', 'RightUpAttack', 'LeftUpDead', 'RightUpDead',
+			           'LeftDownStand', 'RightDownStand', 'LeftDownWalk', 'RightDownWalk', 'LeftDownAttack', 'RightDownAttack', 'LeftDownDead', 
+								 'RightDownDead'];
 	};
 
 	module.exports = ObjectPoolFactory;
@@ -27,16 +28,13 @@ __resources__["/objectPoolFactory.js"] = {meta: {mimetype: "application/javascri
 	 * @api public
 	 */
 	ObjectPoolFactory.prototype.createPools = function(kindId, type) {
-		var name = this.name, flipxs = this.flipxs;
+		var name = this.name;
 
 		for (var i = 0; i < name.length; i++) {
-			for (var j = 0; j < flipxs.length; j++) {
 				var animationName = name[i];
-				var flipx = flipxs[j];
-				var objectPool = createPool(kindId, type, animationName, flipx);
-				var poolName = getPoolName(kindId, animationName, flipx);
+				var objectPool = createPool(kindId, type, animationName);
+				var poolName = getPoolName(kindId, animationName);
 				app.getObjectPoolManager().addPool(poolName, objectPool);
-			}
 		}
 	};
 		
