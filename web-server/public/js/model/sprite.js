@@ -139,10 +139,8 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			this.nameNode.exec('translate',0 ,-(height + 10), NodeCoordinate.NAME_NODE);
 			this.reduceBlood();
 		}
+		this.curNode.exec('scale', {x: 0.5, y: 0.5});
 		this._initStand();
-		if (this.entity.type === EntityType.PLAYER) {
-		//	this.curNode.exec('scale', {x: 0.5, y: 0.5});
-		}
 	};
 
 	//Update entity' name.
@@ -160,7 +158,6 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	 * @api private
 	 */
 	Sprite.prototype._action = function(dir, actionName, callback) {
-		console.log('sprite:actionName', actionName);
 		if(!this.curNode) {
 			console.log(this.entity.entityId);
 			return;
@@ -192,7 +189,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			});
 			this.curNode.setModel(actionModel);
 			var self = this;
-			if (actionName === 'WALK' || actionName === 'STAND') {
+			if (actionName === 'Walk' || actionName === 'Stand') {
 				var loopAnimation = animate.times(actionAnimation, Infinity);
 				this.curNode.exec('addAnimation', loopAnimation);
 				return {
