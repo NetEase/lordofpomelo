@@ -34,9 +34,12 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 		var animationData = this.getJsonData();
 		var width = animationData.width;
 		var height = animationData.height;
-		var totalFrames = animationData.totalFrames;
+		var totalFrames = parseInt(animationData.totalFrames);
 
 		var img = this.getImage(), ani;
+		if (this.kindId == 210) {
+			console.log('animationData', animationData);
+		}
 
 		if (this.type === EntityType.PLAYER || this.type === EntityType.MOB) {
 			ani = new FrameAnimation({
@@ -80,7 +83,7 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 				totalFrames:1
 			};
 		}
-		if (data) {
+		if (!!data) {
 			return data;
 		} else {
 			console.error('the jsonData :'+id+'/'+name+'.json is not exist!');
@@ -99,6 +102,10 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 			aniIamgeUrl = imgAndJsonUrl + 'animation/' + id + '/' + name + '.png';
 		} else if (type === EntityType.NPC) {
 			aniIamgeUrl = imgAndJsonUrl + 'npc/' + id + '.png';
+		}
+
+		if (this.kindId == 210) {
+			console.log('aniIamgeUrl', aniIamgeUrl);
 		}
 		var ResMgr = app.getResMgr();
 		var img = ResMgr.loadImage(aniIamgeUrl);
