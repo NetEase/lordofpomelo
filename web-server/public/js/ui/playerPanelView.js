@@ -155,7 +155,7 @@ __resources__["/playerPanelView.js"] = {
           var level = pskill ? pskill.level : 0;
           html += '\
           <li data-id="' + k + '">\
-            <img src="' + config.IMAGE_URL + 'skill/' + skill.imageUrl + '.jpg" alt="">\
+            <img src="' + config.IMAGE_URL + 'skill/item_' + skill.imageUrl + '.jpg" alt="">\
             <span class="name">'+ skill.name +'</span><span class="num">' + level + '</span>\
           </li>';
         });

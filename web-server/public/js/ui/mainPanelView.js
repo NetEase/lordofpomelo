@@ -158,7 +158,7 @@ __resources__["/mainPanelView.js"] = {
       for (i in skills) {
         if (i > 1) {
           sk = skills[i].skillData; 
-          $cli = $li.eq(i - 2).data('skillId', sk.id).html('<img src="' + config.IMAGE_URL + 'skill/' + sk.imageUrl + '.jpg" alt="" title="' + sk.name + ' 等级:' + skills[i].level + '&#10;' + sk.desc +'"><span class="num">'+ skills[i].level +'</span>');
+          $cli = $li.eq(i - 2).data('skillId', sk.id).html('<img src="' + config.IMAGE_URL + 'skill/item_' + sk.imageUrl + '.jpg" alt="" title="' + sk.name + ' 等级:' + skills[i].level + '&#10;' + sk.desc +'"><span class="num">'+ skills[i].level +'</span>');
           skillBox[sk.id] = new SkillCD(sk.id, $cli, sk.cooltime *1000, function(skillId) {
             pomelo.notify("area.fightHandler.useSkill",{ skillId: skillId, playerId: pomelo.playerId});
           });
