@@ -42,8 +42,8 @@ __resources__["/dialogPanelView.js"] = {
         $btn1.html(btns[data.button.left]);
         $btn2.html(btns[data.button.right]);
       } else {
-        $btn1.html(btns['no']);
-        $btn2.html(btns['yes']);
+        $btn1.html(btns['NO']);
+        $btn2.html(btns['YES']);
       }
 
       $btn1.one('click', function() {

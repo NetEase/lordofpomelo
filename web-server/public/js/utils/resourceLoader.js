@@ -58,7 +58,7 @@ __resources__["/resourceLoader.js"] = {
     pro.loadAreaResource = function() {
       var self = this;
       pomelo.request('area.resourceHandler.loadAreaResource',  {},function(data) {
-        self.setTotalCount(1 + 1 + data.players.length * 8 + data.mobs.length * 8 + data.npcs.length + data.items.length + data.equipments.length);
+        self.setTotalCount(1 + 1 + (data.players.length  + data.mobs.length) * 16 + data.npcs.length + data.items.length + data.equipments.length);
 
         self.loadJsonResource(function(){
           self.setLoadedCount(self.loadedCount + 1);
@@ -141,7 +141,7 @@ __resources__["/resourceLoader.js"] = {
 			var of = new ObjectPoolFactory();
 			for (var i = 0; i < ids.length; i ++) {
 				var kindId = ids[i];
-			  of.createPools(kindId, type);	
+        of.createPools(kindId, type);	
 			}
 		};
 

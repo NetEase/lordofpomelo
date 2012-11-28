@@ -101,11 +101,11 @@ __resources__["/consts.js"] = {
       },
 
       buttonContent: {
-        yes: 'OK',
-        no: 'Cancel',
-        giveUp: 'Give Up',
-        accept: 'Accept',
-        deliver: 'Deliver'
+        YES: 'OK',
+        NO: 'Cancel',
+        GIVE_UP: 'Give Up',
+        ACCEPT: 'Accept',
+        DELIVER: 'Deliver'
       }
     };
   }};
