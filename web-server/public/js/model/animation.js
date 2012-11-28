@@ -32,14 +32,10 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 	 */
 	Animation.prototype.create = function() {
 		var animationData = this.getJsonData();
-		var width = animationData.width;
-		var height = animationData.height;
-		var totalFrames = parseInt(animationData.totalFrames);
-
+		var width = parseInt(animationData.width);
+		var height = parseInt(animationData.height);
+		var totalFrames = parseInt(animationData.totalFrame);
 		var img = this.getImage(), ani;
-		if (this.kindId == 210) {
-			console.log('animationData', animationData);
-		}
 
 		if (this.type === EntityType.PLAYER || this.type === EntityType.MOB) {
 			ani = new FrameAnimation({
@@ -50,6 +46,7 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 				interval: 50,
 				XSpan: width,
 				VSpan: height
+				//startFrame: {x: 0, y: 5}
 			});
 		} else if (this.type === EntityType.NPC || this.type === EntityType.ITEM) {
 			ani = new FrameAnimation({
@@ -104,9 +101,6 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 			aniIamgeUrl = imgAndJsonUrl + 'npc/' + id + '.png';
 		}
 
-		if (this.kindId == 210) {
-			console.log('aniIamgeUrl', aniIamgeUrl);
-		}
 		var ResMgr = app.getResMgr();
 		var img = ResMgr.loadImage(aniIamgeUrl);
 		if(img) {

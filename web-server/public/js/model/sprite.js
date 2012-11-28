@@ -176,11 +176,13 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			if (this.entity.type === EntityType.PLAYER || this.entity.type === EntityType.MOB) {
 				actionAnimation = this.getAnimationFromPool(this.entity.kindId, name);
 			} else {
+				/**
 				actionAnimation = new Animation({
 					kindId: this.entity.kindId,
 					type: this.entity.type,
 					name: name
 				}).create();
+				*/
 			}
 			var actionModel = actionAnimation.target();
 			actionModel.set('ratioAnchorPoint' ,{
