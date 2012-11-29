@@ -3,8 +3,8 @@
 		"name": "desert",
 		"level": 0,
 		"map":{
-			"width":4200,
-			"height":2800
+			"width":6000,
+			"height":4000
 		},
 		"tower":{
 			"width": 300,

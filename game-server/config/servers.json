@@ -9,7 +9,7 @@
 		],
 		"area": [
 			{"id": "area-server-1", "host": "127.0.0.1", "port": 3250, "area": 1},
-			{"id": "area-server-2", "host": "127.0.0.1", "port": 3251, "area": 1}
+			{"id": "area-server-2", "host": "127.0.0.1", "port": 3251, "area": 1},
 			{"id": "area-server-3", "host": "127.0.0.1", "port": 3252, "area": 1}
 		],
 		"chat":[
