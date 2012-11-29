@@ -41,8 +41,8 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 				image: img,
 				w: width,
 				h: height - 5,
-				totalTime: totalFrames * 50,
-				interval: 50,
+				totalTime: totalFrames * 80,
+				interval: 80,
 				XSpan: width,
 				VSpan: height
 			});

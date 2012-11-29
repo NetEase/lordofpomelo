@@ -75,10 +75,10 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			staticImg =  ResMgr.loadImage(imgAndJsonUrl + 'npc/' + this.entity.kindId + '.png');
 			break;
 			case EntityType.ITEM:
-			staticImg = ResMgr.loadImage(imgAndJsonUrl + 'item/' + this.entity.imgId + '.png');
+			staticImg = ResMgr.loadImage(imgAndJsonUrl + 'item/item_' + this.entity.imgId + '.png');
 			break;
 			case EntityType.EQUIPMENT:
-			staticImg = ResMgr.loadImage(imgAndJsonUrl + 'equipment/' + this.entity.imgId + '.png');
+			staticImg = ResMgr.loadImage(imgAndJsonUrl + 'equipment/item_' + this.entity.imgId + '.png');
 			break;
 		}
 		var staticModel = new model.ImageModel({
