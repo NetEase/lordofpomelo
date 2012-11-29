@@ -133,13 +133,13 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 				type: this.entity.type,
 				name: name
 			}).getJsonData();
-			var height = json.height + 10;
+			var height = json.height - 30;
 			this.bloodbarNode.exec('translate', -26, -height, NodeCoordinate.RED_BLOOD_NODE);
 			darkBloodBarNode.exec('translate', -26, -height, NodeCoordinate.BLACK_BLOOD_NODE);
 			this.nameNode.exec('translate',0 ,-(height + 10), NodeCoordinate.NAME_NODE);
 			this.reduceBlood();
 		}
-		if (this.entity.kindId === 210) {
+		if (this.entity.kindId == 210) {
 			this.curNode.exec('scale', {x: 1.5, y: 1.5});
 		}
 		this._initStand();
