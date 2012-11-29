@@ -125,7 +125,7 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 		}
 		entity.scene = this.scene;
 		entity.map = this.map;
-
+		console.log('kindId:', entity.kindId);
 		var e;
 		switch(entity.type){
 			case 'player':

@@ -59,7 +59,7 @@ __resources__["/bagPanelView.js"] = {
       if (item.type === 'equipment') {
         item = dataApi.equipment.findById(item.id);
         html = '\
-          <img src="'+ config.IMAGE_URL + 'equipment/50/'+ item.imgId + '.png" width="50">\
+          <img src="'+ config.IMAGE_URL + 'equipment/item_' + item.imgId + '.png" width="50">\
           <div class="m-detllay">\
             <div class="wrap">\
               <h4 class="f-cb"><span class="f-fl s-fc11"> ' + item.englishName + '</span><span class="f-fr">' + item.kind + '</span></h4>\
@@ -74,7 +74,7 @@ __resources__["/bagPanelView.js"] = {
         } else if (item.type === 'item') {
           item = dataApi.item.findById(item.id);
           html = '\
-            <img src="' + config.IMAGE_URL +  'item/'+ item.id + '.png" width="50">\
+            <img src="' + config.IMAGE_URL +  'item/item_' + item.imgId + '.png" width="50">\
             <div class="m-detllay">\
               <div class="wrap">\
                 <h4 class="f-cb"><span class="f-fl s-fc11"> ' + item.englishName + '</span><span class="f-fr">' + item.kind + '</span></h4>\

@@ -139,7 +139,9 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			this.nameNode.exec('translate',0 ,-(height + 10), NodeCoordinate.NAME_NODE);
 			this.reduceBlood();
 		}
-		this.curNode.exec('scale', {x: 0.5, y: 0.5});
+		if (this.entity.kindId === 210) {
+			this.curNode.exec('scale', {x: 1.5, y: 1.5});
+		}
 		this._initStand();
 	};
 
@@ -176,11 +178,13 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			if (this.entity.type === EntityType.PLAYER || this.entity.type === EntityType.MOB) {
 				actionAnimation = this.getAnimationFromPool(this.entity.kindId, name);
 			} else {
+				/**
 				actionAnimation = new Animation({
 					kindId: this.entity.kindId,
 					type: this.entity.type,
 					name: name
 				}).create();
+				*/
 			}
 			var actionModel = actionAnimation.target();
 			actionModel.set('ratioAnchorPoint' ,{

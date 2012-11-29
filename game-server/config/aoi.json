@@ -15,8 +15,8 @@
 		"name": "jianye",
 		"level": 10,	
 		"map":{
-			"width":5760,
-			"height":2880
+			"width":4200,
+			"height":2800
 		},
 		"tower":{
 			"width": 300,
@@ -27,8 +27,8 @@
 		"name": "jiangzhou",
 		"level": 30,	
 		"map":{
-			"width":7040,
-			"height":6720
+			"width":6500,
+			"height":4800
 		},
 		"tower":{
 			"width": 300,

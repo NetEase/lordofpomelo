@@ -118,10 +118,10 @@ var FrameAnimation = animate.AnimationBase.extend({
                   typeof(endFrame.x) == 'number' &&
                   typeof(endFrame.y == 'number')), "parameter error");
 
-    this._startX = startFrame.x * param.w;
-    this._startY = startFrame.y * param.h;
-    this._endX = endFrame.x == -1 ? -1 : endFrame.x * param.w;
-    this._endY = endFrame.y == -1 ? -1 : endFrame.y * param.h;
+    this._startX = startFrame.x; //* param.w;
+    this._startY = startFrame.y; //* param.h;
+    this._endX = endFrame.x == -1 ? -1 : endFrame.x;// * param.w;
+    this._endY = endFrame.y == -1 ? -1 : endFrame.y;// * param.h;
 
     debug.assert(typeof(param.totalTime) == "number" && typeof(param.interval) == "number", "parameter error!");
     this._totalTime = param.totalTime;
