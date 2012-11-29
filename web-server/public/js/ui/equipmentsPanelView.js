@@ -47,7 +47,7 @@ __resources__["/equipmentsPanelView.js"] = {
       var $li = $dom.parent();
       $li.data({kind: kind, id: id});
       var item = dataApi.equipment.findById(id);
-      $dom.html('<img src="' + config.IMAGE_URL + 'equipment/50/'+ item.imgId + '.png" width="53">');
+      $dom.html('<img src="' + config.IMAGE_URL + 'equipment/item_' + item.imgId + '.png" width="53">');
       var hover = '\
         <div class="m-detllay">\
           <div class="wrap">\
