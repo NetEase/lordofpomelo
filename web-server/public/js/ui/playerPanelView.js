@@ -168,7 +168,7 @@ __resources__["/playerPanelView.js"] = {
       var $side = $panel.find('.jn .wxdetl');
 
       var sideInfo = function(skill) {
-        $side.find('.show').html('<img src="' + config.IMAGE_URL + 'skill/' + skill.imageUrl + '.jpg" width="60">');
+        $side.find('.show').html('<img src="' + config.IMAGE_URL + 'skill/item_' + skill.imageUrl + '.jpg" width="60">');
         $side.find('.name').html(skill.name);
         var $p = $side.find('.detl .u-ttvl');
         var sk = app.getCurPlayer().fightSkills[skill.id];
