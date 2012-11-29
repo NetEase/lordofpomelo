@@ -84,7 +84,7 @@ __resources__["/consts.js"] = {
 
       NodeCoordinate: {
         MAP_NODE: 0,
-        PLAYER_NODE: 1,
+        PLAYER_NODE: 0.5,
         MOB_NODE: 1,
         NPC_NODE: 1,
         ITEM_NODE: 1,

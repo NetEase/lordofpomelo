@@ -118,7 +118,11 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			x = this.entity.x;
 			y = this.entity.y;
 		}
-		frameNode.exec('translate', x, y, NodeCoordinate.PLAYER_NODE);
+		if (this.entity.type === EntityType.PLAYER) {
+			frameNode.exec('translate', x, y, NodeCoordinate.PLAYER_NODE);
+		} else {
+			frameNode.exec('translate', x, y, NodeCoordinate.MOB_NODE);
+		}
 		this.curNode = frameNode;
 		this.nameNode = noEntityNode.createNameNode(this.entity);
 		this.entity.scene.addNode(this.nameNode, frameNode);
