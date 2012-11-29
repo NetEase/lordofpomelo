@@ -43,7 +43,7 @@ formula.calMobExp = function(baseExp, playerLevel, mobLevel) {
 	}
 	mul = diff > 0?mul:Math.sqrt(1/mul);
 	
-	var exp = baseExp * moblevel * mul;
+	var exp = baseExp * mobLevel * mul;
 	
 	if(exp <= 1){
 		exp = 1;
