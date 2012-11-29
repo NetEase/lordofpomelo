@@ -36,17 +36,13 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 		var height = parseInt(animationData.height);
 		var totalFrames = parseInt(animationData.totalFrame);
 		var img = this.getImage(), ani;
-
 		if (this.type === EntityType.PLAYER || this.type === EntityType.MOB) {
 			ani = new FrameAnimation({
 				image: img,
 				w: width,
-				h: height - 40,
+				h: height,
 				totalTime: totalFrames * 50,
-				interval: 50,
-				XSpan: width,
-				VSpan: height
-				//startFrame: {x: 0, y: 5}
+				interval: 50
 			});
 		} else if (this.type === EntityType.NPC || this.type === EntityType.ITEM) {
 			ani = new FrameAnimation({
@@ -96,7 +92,7 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 		var id = this.kindId, type = this.type, name = this.name;
 		var aniIamgeUrl;
 		if (type === EntityType.PLAYER || type === EntityType.MOB) {
-			aniIamgeUrl = imgAndJsonUrl + 'animation/' + id + '/' + name + '.png';
+			aniIamgeUrl = imgAndJsonUrl + 'animationPs3/' + id + '/' + name + '.gif';
 		} else if (type === EntityType.NPC) {
 			aniIamgeUrl = imgAndJsonUrl + 'npc/' + id + '.png';
 		}
