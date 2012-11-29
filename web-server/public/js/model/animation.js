@@ -41,21 +41,12 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 				image: img,
 				w: width,
 				h: height - 5,
-				totalTime: totalFrames * 50,
-				interval: 50,
+				totalTime: totalFrames * 80,
+				interval: 80,
 				XSpan: width,
 				VSpan: height
 			});
-		} else if (this.type === EntityType.NPC || this.type === EntityType.ITEM) {
-			ani = new FrameAnimation({
-				image: img,
-				w: width,
-				h: height,
-				totalTime: totalFrames * 50,
-				interval: 50
-			});
-		}
-
+		} 
 		ani.name = this.name;
 		return ani;
 	};
@@ -67,17 +58,7 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 	 */
 	Animation.prototype.getJsonData= function() {
 		var id = this.kindId, type = this.type, name = this.name, data;
-		if (type === EntityType.PLAYER || type === EntityType.MOB) {
-
-			data = dataApi.animation.get(id)[name];
-
-		} else if (type === EntityType.NPC) {
-			data = {
-				width: 250,
-				height: 100,
-				totalFrames:1
-			};
-		}
+		data = dataApi.animation.get(id)[name];
 		if (!!data) {
 			return data;
 		} else {
@@ -93,12 +74,7 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 	Animation.prototype.getImage = function() {
 		var id = this.kindId, type = this.type, name = this.name;
 		var aniIamgeUrl;
-		if (type === EntityType.PLAYER || type === EntityType.MOB) {
-			aniIamgeUrl = imgAndJsonUrl + 'animationPs3/' + id + '/' + name + '.gif';
-		} else if (type === EntityType.NPC) {
-			aniIamgeUrl = imgAndJsonUrl + 'npc/' + id + '.png';
-		}
-
+		aniIamgeUrl = imgAndJsonUrl + 'animationPs3/' + id + '/' + name + '.gif';
 		var ResMgr = app.getResMgr();
 		var img = ResMgr.loadImage(aniIamgeUrl);
 		if(img) {

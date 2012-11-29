@@ -75,10 +75,10 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			staticImg =  ResMgr.loadImage(imgAndJsonUrl + 'npc/' + this.entity.kindId + '.png');
 			break;
 			case EntityType.ITEM:
-			staticImg = ResMgr.loadImage(imgAndJsonUrl + 'item/' + this.entity.imgId + '.png');
+			staticImg = ResMgr.loadImage(imgAndJsonUrl + 'item/item_' + this.entity.imgId + '.png');
 			break;
 			case EntityType.EQUIPMENT:
-			staticImg = ResMgr.loadImage(imgAndJsonUrl + 'equipment/' + this.entity.imgId + '.png');
+			staticImg = ResMgr.loadImage(imgAndJsonUrl + 'equipment/item_' + this.entity.imgId + '.png');
 			break;
 		}
 		var staticModel = new model.ImageModel({
@@ -133,13 +133,13 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 				type: this.entity.type,
 				name: name
 			}).getJsonData();
-			var height = json.height + 10;
+			var height = json.height - 30;
 			this.bloodbarNode.exec('translate', -26, -height, NodeCoordinate.RED_BLOOD_NODE);
 			darkBloodBarNode.exec('translate', -26, -height, NodeCoordinate.BLACK_BLOOD_NODE);
 			this.nameNode.exec('translate',0 ,-(height + 10), NodeCoordinate.NAME_NODE);
 			this.reduceBlood();
 		}
-		if (this.entity.kindId === 210) {
+		if (this.entity.kindId == 210) {
 			this.curNode.exec('scale', {x: 1.5, y: 1.5});
 		}
 		this._initStand();
