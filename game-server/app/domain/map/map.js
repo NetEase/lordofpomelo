@@ -215,7 +215,7 @@ Map.prototype.getCollision = function() {
  * @api public
  */
 Map.prototype.getBornPlace = function() {
-	var bornPlace = this.map.born[0];
+	var bornPlace = this.map.birth[0];
 	if(!bornPlace) {
 		bornPlace = this.map.transPoint;
 	}

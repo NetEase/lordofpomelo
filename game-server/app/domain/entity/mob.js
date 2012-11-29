@@ -170,7 +170,7 @@ Mob.prototype.onPlayerCome = function(entityId) {
  */
 
 Mob.prototype.dropItems = function(player) {
-	var itemCount = Math.floor(Math.random()*3);
+	var itemCount = Math.floor(Math.random()*2.1);
 	var dropItems = [];
 	for (var i = 0; i<itemCount; i++) {
 		var itemType = Math.floor(Math.random()*10);
@@ -195,13 +195,14 @@ Mob.prototype.dropItems = function(player) {
 
 //Drop Item down
 Mob.prototype._dropItem = function(player) {
+	var level = Math.min(this.level, player.level);
 	var pos = area.map().genPos(this, 200);
 	if(!pos){
 		logger.warn('Generate position for drop item error!');
 		return null;
 	}
 	
-	var itemDatas = dataApi.item.findSmaller('heroLevel', player.level);
+	var itemDatas = dataApi.item.findSmaller('heroLevel', level);
 	var length = itemDatas.length;
 	var index = Math.floor(Math.random()*length);
 	var itemData = itemDatas[index];
@@ -227,13 +228,15 @@ Mob.prototype._dropItem = function(player) {
 
 //Drop Equipment down
 Mob.prototype._dropEquipment = function(player) {
+	var level = Math.min(this.level, player.level);
+	
 	var pos = area.map().genPos(this, 200);
 	if(!pos){
 		logger.warn('Generate position for drop equipment error!');
 		return null;
 	}
 	
-	var equipments = dataApi.equipment.findSmaller('heroLevel', player.level);
+	var equipments = dataApi.equipment.findSmaller('heroLevel', level);
 	var length = equipments.length;
 	var index = Math.floor(Math.random()*length);
 	var equipment = equipments[index];
@@ -297,8 +300,8 @@ Mob.prototype.setTotalAttackAndDefence = function() {
 };
 
 //Get experience after mob killed
-Mob.prototype.getKillExp = function() {
-	return formula.calMobExp(this.characterData.baseExp, this.level);
+Mob.prototype.getKillExp = function(playerLevel) {
+	return formula.calMobExp(this.characterData.baseExp, playerLevel, this.level);
 };
 
 /**
