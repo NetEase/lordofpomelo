@@ -33,8 +33,23 @@ formula.calMobValue = function(baseValue, level, upgradeParam) {
 /**
  * the experience gained by player when kill some mob
  */
-formula.calMobExp = function(baseExp, level) {
-	return baseExp * level;
+formula.calMobExp = function(baseExp, playerLevel, mobLevel) {
+	var diff = playerLevel - mobLevel;
+	var mul = Math.pow(Math.abs(diff),1.5)/6 + 1;
+	
+	//Experienc add limit
+	if(mul > 5){
+		mul = 5;
+	}
+	mul = diff > 0?mul:Math.sqrt(1/mul);
+	
+	var exp = baseExp * moblevel * mul;
+	
+	if(exp <= 1){
+		exp = 1;
+	}
+	
+	return exp;
 };
 
 /**

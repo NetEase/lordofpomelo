@@ -60,7 +60,7 @@ Player.prototype.afterDied = function() {
 Player.prototype.afterKill = function(target) {
 	var items = null;
 	if (target.type === EntityType.MOB) {
-		this.addExperience(target.getKillExp());
+		this.addExperience(target.getKillExp(this.level));
 		items = target.dropItems(this);
 	}
 	

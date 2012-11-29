@@ -8,7 +8,9 @@
 			{"id": "connector-server-4", "host": "127.0.0.1", "port": 3153, "wsPort":3013}
 		],
 		"area": [
-			{"id": "area-server-1", "host": "127.0.0.1", "port": 3250, "area": 1}
+			{"id": "area-server-1", "host": "127.0.0.1", "port": 3250, "area": 1},
+			{"id": "area-server-2", "host": "127.0.0.1", "port": 3251, "area": 1}
+			{"id": "area-server-3", "host": "127.0.0.1", "port": 3252, "area": 1}
 		],
 		"chat":[
 			{"id":"chat-server-1","host":"127.0.0.1","port":3450}
