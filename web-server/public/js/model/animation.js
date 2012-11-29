@@ -36,17 +36,15 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 		var height = parseInt(animationData.height);
 		var totalFrames = parseInt(animationData.totalFrame);
 		var img = this.getImage(), ani;
-		if (this.type === EntityType.PLAYER || this.type === EntityType.MOB) {
-			ani = new FrameAnimation({
-				image: img,
-				w: width,
-				h: height - 5,
-				totalTime: totalFrames * 80,
-				interval: 80,
-				XSpan: width,
-				VSpan: height
-			});
-		} 
+		ani = new FrameAnimation({
+			image: img,
+			w: width - 5,
+			h: height - 5,
+			totalTime: totalFrames * 80,
+			interval: 80,
+			HSpan: width,
+			VSpan: height
+		});
 		ani.name = this.name;
 		return ani;
 	};
@@ -77,10 +75,10 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 		aniIamgeUrl = imgAndJsonUrl + 'animationPs3/' + id + '/' + name + '.gif';
 		var ResMgr = app.getResMgr();
 		var img = ResMgr.loadImage(aniIamgeUrl);
-		if(img) {
+		if(!!img) {
 			return img;
 		}else {
-			console.error('the iamge :'+id+'/'+name+'.PNG is not exist!');
+			console.error('the iamge :'+id+'/'+name+'.gif is not exist!');
 		}
 	};
 

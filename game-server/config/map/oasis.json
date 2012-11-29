@@ -71,22 +71,6 @@
                  "y":1428
                 }, 
                 {
-                 "height":196,
-                 "name":"boss",
-                 "properties":
-                    {
-                     "level":"30",
-                     "mobId":"208",
-                     "mobName":"Unicorn Beetle",
-                     "mobNum":"1",
-                     "refreshTime":"10000"
-                    },
-                 "type":"",
-                 "width":383,
-                 "x":4693,
-                 "y":484
-                }, 
-                {
                  "height":204,
                  "name":"mob4",
                  "properties":
