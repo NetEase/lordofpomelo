@@ -205,11 +205,11 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 				player: attacker,
 				position: {x: targetPos.x - attackerPos.x, y: targetPos.y - attackerPos.y}
 			};
-			/**
+
 			if(skillId > 1) {
 				mainPanel.skillBox[skillId].start();
 			}
-			*/
+
 			var params ={
 				attacker: attacker,
 				attackerSprite: attackerSprite,

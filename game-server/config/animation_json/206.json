@@ -1,1 +1,16 @@
-{"LeftDownAttack":{"height":148,"width":166,"totalFrame":24},"LeftDownDead":{"height":149,"width":166,"totalFrame":8},"LeftDownStand":{"height":149,"width":166,"totalFrame":16},"LeftDownWalk":{"height":149,"width":166,"totalFrame":16},"LeftUpAttack":{"height":148,"width":166,"totalFrame":24},"LeftUpDead":{"height":149,"width":166,"totalFrame":8},"LeftUpStand":{"height":149,"width":166,"totalFrame":16},"LeftUpWalk":{"height":149,"width":166,"totalFrame":16},"RightUpAttack":{"height":148,"width":166,"totalFrame":24},"RightUpDead":{"height":149,"width":166,"totalFrame":8},"RightUpStand":{"height":149,"width":166,"totalFrame":16},"RightUpWalk":{"height":149,"width":166,"totalFrame":16},"RightDownAttack":{"height":148,"width":166,"totalFrame":24},"RightDownDead":{"height":149,"width":166,"totalFrame":8},"RightDownStand":{"height":149,"width":166,"totalFrame":16},"RightDownWalk":{"height":149,"width":166,"totalFrame":16}}
+{"LeftDownAttack":{"height":148,"width":166,"totalFrame":24},
+	"LeftDownDead":{"height":149,"width":166,"totalFrame":8},
+	"LeftDownStand":{"height":149,"width":166,"totalFrame":16},
+	"LeftDownWalk":{"height":149,"width":166,"totalFrame":16},
+	"LeftUpAttack":{"height":148,"width":166,"totalFrame":24},
+	"LeftUpDead":{"height":149,"width":166,"totalFrame":8},
+	"LeftUpStand":{"height":149,"width":166,"totalFrame":16},
+	"LeftUpWalk":{"height":149,"width":166,"totalFrame":16},
+	"RightUpAttack":{"height":148,"width":166,"totalFrame":24},
+	"RightUpDead":{"height":149,"width":166,"totalFrame":8},
+	"RightUpStand":{"height":149,"width":166,"totalFrame":16},
+	"RightUpWalk":{"height":149,"width":166,"totalFrame":16},
+	"RightDownAttack":{"height":148,"width":166,"totalFrame":24},
+	"RightDownDead":{"height":149,"width":166,"totalFrame":8},
+	"RightDownStand":{"height":149,"width":166,"totalFrame":16},
+	"RightDownWalk":{"height":149,"width":166,"totalFrame":16}}
