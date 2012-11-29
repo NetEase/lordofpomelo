@@ -132,7 +132,6 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 			entity.walkSpeed = parseInt(entity.walkSpeed);
 			if (entity.id == pomelo.playerId) {
 				var player = pomelo.player;
-				//player.kindId = 204;
 				player.scene = this.scene;
 				player.map = this.map;
 				e = new CurPlayer(player);

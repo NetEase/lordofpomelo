@@ -40,9 +40,11 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 			ani = new FrameAnimation({
 				image: img,
 				w: width,
-				h: height,
+				h: height - 5,
 				totalTime: totalFrames * 50,
-				interval: 50
+				interval: 50,
+				XSpan: width,
+				VSpan: height
 			});
 		} else if (this.type === EntityType.NPC || this.type === EntityType.ITEM) {
 			ani = new FrameAnimation({

@@ -139,7 +139,9 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			this.nameNode.exec('translate',0 ,-(height + 10), NodeCoordinate.NAME_NODE);
 			this.reduceBlood();
 		}
-		//this.curNode.exec('scale', {x: 0.5, y: 0.5});
+		if (this.entity.kindId === 210) {
+			this.curNode.exec('scale', {x: 1.5, y: 1.5});
+		}
 		this._initStand();
 	};
 
