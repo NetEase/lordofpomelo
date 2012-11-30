@@ -63,7 +63,7 @@ soon to be open source.
 
 ## Screenshot
 
-![scene three](http://pomelo.netease.com/image/demo4.png)
+![scene three](http://pomelo.netease.com/image/demo4.png?11)
 
 This is a screenshot in scene three. There are many monsters and one hero named Traxex who is killing the monster for experiences, treasures and equipments.
 
