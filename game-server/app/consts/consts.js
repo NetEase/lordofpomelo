@@ -79,9 +79,7 @@ module.exports = {
 
 	NpcType: {
 		TALK_NPC: '0',
-		TASK_GAIN_NPC: '1',
-		TASK_DELIVERY_NPC: '2',
-		TRAVERSE_NPC: '3'
+		TRAVERSE_NPC: '1'
 	}, 
 
 	Event:{
@@ -92,10 +90,10 @@ module.exports = {
 	 * Traverse npc, the key is the npc id, the value is the taret's area id.
 	 */
 	TraverseNpc: {
-		3008 : 2,
-		3009 : 1,
-		3017 : 3,
-		3001 : 2
+		306 : 2,
+		301 : 1,
+		304 : 3,
+		309 : 2
 	}, 
 	
 	/**
