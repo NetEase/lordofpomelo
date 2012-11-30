@@ -80,7 +80,7 @@ function initNPCs() {
 		var npcInfo = dataApi.npc.findById(data.kindId);
 		data.kindName = npcInfo.name;
 		data.englishName = npcInfo.englishName;
-		data.kindType = npcInfo.type;
+		data.kindType = npcInfo.kindType;
 		data.orientation = data.orientation;
 		data.areaId = id;
 		exp.addEntity(new NPC(data));

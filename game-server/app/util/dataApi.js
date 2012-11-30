@@ -62,7 +62,7 @@ Data.prototype.findBy = function(attr, value) {
   var i, item;
   for (i in this.data) {
     item = this.data[i];
-    if (item[attr] === value) {
+    if (item[attr] == value) {
       result.push(item);
     }
   }
