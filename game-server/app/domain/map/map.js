@@ -42,6 +42,7 @@ Map.prototype.init = function(opts) {
 		this.pfinder = buildFinder(this);
 		if(weightMap) {
 			this.initWeightMap();
+			//logger.error("weight map :%j", this.weightMap);
 		}
 	}
 };
@@ -92,13 +93,14 @@ Map.prototype.initWeightMap = function() {
 		}
 	}
 	
+	//logger.error("collisions : %j", collisions);
 	//Use all collsions to construct the weight map
 	for(i = 0; i < collisions.length; i++) {
 		var collision = collisions[i];
 		var polygon = [];
+		var points = collision.polygon;
 		
-		if(!!collision.polygon && !!collision.polygon.points) {
-			var points = collision.polygon.points.split(' ');
+		if(!!points && !!points.length > 0) {
 			if(points.length < 3) {
 				logger.warn('The polygon data is invalid! points: %j', points);
 				continue;
@@ -106,15 +108,12 @@ Map.prototype.initWeightMap = function() {
 			
 			//Get the rect limit for polygonal collision
 			var minx = Infinity, miny = Infinity, maxx = 0, maxy = 0;
+			
 			for(j = 0; j < points.length; j++) {
-				var point = points[j].split(',');
+				var point = points[j];
 				
-				if(point.length !== 2) {
-					continue;
-				}
-				
-				x = Number(point[0]) + Number(collision.x);
-				y = Number(point[1]) + Number(collision.y);
+				x = Number(point.x) + Number(collision.x);
+				y = Number(point.y) + Number(collision.y);
 				minx = minx>x?x:minx;
 				miny = miny>y?y:miny;
 				maxx = maxx<x?x:maxx;
