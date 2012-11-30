@@ -37,14 +37,14 @@ formula.calMobExp = function(baseExp, playerLevel, mobLevel) {
 	var diff = playerLevel - mobLevel;
 	var mul = Math.pow(Math.abs(diff),1.5)/6 + 1;
 	
+	mul = diff < 0?mul:Math.pow(1/mul, 2);
+	
 	//Experienc add limit
 	if(mul > 5){
 		mul = 5;
 	}
-	mul = diff > 0?mul:Math.sqrt(1/mul);
 	
 	var exp = Math.floor(baseExp * mobLevel * mul);
-	
 	if(exp <= 1){
 		exp = 1;
 	}
