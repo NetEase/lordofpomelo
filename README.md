@@ -13,6 +13,14 @@ In this game, the client communicates via websockets with the server.
  * Issues: <https://github.com/netease/pomelo/issues/>
  * Tags: game, nodejs 
 
+## Screenshot
+
+![login](http://pomelo.netease.com/image/demo0.png?11)
+![scene one](http://pomelo.netease.com/image/demo2.png?11)
+![scene two](http://pomelo.netease.com/image/demo3.png?11)
+![scene three](http://pomelo.netease.com/image/demo4.png?11)
+
+There are many monsters and one hero named Traxex who is killing the monster for experiences, treasures and equipments.
 
 ## How to install
 
@@ -59,14 +67,6 @@ Colorbox is our team's another open source project. It is a client side game eng
  * Visit the [lordofpomelo](http://pomelo.netease.com/lordofpomelo)
  * or you can visit [github:lordofpomelo](http://github.com/NetEase/lordofpomelo)to download the source and install it on your local machine.
 
-## Screenshot
-
-![choose role](http://pomelo.netease.com/image/demo1.png?11)
-![scene one](http://pomelo.netease.com/image/demo2.png?11)
-![scene two](http://pomelo.netease.com/image/demo3.png?11)
-![scene three](http://pomelo.netease.com/image/demo4.png?11)
-
-This is a screenshot in scene three. There are many monsters and one hero named Traxex who is killing the monster for experiences, treasures and equipments.
 
 
 ## License
