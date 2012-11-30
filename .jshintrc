@@ -5,8 +5,11 @@
     "before", 
     "after", 
     "window", 
-    "__resources__"
-  ],
+    "__resources__", 
+    "$", 
+    "alert"
+  ], 
+  "browser": true, 
   "es5": true,  
   "node": true, 
   "eqeqeq": true, 
@@ -16,5 +19,7 @@
   "immed": false, 
   "newcap": true, 
   "nonew": true,
-  "white": false
+  "white": false, 
+  "smarttabs": true, 
+  "multistr": true
 }
