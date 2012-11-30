@@ -61,6 +61,9 @@ Colorbox is our team's another open source project. It is a client side game eng
 
 ## Screenshot
 
+![choose role](http://pomelo.netease.com/image/demo1.png?11)
+![scene one](http://pomelo.netease.com/image/demo2.png?11)
+![scene two](http://pomelo.netease.com/image/demo3.png?11)
 ![scene three](http://pomelo.netease.com/image/demo4.png?11)
 
 This is a screenshot in scene three. There are many monsters and one hero named Traxex who is killing the monster for experiences, treasures and equipments.
