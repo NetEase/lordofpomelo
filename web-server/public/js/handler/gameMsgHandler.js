@@ -36,10 +36,6 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 		pomelo.on('addEntities', function(data){
 			var entities = data.entities;
 			var area = app.getCurArea();
-			
-//			for(var id in entities){
-//				console.log('add entity : ' + entities[id].entityId);
-//			}
 			if(!area) {
 				return;
 			}
@@ -48,6 +44,19 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 				if(!entity){
 					area.addEntity(entities[i]);
 				}
+			}
+		});
+
+		/**
+		 * Drop items when the task has been completed.
+		 *
+		 */
+		pomelo.on('onDropItems', function(data) {
+			var area = app.getCurArea();
+			var items = data.dropItems;
+			var length = items.length;
+			for (var i = 0; i < length; i ++) {
+				area.addEntity(items[i]);
 			}
 		});
 
@@ -61,7 +70,6 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			var player = area.getCurPlayer();
 			for(var i = 0; i < entities.length; i++){
 				if(entities[i] !== player.entityId) {
-//					/console.log('remove entity : ' + entities[i]);
 					area.removeEntity(entities[i]);
 				}
 			}
@@ -272,9 +280,6 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 	var killedAction = function(data) {
 		if (!!data.target.died) {
 			return;
-		}
-		if (app.getCurPlayer().entityId == data.target.entityId) {
-			console.log('curPlayer died~~~~~~~~~~~~~~~!');
 		}
 		data.target.died = true;
 		if (data.target.type === EntityType.MOB) {
