@@ -6,7 +6,7 @@ __resources__["/heroSelectView.js"] = {meta: {mimetype: "application/javascript"
   /**
    * default hero id
    */
-  var roleId = "1022";
+  var roleId = 210;
 
    exports.getRoleId = function() {
      return roleId;
