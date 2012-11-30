@@ -8,12 +8,5 @@
 ["5",25,"Blazing Fire","Increase melee attack and  make the target be burned who will lose hit points for some time.","attackBuff",0.1,"5",20,20,"2.1",70,100,980027,"EffectFengZou"],
 ["6",40,"Stand Fast","StateSkill, increase the defense for some time.","buff",0.1,"5",25,25,"2.4",90,100,504131,"EffectFuYuFanYun"],
 ["7",60,"Charge","Make instant damage at once.","passive",0.1,"5",30,30,"3",60,100,980028,"EffectGeShanDaNiu"],
-["8",80,"Battered-Body","StateSkill,  lose hit points and increase damage.","attack",0.1,"5",35,35,"3",80,200,980117,"EffectGuanRiShi"],
-["","","","","","","","","","","","","",""],
-["","","","","","","","","","","","","",""],
-["","","","","","","","","","","","","",""],
-["","","","","","","","","","","","","",""],
-["","","","","","","","","","","","","",""],
-["","","","","","","","","","","","","",""],
-["","","","","","","","","","","","","",""]
+["8",80,"Battered-Body","StateSkill,  lose hit points and increase damage.","attack",0.1,"5",35,35,"3",80,200,980117,"EffectGuanRiShi"]
 ]
