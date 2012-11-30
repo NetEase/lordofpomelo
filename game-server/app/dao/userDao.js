@@ -268,14 +268,15 @@ userDao.createUser = function (username, password, from, cb){
  */
 userDao.createPlayer = function (uid, name, roleId,cb){
 	var sql = 'insert into Player (userId, kindId, kindName, name, country, rank, level, experience, attackValue, defenceValue, hitRate, dodgeRate, walkSpeed, attackSpeed, hp, mp, maxHp, maxMp, areaId, x, y, skillPoint) values(?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)';
-	var role = dataApi.role.findById(roleId);
+	//var role = dataApi.role.findById(roleId);
 	var character = dataApi.character.findById(roleId);
+  var role = {name: character.englishName, career: 'warrior', country: 1, gender: 'male'}
 	var born = consts.BornPlace;
 	var x = born.x + Math.floor(Math.random()*born.width);
 	var y = born.y + Math.floor(Math.random()*born.height);
 	var areaId = consts.PLAYER.initAreaId;
-	role.country = 1;
-	var args = [uid, roleId, role.name, name, role.country, 1, 1, 0, character.attackValue, character.defenceValue, character.hitRate, character.dodgeRate, character.walkSpeed, character.attackSpeed, character.hp, character.mp, character.hp, character.mp, areaId, x, y, 1];
+	//role.country = 1;
+	var args = [uid, roleId, character.englishName, name, 1, 1, 1, 0, character.attackValue, character.defenceValue, character.hitRate, character.dodgeRate, character.walkSpeed, character.attackSpeed, character.hp, character.mp, character.hp, character.mp, areaId, x, y, 1];
 
 	pomelo.app.get('dbclient').insert(sql, args, function(err,res){
 		if(err !== null){
@@ -290,19 +291,16 @@ userDao.createPlayer = function (uid, name, roleId,cb){
 				kindName: role.name,
 				areaId: 1,
 				roleName: name,
-				gender: role.gender||'male',
-				career: role.career,
-				country: role.country,
 				rank: 1,
 				level: 1,
 				experience: 0,
-				attackValue: role.attackValue,
-				defenceValue: role.defenceValue,
+				attackValue: character.attackValue,
+				defenceValue: character.defenceValue,
 				skillPoint: 1,
-				hitRate: role.hitRate,
-				dodgeRate: role.dodgeRate,
-				walkSpeed: role.walkSpeed,
-				attackSpeed: role.attackSpeed,
+				hitRate: character.hitRate,
+				dodgeRate: character.dodgeRate,
+				walkSpeed: character.walkSpeed,
+				attackSpeed: character.attackSpeed,
 				equipments: {},
 				bag: null
 			});
