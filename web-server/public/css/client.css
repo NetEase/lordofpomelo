@@ -416,24 +416,15 @@ body .skill-box {
 .m-choose .logo img{width:128px;height:87px;}
 
 /* m-chooserole */
-.m-chooserole .wrap{position:relative;height:540px;overflow:hidden;}
-.m-chooserole .bg{width:1038px;height:480px;margin:20px auto 40px;background:url(../image/rolelst.png) no-repeat 0 0;filter:alpha(opacity=30);-moz-opacity:0.3;-khtml-opacity:0.3;opacity:0.3;}
-.m-chooserole .cover{position:absolute;z-index:1;left:0;top:0;width:100%;height:540px;background:url(../image/rolelstcover.png) repeat 0 0;filter:alpha(opacity=10);-moz-opacity:0.1;-khtml-opacity:0.1;opacity:0.1;}
-.m-chooserole .choosewrap{position:relative;z-index:2;width:1038px;margin:0 auto;top:-540px;}
-.m-chooserole .choose{float:left;position:absolute;z-index:3;width:1038px;height:540px;}
-.m-chooserole .role{position:absolute;z-index:4;width:173px;height:222px;background:url(../image/rolelst.png) no-repeat 9999px 9999px;cursor:pointer;}
-.m-chooserole .role-1{left:0;top:20px;}
-.m-chooserole .role-2{left:173px;top:20px;}
-.m-chooserole .role-3{left:346px;top:20px;}
-.m-chooserole .role-4{left:519px;top:20px;}
-.m-chooserole .role-5{left:692px;top:20px;}
-.m-chooserole .role-6{left:865px;top:20px;}
-.m-chooserole .role-7{left:0;top:260px;}
-.m-chooserole .role-8{left:173px;top:260px;}
-.m-chooserole .role-9{left:346px;top:260px;}
-.m-chooserole .role-10{left:519px;top:260px;}
-.m-chooserole .role-11{left:692px;top:260px;}
-.m-chooserole .role-12{left:865px;top:260px;}
+.m-chooserole .wrap{position:relative;height:495px;overflow:hidden;}
+.m-chooserole .bg{width:600px;height:355px;margin:60px auto 80px;background:url(../image/rolelst.png) no-repeat 0 0;filter:alpha(opacity=30);-moz-opacity:0.3;-khtml-opacity:0.3;opacity:0.3;}
+.m-chooserole .cover{position:absolute;z-index:1;left:0;top:0;width:100%;height:495px;background:url(../image/rolelstcover.png) repeat 0 0;filter:alpha(opacity=10);-moz-opacity:0.1;-khtml-opacity:0.1;opacity:0.1;}
+.m-chooserole .choosewrap{position:relative;z-index:2;width:600px;margin:0 auto;top:-495px;}
+.m-chooserole .choose{float:left;position:absolute;z-index:3;width:600px;height:495px;}
+.m-chooserole .role{position:absolute;z-index:4;width:218px;height:355px;background:url(../image/rolelst.png) no-repeat 9999px 9999px;cursor:pointer;opacity:0.5;}
+.m-chooserole .role-1{left:0;top:60px;}
+.m-chooserole .role-2{left:382px;top:60px;}
+
 
 .m-chooserole .order{position:relative;width:378px;height:44px;padding:38px 0;margin:0 auto;}
 
@@ -451,13 +442,10 @@ body .skill-box {
 .m-chooserole .order button{width:117px;height:44px;border:none;outline:none;background:url(../image/chooserolebnt.png) no-repeat 0 0;}
 
 /* m-targetrole */
-.m-targetrole{position:absolute;z-index:5;left:692px;top:260px;width:173px;height:222px;}
-.m-targetrole .targetrolebg0{position:absolute;z-index:6;left:2px;top:16px;width:163px;height:206px;}
-.m-targetrole .targetrolebg0-1{position:absolute;left:63px;top:0;width:100px;height:95px;background:url(../image/tattoo2.png) no-repeat 0 0;}
-.m-targetrole .targetrolebg0-2{position:absolute;left:0;top:111px;width:100px;height:95px;background:url(../image/tattoo2.png) no-repeat 0 0;}
-.m-targetrole .targetrolebg1{position:absolute;z-index:7;left:2px;top:13px;width:163px;height:206px;background:url(../image/targetrolebg1.png) no-repeat 0 0;filter:alpha(opacity=30);-moz-opacity:0.3;-khtml-opacity:0.3;opacity:0.3;}
-.m-targetrole .targetrolecnt{position:absolute;z-index:8;left:0;top:0;width:173px;height:220px;background:url(../image/rolelst.png) no-repeat -692px -240px;}
-.m-targetrole .targetrolecover{position:absolute;z-index:10;left:0;top:0;width:173px;height:222px;background:url(../image/targetrolecover.png) no-repeat 0 0;}
+.m-targetrole{position:absolute;z-index:5;left:0;top:60px;width:218px;height:355px;}
+.m-targetrole .targetrolebg{position:absolute;z-index:6;width:218px;height:355px;background:url(../image/targetrolebg.png) no-repeat 0 0;}
+.m-targetrole .targetrole{position:absolute;z-index:7;width:218px;height:355px;background:url(../image/rolelst.png) no-repeat 0 0;}
+.m-targetrole .targetrole-1{background-position:382px 0;}
 
 
 /* 入场动画模块(m-admissionanima) */
