@@ -12,7 +12,6 @@ var eventManager = require('./../event/eventManager');
 var aoiEventManager = require('./../aoi/aoiEventManager');
 var EntityType = require('../../consts/consts').EntityType;
 var timer = require('./timer');
-var aoiConfig = require('../../../config/aoi');
 var logger = require('pomelo-logger').getLogger(__filename);
 
 var exp = module.exports;
@@ -46,7 +45,7 @@ exp.init = function(opts) {
 	opts.weightMap = true;
 	map = new Map(opts);
 	//Init AOI
-	aoi = aoiManager.getService(aoiConfig[id]);
+	aoi = aoiManager.getService(opts);
 	aoiEventManager.addEvent(aoi.aoi);
 
 	//Init mob zones

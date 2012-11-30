@@ -1,7 +1,7 @@
 [
-["区域id","名称","区域名","等级","宽","高","数据地址"],
-["id","name","areaName","level","width","height","path"],
-["1","desert","沙漠",0,4200,2800,"/config/map/desert.json"],
-["2","oasis","绿洲",0,6000,4000,"/config/map/oasis.json"],
-["3","ice","极地",0,6500,4800,"/config/map/ice.json"]
+["区域id","名称","区域名","等级","宽","高","数据地址","灯塔宽度","灯塔高度"],
+["id","name","areaName","level","width","height","path","towerWidth","towerHeight"],
+["1","desert","沙漠",0,4200,2800,"/config/map/desert.json",300,300],
+["2","oasis","绿洲",0,6000,4000,"/config/map/oasis.json",300,300],
+["3","ice","极地",0,6500,4800,"/config/map/ice.json",300,300]
 ]

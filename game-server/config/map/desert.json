@@ -24,8 +24,8 @@
                     },
                  "type":"",
                  "width":386,
-                 "x":404,
-                 "y":91
+                 "x":476,
+                 "y":123
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -51,31 +51,31 @@
                     },
                  "type":"",
                  "width":403,
-                 "x":3314,
-                 "y":2405
+                 "x":3282,
+                 "y":2333
                 }, 
                 {
                  "height":235,
                  "name":"mob3",
                  "properties":
                     {
-                     "level":"10",
+                     "level":"20",
                      "mobId":"209",
                      "mobName":"Corpse flower",
-                     "mobNum":"8",
+                     "mobNum":"10",
                      "refreshTime":"5000"
                     },
                  "type":"",
                  "width":386,
-                 "x":1604,
-                 "y":1501
+                 "x":2428,
+                 "y":1688
                 }, 
                 {
                  "height":221,
                  "name":"mob1",
                  "properties":
                     {
-                     "level":"8",
+                     "level":"10",
                      "mobId":"202",
                      "mobName":"Harpy",
                      "mobNum":"8",
@@ -83,8 +83,8 @@
                     },
                  "type":"",
                  "width":361,
-                 "x":2932,
-                 "y":162
+                 "x":2516,
+                 "y":246
                 }, 
                 {
                  "height":218,
@@ -99,15 +99,15 @@
                     },
                  "type":"",
                  "width":370,
-                 "x":143,
-                 "y":1282
+                 "x":215,
+                 "y":642
                 }, 
                 {
                  "height":232,
                  "name":"mob4",
                  "properties":
                     {
-                     "level":"20",
+                     "level":"25",
                      "mobId":"209",
                      "mobName":"Corpse flower",
                      "mobNum":"8",
@@ -115,8 +115,8 @@
                     },
                  "type":"",
                  "width":378,
-                 "x":3226,
-                 "y":1641
+                 "x":3210,
+                 "y":1841
                 }, 
                 {
                  "height":235,
@@ -133,6 +133,38 @@
                  "width":365,
                  "x":1147,
                  "y":2436
+                }, 
+                {
+                 "height":235,
+                 "name":"mob3",
+                 "properties":
+                    {
+                     "level":"15",
+                     "mobId":"209",
+                     "mobName":"Corpse flower",
+                     "mobNum":"8",
+                     "refreshTime":"5000"
+                    },
+                 "type":"",
+                 "width":386,
+                 "x":1541,
+                 "y":1487
+                }, 
+                {
+                 "height":218,
+                 "name":"mob2",
+                 "properties":
+                    {
+                     "level":"5",
+                     "mobId":"202",
+                     "mobName":"Harpy",
+                     "mobNum":"8",
+                     "refreshTime":"3000"
+                    },
+                 "type":"",
+                 "width":370,
+                 "x":357,
+                 "y":1190
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -146,7 +178,7 @@
          "name":"npc",
          "objects":[
                 {
-                 "height":148,
+                 "height":140,
                  "name":"npc1",
                  "properties":
                     {
@@ -155,9 +187,9 @@
                      "orientation":""
                     },
                  "type":"",
-                 "width":126,
-                 "x":1127,
-                 "y":213
+                 "width":98,
+                 "x":1439,
+                 "y":709
                 }, 
                 {
                  "height":160,
@@ -171,7 +203,7 @@
                  "type":"",
                  "width":147,
                  "x":1214,
-                 "y":1271
+                 "y":1267
                 }, 
                 {
                  "height":179,
@@ -184,7 +216,7 @@
                     },
                  "type":"",
                  "width":147,
-                 "x":2785,
+                 "x":2781,
                  "y":770
                 }, 
                 {
@@ -198,12 +230,12 @@
                     },
                  "type":"",
                  "width":130,
-                 "x":1688,
-                 "y":1957
+                 "x":3920,
+                 "y":2501
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "width":1,
          "x":0,
          "y":0

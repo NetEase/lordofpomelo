@@ -24,8 +24,8 @@
                     },
                  "type":"",
                  "width":429,
-                 "x":6039,
-                 "y":115
+                 "x":5564,
+                 "y":78
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -35,31 +35,32 @@
          "y":0
         }, 
         {
+         "color":"#0055ff",
          "height":1,
          "name":"mob",
          "objects":[
                 {
-                 "height":269,
+                 "height":265,
                  "name":"mob1",
                  "properties":
                     {
-                     "level":"50",
+                     "level":"70",
                      "mobId":"207",
                      "mobName":"Rock",
                      "mobNum":"8",
                      "refreshTime":"5000"
                     },
                  "type":"",
-                 "width":449,
-                 "x":1209,
-                 "y":715
+                 "width":369,
+                 "x":3464,
+                 "y":1724
                 }, 
                 {
                  "height":245,
                  "name":"mob2",
                  "properties":
                     {
-                     "level":"50",
+                     "level":"75",
                      "mobId":"207",
                      "mobName":"Rock",
                      "mobNum":"8",
@@ -67,31 +68,15 @@
                     },
                  "type":"",
                  "width":410,
-                 "x":5323,
-                 "y":3619
-                }, 
-                {
-                 "height":293,
-                 "name":"mob3",
-                 "properties":
-                    {
-                     "level":"50",
-                     "mobId":"207",
-                     "mobName":"Rock",
-                     "mobNum":"8",
-                     "refreshTime":"5000"
-                    },
-                 "type":"",
-                 "width":481,
-                 "x":2587,
-                 "y":2866
+                 "x":5330,
+                 "y":3629
                 }, 
                 {
                  "height":254,
                  "name":"boss",
                  "properties":
                     {
-                     "level":"80",
+                     "level":"90",
                      "mobId":"203",
                      "mobName":"bulbDragon",
                      "mobNum":"1",
@@ -99,11 +84,11 @@
                     },
                  "type":"",
                  "width":377,
-                 "x":104,
-                 "y":4214
+                 "x":108,
+                 "y":4218
                 }, 
                 {
-                 "height":240,
+                 "height":216,
                  "name":"mob4",
                  "properties":
                     {
@@ -114,25 +99,185 @@
                      "refreshTime":"8000"
                     },
                  "type":"",
-                 "width":416,
-                 "x":3978,
-                 "y":4397
+                 "width":368,
+                 "x":5406,
+                 "y":861
                 }, 
                 {
                  "height":230,
                  "name":"mob5",
                  "properties":
                     {
-                     "level":"60",
+                     "level":"55",
                      "mobId":"205",
                      "mobName":"Beetle",
-                     "mobNum":"5",
+                     "mobNum":"8",
                      "refreshTime":"8000"
                     },
                  "type":"",
                  "width":358,
-                 "x":5629,
-                 "y":926
+                 "x":4934,
+                 "y":107
+                }, 
+                {
+                 "height":216,
+                 "name":"mob4",
+                 "properties":
+                    {
+                     "level":"65",
+                     "mobId":"205",
+                     "mobName":"Bettle",
+                     "mobNum":"5",
+                     "refreshTime":"8000"
+                    },
+                 "type":"",
+                 "width":371,
+                 "x":4271,
+                 "y":1397
+                }, 
+                {
+                 "height":265,
+                 "name":"mob1",
+                 "properties":
+                    {
+                     "level":"70",
+                     "mobId":"207",
+                     "mobName":"Rock",
+                     "mobNum":"8",
+                     "refreshTime":"5000"
+                    },
+                 "type":"",
+                 "width":369,
+                 "x":4635,
+                 "y":2396
+                }, 
+                {
+                 "height":245,
+                 "name":"mob2",
+                 "properties":
+                    {
+                     "level":"75",
+                     "mobId":"207",
+                     "mobName":"Rock",
+                     "mobNum":"8",
+                     "refreshTime":"5000"
+                    },
+                 "type":"",
+                 "width":410,
+                 "x":3495,
+                 "y":3029
+                }, 
+                {
+                 "height":213,
+                 "name":"mob2",
+                 "properties":
+                    {
+                     "level":"75",
+                     "mobId":"207",
+                     "mobName":"Rock",
+                     "mobNum":"8",
+                     "refreshTime":"5000"
+                    },
+                 "type":"",
+                 "width":358,
+                 "x":2075,
+                 "y":1010
+                }, 
+                {
+                 "height":259,
+                 "name":"mob2",
+                 "properties":
+                    {
+                     "level":"80",
+                     "mobId":"207",
+                     "mobName":"Rock",
+                     "mobNum":"8",
+                     "refreshTime":"5000"
+                    },
+                 "type":"",
+                 "width":362,
+                 "x":1404,
+                 "y":646
+                }, 
+                {
+                 "height":259,
+                 "name":"mob2",
+                 "properties":
+                    {
+                     "level":"80",
+                     "mobId":"207",
+                     "mobName":"Rock",
+                     "mobNum":"8",
+                     "refreshTime":"5000"
+                    },
+                 "type":"",
+                 "width":362,
+                 "x":1543,
+                 "y":1422
+                }, 
+                {
+                 "height":259,
+                 "name":"mob2",
+                 "properties":
+                    {
+                     "level":"80",
+                     "mobId":"207",
+                     "mobName":"Rock",
+                     "mobNum":"8",
+                     "refreshTime":"5000"
+                    },
+                 "type":"",
+                 "width":362,
+                 "x":2531,
+                 "y":2891
+                }, 
+                {
+                 "height":259,
+                 "name":"mob2",
+                 "properties":
+                    {
+                     "level":"80",
+                     "mobId":"207",
+                     "mobName":"Rock",
+                     "mobNum":"8",
+                     "refreshTime":"5000"
+                    },
+                 "type":"",
+                 "width":362,
+                 "x":3567,
+                 "y":4362
+                }, 
+                {
+                 "height":259,
+                 "name":"mob2",
+                 "properties":
+                    {
+                     "level":"85",
+                     "mobId":"207",
+                     "mobName":"Rock",
+                     "mobNum":"8",
+                     "refreshTime":"5000"
+                    },
+                 "type":"",
+                 "width":364,
+                 "x":1553,
+                 "y":3749
+                }, 
+                {
+                 "height":133,
+                 "name":"mob2",
+                 "properties":
+                    {
+                     "level":"90",
+                     "mobId":"207",
+                     "mobName":"Rock",
+                     "mobNum":"3",
+                     "refreshTime":"5000"
+                    },
+                 "type":"",
+                 "width":146,
+                 "x":126,
+                 "y":646
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -142,11 +287,12 @@
          "y":0
         }, 
         {
+         "color":"#ff0000",
          "height":1,
          "name":"npc",
          "objects":[
                 {
-                 "height":178,
+                 "height":123,
                  "name":"npc1",
                  "properties":
                     {
@@ -155,9 +301,9 @@
                      "orientation":""
                     },
                  "type":"",
-                 "width":156,
-                 "x":5401,
-                 "y":403
+                 "width":80,
+                 "x":6189,
+                 "y":183
                 }, 
                 {
                  "height":211,
@@ -174,7 +320,7 @@
                  "y":4195
                 }, 
                 {
-                 "height":216,
+                 "height":156,
                  "name":"npc3",
                  "properties":
                     {
@@ -183,12 +329,12 @@
                      "orientation":""
                     },
                  "type":"",
-                 "width":175,
+                 "width":107,
                  "x":2236,
                  "y":4243
                 }, 
                 {
-                 "height":190,
+                 "height":142,
                  "name":"npc4",
                  "properties":
                     {
@@ -197,18 +343,19 @@
                      "orientation":""
                     },
                  "type":"",
-                 "width":168,
-                 "x":1040,
-                 "y":3168
+                 "width":95,
+                 "x":1364,
+                 "y":4129
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "width":1,
          "x":0,
          "y":0
         }, 
         {
+         "color":"#aa0000",
          "height":1,
          "name":"collision",
          "objects":[
@@ -1566,75 +1713,6 @@
                  "width":0,
                  "x":94,
                  "y":3683
-                }, 
-                {
-                 "height":0,
-                 "name":"",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":78,
-                         "y":34
-                        }, 
-                        {
-                         "x":81,
-                         "y":110
-                        }, 
-                        {
-                         "x":142,
-                         "y":138
-                        }, 
-                        {
-                         "x":138,
-                         "y":33
-                        }, 
-                        {
-                         "x":159,
-                         "y":-15
-                        }, 
-                        {
-                         "x":158,
-                         "y":-65
-                        }, 
-                        {
-                         "x":129,
-                         "y":-38
-                        }, 
-                        {
-                         "x":130,
-                         "y":-19
-                        }, 
-                        {
-                         "x":127,
-                         "y":4
-                        }, 
-                        {
-                         "x":95,
-                         "y":-12
-                        }, 
-                        {
-                         "x":24,
-                         "y":-4
-                        }, 
-                        {
-                         "x":27,
-                         "y":-70
-                        }, 
-                        {
-                         "x":3,
-                         "y":-59
-                        }],
-                 "properties":
-                    {
-
-                    },
-                 "type":"",
-                 "width":0,
-                 "x":338,
-                 "y":3553
                 }, 
                 {
                  "height":0,
@@ -7011,63 +7089,6 @@
                          "y":0
                         }, 
                         {
-                         "x":73,
-                         "y":92
-                        }, 
-                        {
-                         "x":126,
-                         "y":132
-                        }, 
-                        {
-                         "x":151,
-                         "y":64
-                        }, 
-                        {
-                         "x":151,
-                         "y":10
-                        }, 
-                        {
-                         "x":98,
-                         "y":-31
-                        }, 
-                        {
-                         "x":79,
-                         "y":-68
-                        }, 
-                        {
-                         "x":43,
-                         "y":-39
-                        }, 
-                        {
-                         "x":16,
-                         "y":-14
-                        }, 
-                        {
-                         "x":-2,
-                         "y":-69
-                        }, 
-                        {
-                         "x":-24,
-                         "y":-41
-                        }],
-                 "properties":
-                    {
-
-                    },
-                 "type":"",
-                 "width":0,
-                 "x":5969,
-                 "y":3333
-                }, 
-                {
-                 "height":0,
-                 "name":"",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
                          "x":42,
                          "y":17
                         }, 
@@ -7822,141 +7843,6 @@
                  "width":0,
                  "x":1106,
                  "y":583
-                }, 
-                {
-                 "height":0,
-                 "name":"",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":85,
-                         "y":49
-                        }, 
-                        {
-                         "x":162,
-                         "y":37
-                        }, 
-                        {
-                         "x":180,
-                         "y":15
-                        }, 
-                        {
-                         "x":126,
-                         "y":-77
-                        }, 
-                        {
-                         "x":85,
-                         "y":-30
-                        }, 
-                        {
-                         "x":104,
-                         "y":-2
-                        }, 
-                        {
-                         "x":57,
-                         "y":-27
-                        }, 
-                        {
-                         "x":-4,
-                         "y":-59
-                        }],
-                 "properties":
-                    {
-
-                    },
-                 "type":"",
-                 "width":0,
-                 "x":698,
-                 "y":2580
-                }, 
-                {
-                 "height":0,
-                 "name":"",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":132,
-                         "y":5
-                        }, 
-                        {
-                         "x":133,
-                         "y":53
-                        }, 
-                        {
-                         "x":171,
-                         "y":67
-                        }, 
-                        {
-                         "x":170,
-                         "y":26
-                        }, 
-                        {
-                         "x":138,
-                         "y":-52
-                        }, 
-                        {
-                         "x":126,
-                         "y":-77
-                        }, 
-                        {
-                         "x":7,
-                         "y":-55
-                        }, 
-                        {
-                         "x":-16,
-                         "y":-37
-                        }],
-                 "properties":
-                    {
-
-                    },
-                 "type":"",
-                 "width":0,
-                 "x":802,
-                 "y":4684
-                }, 
-                {
-                 "height":0,
-                 "name":"",
-                 "polygon":[
-                        {
-                         "x":0,
-                         "y":0
-                        }, 
-                        {
-                         "x":70,
-                         "y":41
-                        }, 
-                        {
-                         "x":98,
-                         "y":-22
-                        }, 
-                        {
-                         "x":91,
-                         "y":-55
-                        }, 
-                        {
-                         "x":28,
-                         "y":-81
-                        }, 
-                        {
-                         "x":1,
-                         "y":-65
-                        }],
-                 "properties":
-                    {
-
-                    },
-                 "type":"",
-                 "width":0,
-                 "x":5,
-                 "y":4740
                 }, 
                 {
                  "height":0,

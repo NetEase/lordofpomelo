@@ -11,7 +11,7 @@
   , "pomelo": "0.2.1"
   , "async": ">=0.0.1"
   , "socket.io-client" : ">=0.9.6"
-  , "pomelo-aoi" : ">=0.3.2"
+  , "pomelo-aoi" : ">=0.3.4"
   , "crc" : ">=0.0.1"
   , "pomelo-bt": ">=0.0.1"
   , "pomelo-pathfinding": ">=0.1.0"
