@@ -17,8 +17,8 @@ exp.addEventForNPC = function (npc){
 		var player = area.getEntity(data.player);
 		var talk = api.talk;
 		var npcTalks = talk.findBy('npc', npc.kindId);
-		var npcword = '还没有对话~~';
-		var myword = '说点什么呗';
+		var npcword = 'Welcome to see you!';
+		var myword = 'Me too!';
 
 		if(!!npcTalks && npcTalks.length > 0){
 			npcword = npcTalks[0].npcword;
@@ -35,6 +35,7 @@ exp.addEventForNPC = function (npc){
 			kindId: npc.kindId
 		};
 
+		console.log('noc,kindType:~~~~~~~~~~~~~~~~~~~~~~~~~~~~, j%', npc);
 		if (npc.kindType === consts.NpcType.TRAVERSE_NPC) {
 			npc.traverse(msg);
 			return;
