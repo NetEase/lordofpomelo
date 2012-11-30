@@ -36,11 +36,11 @@ __resources__["/app.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 			area = new Area(data.area, mapData);
 
 			area.run();
-			ui.init();
 			chat.init();
 
 			inited = true;
 		}
+    ui.init();
 	}
 
 	/**
