@@ -35,7 +35,6 @@ exp.addEventForNPC = function (npc){
 			kindId: npc.kindId
 		};
 
-		console.log('noc,kindType:~~~~~~~~~~~~~~~~~~~~~~~~~~~~, j%', npc);
 		if (npc.kindType === consts.NpcType.TRAVERSE_NPC) {
 			npc.traverse(msg);
 			return;
