@@ -47,19 +47,17 @@ Lordofpomelo requires the following npm libraries:
 .................
 
 #### pomelo
-
 Pomelo is made by our team. It is a fast, scalable, distributed game server framework for node.js. It provides the basic
 development framework and a lot of related components, including libraries and tools. Pomelo is also suitable for realtime
 web application, its distributed architecture makes pomelo scales better than other realtime web framework.
 
 ####colorbox
-Colorbox is our team's another open source project. It is a client side game engine written in JavaScript based on HTML5 and 
-soon to be open source. 
+Colorbox is our team's another open source project. It is a client side game engine written in JavaScript based on HTML5. It will be officially open source as an independent project soon.
 
 ## Viewing
 
- * Visit the [lordofpomelo](http://nodejs.netease.com/lordofpomelo)
- * or you can visit [github:lordofpomelo](http://github.com/node-pomelo/lordofpomelo)to download the source and install it on your local machine.
+ * Visit the [lordofpomelo](http://pomelo.netease.com/lordofpomelo)
+ * or you can visit [github:lordofpomelo](http://github.com/NetEase/lordofpomelo)to download the source and install it on your local machine.
 
 ## Screenshot
 
