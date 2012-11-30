@@ -126,7 +126,7 @@ __resources__["/resourceLoader.js"] = {
         var self = this;
         var equipments = dataApi.equipment.all();
         ids.forEach(function(id) {
-          self.loadImg(imgURL + 'item/item_' + equipments[id].imgId + '.png');
+          self.loadImg(imgURL + 'equipment/item_' + equipments[id].imgId + '.png');
         });
       }
     };
