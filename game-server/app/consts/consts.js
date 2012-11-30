@@ -90,9 +90,9 @@ module.exports = {
 	 * Traverse npc, the key is the npc id, the value is the taret's area id.
 	 */
 	TraverseNpc: {
-		306 : 2,
-		301 : 1,
-		304 : 3,
+		304 : 2,
+		305 : 1,
+		306 : 3,
 		309 : 2
 	}, 
 	
