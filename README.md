@@ -7,7 +7,7 @@ the map and renders the animations by colorbox, which is a client side game engi
 In this game, the client communicates via websockets with the server. 
 
  * Homepage: <http://pomelo.netease.com/>
- * Mailing list: <https://groups.google.com/group/pomelo>
+ * Mailing list: <https://groups.google.com/group/pomelojs>
  * Documentation: <http://github.com/netease/pomelo>
  * Wiki: <https://github.com/netease/pomelo/wiki/>
  * Issues: <https://github.com/netease/pomelo/issues/>
