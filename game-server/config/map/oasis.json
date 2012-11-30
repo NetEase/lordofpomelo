@@ -3,7 +3,7 @@
         {
          "data":[1],
          "height":1,
-         "name":"grass",
+         "name":"oasis",
          "opacity":1,
          "type":"tilelayer",
          "visible":true,
@@ -12,6 +12,7 @@
          "y":0
         }, 
         {
+         "color":"#ffff7f",
          "height":1,
          "name":"birth",
          "objects":[
@@ -24,8 +25,8 @@
                     },
                  "type":"",
                  "width":366,
-                 "x":906,
-                 "y":2856
+                 "x":1272,
+                 "y":3004
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -35,6 +36,7 @@
          "y":0
         }, 
         {
+         "color":"#0055ff",
          "height":1,
          "name":"mob",
          "objects":[
@@ -51,15 +53,15 @@
                     },
                  "type":"",
                  "width":402,
-                 "x":96,
-                 "y":624
+                 "x":1928,
+                 "y":3132
                 }, 
                 {
                  "height":244,
                  "name":"mob2",
                  "properties":
                     {
-                     "level":"25",
+                     "level":"30",
                      "mobId":"201",
                      "mobName":"dragonfly",
                      "mobNum":"8",
@@ -68,10 +70,10 @@
                  "type":"",
                  "width":432,
                  "x":1992,
-                 "y":1428
+                 "y":1432
                 }, 
                 {
-                 "height":296,
+                 "height":400,
                  "name":"mob4",
                  "properties":
                     {
@@ -82,9 +84,9 @@
                      "refreshTime":"5000"
                     },
                  "type":"",
-                 "width":456,
-                 "x":4248,
-                 "y":560
+                 "width":292,
+                 "x":4852,
+                 "y":1052
                 }, 
                 {
                  "height":220,
@@ -99,8 +101,8 @@
                     },
                  "type":"",
                  "width":390,
-                 "x":4194,
-                 "y":3584
+                 "x":3558,
+                 "y":3564
                 }, 
                 {
                  "height":208,
@@ -115,8 +117,8 @@
                     },
                  "type":"",
                  "width":360,
-                 "x":2358,
-                 "y":3720
+                 "x":4306,
+                 "y":2944
                 }, 
                 {
                  "height":200,
@@ -131,8 +133,8 @@
                     },
                  "type":"",
                  "width":384,
-                 "x":228,
-                 "y":1384
+                 "x":308,
+                 "y":1388
                 }, 
                 {
                  "height":196,
@@ -147,24 +149,88 @@
                     },
                  "type":"",
                  "width":360,
-                 "x":3906,
-                 "y":1976
+                 "x":1978,
+                 "y":2284
                 }, 
                 {
-                 "height":256,
+                 "height":200,
                  "name":"boss",
                  "properties":
                     {
-                     "level":"60",
+                     "level":"55",
                      "mobId":"208",
                      "mobName":"Unicorn Beetle",
-                     "mobNum":"2",
+                     "mobNum":"3",
                      "refreshTime":"10000"
                     },
                  "type":"",
-                 "width":382,
-                 "x":5374,
-                 "y":683
+                 "width":396,
+                 "x":4788,
+                 "y":512
+                }, 
+                {
+                 "height":244,
+                 "name":"mob3",
+                 "properties":
+                    {
+                     "level":"45",
+                     "mobId":"206",
+                     "mobName":"coconut monster",
+                     "mobNum":"8",
+                     "refreshTime":"5000"
+                    },
+                 "type":"",
+                 "width":324,
+                 "x":4020,
+                 "y":1944
+                }, 
+                {
+                 "height":220,
+                 "name":"mob5",
+                 "properties":
+                    {
+                     "level":"35",
+                     "mobId":"206",
+                     "mobName":"Coconut monster",
+                     "mobNum":"8",
+                     "refreshTime":"5000"
+                    },
+                 "type":"",
+                 "width":390,
+                 "x":3017,
+                 "y":1282
+                }, 
+                {
+                 "height":156,
+                 "name":"mob4",
+                 "properties":
+                    {
+                     "level":"50",
+                     "mobId":"206",
+                     "mobName":"Coconut monster",
+                     "mobNum":"5",
+                     "refreshTime":"5000"
+                    },
+                 "type":"",
+                 "width":456,
+                 "x":3560,
+                 "y":496
+                }, 
+                {
+                 "height":124,
+                 "name":"mob6",
+                 "properties":
+                    {
+                     "level":"60",
+                     "mobId":"206",
+                     "mobName":"Coconut monster",
+                     "mobNum":"3",
+                     "refreshTime":"5000"
+                    },
+                 "type":"",
+                 "width":162,
+                 "x":864,
+                 "y":100
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -174,11 +240,12 @@
          "y":0
         }, 
         {
+         "color":"#ff0000",
          "height":1,
          "name":"npc",
          "objects":[
                 {
-                 "height":136,
+                 "height":148,
                  "name":"npc1",
                  "properties":
                     {
@@ -187,9 +254,9 @@
                      "orientation":""
                     },
                  "type":"",
-                 "width":132,
-                 "x":1188,
-                 "y":992
+                 "width":100,
+                 "x":1020,
+                 "y":3024
                 }, 
                 {
                  "height":140,
@@ -202,11 +269,11 @@
                     },
                  "type":"",
                  "width":114,
-                 "x":4188,
-                 "y":1516
+                 "x":5060,
+                 "y":296
                 }, 
                 {
-                 "height":160,
+                 "height":156,
                  "name":"npc4",
                  "properties":
                     {
@@ -215,12 +282,12 @@
                      "orientation":""
                     },
                  "type":"",
-                 "width":144,
-                 "x":559,
-                 "y":3355
+                 "width":108,
+                 "x":1291,
+                 "y":1119
                 }, 
                 {
-                 "height":184,
+                 "height":172,
                  "name":"npc3",
                  "properties":
                     {
@@ -229,18 +296,19 @@
                      "orientation":""
                     },
                  "type":"",
-                 "width":171,
-                 "x":2646,
-                 "y":3016
+                 "width":119,
+                 "x":2701,
+                 "y":2870
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":false,
+         "visible":true,
          "width":1,
          "x":0,
          "y":0
         }, 
         {
+         "color":"#aa0000",
          "height":1,
          "name":"collision",
          "objects":[
@@ -7809,11 +7877,11 @@
  "tilesets":[
         {
          "firstgid":1,
-         "image":"grass.jpg",
+         "image":"oasis.jpg",
          "imageheight":4000,
          "imagewidth":6000,
          "margin":0,
-         "name":"grass",
+         "name":"oasis",
          "properties":
             {
 
