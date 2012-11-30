@@ -24,8 +24,8 @@
                     },
                  "type":"",
                  "width":386,
-                 "x":246,
-                 "y":80
+                 "x":404,
+                 "y":91
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -43,25 +43,25 @@
                  "name":"boss",
                  "properties":
                     {
-                     "level":"50",
+                     "level":"30",
                      "mobId":"208",
                      "mobName":"Unicorn Beetle",
-                     "mobNum":"2",
+                     "mobNum":"1",
                      "refreshTime":"10000"
                     },
                  "type":"",
                  "width":403,
-                 "x":3087,
-                 "y":2125
+                 "x":3314,
+                 "y":2405
                 }, 
                 {
                  "height":235,
                  "name":"mob3",
                  "properties":
                     {
-                     "level":"40",
-                     "mobId":"202",
-                     "mobName":"Harpy",
+                     "level":"10",
+                     "mobId":"209",
+                     "mobName":"Corpse flower",
                      "mobNum":"8",
                      "refreshTime":"5000"
                     },
@@ -75,11 +75,11 @@
                  "name":"mob1",
                  "properties":
                     {
-                     "level":"30",
-                     "mobId":"209",
-                     "mobName":"Corpse flower",
+                     "level":"8",
+                     "mobId":"202",
+                     "mobName":"Harpy",
                      "mobNum":"8",
-                     "refeshTime":"5000"
+                     "refeshTime":"3000"
                     },
                  "type":"",
                  "width":361,
@@ -91,25 +91,25 @@
                  "name":"mob2",
                  "properties":
                     {
-                     "level":"30",
-                     "mobId":"209",
-                     "mobName":"Corpse flower",
+                     "level":"1",
+                     "mobId":"202",
+                     "mobName":"Harpy",
                      "mobNum":"8",
-                     "refreshTime":"5000"
+                     "refreshTime":"3000"
                     },
                  "type":"",
                  "width":370,
-                 "x":55,
-                 "y":1280
+                 "x":143,
+                 "y":1282
                 }, 
                 {
                  "height":232,
                  "name":"mob4",
                  "properties":
                     {
-                     "level":"40",
-                     "mobId":"202",
-                     "mobName":"Harpy",
+                     "level":"20",
+                     "mobId":"209",
+                     "mobName":"Corpse flower",
                      "mobNum":"8",
                      "refreshTime":"5000"
                     },
@@ -123,16 +123,16 @@
                  "name":"mob5",
                  "properties":
                     {
-                     "level":"40",
-                     "mobId":"202",
-                     "mobName":"Harpy",
+                     "level":"15",
+                     "mobId":"209",
+                     "mobName":"Corpse flower",
                      "mobNum":"8",
                      "refreshTime":"5000"
                     },
                  "type":"",
                  "width":365,
-                 "x":1672,
-                 "y":2470
+                 "x":1147,
+                 "y":2436
                 }],
          "opacity":1,
          "type":"objectgroup",
@@ -203,7 +203,7 @@
                 }],
          "opacity":1,
          "type":"objectgroup",
-         "visible":true,
+         "visible":false,
          "width":1,
          "x":0,
          "y":0

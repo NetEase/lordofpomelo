@@ -3,8 +3,8 @@
 		"name": "desert",
 		"level": 0,
 		"map":{
-			"width":6000,
-			"height":4000
+			"width":4200,
+			"height":2800
 		},
 		"tower":{
 			"width": 300,
@@ -15,8 +15,8 @@
 		"name": "jianye",
 		"level": 10,	
 		"map":{
-			"width":4200,
-			"height":2800
+			"width":6000,
+			"height":4000
 		},
 		"tower":{
 			"width": 300,
