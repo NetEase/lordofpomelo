@@ -5,38 +5,6 @@ __resources__["/consts.js"] = {
 
     module.exports = {
 
-      AnimationName: {
-        LEFT_DIE: 'LeftDie',
-        RIGHT_DIE: 'RightDie',
-
-        LEFT_STAND: 'LeftStand',
-        RIGHT_STAND: 'RightStand' ,
-
-        LEFT_WALK: 'LeftWalk',
-        RIGHT_WALK: 'RightWalk',
-
-        LEFT_ATTACK: 'LeftAttack',
-        RIGHT_ATTACK: 'RightAttack',
-
-        LEFT_MAGIC: 'LeftMagic',
-        RIGHT_MAGIC: 'RightMagic',
-
-        LEFT_HIT: 'LeftHit',
-        RIGHT_HIT: 'RightHit',
-
-        LEFT_DEFEND: 'LeftDefend',
-        RIGHT_DEFEND: 'RightDefend'
-      },
-
-      Orientation: {
-        LEFT: 'Left',
-        RIGHT: 'Right',
-        LEFT_DOWN: 'Left_down',
-        LEFT_UP: 'Left_up',
-        RIGHT_DOWN: 'Right_down',
-        RIGHT_UP: 'Right_up'
-      },
-
 			aniOrientation:{
 				LEFT_DOWN: 'LeftDown',
 				LEFT_UP: 'LeftUp',

@@ -6,7 +6,6 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	var model = require('model');
 	var imgAndJsonUrl = require('config').IMAGE_URL;
 	var consts = require('consts');
-	var aniName = consts.AnimationName;
 	var aniOrientation = consts.aniOrientation;
 	var EntityType = consts.EntityType;
 	var NodeCoordinate = consts.NodeCoordinate;
