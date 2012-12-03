@@ -26,7 +26,7 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 	})();
 
 	var requestAnimFrame = function(callback) {
-		setInterval(callback, 333);
+		setInterval(callback, 33);
 	}
 	var Area = function(opts, mapData){
 		this.id = 1;
