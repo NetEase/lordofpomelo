@@ -14,7 +14,7 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 	var pomelo = window.pomelo;
 	var isStopped = false;
 
-	var requestAnimFrame1 = (function() {
+	var requestAnimFrame = (function() {
 		return window.requestAnimationFrame ||
 		window.webkitRequestAnimationFrame ||
 		window.mozRequestAnimationFrame ||
@@ -25,7 +25,7 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 		};
 	})();
 
-	var requestAnimFrame = function(callback) {
+	var requestAnimFrame1 = function(callback) {
 		setInterval(callback, 33);
 	}
 	var Area = function(opts, mapData){
