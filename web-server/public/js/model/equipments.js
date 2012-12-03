@@ -26,9 +26,19 @@ __resources__["/equipments.js"] = {meta: { mimetype: "application/javascript" },
 
 	Equipments.prototype = Object.create(EventEmitter.prototype);
 
-	var dict = {'武器': 'weapon', '项链': 'necklace', '头盔': 'helmet', '护甲': 'armor' , '腰带': 'belt', '鞋': 'shoes', '戒指': 'ring' };
+  var dict = {
+    '武器': 'weapon',
+    '项链': 'necklace',
+    '头盔': 'helmet',
+    '护甲': 'armor' ,
+    '腰带': 'belt',
+    '护腿': 'legguard',
+    '护符': 'amulet',
+    '鞋': 'shoes',
+    '戒指': 'ring'
+  };
 
-	var convertType = function (type) {
+  var convertType = function (type) {
 		if (/[\u4e00-\u9fa5]/.test(type)) {
 			type = dict[type];
 		} else {

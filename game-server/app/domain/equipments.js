@@ -24,11 +24,23 @@ var Equipments = function(opts) {
   this.ring = opts.ring || 0;
   this.belt = opts.belt || 0;
   this.shoes = opts.shoes || 0;
+  this.legguard = opts.legguard || 0;
+  this.amulet = opts.amulet || 0;
 };
 
 util.inherits(Equipments, Persistent);
 
-var dict = {'武器': 'weapon', '项链': 'necklace', '头盔': 'helmet', '护甲': 'armor' , '腰带': 'belt', '鞋': 'shoes', '戒指': 'ring' };
+var dict = {
+  '武器': 'weapon',
+  '项链': 'necklace',
+  '头盔': 'helmet',
+  '护甲': 'armor' ,
+  '腰带': 'belt',
+  '护腿': 'legguard',
+  '护符': 'amulet',
+  '鞋': 'shoes',
+  '戒指': 'ring'
+};
 
 var convertType = function (type) {
   if (/[\u4e00-\u9fa5]/.test(type)) {
