@@ -1,7 +1,7 @@
 ##Lordofpomelo - Lordofpomelo is a browser-based MMORPG
 
 Lordofpomelo is a browser-based MMORPG(massively multiplayer online role-playing game). 
-The backend is written in node.js based on [pomelo](https://github.com/NetEase/pomelo/wiki/Introduction-to-pomelo),
+The backend is written in node.js based on [pomelo](https://github.com/NetEase/pomelo),
 which is a fast, scalable, distributed game server framework for node.js. The frontend uses the HTML5 Canvas to draw 
 the map and renders the animations by colorbox, which is a client side game engine written in JavaScript based on HTML5.
 In this game, the client communicates via websockets with the server. 
@@ -13,6 +13,14 @@ In this game, the client communicates via websockets with the server.
  * Issues: <https://github.com/netease/pomelo/issues/>
  * Tags: game, nodejs 
 
+## Screenshot
+
+![login](http://pomelo.netease.com/image/demo0.png?11)
+![scene one](http://pomelo.netease.com/image/demo2.png?11)
+![scene two](http://pomelo.netease.com/image/demo3.png?11)
+![scene three](http://pomelo.netease.com/image/demo4.png?11)
+
+There are many monsters and one hero named Traxex who is killing the monster for experiences, treasures and equipments.
 
 ## How to install
 
@@ -44,8 +52,6 @@ Lordofpomelo requires the following npm libraries:
 * express(http://expressjs.com/)
 * socket.io(http://socket.io/)
 
-.................
-
 #### pomelo
 Pomelo is made by our team. It is a fast, scalable, distributed game server framework for node.js. It provides the basic
 development framework and a lot of related components, including libraries and tools. Pomelo is also suitable for realtime
@@ -59,14 +65,6 @@ Colorbox is our team's another open source project. It is a client side game eng
  * Visit the [lordofpomelo](http://pomelo.netease.com/lordofpomelo)
  * or you can visit [github:lordofpomelo](http://github.com/NetEase/lordofpomelo)to download the source and install it on your local machine.
 
-## Screenshot
-
-![choose role](http://pomelo.netease.com/image/demo1.png?11)
-![scene one](http://pomelo.netease.com/image/demo2.png?11)
-![scene two](http://pomelo.netease.com/image/demo3.png?11)
-![scene three](http://pomelo.netease.com/image/demo4.png?11)
-
-This is a screenshot in scene three. There are many monsters and one hero named Traxex who is killing the monster for experiences, treasures and equipments.
 
 
 ## License
