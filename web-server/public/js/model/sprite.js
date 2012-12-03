@@ -704,13 +704,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	 */
 
 	Sprite.prototype.revive = function(data) {
-		if(!this.curNode || !this.mapNode) {
-			console.log('curNode or mapNode is null!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-		}
 		this.entity.scene.addNode(this.curNode, this.mapNode);
-		if(app.getCurPlayer().entityId == this.entity.entityId) {
-			console.log('curPlayer revives~~~~~~~~~~~~~~~~~~~~~~~~');
-		}
 		this.reduceBlood();
 		this.translateTo(data.x, data.y);
 		this.stand();

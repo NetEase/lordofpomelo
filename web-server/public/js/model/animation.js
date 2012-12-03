@@ -4,12 +4,10 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 	 * Module dependencies
 	 */
 
-	var FrameAnimation = require('frameanimation').FrameAnimation;
-	var EntityType = require('consts').EntityType;
-	var imgAndJsonUrl = require('config').IMAGE_URL;
-	var dataApi = require('dataApi');
-	var app = require('app');
-	var aniOrientation = require('consts').Orientation;
+	var FrameAnimation = require('frameanimation').FrameAnimation
+		, imgAndJsonUrl = require('config').IMAGE_URL
+		, dataApi = require('dataApi')
+		, app = require('app');
 
 	/**
 	 * Initialize a new 'Animation' with the given 'opts'
@@ -31,11 +29,11 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 	 * @api public
 	 */
 	Animation.prototype.create = function() {
-		var animationData = this.getJsonData();
+		var animationData = this._getJsonData();
 		var width = parseInt(animationData.width);
 		var height = parseInt(animationData.height);
 		var totalFrames = parseInt(animationData.totalFrame);
-		var img = this.getImage(), ani;
+		var img = this._getImage(), ani;
 		ani = new FrameAnimation({
 			image: img,
 			w: width - 5,
@@ -54,7 +52,7 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 	 *
 	 * @api public
 	 */
-	Animation.prototype.getJsonData= function() {
+	Animation.prototype._getJsonData= function() {
 		var id = this.kindId, type = this.type, name = this.name, data;
 		data = dataApi.animation.get(id)[name];
 		if (!!data) {
@@ -69,7 +67,7 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 	 *
 	 * @api public
 	 */
-	Animation.prototype.getImage = function() {
+	Animation.prototype._getImage = function() {
 		var id = this.kindId, type = this.type, name = this.name;
 		var aniIamgeUrl;
 		aniIamgeUrl = imgAndJsonUrl + 'animationPs3/' + id + '/' + name + '.gif';

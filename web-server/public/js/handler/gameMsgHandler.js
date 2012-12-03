@@ -213,8 +213,6 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 				player: attacker,
 				position: {x: targetPos.x - attackerPos.x, y: targetPos.y - attackerPos.y}
 			};
-
-      console.log('attacker', data.attacker);
 			if (app.getCurPlayer().entityId == data.attacker && skillId > 1) {
 				mainPanel.skillBox[skillId].start();
 			}
