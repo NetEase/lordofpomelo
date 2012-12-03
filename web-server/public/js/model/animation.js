@@ -29,11 +29,11 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 	 * @api public
 	 */
 	Animation.prototype.create = function() {
-		var animationData = this._getJsonData();
+		var animationData = this.getJsonData();
 		var width = parseInt(animationData.width);
 		var height = parseInt(animationData.height);
 		var totalFrames = parseInt(animationData.totalFrame);
-		var img = this._getImage(), ani;
+		var img = this.getImage(), ani;
 		ani = new FrameAnimation({
 			image: img,
 			w: width - 5,
@@ -52,7 +52,7 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 	 *
 	 * @api public
 	 */
-	Animation.prototype._getJsonData= function() {
+	Animation.prototype.getJsonData= function() {
 		var id = this.kindId, type = this.type, name = this.name, data;
 		data = dataApi.animation.get(id)[name];
 		if (!!data) {
@@ -67,7 +67,7 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 	 *
 	 * @api public
 	 */
-	Animation.prototype._getImage = function() {
+	Animation.prototype.getImage = function() {
 		var id = this.kindId, type = this.type, name = this.name;
 		var aniIamgeUrl;
 		aniIamgeUrl = imgAndJsonUrl + 'animationPs3/' + id + '/' + name + '.gif';
