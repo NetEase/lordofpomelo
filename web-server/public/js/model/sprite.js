@@ -181,7 +181,15 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			var actionAnimation = null;
 			if (this.entity.type === EntityType.PLAYER || this.entity.type === EntityType.MOB) {
 				actionAnimation = this.getAnimationFromPool(this.entity.kindId, name);
-			} 
+			} else {
+				/**
+				actionAnimation = new Animation({
+					kindId: this.entity.kindId,
+					type: this.entity.type,
+					name: name
+				}).create();
+				*/
+			}
 			var actionModel = actionAnimation.target();
 			actionModel.set('ratioAnchorPoint' ,{
 				x: 0.5,
@@ -266,14 +274,14 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	}
 
 	//Stand animation, one of four basic animation.
-	Sprite.prototype.stand = function(dir, callback) {
+	Sprite.prototype.stand = function(dir) {
 		this.stopWholeAnimations();
-		this._initStand(dir, callback);
+		this._initStand(dir);
 	};
 
 	//Initialized animation
-	Sprite.prototype._initStand = function(dir,callback) {  
-		var result = this._action(dir, 'Stand', callback);
+	Sprite.prototype._initStand = function(dir) {  
+		var result = this._action(dir, 'Stand');
 		this.standAnimation = result.actionAnimation;
 		this.standFrameLoop = result.loopAnimation;
 	};
@@ -696,11 +704,11 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	 * @api public
 	 */
 
-	Sprite.prototype.revive = function(data, callback) {
+	Sprite.prototype.revive = function(data) {
 		this.entity.scene.addNode(this.curNode, this.mapNode);
 		this.reduceBlood();
 		this.translateTo(data.x, data.y);
-		this.stand(callback);
+		this.stand();
 	};
 
 	//Check out the curPlayer

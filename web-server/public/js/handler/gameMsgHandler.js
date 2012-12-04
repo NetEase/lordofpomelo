@@ -248,12 +248,11 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			player.died = false;
 			player.set('hp', data.hp);
 			var sprite = player.getSprite();
-			sprite.revive(data, function() {
-				if (player.entityId === app.getCurPlayer().entityId) {
-					area.map.centerTo(data.x, data.y);
-					mainPanel.reviveMaskHide();
-				}
-			});
+			sprite.revive(data);
+			if (player.entityId === app.getCurPlayer().entityId) {
+				area.map.centerTo(data.x, data.y);
+				mainPanel.reviveMaskHide();
+			}
 		});
 	}	
 
