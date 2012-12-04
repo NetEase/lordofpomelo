@@ -451,7 +451,9 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 				self.entity.y = pos.y;
 			} 
 			self.destory();
-			//app.getCurArea().removeEntity(self.entity.entityId);
+			if (!self.isCurPlayer) {
+				app.getCurArea().removeEntity(self.entity.entityId);
+			}
 			callback();
 		});
 		this.diedAnimation = result.actionAnimation;

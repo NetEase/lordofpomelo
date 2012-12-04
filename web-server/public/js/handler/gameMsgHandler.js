@@ -244,6 +244,10 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 		 */
 		pomelo.on('onRevive', function(data) {
 			var area = app.getCurArea();
+			var curPlayer = app.getCurPlayer();
+			if (curPlayer.entityId !== data.entityId) {
+				area.addEntity(data.entity);
+			}
 			var player = area.getEntity(data.entityId);
 			player.died = false;
 			player.set('hp', data.hp);
