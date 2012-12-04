@@ -146,7 +146,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 		if (this.entity.kindId == 210) {
 			this.curNode.exec('scale', {x: 1.5, y: 1.5});
 		}
-		this.curNode.name = this.entity.kindName + ';' + this.entity.name;
+		this.curNode.name = this.entity.kindName + ';' + this.entity.name + ';' + this.entity.type;
 		this._initStand();
 	};
 
