@@ -450,6 +450,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 				self.entity.y = pos.y;
 			} 
 			self.destory();
+			//app.getCurArea().removeEntity(self.entity.entityId);
 			callback();
 		});
 		this.diedAnimation = result.actionAnimation;
@@ -704,11 +705,12 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	 * @api public
 	 */
 
-	Sprite.prototype.revive = function(data) {
+	Sprite.prototype.revive = function(data, callback) {
 		this.entity.scene.addNode(this.curNode, this.mapNode);
 		this.reduceBlood();
 		this.translateTo(data.x, data.y);
 		this.stand();
+		callback();
 	};
 
 	//Check out the curPlayer
