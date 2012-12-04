@@ -450,9 +450,10 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 				self.entity.x = pos.x;
 				self.entity.y = pos.y;
 			} 
-			self.destory();
 			if (!self.isCurPlayer) {
 				app.getCurArea().removeEntity(self.entity.entityId);
+			} else {
+				self.destory();
 			}
 			callback();
 		});
