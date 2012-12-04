@@ -707,6 +707,9 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	 */
 
 	Sprite.prototype.revive = function(data, callback) {
+		if (!this.mapNode) {
+			console.log('mapNode no exist!');
+		}
 		this.entity.scene.addNode(this.curNode, this.mapNode);
 		this.reduceBlood();
 		this.translateTo(data.x, data.y);
