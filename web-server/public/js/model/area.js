@@ -181,7 +181,7 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 		}
 
 		var e = this.entities[id];
-		e.destory();
+		//e.destory();
 
 		delete this.entities[id];
 	};
