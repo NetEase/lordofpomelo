@@ -198,7 +198,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			var target = area.getEntity(data.target);
 
 			if(!attacker || !target){
-				//console.log('attacker or target not exist ! attacker: ' + data.attacker + ', target : ' + data.target);
+				console.log('attacker or target not exist ! attacker: ' + data.attacker + ', target : ' + data.target);
 				return;
 			}
 
