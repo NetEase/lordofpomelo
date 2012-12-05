@@ -245,7 +245,7 @@ var TreeNode = Node.extend({
                         });
     if (idx == -1 || idx == this._children.length)
     {
-      debug.log("this cannot remove the child, the child'a parent is not parent");
+      debug.log("this cannot remove the child, the child'a parent is not parent:" + child.name);
       return;
     }
     
