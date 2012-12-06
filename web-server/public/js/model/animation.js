@@ -4,12 +4,10 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 	 * Module dependencies
 	 */
 
-	var FrameAnimation = require('frameanimation').FrameAnimation;
-	var EntityType = require('consts').EntityType;
-	var imgAndJsonUrl = require('config').IMAGE_URL;
-	var dataApi = require('dataApi');
-	var app = require('app');
-	var aniOrientation = require('consts').Orientation;
+	var FrameAnimation = require('frameanimation').FrameAnimation
+		, imgAndJsonUrl = require('config').IMAGE_URL
+		, dataApi = require('dataApi')
+		, app = require('app');
 
 	/**
 	 * Initialize a new 'Animation' with the given 'opts'
@@ -40,8 +38,8 @@ __resources__["/animation.js"] = {meta: {mimetype: "application/javascript"}, da
 			image: img,
 			w: width - 5,
 			h: height - 5,
-			totalTime: totalFrames * 80,
-			interval: 80,
+			totalTime: totalFrames * 50,
+			interval: 50,
 			HSpan: width,
 			VSpan: height
 		});

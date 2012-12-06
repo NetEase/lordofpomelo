@@ -2,10 +2,10 @@ __resources__["/noEntityNode.js"] = {meta: {mimetype: "application/javascript"},
 	/**
 	* Module dependencies.
 	*/
-	var model = require('model');
-	var EntityType = require('consts').EntityType;
-	var animate = require('animate');
-	var NoEntityNode = module.exports;
+	var model = require('model')
+		,	EntityType = require('consts').EntityType
+		,	animate = require('animate')
+		,	NoEntityNode = module.exports;
 	/**
 	* Create nameNode with a text model.
 	*

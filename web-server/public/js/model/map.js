@@ -114,16 +114,18 @@ __resources__["/map.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 		var rx = (x2 - x1) / dis, ry = (y2 - y1) / dis;
 		var dx = tile * rx, dy = tile * ry;
 		var x0 = x1, y0 = y1;
-
+		x1 += dx;
+  	y1 += dy;
+  	
 		while((dx > 0 && x1 < x2) || (dx < 0 && x1 > x2)) {
-			x1 += dx;
-			y1 += dy;
 			if(!this._testLine(x0, y0, x1, y1)) {
 				return false;
 			}
 
 			x0 = x1;
 			y0 = y1;
+			x1 += dx;
+			y1 += dy;
 		}
 		return true;
 	};
@@ -372,14 +374,14 @@ __resources__["/map.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 
 		paths.push({x: x1, y: y1});
 
-		this.check(paths);
 		paths = this.compressPath2(paths);
-		this.check(paths);
 		if(paths.length > 2){
 			paths = this.compressPath1(paths, 3);
-			this.check(paths);
 			paths = this.compressPath2(paths);
-			this.check(paths);
+			if(!this.check(paths)){
+				console.log('illegal path!!!');
+				return null;
+			}
 		}
 
 		result.path = paths;
@@ -392,7 +394,7 @@ __resources__["/map.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 			var p0 = path[i-1];
 			var p1 = path[i];
 			if(!this._checkLinePath(p0.x, p0.y, p1.x, p1.y)){
-				console.log('illegal path!!!');
+				//console.log('error ! i, p0, p1', i, p0, p1);
 				return false;
 			}
 		}

@@ -21,12 +21,15 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 		window.oRequestAnimationFrame ||
 		window.msRequestAnimationFrame ||
 		function(/* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
-			window.setTimeout(callback, 1000/30);
+			window.setTimeout(callback, 1000/60);
 		};
 	})();
 
+	var logicTickHandler = function(callback) {
+		setTimeout(callback, 1000/60);
+	}
+
 	var Area = function(opts, mapData){
-		this.id = 1;
 		this.playerId = opts.playerId;
 		this.entities = {};
 		this.players = {};
@@ -82,7 +85,7 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 
 		var $frameRate = $('#frame-rate');
 
-		function tick(){
+		function logicTick(){
 			var next = Date.now();
 			closure.gd.step(next,  next - time);
 			tickCount++;
@@ -98,11 +101,18 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 			}
 			if(!isStopped){
 				time = next;
-				requestAnimFrame(tick);
+				logicTickHandler(logicTick);
 			}
 		}
 
-		tick();
+		function drawTick() {
+			closure.gd.draw();
+			requestAnimFrame(drawTick);
+		}
+
+		logicTick();
+
+		drawTick();
 	};
 
 	/**

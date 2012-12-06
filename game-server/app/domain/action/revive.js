@@ -45,7 +45,6 @@ Revive.prototype.update = function(){
   	this.entity.x = newPos.x;
   	this.entity.y = newPos.y;
   	
-  	console.error('player revive!');
 		messageService.pushMessageByAOI({route: 'onRevive', entityId : this.entity.entityId, entity: this.entity, x: this.entity.x, y: this.entity.y, hp: this.entity.hp}, {x : this.entity.x, y : this.entity.y});
 		this.finished = true;
 	}

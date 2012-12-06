@@ -117,11 +117,12 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			x = this.entity.x;
 			y = this.entity.y;
 		}
-		if (this.entity.type === EntityType.PLAYER) {
-			frameNode.exec('translate', x, y, NodeCoordinate.PLAYER_NODE);
+		if (this.isCurPlayer) {
+			frameNode.exec('translate', x, y, NodeCoordinate.CURPLAY_NODE);
 		} else {
 			frameNode.exec('translate', x, y, NodeCoordinate.MOB_NODE);
 		}
+
 		this.curNode = frameNode;
 		this.nameNode = noEntityNode.createNameNode(this.entity);
 		this.entity.scene.addNode(this.nameNode, frameNode);
@@ -137,14 +138,18 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 				name: name
 			}).getJsonData();
 			var height = json.height - 30;
+			if (this.entity.kindId === consts.SpecialCharacter.Angle) {
+				height =json.height;
+			}
 			this.bloodbarNode.exec('translate', -26, -height, NodeCoordinate.RED_BLOOD_NODE);
 			darkBloodBarNode.exec('translate', -26, -height, NodeCoordinate.BLACK_BLOOD_NODE);
 			this.nameNode.exec('translate',0 ,-(height + 10), NodeCoordinate.NAME_NODE);
 			this.reduceBlood();
 		}
-		if (this.entity.kindId == 210) {
-			this.curNode.exec('scale', {x: 1.5, y: 1.5});
+		if (this.entity.kindId === consts.SpecialCharacter.Angle) {
+			this.curNode.exec('scale', {x: 1.2, y: 1.2});
 		}
+		this.curNode.name = this.entity.kindName + ';' + this.entity.name + ';' + this.entity.type;
 		this._initStand();
 	};
 
@@ -448,7 +453,11 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 				self.entity.x = pos.x;
 				self.entity.y = pos.y;
 			} 
-			self.destory();
+			if (!self.isCurPlayer) {
+				app.getCurArea().removeEntity(self.entity.entityId);
+			} else {
+				self.destory();
+			}
 			callback();
 		});
 		this.diedAnimation = result.actionAnimation;
@@ -703,17 +712,15 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	 * @api public
 	 */
 
-	Sprite.prototype.revive = function(data) {
-		if(!this.curNode || !this.mapNode) {
-			console.log('curNode or mapNode is null!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
+	Sprite.prototype.revive = function(data, callback) {
+		if (!this.mapNode) {
+			console.log('mapNode no exist!');
 		}
 		this.entity.scene.addNode(this.curNode, this.mapNode);
-		if(app.getCurPlayer().entityId == this.entity.entityId) {
-			console.log('curPlayer revives~~~~~~~~~~~~~~~~~~~~~~~~');
-		}
 		this.reduceBlood();
 		this.translateTo(data.x, data.y);
 		this.stand();
+		callback();
 	};
 
 	//Check out the curPlayer
