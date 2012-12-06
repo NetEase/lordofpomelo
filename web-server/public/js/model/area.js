@@ -25,9 +25,10 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 		};
 	})();
 
-	var requestAnimFrame1 = function(callback) {
-		setInterval(callback, 33);
+	var logicTickHandler = function(callback) {
+		setTimeout(callback, 33);
 	}
+
 	var Area = function(opts, mapData){
 		this.playerId = opts.playerId;
 		this.entities = {};
@@ -84,7 +85,7 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 
 		var $frameRate = $('#frame-rate');
 
-		function tick(){
+		function logicTick(){
 			var next = Date.now();
 			closure.gd.step(next,  next - time);
 			tickCount++;
@@ -100,11 +101,18 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 			}
 			if(!isStopped){
 				time = next;
-				requestAnimFrame(tick);
+				logicTickHandler(logicTick);
 			}
 		}
 
-		tick();
+		function drawTick() {
+			closure.gd.draw();
+			requestAnimFrame(drawTick);
+		}
+
+		logicTick();
+
+		drawTick();
 	};
 
 	/**
