@@ -25,7 +25,7 @@ exp.addEventForPlayer = function (player){
 	 */
 	player.on('pickItem', function(args){
 		if(args.result !== consts.Pick.SUCCESS){
-			logger.warn('Pick Item error! Result : ' + args.result);
+			logger.debug('Pick Item error! Result : ' + args.result);
 			return;
 		}
 
