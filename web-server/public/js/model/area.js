@@ -21,12 +21,12 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 		window.oRequestAnimationFrame ||
 		window.msRequestAnimationFrame ||
 		function(/* function FrameRequestCallback */ callback, /* DOMElement Element */ element) {
-			window.setTimeout(callback, 1000/30);
+			window.setTimeout(callback, 1000/60);
 		};
 	})();
 
 	var logicTickHandler = function(callback) {
-		setTimeout(callback, 33);
+		setTimeout(callback, 1000/60);
 	}
 
 	var Area = function(opts, mapData){
