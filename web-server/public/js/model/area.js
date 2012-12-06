@@ -29,7 +29,6 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 		setInterval(callback, 33);
 	}
 	var Area = function(opts, mapData){
-		this.id = 1;
 		this.playerId = opts.playerId;
 		this.entities = {};
 		this.players = {};
