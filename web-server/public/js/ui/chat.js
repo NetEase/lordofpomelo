@@ -95,6 +95,7 @@ __resources__["/chat.js"] = {meta: {mimetype: "application/javascript"}, data: f
 	}
 
 	pro.response = function(data,msg) {
+		$('.m-chat .u-txt').val('');
 		if (data.code !== 200) {
 			if (data.code === 3004) {
 				alert(' user is offline ');
@@ -105,7 +106,6 @@ __resources__["/chat.js"] = {meta: {mimetype: "application/javascript"}, data: f
 		} else {
 			if (msg.scope===SCOPE.PRI)
 			  this.append(msg);
-			$('.m-chat .u-txt').val('');
 		}
 	};
 
