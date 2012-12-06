@@ -540,15 +540,18 @@ Map.prototype._checkLinePath = function(x1, y1, x2, y2) {
   
   var x0 = x1;
   var y0 = y1;
+  x1 += dx;
+  y1 += dy;
+  
   while((dx > 0 && x1 < x2) || (dx < 0 && x1 > x2)) {
-    x1 += dx;
-    y1 += dy;
     if(!this._testLine(x0, y0, x1, y1)) {
       return false;
     }
     
     x0 = x1;
     y0 = y1;
+    x1 += dx;
+    y1 += dy;
   }
   return true;
 };
