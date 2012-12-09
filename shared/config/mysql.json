@@ -1,17 +1,17 @@
 {
 	"development": {
-	 "host" : "192.168.147.207",
+	 "host" : "127.0.0.1",
 		"port" : "3306",
 		"database" : "Pomelo",
 		"user" : "xy",
-		"password" : "dev"
+		"password" : "123"
 	},
 
 	"production": {
-	 "host" : "app47v2.photo.163.org",
+	 "host" : "127.0.0.1",
 		"port" : "3306",
 		"database" : "Pomelo",
 		"user" : "xy",
-		"password" : "dev"
+		"password" : "123"
 	}
 }
