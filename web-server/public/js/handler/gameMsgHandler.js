@@ -84,7 +84,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			var path = data.path;
 			var character = app.getCurArea().getEntity(data.entityId);
 			if(!character){
-				console.log('no character exist for move!' + data.entityId);
+				//console.log('no character exist for move!' + data.entityId);
 				return;
 			}
 
@@ -198,7 +198,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			var target = area.getEntity(data.target);
 
 			if(!attacker || !target){
-				console.log('attacker or target not exist ! attacker: ' + data.attacker + ', target : ' + data.target);
+				//console.log('attacker or target not exist ! attacker: ' + data.attacker + ', target : ' + data.target);
 				return;
 			}
 

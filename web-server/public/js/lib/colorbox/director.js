@@ -212,6 +212,18 @@ var Director = BObject.extend({
     }
   },
   
+  draw:function()
+  {
+    if (this._level)
+    {
+      this._defaultView.clear();
+
+      this._displayList.length = 0;
+      this._level.logic().getScene().filt(this._displayList, function(node){return !!node.model();});      
+      this._defaultView.redraw(this._displayList);
+    }
+  },
+
   step:function(t, dt)
   {
     this._timeStamper.stepForward(dt);
@@ -228,14 +240,10 @@ var Director = BObject.extend({
       if(transAndDraw(this, dt) == false)
         return;
     }
+
     if (this._level)
     {
-      this._defaultView.clear();
-
       this._level.step(this._timeStamper.now(), dt);
-      this._displayList.length = 0;
-      this._level.logic().getScene().filt(this._displayList, function(node){return !!node.model();});      
-      this._defaultView.redraw(this._displayList);
     }
   },
   
