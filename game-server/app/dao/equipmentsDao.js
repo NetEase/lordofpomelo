@@ -60,8 +60,8 @@ equipmentsDao.getEquipmentsByPlayerId = function(playerId, cb) {
  * @param {function} cb
  */
 equipmentsDao.update = function(val, cb) {
-	var sql = 'update Equipments set weapon = ?, armor = ?, helmet = ?, necklace = ?, ring = ?, belt = ?, shoes = ?	where id = ?';
-	var args = [val.weapon, val.armor, val.helmet, val.necklace, val.ring, val.belt, val.shoes, val.id];
+	var sql = 'update Equipments set weapon = ?, armor = ?, helmet = ?, necklace = ?, ring = ?, belt = ?, amulet = ?, legguard = ?, shoes = ?	where id = ?';
+	var args = [val.weapon, val.armor, val.helmet, val.necklace, val.ring, val.belt, val.amulet, val.legguard, val.shoes, val.id];
 
 	pomelo.app.get('dbclient').query(sql, args, function(err, res) {
 		utils.invokeCallback(cb, err, res);

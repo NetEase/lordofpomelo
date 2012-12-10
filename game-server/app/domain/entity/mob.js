@@ -174,13 +174,12 @@ Mob.prototype.dropItems = function(player) {
 	var dropItems = [];
 	for (var i = 0; i<itemCount; i++) {
 		var itemType = Math.floor(Math.random()*10);
-		if (itemType >= 2) {
+		if (itemType >= 4) {
 			var item = this._dropItem(player);
 			if(!!item){
 				dropItems.push(item);
 			}
-		}
-		else if (itemType < 2) {
+		}else{
 			var equipment = this._dropEquipment(player);
 			if(!!equipment){
 				dropItems.push(equipment);
@@ -228,7 +227,7 @@ Mob.prototype._dropItem = function(player) {
 
 //Drop Equipment down
 Mob.prototype._dropEquipment = function(player) {
-	var level = Math.min(this.level, player.level);
+	var level = formula.dropItemLv(this.level, player.level);
 	
 	var pos = area.map().genPos(this, 200);
 	if(!pos){
@@ -236,9 +235,8 @@ Mob.prototype._dropEquipment = function(player) {
 		return null;
 	}
 	
-	var equipments = dataApi.equipment.findSmaller('heroLevel', level);
-	var length = equipments.length;
-	var index = Math.floor(Math.random()*length);
+	var equipments = this.getEquipmentsByLevel(level);
+	var index = Math.floor(Math.random()*equipments.length);
 	var equipment = equipments[index];
 	var dropEquipment=new Equipment({
 		kindId : equipment.id,
@@ -260,6 +258,17 @@ Mob.prototype._dropEquipment = function(player) {
 	});
 	return dropEquipment;
 };
+
+Mob.prototype.getEquipmentsByLevel = function(level){
+	while(level > 0){
+		var equipments = dataApi.equipment.findBy('heroLevel', level);
+		if(equipments.length > 0)
+			return equipments;
+		level--;		
+	}
+	
+	return [];
+}
 
 //Reset position
 Mob.prototype.resetPosition = function() {

@@ -72,6 +72,19 @@ formula.distance = function(x1, y1, x2, y2) {
   return Math.sqrt(dx * dx + dy * dy);
 };
 
+formula.dropItemLv = function(mobLv, heroLv){
+	var lv = Math.min(mobLv, heroLv);
+	
+	var maxLv = Math.min(25, (lv - 1));
+	var limit = 4;
+	var num = 3;
+	var seed = Math.random()*limit;
+	
+	var dif = Math.floor(maxLv*Math.pow(num,seed)/Math.pow(num, limit));
+	
+	return lv - dif;	
+}
+
 /**
  * convert the date according to format
  * @param {Object} date

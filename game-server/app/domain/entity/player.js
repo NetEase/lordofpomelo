@@ -131,13 +131,16 @@ Player.prototype.setTotalAttackAndDefence = function() {
  * @api public
  */
 Player.prototype.equip = function(kind, equipId) {
+	var index = -1;
 	var curEqId = this.equipments.get(kind);
 	this.equipments.equip(kind, equipId);
 
 	if (curEqId > 0) {
-		this.bag.addItem({id: curEqId, type: 'equipment'});
+		index = this.bag.addItem({id: curEqId, type: 'equipment'});
 	}
 	this.setTotalAttackAndDefence();
+	
+	return index;
 };
 
 /**
@@ -233,7 +236,6 @@ Player.prototype.pickItem = function(entityId) {
 	if(!formula.inRange(this, item, 200)) {
 		result.distance = 200;
 		result.result = consts.Pick.NOT_IN_RANGE;
-		this.emit('pickItem', result);
 		return result;
 	}
 
@@ -426,6 +428,11 @@ Player.prototype.forEachHater = function(cb) {
 		}
 	}
 };
+
+Player.prototype.setEquipments = function(equipments){
+	this.equipments = equipments;
+	this.setTotalAttackAndDefence();
+}
 
 /**
  * Get part of curTasks information.

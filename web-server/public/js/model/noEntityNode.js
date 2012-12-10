@@ -21,14 +21,14 @@ __resources__["/noEntityNode.js"] = {meta: {mimetype: "application/javascript"},
 			name = data.name + ' - ' + data.level;
 			break;
 			case EntityType.MOB:
-			name = data.englishName + ' - ' + data.level + '-' + data.entityId;
+			name = data.englishName + ' - ' + data.level;
 			font = '';
 			break;
 			case EntityType.NPC:
 			name = data.englishName;
 			break;
 			default:
-			name = data.englishName||data.name;
+			name = data.englishName + ' - ' + data.heroLevel;
 			font = '';
 		}
 
