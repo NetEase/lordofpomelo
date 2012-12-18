@@ -27,12 +27,8 @@ handler.equip = function(msg, session, next) {
 			return;
 		}
 		
-    var curEqId = player.equipments.get(eq.kind);
-    player.equip(eq.kind, eq.id);
+    bagIndex = player.equip(eq.kind, eq.id);
     player.bag.removeItem(msg.index);
-    if (curEqId > 0) {
-      bagIndex = player.bag.addItem({id: curEqId, type: 'equipment'});
-    }
 
     status = true;
   }
