@@ -68,9 +68,9 @@ __resources__["/resourceLoader.js"] = {
           self.loadNpc(data.npcs);
           self.loadItem(data.items);
           self.loadEquipment(data.equipments);
+					initObjectPools(data.mobs, EntityType.MOB);
+					initObjectPools(data.players, EntityType.PLAYER);
         });
-        initObjectPools(data.mobs, EntityType.MOB);
-        initObjectPools(data.players, EntityType.PLAYER);
       });
     };
 
