@@ -115,7 +115,7 @@ exp.addEntity = function(e) {
 	if(!e || !e.entityId) {
 		return false;
 	}
-	
+
 	if(!!players[e.id]) {
 		logger.error('add player twice! player : %j', e);
 		return false;
@@ -123,20 +123,20 @@ exp.addEntity = function(e) {
 
 	entities[e.entityId] = e;
 	eventManager.addEvent(e);
-  
+
 	if(e.type === EntityType.PLAYER) {
 		getChannel().add(e.userId, e.serverId);
 		aiManager.addCharacters([e]);
-		
+
 		aoi.addWatcher({id: e.entityId, type: e.type}, {x : e.x, y: e.y}, e.range);
 		players[e.id] = e.entityId;
 		users[e.userId] = e.id;
 	}else if(e.type === EntityType.MOB) {
 		aiManager.addCharacters([e]);
-		
+
 		aoi.addWatcher({id: e.entityId, type: e.type}, {x : e.x, y: e.y}, e.range);
 	}else if(e.type === EntityType.NPC) {
-		
+
 	}else if(e.type === EntityType.ITEM) {
 		items[e.entityId] = e.entityId;
 	}else if(e.type === EntityType.EQUIPMENT) {
@@ -165,7 +165,7 @@ exp.removeEntity = function(entityId) {
 
 	//If the entity is a player, remove it
 	if(e.type === 'player') {
-		getChannel().leave(e.userId, pomelo.app.get('serverId'));
+		getChannel().leave(e.userId, pomelo.app.getServerId());
 		aiManager.removeCharacter(e.entityId);
 		patrolManager.removeCharacter(e.entityId);
 		aoi.removeObject({id:e.entityId, type: e.type}, {x: e.x, y: e.y});
@@ -174,11 +174,11 @@ exp.removeEntity = function(entityId) {
 		e.forEachEnemy(function(enemy) {
 			enemy.forgetHater(e.entityId);
 		});
-	
+
 		e.forEachHater(function(hater) {
 			hater.forgetEnemy(e.entityId);
 		});
-	
+
 		aoi.removeWatcher(e, {x : e.x, y: e.y}, e.range);
 		delete players[e.id];
 		delete users[e.userId];
@@ -195,7 +195,7 @@ exp.removeEntity = function(entityId) {
 		e.forEachHater(function(hater) {
 			hater.forgetEnemy(e.entityId);
 		});
-	
+
 		aoi.removeWatcher(e, {x : e.x, y: e.y}, e.range);
 	}else if(e.type === EntityType.ITEM) {
 		delete items[entityId];
@@ -231,8 +231,8 @@ exp.getEntities = function(ids) {
 		if(!!entity) {
 			result.push(entity);
 		}
-	}	
-	
+	}
+
 	return result;
 };
 
@@ -240,8 +240,8 @@ exp.getAllPlayers = function() {
 	var _players = [];
 	for(var id in players) {
 		_players.push(entities[players[id]]);
-	}	
-	
+	}
+
 	return _players;
 };
 
@@ -255,7 +255,7 @@ exp.getPlayer = function(playerId) {
 	if(!!entityId) {
 		return entities[entityId];
 	}
-  
+
 	return null;
 };
 
@@ -272,13 +272,13 @@ exp.getPlayerByUid = function(uid){
 	if(!!users[uid]){
 		return this.getPlayer(users[uid]);
 	}
-	
+
 	return null;
 }
 
 exp.removePlayerByUid = function(uid){
 	var playerId = users[uid];
-	
+
 	if(!!playerId){
 		delete users[uid];
 		this.removePlayer(playerId);
