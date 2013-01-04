@@ -11,6 +11,7 @@ In this game, the client communicates via websockets with the server.
  * Documentation: <http://github.com/netease/pomelo>
  * Wiki: <https://github.com/netease/pomelo/wiki/>
  * Issues: <https://github.com/netease/pomelo/issues/>
+ * google plus: <https://plus.google.com/communities/111412421246485271700/>
  * Tags: game, nodejs 
 
 ## Screenshot
