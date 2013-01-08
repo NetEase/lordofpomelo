@@ -72,7 +72,7 @@ Colorbox is our team's another open source project. It is a client side game eng
 
 (The MIT License)
 
-Copyright (c) 2012 Netease, Inc. and other contributors
+Copyright (c) 2012-2013 Netease, Inc. and other contributors
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the
