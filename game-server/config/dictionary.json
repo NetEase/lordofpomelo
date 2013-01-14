@@ -1,0 +1,6 @@
+{
+	"onDropItem" : 1,
+	"onAttack" : 2,
+	"onDied" : 3,
+	"onMove" : 4
+}

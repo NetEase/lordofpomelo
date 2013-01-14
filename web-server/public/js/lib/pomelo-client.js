@@ -315,6 +315,8 @@
 	pomelo.init = function(params, cb){
 		pomelo.params = params;
 		params.debug = true;
+		pomelo.dict = {};
+		pomelo.abbrs = {};
 		var host = params.host;
 		var port = params.port;
 
@@ -381,13 +383,29 @@
 		sendMessage(0, route, msg);
 	};
 
+	pomelo.setDict = function(dict){
+		if(!!dict){
+			pomelo.dict = dict;
+			for(var route in dict){
+				dict[route] = dict[route].toString();
+				pomelo.abbrs[dict[route]] = route;
+			}
+		}	
+	}
+	
 	var sendMessage = function(reqId, route, msg) {
+		if(!!pomelo.dict[route]){
+			route = pomelo.dict[route];
+		}
 		socket.send(Protocol.encode(reqId, route, msg));
 	};
 
 	var processMessage = function(pomelo, msg) {
 		if(!msg.id) {
 			// server push message
+			if(!!pomelo.abbrs[msg.route]){
+				msg.route = pomelo.abbrs[msg.route];
+			}
 			pomelo.emit(msg.route, msg);
 		}
 

@@ -1,0 +1,16 @@
+{
+	"area.playerHandler.enterScene" : {
+		"uid" : {
+			"type" : "uint32",
+			"required" : true
+		},
+		"playerId" : {
+			"type" : "unint32",
+			"required" : true
+		},
+		"areaId" : {
+			"type" : "unint32",
+			"required" : true
+		}
+	}
+}

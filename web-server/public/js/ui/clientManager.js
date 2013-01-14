@@ -133,9 +133,10 @@ __resources__["/clientManager.js"] = {
       }
       pomelo.init({host: host, port: port, log: true}, function() {
         //token = 'd72357c4c7f9b6a8e0b6a93c4d8652b1903114819c36749e53b97d1a78372387';
-        pomelo.request('connector.entryHandler.entry', { token: token}, function(data) {
+        pomelo.request('connector.entryHandler.entry', {token: token}, function(data) {
           var player = data.player;
-
+					pomelo.setDict(data.dict);
+					
           if (callback) {
             callback(data.code);
           }

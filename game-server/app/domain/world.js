@@ -74,5 +74,3 @@ exp.changeArea = function(args, session, cb) {
 		}
 	});
 };
-
-

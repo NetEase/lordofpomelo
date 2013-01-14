@@ -53,7 +53,7 @@ Move.prototype.update = function(){
 			//If the index exceed the last point, means the move is finished
 			if(index >= path.length){
 				this.finished = true;
-				this.entity.isMoving = true;
+				this.entity.isMoving = false;
 				break;
 			}
 

@@ -10,6 +10,9 @@ module.exports = function(app) {
 
 var Handler = function(app) {
 	this.app = app;
+	
+	if(!this.app)
+		logger.error(app);
 };
 
 var pro = Handler.prototype;
@@ -76,7 +79,14 @@ pro.entry = function(msg, session, next) {
 			next(err, {code: Code.FAIL});
 			return;
 		}
-		next(null, {code: Code.OK, player: players ? players[0] : null});
+		
+		var dictionary = self.app.components['__dictionary__'];
+		var dict = null;
+		if(!!dictionary){
+			dict = dictionary.getDict();
+		}
+		
+		next(null, {code: Code.OK, player: players ? players[0] : null, dict: dict});
 	});
 };
 
