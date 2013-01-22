@@ -115,7 +115,7 @@ exp.addEntity = function(e) {
 	if(!e || !e.entityId) {
 		return false;
 	}
-	
+
 	if(!!players[e.id]) {
 		logger.error('add player twice! player : %j', e);
 		return false;
@@ -123,20 +123,20 @@ exp.addEntity = function(e) {
 
 	entities[e.entityId] = e;
 	eventManager.addEvent(e);
-  
+
 	if(e.type === EntityType.PLAYER) {
 		getChannel().add(e.userId, e.serverId);
 		aiManager.addCharacters([e]);
-		
+
 		aoi.addWatcher({id: e.entityId, type: e.type}, {x : e.x, y: e.y}, e.range);
 		players[e.id] = e.entityId;
 		users[e.userId] = e.id;
 	}else if(e.type === EntityType.MOB) {
 		aiManager.addCharacters([e]);
-		
+
 		aoi.addWatcher({id: e.entityId, type: e.type}, {x : e.x, y: e.y}, e.range);
 	}else if(e.type === EntityType.NPC) {
-		
+
 	}else if(e.type === EntityType.ITEM) {
 		items[e.entityId] = e.entityId;
 	}else if(e.type === EntityType.EQUIPMENT) {
@@ -174,11 +174,11 @@ exp.removeEntity = function(entityId) {
 		e.forEachEnemy(function(enemy) {
 			enemy.forgetHater(e.entityId);
 		});
-	
+
 		e.forEachHater(function(hater) {
 			hater.forgetEnemy(e.entityId);
 		});
-	
+
 		aoi.removeWatcher(e, {x : e.x, y: e.y}, e.range);
 		delete players[e.id];
 		delete users[e.userId];
@@ -195,7 +195,7 @@ exp.removeEntity = function(entityId) {
 		e.forEachHater(function(hater) {
 			hater.forgetEnemy(e.entityId);
 		});
-	
+
 		aoi.removeWatcher(e, {x : e.x, y: e.y}, e.range);
 	}else if(e.type === EntityType.ITEM) {
 		delete items[entityId];
@@ -223,16 +223,24 @@ exp.getEntity = function(entityId) {
 /**
  * Get entities by given id list
  * @param {Array} The given entities' list.
+ * @return {Map} The entities
  */
 exp.getEntities = function(ids) {
-	var result = [];
+	var result = {};
+
+	result.length = 0;
 	for(var i = 0; i < ids.length; i++) {
 		var entity = entities[ids[i]];
 		if(!!entity) {
-			result.push(entity);
+			if(!result[entity.type]){
+				result[entity.type] = [];
+			}
+
+			result[entity.type].push(entity);
+			result.length++;
 		}
-	}	
-	
+	}
+
 	return result;
 };
 
@@ -240,8 +248,8 @@ exp.getAllPlayers = function() {
 	var _players = [];
 	for(var id in players) {
 		_players.push(entities[players[id]]);
-	}	
-	
+	}
+
 	return _players;
 };
 
@@ -255,7 +263,7 @@ exp.getPlayer = function(playerId) {
 	if(!!entityId) {
 		return entities[entityId];
 	}
-  
+
 	return null;
 };
 
@@ -272,13 +280,13 @@ exp.getPlayerByUid = function(uid){
 	if(!!users[uid]){
 		return this.getPlayer(users[uid]);
 	}
-	
+
 	return null;
 }
 
 exp.removePlayerByUid = function(uid){
 	var playerId = users[uid];
-	
+
 	if(!!playerId){
 		delete users[uid];
 		this.removePlayer(playerId);
@@ -296,12 +304,7 @@ exp.getAreaInfo = function(pos, range) {
 	return {
 		id: id,
 		level: level,
-		entities : entities,
-		map : {
-			name: map.name,
-			width: map.width,
-			height: map.height
-		}
+		entities : entities
 	};
 };
 

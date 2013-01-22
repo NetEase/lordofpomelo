@@ -45,7 +45,15 @@ Revive.prototype.update = function(){
   	this.entity.x = newPos.x;
   	this.entity.y = newPos.y;
   	
-		messageService.pushMessageByAOI({route: 'onRevive', entityId : this.entity.entityId, entity: this.entity, x: this.entity.x, y: this.entity.y, hp: this.entity.hp}, {x : this.entity.x, y : this.entity.y});
+		messageService.pushMessageByAOI(
+			{
+				route: 'onRevive', 
+				entityId : this.entity.entityId, 
+				x: this.entity.x, 
+				y: this.entity.y, 
+				hp: this.entity.hp
+			}, 
+			{x : this.entity.x, y : this.entity.y});
 		this.finished = true;
 	}
 	this.now = time;

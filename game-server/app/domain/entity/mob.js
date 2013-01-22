@@ -186,9 +186,6 @@ Mob.prototype.dropItems = function(player) {
 			}
 		}
 	}
-//	if (dropItems.length>0) {
-//		this.emit('dropItems', dropItems);
-//	}
 	return dropItems;
 };
 

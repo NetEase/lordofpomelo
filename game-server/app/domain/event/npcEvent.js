@@ -28,11 +28,8 @@ exp.addEventForNPC = function (npc){
 		var msg = {
 			route : 'onNPCTalk',
 			npc : data.npc,
-			player : data.player,
 			npcword : npcword,
-			myword: myword,
-			areaId: npc.areaId,
-			kindId: npc.kindId
+			myword: myword
 		};
 
 		if (npc.kindType === consts.NpcType.TRAVERSE_NPC) {

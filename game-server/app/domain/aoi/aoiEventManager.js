@@ -9,39 +9,39 @@ var exp = module.exports;
 exp.addEvent = function(aoi){
 	aoi.on('add', function(params){
 		switch(params.type){
-			case EntityType.PLAYER: 
+			case EntityType.PLAYER:
 				onPlayerAdd(params);
 				break;
-			case EntityType.MOB: 
+			case EntityType.MOB:
 				onMobAdd(params);
 				break;
 		}
 	});
-	
+
 	aoi.on('remove', function(params){
 		switch(params.type){
-			case EntityType.PLAYER: 
+			case EntityType.PLAYER:
 				onPlayerRemove(params);
 				break;
-			case EntityType.MOB: 
+			case EntityType.MOB:
 				break;
 		}
 	});
-	
+
 	aoi.on('update', function(params){
 		switch(params.type){
-			case EntityType.PLAYER: 
+			case EntityType.PLAYER:
 				onObjectUpdate(params);
 				break;
-			case EntityType.MOB: 
+			case EntityType.MOB:
 				onObjectUpdate(params);
 				break;
 		}
 	});
-	
+
 	aoi.on('updateWatcher', function(params) {
 		switch(params.type) {
-			case EntityType.PLAYER: 
+			case EntityType.PLAYER:
 				onPlayerUpdate(params);
 				break;
 		}
@@ -58,15 +58,15 @@ function onPlayerAdd(params) {
 	var watchers = params.watchers;
 	var entityId = params.id;
 	var player = area.getEntity(entityId);
-	
+
 	if(!player) {
 		return;
 	}
-		
+
 	var uids = [], id;
 	for(var type in watchers) {
 		switch (type){
-			case EntityType.PLAYER: 
+			case EntityType.PLAYER:
 				for(id in watchers[type]) {
 					var watcher = area.getEntity(watchers[type][id]);
 					if(watcher && watcher.entityId !== entityId) {
@@ -97,11 +97,11 @@ function onMobAdd(params){
 	var watchers = params.watchers;
 	var entityId = params.id;
 	var mob = area.getEntity(entityId);
-	
+
 	if(!mob) {
 		return;
 	}
-		
+
 	var uids = [];
 	for(var id in watchers[EntityType.PLAYER]) {
 		var watcher = area.getEntity(watchers[EntityType.PLAYER][id]);
@@ -109,14 +109,14 @@ function onMobAdd(params){
 			uids.push({sid: watcher.serverId, uid: watcher.userId});
 		}
 	}
-	
+
 	if(uids.length > 0) {
 		onAddEntity(uids, entityId);
-	};
+	}
 
 	var ids = area.aoi().getIdsByRange({x:mob.x, y:mob.y}, mob.range, [EntityType.PLAYER])[EntityType.PLAYER];
 	if(!!ids && ids.length > 0 && !mob.target){
-		for(var key in ids){		
+		for(var key in ids){
 			mob.onPlayerCome(ids[key]);
 		}
 	}
@@ -131,9 +131,9 @@ function onMobAdd(params){
 function onPlayerRemove(params) {
 	var watchers = params.watchers;
 	var entityId = params.id;
-			
+
 	var uids = [];
-	
+
 	for(var type in watchers) {
 		switch (type){
 			case EntityType.PLAYER:
@@ -159,11 +159,11 @@ function onPlayerRemove(params) {
 function onObjectUpdate(params) {
 	var entityId = params.id;
 	var entity = area.getEntity(entityId);
-	
+
 	if(!entity) {
 		return;
 	}
-	
+
 	var oldWatchers = params.oldWatchers;
 	var newWatchers = params.newWatchers;
 	var removeWatchers = {}, addWatchers = {}, type, w1, w2, id;
@@ -178,25 +178,16 @@ function onObjectUpdate(params) {
 		for(id in w1) {
 			if(!w2[id]) {
 				removeWatchers[type][id] = w1[id];
-				
-//				if(type === 'player'){
-//					var player = area.getEntity(id);
-//					var pos = {x: Math.floor(player.x/300), y:Math.floor(player.y/300)};
-//					if((Math.abs(params.newPos.x-pos.x) <=2) && (Math.abs(params.newPos.y-pos.y)<=2)){
-//						logger.warn('remove watcher player by move , oldPos : %j, newPos : %j, player pos : %j, range : %j', params.oldPos, params.newPos, pos, player.range);
-//						logger.warn('watchers : %j', area.aoi().getWatchers(params.newPos, ['player', 'mob']));
-//					}
-//				}
 			}
 		}
 	}
-	
+
 	for(type in newWatchers) {
 		if(!oldWatchers[type]) {
 			addWatchers[type] = newWatchers[type];
 			continue;
 		}
-		
+
 		w1 = oldWatchers[type];
 		w2 = newWatchers[type];
 		addWatchers[type] = {};
@@ -205,15 +196,15 @@ function onObjectUpdate(params) {
 				addWatchers[type][id] = w2[id];
 			}
 		}
-	} 
-	
-	
+	}
+
+
 	switch(params.type) {
-		case EntityType.PLAYER: 
+		case EntityType.PLAYER:
 			onPlayerAdd({id:params.id, watchers:addWatchers});
 			onPlayerRemove({id:params.id, watchers:removeWatchers});
 			break;
-		case EntityType.MOB: 
+		case EntityType.MOB:
 			onMobAdd({id:params.id, watchers:addWatchers});
 			onMobRemove({id:params.id, watchers:removeWatchers});
 			break;
@@ -231,21 +222,21 @@ function onPlayerUpdate(params) {
 	if(player.type !== EntityType.PLAYER) {
 		return;
 	}
-	
+
 	var route = {sid : player.serverId, uid : player.userId};
-	
+
 	if(params.removeObjs.length > 0) {
     messageService.pushMessageToPlayer(route, {
-			route : 'removeEntities',
+			route : 'onRemoveEntities',
 			entities : params.removeObjs
 		});
 	}
-	
+
 	if(params.addObjs.length > 0) {
 		var entities = area.getEntities(params.addObjs);
 		if(entities.length > 0) {
       messageService.pushMessageToPlayer(route, {
-				route : 'addEntities',
+				route : 'onAddEntities',
 				entities : entities
 			});
 		}
@@ -262,7 +253,7 @@ function onMobRemove(params) {
 	var watchers = params.watchers;
 	var entityId = params.id;
 	var uids = [];
-	
+
 	for(var type in watchers) {
 		switch (type){
 			case EntityType.PLAYER:
@@ -273,7 +264,7 @@ function onMobRemove(params) {
 					}
 				}
 				onRemoveEntity(uids, entityId);
-				break;
+			break;
 		}
 	}
 }
@@ -285,17 +276,17 @@ function onMobRemove(params) {
  * @api private
  */
 function onAddEntity(uids, entityId) {
-	var entity = area.getEntity(entityId);
-	
-	if(!entity || uids.length <= 0) {
+	var entities = area.getEntities([entityId]);
+
+	if(entities.length <= 0 || uids.length <= 0) {
 		return;
 	}
-		
+
 	var msg = {
-		route : 'addEntities',
-		entities : [entity]
+		route : 'onAddEntities',
+		entities : entities
 	};
-	
+
   messageService.pushMessageByUids(msg, uids);
 }
 
@@ -309,11 +300,11 @@ function onRemoveEntity(uids, entityId) {
 	if(uids.length <= 0) {
 		return;
 	}
-		
+
 	var msg = {
-		route : 'removeEntities',
+		route : 'onRemoveEntities',
 		entities : [entityId]
 	};
 
-    messageService.pushMessageByUids(msg, uids);
+  messageService.pushMessageByUids(msg, uids);
 }

@@ -21,7 +21,7 @@ function tick() {
     item.update();
 
     if(item.died) {
-      messageService.pushMessage({route:'onRemoveItem', entityId:id});
+      messageService.pushMessage({route:'onRemoveEntities', entities:[id]});
       area.removeEntity(id);
     }
   }

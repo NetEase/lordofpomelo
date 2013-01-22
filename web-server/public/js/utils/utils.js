@@ -101,4 +101,21 @@ __resources__["/utils.js"] = {meta: {mimetype: "application/javascript"}, data: 
     }
 		**/
   };
+  
+  /**
+	 * clone an object
+	 */
+	module.exports.clone = function(origin) {
+		if(!origin) {
+			return;
+		}
+	
+		var obj = {};
+		for(var f in origin) {
+			if(origin.hasOwnProperty(f)) {
+				obj[f] = origin[f];
+			}
+		}
+		return obj;
+	};
 }};

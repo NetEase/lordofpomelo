@@ -1,4 +1,3 @@
-//var maploader = require('./maploader');
 var buildFinder = require('pomelo-pathfinding').buildFinder;
 var geometry = require('../../util/geometry');
 var PathCache = require('../../util/pathCache');
@@ -21,7 +20,7 @@ var pro = Map.prototype;
 
 /**
  * Init game map
- * @param {Object} opts 
+ * @param {Object} opts
  * @api private
  */
 Map.prototype.init = function(opts) {
@@ -37,12 +36,12 @@ Map.prototype.init = function(opts) {
 		this.tileH = 20;
 		this.rectW = Math.ceil(this.width/this.tileW);
 		this.rectH = Math.ceil(this.height/this.tileH);
-		
+
 		this.pathCache = new PathCache({limit:1000});
 		this.pfinder = buildFinder(this);
 		if(weightMap) {
 			this.initWeightMap();
-			//logger.error("weight map :%j", this.weightMap);
+			this.initCollisons();
 		}
 	}
 };
@@ -52,29 +51,29 @@ Map.prototype.configMap = function(map){
 	var layers = map.layers;
 	for(var i = 0; i < layers.length; i++){
 		var layer = layers[i];
-		if(layer.type == 'objectgroup'){
+		if(layer.type === 'objectgroup'){
 			this.map[layer.name] = configObjectGroup(layer.objects);
 		}
 	}
-}
+};
 
 function configProps(obj){
 	if(!!obj && !!obj.properties){
 		for(var key in obj.properties){
 			obj[key] = obj.properties[key];
 		}
-		
-		delete obj.properties;	
+
+		delete obj.properties;
 	}
-	
+
 	return obj;
 }
 
 function configObjectGroup(objs){
 	for(var i = 0; i < objs.length; i++){
-		objs[i] = configProps(objs[i]);	
+		objs[i] = configProps(objs[i]);
 	}
-	
+
 	return objs;
 }
 
@@ -92,53 +91,53 @@ Map.prototype.initWeightMap = function() {
 			this.weightMap[i][j] = 1;
 		}
 	}
-	
+
 	//logger.error("collisions : %j", collisions);
 	//Use all collsions to construct the weight map
 	for(i = 0; i < collisions.length; i++) {
 		var collision = collisions[i];
 		var polygon = [];
 		var points = collision.polygon;
-		
-		if(!!points && !!points.length > 0) {
+
+		if(!!points && points.length > 0) {
 			if(points.length < 3) {
 				logger.warn('The polygon data is invalid! points: %j', points);
 				continue;
 			}
-			
+
 			//Get the rect limit for polygonal collision
 			var minx = Infinity, miny = Infinity, maxx = 0, maxy = 0;
-			
+
 			for(j = 0; j < points.length; j++) {
 				var point = points[j];
-				
+
 				x = Number(point.x) + Number(collision.x);
 				y = Number(point.y) + Number(collision.y);
 				minx = minx>x?x:minx;
 				miny = miny>y?y:miny;
 				maxx = maxx<x?x:maxx;
 				maxy = maxy<y?y:maxy;
-				polygon.push({x: x, y: y});	
-			}	
-			
+				polygon.push({x: x, y: y});
+			}
+
 			//A polygon need at least 3 points
 			if(polygon.length < 3) {
 				logger.error('illigle polygon: points : %j, polygon: %j', points, polygon);
 				continue;
 			}
-			
+
 			x1 = Math.floor(minx/this.tileW);
 			y1 = Math.floor(miny/this.tileH);
 			x2 = Math.ceil(maxx/this.tileW);
 			y2 = Math.ceil(maxy/this.tileH);
-	
+
 			//regular the poinit to not exceed the map
 			x1 = x1<0?0:x1;
 			y1 = y1<0?0:y1;
 			x2 = x2>this.rectW?this.rectW:x2;
 			y2 = y2>this.rectH?this.rectH:y2;
-			
-			//For all the tile in the polygon's externally rect, check if the tile is in the collision 
+
+			//For all the tile in the polygon's externally rect, check if the tile is in the collision
 			for(x = x1; x < x2; x++) {
 				for(y = y1; y < y2; y++) {
 					p = {x: x*this.tileW + this.tileW/2, y : y*this.tileH + this.tileH/2};
@@ -147,8 +146,8 @@ Map.prototype.initWeightMap = function() {
 					p2 = { x: p.x + l, y: p.y - l};
 					p3 = { x: p.x - l, y: p.y + l};
 					p4 = { x: p.x + l, y: p.y + l};
-					if(geometry.isInPolygon(p1, polygon) || 
-						 geometry.isInPolygon(p2, polygon) || 
+					if(geometry.isInPolygon(p1, polygon) ||
+						 geometry.isInPolygon(p2, polygon) ||
 						 geometry.isInPolygon(p3, polygon) ||
 						 geometry.isInPolygon(p4, polygon)) {
 						this.weightMap[x][y] = Infinity;
@@ -158,16 +157,16 @@ Map.prototype.initWeightMap = function() {
 		} else {
 			x1 = Math.floor(collision.x/this.tileW);
 			y1 = Math.floor(collision.y/this.tileH);
-	
+
 			x2 = Math.ceil((collision.x+collision.width)/this.tileW);
 			y2 = Math.ceil((collision.y+collision.height)/this.tileH);
-	
+
 			//regular the poinit to not exceed the map
 			x1 = x1<0?0:x1;
 			y1 = y1<0?0:y1;
 			x2 = x2>this.rectW?this.rectW:x2;
 			y2 = y2>this.rectH?this.rectH:y2;
-	
+
 			for(x = x1; x < x2; x++) {
 				for(y = y1; y < y2; y++) {
 					this.weightMap[x][y] = Infinity;
@@ -176,6 +175,67 @@ Map.prototype.initWeightMap = function() {
 		}
 	}
 };
+
+Map.prototype.initCollisons = function(){
+	var map = [];
+	var flag = false;
+	var collision;
+
+	for(var x = 0; x < this.weightMap.length; x++){
+		map[x] = [];
+
+		var array = this.weightMap[x];
+		var length = array.length;
+		for(var y = 0; y < length; y++){
+			//conllisions start
+			if(!flag && (array[y] === Infinity)){
+				collision = {};
+				collision.start = y;
+				flag = true;
+			}
+
+			if(flag && array[y] === 1){
+				flag = false;
+				collision.length = y - collision.start;
+				map[x].push(collision);
+			}else if(flag && (y === length - 1)){
+				flag = false;
+				collision.length = y - collision.start + 1;
+				map[x].push(collision);
+			}
+
+
+		}
+	}
+
+	this.compressedWeightMap = map;
+	//console.log(map);
+	var l1 = Buffer.byteLength(this.weightMap.toString());
+	var l2 = Buffer.byteLength(map.toString());
+	console.log('l1 : %j, l2 : %j, compress rate : %%j', l1, l2, Math.floor(l2/l1*10000)/100);
+	this.getWeightMap(map);
+};
+
+Map.prototype.getWeightMap = function(collisions){
+	var map = [];
+	var x, y;
+	for(x = 0; x < this.rectW; x++) {
+		map[x] = [];
+		for(y = 0; y < this.rectH; y++) {
+			map[x][y] = 1;
+		}
+	}
+
+	for(x = 0; x < collisions.length; x++){
+		var array = collisions[x];
+		for(var j = 0; j < array.length; j++){
+			var c = array[j];
+			for(var k = 0; k < c.length; k++){
+				map[x][c.start+k] = Infinity;
+			}
+		}
+	}
+}
 
 /**
  * Get all mob zones in the map
@@ -218,11 +278,11 @@ Map.prototype.getBornPlace = function() {
 	if(!bornPlace) {
 		bornPlace = this.map.transPoint;
 	}
-	
+
 	if(!bornPlace) {
 		return null;
   }
-	
+
 	return bornPlace;
 };
 
@@ -233,12 +293,12 @@ Map.prototype.getBornPlace = function() {
  */
 Map.prototype.getBornPoint = function() {
 	var bornPlace = this.getBornPlace();
-	
+
 	var pos = {
 		x : bornPlace.x + Math.floor(Math.random()*bornPlace.width),
 		y : bornPlace.y + Math.floor(Math.random()*bornPlace.height)
 	};
-	
+
 	return pos;
 };
 
@@ -252,18 +312,18 @@ Map.prototype.getBornPoint = function() {
 Map.prototype.genPos = function(pos, range) {
 	var result = {};
 	var limit = 10;
-	
+
 	for(var i = 0; i < limit; i++) {
 		var x = pos.x + Math.random()*range - range/2;
 		var y = pos.y + Math.random()*range - range/2;
-		
+
 		if(this.isReachable(x, y)) {
 			result.x = x;
 			result.y = y;
 			return result;
 		}
 	}
-	
+
 	return null;
 };
 
@@ -273,7 +333,7 @@ Map.prototype.genPos = function(pos, range) {
  * @param x {Number} x position.
  * @param y {Number} y position.
  * @param processReachable {function} Call back function, for all reachable x and y, the function will bu called and use the position as param
- * @api public 
+ * @api public
  */
 Map.prototype.forAllReachable = function(x, y, processReachable) {
 	var x1 = x - 1, x2 = x + 1;
@@ -283,7 +343,7 @@ Map.prototype.forAllReachable = function(x, y, processReachable) {
 	y1 = y1<0?0:y1;
 	x2 = x2>=this.rectW?(this.rectW-1):x2;
 	y2 = y2>=this.rectH?(this.rectH-1):y2;
-	
+
 	if(y > 0) {
 		processReachable(x, y - 1, this.weightMap[x][y - 1]);
 	}
@@ -312,7 +372,7 @@ Map.prototype.isReachable = function(x, y) {
 	if(x < 0 || y < 0 || x >= this.width || y >= this.height) {
 		return false;
 	}
-	
+
 	var x1 = Math.floor(x/this.tileW);
 	var y1 = Math.floor(y/this.tileH);
 
@@ -346,11 +406,11 @@ Map.prototype.findPath = function(x, y, x1, y1, useCache) {
 		logger.warn('The end point is not reachable! end : (%j, %j)', x1, y1);
 		return null;
 	}
-	
+
   if(this._checkLinePath(x, y, x1, y1)) {
     return {path: [{x: x, y: y}, {x: x1, y: y1}], cost: formula.distance(x, y, x1, y1)};
   }
-	
+
 	var tx1 = Math.floor(x/this.tileW);
 	var ty1 = Math.floor(y/this.tileH);
 	var tx2 = Math.floor(x1/this.tileW);
@@ -358,14 +418,14 @@ Map.prototype.findPath = function(x, y, x1, y1, useCache) {
 
 	//Use cache to get path
 	var path = this.pathCache.getPath(tx1, ty1, tx2, ty2);
-	
+
 	if(!path || !path.paths) {
 		path = this.pfinder(tx1, ty1, tx2, ty2);
 		if(!path || !path.paths) {
 			logger.warn('can not find the path, path: %j', path);
 			return null;
 		}
-		
+
 		if(useCache) {
 			this.pathCache.addPath(tx1, ty1, tx2, ty2, path);
 		}
@@ -373,7 +433,7 @@ Map.prototype.findPath = function(x, y, x1, y1, useCache) {
 
 	var result = {};
 	var paths = [];
-	
+
 	for(var i = 0; i < path.paths.length; i++) {
 		paths.push(transPos(path.paths[i], this.tileW, this.tileH));
 	}
@@ -382,7 +442,7 @@ Map.prototype.findPath = function(x, y, x1, y1, useCache) {
 		paths = this.compressPath1(paths, 3);
 		paths = this.compressPath2(paths);
 	}
-	
+
 	result.path = paths;
 	result.cost = computeCost(paths);
 
@@ -400,14 +460,14 @@ function computeCost(path) {
 		var end = path[i];
 		cost += formula.distance(start.x, start.y, end.x, end.y);
 	}
-	
+
 	return cost;
 }
 
 /**
  * compress path by gradient
  * @param tilePath {Array} Old path, construct by points
- * @param x {Number} start x 
+ * @param x {Number} start x
  * @param y {Number}	start y
  * @param x1 {Number}	end x
  * @param y1 {Number}	end y
@@ -416,7 +476,7 @@ function computeCost(path) {
 Map.prototype.compressPath2= function(tilePath) {
 		var oldPos = tilePath[0];
 		var path = [oldPos];
-		
+
 		for(var i = 1; i < (tilePath.length - 1); i++) {
 			var pos = tilePath[i];
 			var nextPos = tilePath[i + 1];
@@ -428,7 +488,7 @@ Map.prototype.compressPath2= function(tilePath) {
 			oldPos = pos;
 			pos = nextPos;
 		}
-		
+
 		path.push(tilePath[tilePath.length - 1]);
 		return path;
 };
@@ -442,12 +502,12 @@ Map.prototype.compressPath2= function(tilePath) {
  */
 Map.prototype.compressPath1 = function(path, loopTime) {
 	var newPath;
-	
+
 	for(var k = 0; k < loopTime; k++) {
 		var start;
 		var end;
 		newPath = [path[0]];
-		
+
 		for(var i = 0, j = 2; j < path.length;) {
 			start = path[i];
 			end = path[j];
@@ -460,16 +520,16 @@ Map.prototype.compressPath1 = function(path, loopTime) {
 				i++;
 				j++;
 			}
-			
+
 			if(j >= path.length) {
 				if((i + 2) === path.length) {
 					newPath.push(path[i+1]);
-				}	 
+				}
 			}
 		}
 		path = newPath;
 	}
-	
+
 	return newPath;
 };
 
@@ -483,31 +543,31 @@ Map.prototype.verifyPath = function(path) {
 	if(path.length < 2) {
 		return false;
 	}
-	
+
 	var i;
 	for(i = 0; i < path.length; i++) {
 		if(!this.isReachable(path[i].x, path[i].y)) {
 			return false;
 		}
-	}	
-	
+	}
+
 	for(i = 1; i < path.length; i++) {
 		if(!this._checkLinePath(path[i-1].x, path[i-1].y, path[i].x, path[i].y)) {
 			logger.error('illigle path ! i : %j, path[i] : %j, path[i+1] : %j', i, path[i], path[i+1]);
 			return false;
 		}
 	}
-	
+
 	return true;
 };
 
 /**
  * Check if the line is valid
- * @param x1 {Number} start x 
+ * @param x1 {Number} start x
  * @param y1 {Number}	start y
  * @param x2 {Number}	end x
  * @param y2 {Number}	end y
- */	
+ */
 Map.prototype._checkLinePath = function(x1, y1, x2, y2) {
   var px = x2 - x1;
   var py = y2 - y1;
@@ -537,17 +597,17 @@ Map.prototype._checkLinePath = function(x1, y1, x2, y2) {
   var ry = (y2 - y1) / dis;
   var dx = tile * rx;
   var dy = tile * ry;
-  
+
   var x0 = x1;
   var y0 = y1;
   x1 += dx;
   y1 += dy;
-  
+
   while((dx > 0 && x1 < x2) || (dx < 0 && x1 > x2)) {
     if(!this._testLine(x0, y0, x1, y1)) {
       return false;
     }
-    
+
     x0 = x1;
     y0 = y1;
     x1 += dx;
@@ -560,35 +620,35 @@ Map.prototype._testLine = function(x, y, x1, y1) {
 	if(!this.isReachable(x, y) || !this.isReachable(x1, y1)) {
 		return false;
 	}
-		
+
 	var dx = x1 - x;
 	var dy = y1 - y;
-	
+
 	var tileX = Math.floor(x/this.tileW);
 	var tileY = Math.floor(y/this.tileW);
 	var tileX1 = Math.floor(x1/this.tileW);
 	var tileY1 = Math.floor(y1/this.tileW);
-	
+
 	if(tileX === tileX1 || tileY === tileY1) {
 		return true;
 	}
-	
+
 	var minY = y < y1 ? y : y1;
 	var maxTileY = (tileY > tileY1 ? tileY : tileY1) * this.tileW;
-	
+
 	if((maxTileY-minY) === 0) {
 		console.error('logic error!');
 		return true;
 	}
-	
+
 	var y0 = maxTileY;
 	var x0 = x + dx / dy * (y0 - y);
-	
+
 	var maxTileX = (tileX > tileX1 ? tileX : tileX1) * this.tileW;
-	
+
 	var x3 = (x0 + maxTileX) / 2;
 	var y3 = y + dy / dx * (x3 - x);
-	
+
 	if(this.isReachable(x3, y3)) {
 		return true;
 	}

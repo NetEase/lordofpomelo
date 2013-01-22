@@ -37,15 +37,15 @@ app.configure('production|development', function() {
 	}
 	// proxy configures
 	app.set('proxyConfig', {
-		cacheMsg: true, 
-		interval: 30, 
-		lazyConnection: true, 
+		cacheMsg: true,
+		interval: 30,
+		lazyConnection: true,
 		enableRpcLog: true
 	});
 
 	// remote configures
 	app.set('remoteConfig', {
-		cacheMsg: true, 
+		cacheMsg: true,
 		interval: 30
 	});
 
@@ -67,7 +67,7 @@ app.configure('production|development', 'auth', function() {
 app.configure('production|development', 'area', function(){
 	app.filter(pomelo.filters.serial());
 	app.before(playerFilter());
-	
+
 	var areaId = app.get('curServer').area;
 	if(!areaId || areaId < 0) {
 		throw new Error('load area config failed');
@@ -81,6 +81,26 @@ app.configure('production|development', 'area|auth|connector|master', function()
 	var dbclient = require('./app/dao/mysql/mysql').init(app);
 	app.set('dbclient', dbclient);
 	app.load(pomelo.sync, {path:__dirname + '/app/dao/mapping', dbclient: dbclient});
+});
+
+app.configure('production|development', 'gate', function(){
+	app.set('connectorConfig', {connector : pomelo.connectors.hybiconnector});
+});
+
+app.configure('production|development', 'connector', function(){
+	var dictionary = self.app.components['__dictionary__'];
+	var dict = null;
+	if(!!dictionary){
+		dict = dictionary.getDict();
+	}
+
+	app.set('connectorConfig',
+		{
+			connector : pomelo.connectors.hybiconnector,
+			handshake : function(msg, cb){
+				cb(null, {});
+			}
+		});
 });
 
 // Configure for chat server
