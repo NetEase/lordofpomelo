@@ -88,7 +88,7 @@ app.configure('production|development', 'gate', function(){
 });
 
 app.configure('production|development', 'connector', function(){
-	var dictionary = self.app.components['__dictionary__'];
+	var dictionary = app.components['__dictionary__'];
 	var dict = null;
 	if(!!dictionary){
 		dict = dictionary.getDict();
@@ -98,7 +98,6 @@ app.configure('production|development', 'connector', function(){
 		{
 			connector : pomelo.connectors.hybiconnector,
 			handshake : function(msg, cb){
-				cb(null, {});
 			}
 		});
 });

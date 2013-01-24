@@ -1,13 +1,12 @@
-{
-	"onDropItem" : 1,
-	"onAttack" : 2,
-	"onDied" : 3,
-	"onMove" : 4,
-	"onUpgrage" : 5,
-	"onPickItem" : 6,
-	"onRevive" : 7,
-	"addEntities" : 8,
-	"onRemoveEntities" : 9,
-	"onPathCheckout" : 10
-
-}
+[
+	"onDropItem",
+	"onAttack",
+	"onDied",
+	"onMove",
+	"onUpgrage",
+	"onPickItem",
+	"onRevive",
+	"addEntities",
+	"onRemoveEntities",
+	"onPathCheckout"
+]

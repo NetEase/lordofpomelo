@@ -209,33 +209,11 @@ Map.prototype.initCollisons = function(){
 	}
 
 	this.compressedWeightMap = map;
-	//console.log(map);
-	var l1 = Buffer.byteLength(this.weightMap.toString());
-	var l2 = Buffer.byteLength(map.toString());
-	console.log('l1 : %j, l2 : %j, compress rate : %%j', l1, l2, Math.floor(l2/l1*10000)/100);
-	this.getWeightMap(map);
+	// var l1 = Buffer.byteLength(this.weightMap.toString());
+	// var l2 = Buffer.byteLength(map.toString());
+	// console.log('l1 : %j, l2 : %j, compress rate : %%j', l1, l2, Math.floor(l2/l1*10000)/100);
+	// this.getWeightMap(map);
 };
-
-Map.prototype.getWeightMap = function(collisions){
-	var map = [];
-	var x, y;
-	for(x = 0; x < this.rectW; x++) {
-		map[x] = [];
-		for(y = 0; y < this.rectH; y++) {
-			map[x][y] = 1;
-		}
-	}
-
-	for(x = 0; x < collisions.length; x++){
-		var array = collisions[x];
-		for(var j = 0; j < array.length; j++){
-			var c = array[j];
-			for(var k = 0; k < c.length; k++){
-				map[x][c.start+k] = Infinity;
-			}
-		}
-	}
-}
 
 /**
  * Get all mob zones in the map
