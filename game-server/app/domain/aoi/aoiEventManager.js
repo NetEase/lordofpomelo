@@ -73,7 +73,9 @@ function onPlayerAdd(params) {
 						uids.push({sid: watcher.serverId, uid: watcher.userId});
 					}
 				}
-				onAddEntity(uids, entityId);
+				if(uids.length > 0){
+					onAddEntity(uids, entityId);
+				}
 				break;
 			case EntityType.MOB:
 				for(id in watchers[type]) {
@@ -144,6 +146,7 @@ function onPlayerRemove(params) {
 						uids.push({sid: watcher.serverId, uid: watcher.userId});
 					}
 				}
+
 				onRemoveEntity(uids, entityId);
 				break;
 		}
@@ -223,22 +226,16 @@ function onPlayerUpdate(params) {
 		return;
 	}
 
-	var route = {sid : player.serverId, uid : player.userId};
+	var uid = {sid : player.serverId, uid : player.userId};
 
 	if(params.removeObjs.length > 0) {
-    messageService.pushMessageToPlayer(route, {
-			route : 'onRemoveEntities',
-			entities : params.removeObjs
-		});
+    messageService.pushMessageToPlayer(uid, 'onRemoveEntities', {'entities' : params.removeObjs});
 	}
 
 	if(params.addObjs.length > 0) {
 		var entities = area.getEntities(params.addObjs);
 		if(entities.length > 0) {
-      messageService.pushMessageToPlayer(route, {
-				route : 'onAddEntities',
-				entities : entities
-			});
+      messageService.pushMessageToPlayer(uid, 'onAddEntities', {'entities' : entities});
 		}
 	}
 }
@@ -282,12 +279,7 @@ function onAddEntity(uids, entityId) {
 		return;
 	}
 
-	var msg = {
-		route : 'onAddEntities',
-		entities : entities
-	};
-
-  messageService.pushMessageByUids(msg, uids);
+  messageService.pushMessageByUids(uids, 'onAddEntities', {entities:entities});
 }
 
 /**
@@ -301,10 +293,5 @@ function onRemoveEntity(uids, entityId) {
 		return;
 	}
 
-	var msg = {
-		route : 'onRemoveEntities',
-		entities : [entityId]
-	};
-
-  messageService.pushMessageByUids(msg, uids);
+  messageService.pushMessageByUids(uids, 'onRemoveEntities',{entities : [entityId]}, uids);
 }

@@ -1,5 +1,5 @@
 /**
- * Module dependencies 
+ * Module dependencies
  */
 var util = require('util');
 var dataApi = require('../../util/dataApi');
@@ -63,7 +63,7 @@ Player.prototype.afterKill = function(target) {
 		this.addExperience(target.getKillExp(this.level));
 		items = target.dropItems(this);
 	}
-	
+
 	return items;
 };
 
@@ -109,12 +109,12 @@ Player.prototype._upgrade = function() {
 
 Player.prototype.setTotalAttackAndDefence = function() {
 	var attack = 0, defence = 0;
-	
+
 	for (var key in this.equipments) {
 		var equip = dataApi.equipment.findById(this.equipments[key]);
 		if (!!equip) {
-			attack += Number(equip.attackValue);	
-			defence += Number(equip.defenceValue);	
+			attack += Number(equip.attackValue);
+			defence += Number(equip.defenceValue);
 		}
 	}
 
@@ -125,7 +125,7 @@ Player.prototype.setTotalAttackAndDefence = function() {
 
 /**
  * Equip equipment.
- * 
+ *
  * @param {String} kind
  * @param {Number} equipId
  * @api public
@@ -139,7 +139,7 @@ Player.prototype.equip = function(kind, equipId) {
 		index = this.bag.addItem({id: curEqId, type: 'equipment'});
 	}
 	this.setTotalAttackAndDefence();
-	
+
 	return index;
 };
 
@@ -158,7 +158,7 @@ Player.prototype.unEquip = function(kind) {
  * Use Item and update player's state: hp and mp,
  *
  * @param {Number} index
- * @return {Boolean} 
+ * @return {Boolean}
  * @api public
  */
 Player.prototype.useItem = function(index) {
@@ -180,7 +180,7 @@ Player.prototype.useItem = function(index) {
  *
  * @param {Number} skillId
  * @param {Function} callback
- * @return {Blooean} 
+ * @return {Blooean}
  * @api public
  */
 Player.prototype.learnSkill = function(skillId, callback) {
@@ -198,7 +198,7 @@ Player.prototype.learnSkill = function(skillId, callback) {
  * Upgrade the existing skill.
  *
  * @param {Number} skillId
- * @return {Boolean} 
+ * @return {Boolean}
  * @api public
  */
 Player.prototype.upgradeSkill = function(skillId) {
@@ -223,9 +223,9 @@ Player.prototype.upgradeSkill = function(skillId) {
  */
 Player.prototype.pickItem = function(entityId) {
 	var item = area.getEntity(entityId);
-	
+
 	var result = {player : this, item : item};
-	
+
 	if(!item) {
 		result.result = consts.Pick.VANISH;
 		this.emit('pickItem', result);
@@ -259,7 +259,7 @@ Player.prototype.save = function() {
 
 /**
  * Start task.
- * Start task after accept a task, and update the task' state, such as taskState, taskData, startTime 
+ * Start task after accept a task, and update the task' state, such as taskState, taskData, startTime
  *
  * @param {Task} task, new task to be implement
  * @api public
@@ -296,20 +296,20 @@ Player.prototype.handOverTask = function(taskIds) {
 
 /**
  * Recover hp if not in fight state
- * 
+ *
  */
 Player.prototype.recover = function(lastTick){
 	var time = Date.now();
-	
+
 	if(!this.isRecover){
-		this.revocerWaitTime -= 100;	
+		this.revocerWaitTime -= 100;
 	}
 	var time = Date.now();
-	
+
 	this.hp += (time - lastTime)/ this.maxHp;
 	if(hp >= this.maxHp){
 		this.hp == this.maxHp;
-		
+
 		this.isRecover = false;
 	}
 };
@@ -330,8 +330,8 @@ Player.prototype.strip = function() {
 		kindId: this.kindId,
 		kindName: this.kindName,
 		type: this.type,
-		x: this.x,
-		y: this.y,
+		x: Math.floor(this.x),
+		y: Math.floor(this.y),
 		hp: this.hp,
 		mp: this.mp,
 		maxHp: this.maxHp,
@@ -352,7 +352,7 @@ Player.prototype.strip = function() {
 
 /**
  * Get the whole information of player, contains tasks, bag, equipments information.
- * 
+ *
  *	@return {Object}
  *	@api public
  */

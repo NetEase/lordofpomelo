@@ -21,7 +21,7 @@ __resources__["/clientManager.js"] = {
 
     var alert = window.alert;
 		var self = this;
-		
+
 		var loading = false;
     var httpHost = location.href.replace(location.hash, '');
 
@@ -87,7 +87,7 @@ __resources__["/clientManager.js"] = {
           alert('Username or password is invalid!');
           loading = false;
           return;
-        } 
+        }
         if (data.code !== 200) {
           alert('Username is not exists!');
           loading = false;
@@ -121,7 +121,7 @@ __resources__["/clientManager.js"] = {
      * route: connector.entryHandler.entry
      * response：
      * {
-     *   code: [Number], 
+     *   code: [Number],
      *   player: [Object]
      * }
      */
@@ -135,8 +135,7 @@ __resources__["/clientManager.js"] = {
         //token = 'd72357c4c7f9b6a8e0b6a93c4d8652b1903114819c36749e53b97d1a78372387';
         pomelo.request('connector.entryHandler.entry', {token: token}, function(data) {
           var player = data.player;
-					pomelo.setDict(data.dict);
-					
+
           if (callback) {
             callback(data.code);
           }
@@ -276,7 +275,7 @@ __resources__["/clientManager.js"] = {
           enterScene();
         }
       });
-      setTimeout(function(){ 
+      setTimeout(function(){
         if (!entered) {
           entered = true;
           enterScene();
@@ -320,7 +319,7 @@ __resources__["/clientManager.js"] = {
       if(!paths || !paths.path){
         return;
       }
-      var curPlayer = app.getCurArea().getCurPlayer();	
+      var curPlayer = app.getCurArea().getCurPlayer();
 
       var area = app.getCurArea();
       var sprite = curPlayer.getSprite();
@@ -358,7 +357,7 @@ __resources__["/clientManager.js"] = {
 				var curPlayer = app.getCurPlayer();
 				var bag = curPlayer.bag;
 				if (bag.isFull()) {
-					curPlayer.getSprite().hintOfBag();	
+					curPlayer.getSprite().hintOfBag();
 					return;
 				}
         pomelo.notify('area.playerHandler.pickItem',{areaId :areaId, playerId: playerId, targetId: targetId});

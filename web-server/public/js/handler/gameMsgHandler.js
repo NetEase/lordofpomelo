@@ -117,8 +117,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 		 * Handle update task data message
 		 * @param data {Object} The message, contains the info for update task
 		 */
-		pomelo.on('onUpdateTaskData', function(data) {
-			var reData = data.taskData;
+		pomelo.on('onUpdateTaskData', function(reData) {
 			app.getCurPlayer().updateTaskData(reData);
 		});
 

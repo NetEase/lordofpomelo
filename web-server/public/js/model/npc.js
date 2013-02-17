@@ -4,7 +4,7 @@ __resources__["/npc.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 	 */
 	var Entity = require('entity');
 	var EntityType = require('consts').EntityType;
-	
+
 	/**
 	 * Initialize a new 'Npc' with the given 'opts'.
 	 * Npc inherits Entity
@@ -14,8 +14,6 @@ __resources__["/npc.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 	 */
 	var Npc = function (opts){
 		this.type = EntityType.NPC;
-		this.orientation = opts.orientation;
-		this.kindType = opts.kindType;
 		Entity.call(this, opts);
 	};
 

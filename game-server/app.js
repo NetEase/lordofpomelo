@@ -83,9 +83,7 @@ app.configure('production|development', 'area|auth|connector|master', function()
 	app.load(pomelo.sync, {path:__dirname + '/app/dao/mapping', dbclient: dbclient});
 });
 
-app.configure('production|development', 'gate', function(){
-	app.set('connectorConfig', {connector : pomelo.connectors.hybiconnector});
-});
+
 
 app.configure('production|development', 'connector', function(){
 	var dictionary = app.components['__dictionary__'];
@@ -97,11 +95,25 @@ app.configure('production|development', 'connector', function(){
 	app.set('connectorConfig',
 		{
 			connector : pomelo.connectors.hybiconnector,
+			heartbeat : 3000,
+			useDict : true,
+			useProtobuf : true,
 			handshake : function(msg, cb){
+				cb(null, {});
 			}
 		});
 });
 
+app.configure('production|development', 'gate', function(){
+	app.set('connectorConfig',
+		{
+			connector : pomelo.connectors.hybiconnector,
+			heartbeat : 3000,
+			handshake : function(msg, cb){
+				cb(null, {});
+			}
+		});
+});
 // Configure for chat server
 app.configure('production|development', 'chat', function() {
 	app.set('chatService', new ChatService(app));

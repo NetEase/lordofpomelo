@@ -10,7 +10,7 @@ var exp = module.exports;
  */
 exp.addEventForNPC = function (npc){
 	/**
-	 * Hanlde npc talk event 
+	 * Hanlde npc talk event
 	 */
 	npc.on('onNPCTalk', function(data){
 		var npc = area.getEntity(data.npc);
@@ -26,17 +26,16 @@ exp.addEventForNPC = function (npc){
 		}
 
 		var msg = {
-			route : 'onNPCTalk',
 			npc : data.npc,
 			npcword : npcword,
 			myword: myword
 		};
 
 		if (npc.kindType === consts.NpcType.TRAVERSE_NPC) {
-			npc.traverse(msg);
+			npc.traverse('onNPCTalk', msg);
 			return;
 		}
 
-		messageService.pushMessageToPlayer({uid:player.userId, sid: player.serverId}, msg);
+		messageService.pushMessageToPlayer({uid:player.userId, sid: player.serverId}, 'onNPCTalk', msg);
 	});
 };

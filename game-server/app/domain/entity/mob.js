@@ -80,7 +80,7 @@ Mob.prototype.destroy = function() {
 };
 
 /**
- * Check the haters and judge of the entityId hated  
+ * Check the haters and judge of the entityId hated
  */
 
 Mob.prototype.isHate = function(entityId) {
@@ -153,17 +153,17 @@ Mob.prototype.forEachHater = function(cb) {
 //Increase hate for the player who is coming.
 Mob.prototype.onPlayerCome = function(entityId) {
 	var player = area.getEntity(entityId);
-	
+
 	//Only hit a live person
 	if(!!player && !player.died){
 		this.increaseHateFor(entityId, 1);
-		player.addEnemy(this.entityId);	
+		player.addEnemy(this.entityId);
 	}
 };
 
 /**
  * Drop items down.
- * when a mob is killed, it drops equipments and items down to the player 
+ * when a mob is killed, it drops equipments and items down to the player
  *
  * @param {Player} player
  * @api public
@@ -197,15 +197,15 @@ Mob.prototype._dropItem = function(player) {
 		logger.warn('Generate position for drop item error!');
 		return null;
 	}
-	
+
 	var itemDatas = dataApi.item.findSmaller('heroLevel', level);
 	var length = itemDatas.length;
 	var index = Math.floor(Math.random()*length);
 	var itemData = itemDatas[index];
 	var dropItem=new Item({
 		kindId : itemData.id,
-		x : pos.x,
-		y : pos.y,
+		x : Math.floor(pos.x),
+		y : Math.floor(pos.y),
 		kindName : itemData.name,
 		englishName : itemData.englishName,
 		name: itemData.name,
@@ -225,20 +225,20 @@ Mob.prototype._dropItem = function(player) {
 //Drop Equipment down
 Mob.prototype._dropEquipment = function(player) {
 	var level = formula.dropItemLv(this.level, player.level);
-	
+
 	var pos = area.map().genPos(this, 200);
 	if(!pos){
 		logger.warn('Generate position for drop equipment error!');
 		return null;
 	}
-	
+
 	var equipments = this.getEquipmentsByLevel(level);
 	var index = Math.floor(Math.random()*equipments.length);
 	var equipment = equipments[index];
 	var dropEquipment=new Equipment({
 		kindId : equipment.id,
-		x : pos.x,
-		y : pos.y,
+		x : Math.floor(pos.x),
+		y : Math.floor(pos.y),
 		kindName : equipment.name,
 		englishName : equipment.englishName,
 		name : equipment.name,
@@ -261,9 +261,9 @@ Mob.prototype.getEquipmentsByLevel = function(level){
 		var equipments = dataApi.equipment.findBy('heroLevel', level);
 		if(equipments.length > 0)
 			return equipments;
-		level--;		
+		level--;
 	}
-	
+
 	return [];
 }
 
@@ -320,7 +320,7 @@ Mob.prototype.getKillExp = function(playerLevel) {
 
 Mob.prototype.hit = function(attacker, damage) {
   Character.prototype.hit.call(this, attacker, damage);
-  this.increaseHateFor(attacker.entityId, 5);  
+  this.increaseHateFor(attacker.entityId, 5);
 };
 
 /**

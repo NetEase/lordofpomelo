@@ -10,7 +10,7 @@ module.exports = function(app) {
 
 var Handler = function(app) {
 	this.app = app;
-	
+
 	if(!this.app)
 		logger.error(app);
 };
@@ -19,7 +19,7 @@ var pro = Handler.prototype;
 
 /**
  * New client entry game server. Check token and bind user info into session.
- * 
+ *
  * @param  {Object}   msg     request message
  * @param  {Object}   session current session object
  * @param  {Function} next    next stemp callback
@@ -49,7 +49,7 @@ pro.entry = function(msg, session, next) {
 				next(null, {code: Code.ENTRY.FA_USER_NOT_EXIST});
 				return;
 			}
-			
+
 			uid = user.id;
 			userDao.getPlayersByUid(user.id, cb);
 		}, function(res, cb) {
@@ -71,7 +71,7 @@ pro.entry = function(msg, session, next) {
 			session.on('closed', onUserLeave.bind(null, self.app));
 			session.pushAll(cb);
 		}, function(cb) {
-			self.app.rpc.chat.chatRemote.add(session, player.userId, player.name, 
+			self.app.rpc.chat.chatRemote.add(session, player.userId, player.name,
 				channelUtil.getGlobalChannelName(), cb);
 		}
 	], function(err) {
@@ -79,14 +79,8 @@ pro.entry = function(msg, session, next) {
 			next(err, {code: Code.FAIL});
 			return;
 		}
-		
-		var dictionary = self.app.components['__dictionary__'];
-		var dict = null;
-		if(!!dictionary){
-			dict = dictionary.getDict();
-		}
-		
-		next(null, {code: Code.OK, player: players ? players[0] : null, dict: dict});
+
+		next(null, {code: Code.OK, player: players ? players[0] : null});
 	});
 };
 
