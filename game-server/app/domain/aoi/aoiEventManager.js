@@ -235,7 +235,7 @@ function onPlayerUpdate(params) {
 	if(params.addObjs.length > 0) {
 		var entities = area.getEntities(params.addObjs);
 		if(entities.length > 0) {
-      messageService.pushMessageToPlayer(uid, 'onAddEntities', {'entities' : entities});
+      messageService.pushMessageToPlayer(uid, 'onAddEntities', entities);
 		}
 	}
 }
@@ -279,7 +279,7 @@ function onAddEntity(uids, entityId) {
 		return;
 	}
 
-  messageService.pushMessageByUids(uids, 'onAddEntities', {entities:entities});
+  messageService.pushMessageByUids(uids, 'onAddEntities', entities);
 }
 
 /**

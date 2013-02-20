@@ -24,7 +24,7 @@ var area = require('./../area/area');
  */
 var Player = function(opts) {
 	Character.call(this, opts);
-	this.id = opts.id;
+	this.id = Number(opts.id);
 	this.type = EntityType.PLAYER;
 	this.userId = opts.userId;
 	this.name = opts.name;
@@ -185,7 +185,7 @@ Player.prototype.useItem = function(index) {
  */
 Player.prototype.learnSkill = function(skillId, callback) {
 	var skillData = dataApi.fightskill.findById(skillId);
-	if (this.level < skillData.playerLevel || !!this.fightSkills[skillId] || this.skillPoint <= 0) {
+	if (this.level < skillData.playerLevel || !!this.fightSkills[skillId]) {
 		return false;
 	}
 	var fightSkill = fightskill.create({skillId: skillId, level: 1, playerId: this.id, type:'attack'});
@@ -358,11 +358,18 @@ Player.prototype.strip = function() {
  */
 Player.prototype.getInfo = function() {
 	var playerData = this.strip();
-	playerData.bag = this.bag;
+	playerData.bag = this.bag.getData();
 	playerData.equipments = this.equipments;
-	playerData.characterData = this.characterData;
-	playerData.fightSkills = this.fightSkills;
+	//playerData.characterData = this.characterData;
+	playerData.fightSkills = this.getFightSkillData();
 	playerData.curTasks = this._getCurTasksInfo();
+
+	//console.warn('bag : %j', playerData.bag);
+	//console.warn('equip : %j', this.equipments);
+	//console.warn('character : %j', this.characterData);
+	//console.warn('skill : %j', playerData.fightSkills);
+	//console.warn('tasks : %j', this._getCurTasksInfo());
+	console.warn('player : %j', playerData);
 	return playerData;
 };
 

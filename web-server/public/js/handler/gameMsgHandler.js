@@ -19,7 +19,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 		 * @param data {Object} The message, contains entities to add
 		 */
 		pomelo.on('onAddEntities', function(data){
-			var entities = data.entities;
+			var entities = data;
 			var area = app.getCurArea();
 
 			if(!area) {
@@ -30,9 +30,12 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			for(var key in entities){
 				var array = entities[key];
 
+				if(key === 'npc')
+					console.warn('add npc');
 				for(var i = 0; i < array.length; i++){
 					if(!area.getEntity(array[i].entityId)){
-						area.addEntity(array[i]);
+						var entity = utils.buildEntity(key, array[i]);
+						area.addEntity(entity);
 					}else{
 						console.warn('add exist entity!');
 					}
@@ -299,7 +302,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 
 			if (!!items && items.length > 0) {
 				for (var i = 0; i < items.length; i ++) {
-					var item = buildItem(items[i]);
+					var item = utils.buildEntity(items[i].type, items[i]);
 					app.getCurArea().addEntity(item);
 				}
 			 }

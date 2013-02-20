@@ -1,7 +1,7 @@
 __resources__["/curPlayer.js"] = {meta: {mimetype: "application/javascript"}, data: function(exports, require, module, __filename, __dirname) {
 	/**
-	 * Module dependencies 
-	 */ 
+	 * Module dependencies
+	 */
 	var Player = require('player');
 	var Bag = require('bag');
 	var Equipments = require('equipments');
@@ -13,14 +13,14 @@ __resources__["/curPlayer.js"] = {meta: {mimetype: "application/javascript"}, da
 	 * Initialize a new 'CurPlayer' with the given 'opts'.
 	 * curPlayer inherits Player
 	 * It is current player
-	 * 
+	 *
 	 * @param {Object} opts
 	 * @api public
 	 */
 	var CurPlayer = function(opts){
 		Player.call(this, opts);
 
-		this.characterData = opts.characterData;
+		this.characterData = dataApi.character.findById(this.kindId);
 		this.bag = new Bag(opts.bag);
 		this.skillPoint = opts.skillPoint || 0;
 
@@ -31,11 +31,16 @@ __resources__["/curPlayer.js"] = {meta: {mimetype: "application/javascript"}, da
 		this.dodgeRate = opts.dodgeRate;
 		this.attackSpeed = opts.attackSpeed;
 
-
 		this.equipments = new Equipments(opts.equipments);
-		this.fightSkills = opts.fightSkills;
+		this.fightSkills = {};
 		this.nextLevelExp = opts.nextLevelExp;
-		this.curTasks = getCurTasksInfo(opts.curTasks);	
+		this.curTasks = getCurTasksInfo(opts.curTasks);
+
+		//Init fight skills
+		for(var i = 0; i < opts.fightSkills.length; i++){
+			var fs = opts.fightSkills[i];
+			this.fightSkills[fs.id] = fs;
+		}
 	};
 
 	/**
@@ -47,7 +52,7 @@ __resources__["/curPlayer.js"] = {meta: {mimetype: "application/javascript"}, da
 
 	/**
 	 * Get curTasks' information.
-	 * 
+	 *
 	 * @param {Array} data
 	 * @return {Object} task list
 	 * @api private
@@ -113,7 +118,7 @@ __resources__["/curPlayer.js"] = {meta: {mimetype: "application/javascript"}, da
 		for(var key in this.equipments){
 			var equip = dataApi.equipment.findById(this.equipments[key]);
 			if(!!equip){
-				attack += Number(equip.attackValue);	
+				attack += Number(equip.attackValue);
 			}
 		}
 
@@ -127,7 +132,7 @@ __resources__["/curPlayer.js"] = {meta: {mimetype: "application/javascript"}, da
 		for(var key in this.equipments){
 			var equip = dataApi.equipment.findById(this.equipments[key]);
 			if(!!equip){
-				defence += Number(equip.defenceValue);	
+				defence += Number(equip.defenceValue);
 			}
 		}
 

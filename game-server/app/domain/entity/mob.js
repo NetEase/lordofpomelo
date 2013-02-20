@@ -202,7 +202,7 @@ Mob.prototype._dropItem = function(player) {
 	var length = itemDatas.length;
 	var index = Math.floor(Math.random()*length);
 	var itemData = itemDatas[index];
-	var dropItem=new Item({
+	var dropItem = new Item({
 		kindId : itemData.id,
 		x : Math.floor(pos.x),
 		y : Math.floor(pos.y),
@@ -235,7 +235,7 @@ Mob.prototype._dropEquipment = function(player) {
 	var equipments = this.getEquipmentsByLevel(level);
 	var index = Math.floor(Math.random()*equipments.length);
 	var equipment = equipments[index];
-	var dropEquipment=new Equipment({
+	var dropEquipment = new Equipment({
 		kindId : equipment.id,
 		x : Math.floor(pos.x),
 		y : Math.floor(pos.y),

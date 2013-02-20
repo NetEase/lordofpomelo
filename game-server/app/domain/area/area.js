@@ -282,7 +282,7 @@ exp.getPlayerByUid = function(uid){
 	}
 
 	return null;
-}
+};
 
 exp.removePlayerByUid = function(uid){
 	var playerId = users[uid];
@@ -291,7 +291,7 @@ exp.removePlayerByUid = function(uid){
 		delete users[uid];
 		this.removePlayer(playerId);
 	}
-}
+};
 
 /**
  * Get area entities for given postion and range.
@@ -300,12 +300,7 @@ exp.removePlayerByUid = function(uid){
  */
 exp.getAreaInfo = function(pos, range) {
 	var ids = aoi.getIdsByPos(pos, range);
-	var entities = this.getEntities(ids);
-	return {
-		id: id,
-		level: level,
-		entities : entities
-	};
+	return this.getEntities(ids);
 };
 
 /**

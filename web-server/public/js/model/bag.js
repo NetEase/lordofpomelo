@@ -11,13 +11,23 @@ __resources__["/bag.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 	var Bag = function(opts) {
 		EventEmitter.call(this);
 		this.itemCount = opts.itemCount;
-		this.items = opts.items;
-		this.usedCount = Object.keys(this.items).length;
+		this.usedCount = opts.items.length;
+		this.items = {};
+
+		//init items, translate from array to map
+		var items = opts.items;
+		for(var key in items){
+			var item = items[key];
+			this.items[item.key] = {
+				id : item.id,
+				type : item.type
+			};
+		}
 	};
 
 	Bag.prototype = Object.create(EventEmitter.prototype);
 	var pro = Bag.prototype;
-	
+
 /**
  * add item
  *
@@ -34,7 +44,7 @@ __resources__["/bag.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 
 		this.items[index] = item;
 		this.usedCount += 1;
-		
+
 		this.emit('addItem', index, item);
 		return index;
 	};
@@ -51,12 +61,12 @@ __resources__["/bag.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 		if	(this.items[index]) {
 			delete this.items[index];
 			this.usedCount -= 1;
-			this.emit('removeItem', index);	
+			this.emit('removeItem', index);
 			status = true;
 		}
 		return status;
 	};
- 
+
 	pro.isFull = function() {
 		return this.itemCount === this.usedCount;
 	};

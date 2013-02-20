@@ -52,7 +52,7 @@ handler.enterScene = function(msg, session, next) {
 			player.y = pos.y;
 		}
 		var data = {
-        area: area.getAreaInfo({x: player.x, y: player.y}, player.range),
+        entities: area.getAreaInfo({x: player.x, y: player.y}, player.range),
         curPlayer: player.getInfo(),
         map: {
           name : map.name,
@@ -64,10 +64,7 @@ handler.enterScene = function(msg, session, next) {
         }
     };
 
-		next(null, {
-			code: consts.MESSAGE.RES,
-			data: data
-		});
+		next(null, data);
 
 		if (!area.addEntity(player)) {
       logger.error("Add player to area faild! areaId : " + player.areaId);

@@ -307,7 +307,7 @@ __resources__["/clientManager.js"] = {
 
     function enterScene(){
       pomelo.request("area.playerHandler.enterScene",{ uid:pomelo.uid, playerId: pomelo.playerId, areaId: pomelo.areaId},function(data){
-        app.init(data.data);
+        app.init(data);
       });
     }
 
