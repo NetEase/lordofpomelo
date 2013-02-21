@@ -20,9 +20,9 @@ var pro = Remote.prototype;
 
 /**
  * Auth token and check whether expire.
- * 
+ *
  * @param  {String}   token token string
- * @param  {Function} cb    
+ * @param  {Function} cb
  * @return {Void}
  */
 pro.auth = function(token, cb) {
@@ -42,16 +42,23 @@ pro.auth = function(token, cb) {
 			cb(err);
 			return;
 		}
-		
+
 		cb(null, Code.OK, user);
 	});
 };
 
+/**
+ * Check the token whether expire.
+ *
+ * @param  {Object} token  token info
+ * @param  {Number} expire expire time
+ * @return {Boolean}        true for not expire and false for expire
+ */
 var checkExpire = function(token, expire) {
 	if(expire < 0) {
 		// negative expire means never expire
 		return true;
 	}
 
-	return (Date.now() - token.timestamp) > expire;
+	return (Date.now() - token.timestamp) < expire;
 };

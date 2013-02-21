@@ -165,7 +165,7 @@ exp.removeEntity = function(entityId) {
 
 	//If the entity is a player, remove it
 	if(e.type === 'player') {
-		getChannel().leave(e.userId, pomelo.app.get('serverId'));
+		getChannel().leave(e.userId, pomelo.app.getServerId());
 		aiManager.removeCharacter(e.entityId);
 		patrolManager.removeCharacter(e.entityId);
 		aoi.removeObject({id:e.entityId, type: e.type}, {x: e.x, y: e.y});
