@@ -64,7 +64,7 @@ __resources__["/map.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 		return this.weightMap[x][y];
 	};
 
-	pro.getWeightMap = function(collisions){
+	pro.getWeightMap = function(weightMap){
 		var map = [];
 		var x, y;
 		for(x = 0; x < this.rectW; x++) {
@@ -74,8 +74,11 @@ __resources__["/map.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 			}
 		}
 
-		for(x = 0; x < collisions.length; x++){
-			var array = collisions[x];
+		for(x = 0; x < weightMap.length; x++){
+			var array = weightMap[x].collisions;
+			if(!array){
+				continue;
+			}
 			for(var j = 0; j < array.length; j++){
 				var c = array[j];
 				for(var k = 0; k < c.length; k++){

@@ -2,10 +2,10 @@
 	"development":
     {
 		"connector": [
-			{"id": "connector-server-1", "host": "127.0.0.1", "port": 3150, "wsPort":3010},
-			{"id": "connector-server-2", "host": "127.0.0.1", "port": 3151, "wsPort":3011},
-			{"id": "connector-server-3", "host": "127.0.0.1", "port": 3152, "wsPort":3012},
-			{"id": "connector-server-4", "host": "127.0.0.1", "port": 3153, "wsPort":3013}
+			{"id": "connector-server-1", "host": "127.0.0.1", "port": 3150, "clientPort":3010, "frontend":true},
+			{"id": "connector-server-2", "host": "127.0.0.1", "port": 3151, "clientPort":3011, "frontend":true},
+			{"id": "connector-server-3", "host": "127.0.0.1", "port": 3152, "clientPort":3012, "frontend":true},
+			{"id": "connector-server-4", "host": "127.0.0.1", "port": 3153, "clientPort":3013, "frontend":true}
 		],
 		"area": [
 			{"id": "area-server-1", "host": "127.0.0.1", "port": 3250, "area": 1},
@@ -17,21 +17,21 @@
 		],
 		"path": [
 			{"id": "path-server-1", "host": "127.0.0.1", "port": 3550}
-		], 
+		],
 		"auth": [
 			{"id": "auth-server-1", "host": "127.0.0.1", "port": 3650}
-		], 
+		],
 		"gate": [
-			{"id": "gate-server-1", "host": "127.0.0.1", "wsPort": 3014}
+			{"id": "gate-server-1", "host": "127.0.0.1", "clientPort":3014, "frontend":true}
 		]
     },
 	"production":
     {
 		"connector": [
-			{"id": "connector-server-1", "host": "pomelo3.server.163.org", "port": 3150, "wsPort":3010},
-			{"id": "connector-server-2", "host": "pomelo3.server.163.org", "port": 3151, "wsPort":3011},
-			{"id": "connector-server-3", "host": "pomelo3.server.163.org", "port": 3152, "wsPort":3012},
-			{"id": "connector-server-4", "host": "pomelo3.server.163.org", "port": 3153, "wsPort":3013}
+			{"id": "connector-server-1", "host": "pomelo3.server.163.org", "port": 3150, "clientPort":3010, "frontend":true},
+			{"id": "connector-server-2", "host": "pomelo3.server.163.org", "port": 3151, "clientPort":3011, "frontend":true},
+			{"id": "connector-server-3", "host": "pomelo3.server.163.org", "port": 3152, "clientPort":3012, "frontend":true},
+			{"id": "connector-server-4", "host": "pomelo3.server.163.org", "port": 3153, "clientPort":3013, "frontend":true}
 		],
 		"area": [
 			{"id": "area-server-1", "host": "pomelo2.server.163.org", "port": 3250, "area": 1},
@@ -43,12 +43,12 @@
 		],
 		"path": [
 			{"id": "path-server-1", "host": "pomelo3.server.163.org", "port": 3550}
-		], 
+		],
 		"auth": [
 			{"id": "auth-server-1", "host": "pomelo3.server.163.org", "port": 3650}
-		], 
+		],
 		"gate": [
-			{"id": "gate-server-1", "host": "pomelo3.server.163.org", "wsPort": 3014}
+			{"id": "gate-server-1", "host": "pomelo3.server.163.org", "clientPort":3014, "frontend":true}
 		]
     }
 }

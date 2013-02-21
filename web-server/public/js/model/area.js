@@ -8,6 +8,7 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 	var Equipment = require('equipment');
 	var TimeSync = require('timeSync');
 	var ComponentAdder = require('componentAdder');
+	var utils = require('utils');
 
 	var logic = require("logic");
 	var Level = require('level').Level;
@@ -27,10 +28,10 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 
 	var logicTickHandler = function(callback) {
 		setTimeout(callback, 1000/60);
-	}
+	};
 
 	var Area = function(opts, map){
-		this.playerId = opts.playerId;
+		this.playerId = opts.curPlayer.id;
 		this.entities = {};
 		this.players = {};
 		this.map = null;
@@ -62,7 +63,8 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 		for(var key in opts.entities){
 			var array = opts.entities[key];
 			for(var i = 0; i < array.length; i++){
-				this.addEntity(array[i]);
+				var entity = utils.buildEntity(key, array[i]);
+				this.addEntity(entity);
 			}
 		}
 

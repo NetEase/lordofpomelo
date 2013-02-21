@@ -368,8 +368,8 @@
 
   var sendMessage = function(reqId, route, msg) {
     var flag = 0;
-    if(!!pomelo.dict && !!pomelo.dict[route]){
-      route = pomelo.dict[route];
+    if(!!pomelo.data.dict && !!pomelo.data.dict[route]){
+      route = pomelo.data.dict[route];
       flag = flag|0x01;
     }
     var packet = Protocol.encode(PKG_DATA,Protocol.body.encode(reqId, flag, route, Protocol.strencode(JSON.stringify(msg))));
@@ -460,7 +460,7 @@
 
   var deCompose = function(msg){
     var protos = !!pomelo.protos?pomelo.protos.server:{};
-    var abbrs = pomelo.abbrs;
+    var abbrs = pomelo.data.abbrs;
     var route = msg.route;
 
     //Decompose route from dict
@@ -508,8 +508,39 @@
   var handshakeInit = function(data){
     pomelo.heartbeat = data.sys.heartbeat-1000 || 5000;
 
+    initData(data);
+
     setDict(data.sys.dict);
 
     initProtos(data.sys.protos);
   };
+
+  //Initilize data used in pomelo client
+  var initData = function(data){
+    pomelo.data = pomelo.data || {};
+    var dict = data.sys.dict;
+    var protos = data.sys.protos;
+
+    //Init compress dict
+    if(!!dict){
+      pomelo.data.dict = dict;
+      pomelo.data.abbrs = {};
+
+      for(var route in dict){
+        pomelo.data.abbrs[dict[route]] = route;
+      }
+    }
+
+    //Init protobuf protos
+    if(!!protos){
+      pomelo.data.protos = {
+        server : protos.server || {},
+        client : protos.client || {}
+      };
+      if(!!protobuf){
+        protobuf.init({encoderProtos: protos.client, decoderProtos: protos.server});
+      }
+    }
+  };
+
 })();

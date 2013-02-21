@@ -11,7 +11,7 @@ __resources__["/bag.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 	var Bag = function(opts) {
 		EventEmitter.call(this);
 		this.itemCount = opts.itemCount;
-		this.usedCount = opts.items.length;
+		this.usedCount = !!opts.items?opts.items.length:0;
 		this.items = {};
 
 		//init items, translate from array to map

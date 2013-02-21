@@ -64,6 +64,7 @@ handler.enterScene = function(msg, session, next) {
         }
     };
 
+    console.warn(data.map.weightMap);
 		next(null, data);
 
 		if (!area.addEntity(player)) {

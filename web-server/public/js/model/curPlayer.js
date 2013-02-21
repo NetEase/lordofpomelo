@@ -34,7 +34,7 @@ __resources__["/curPlayer.js"] = {meta: {mimetype: "application/javascript"}, da
 		this.equipments = new Equipments(opts.equipments);
 		this.fightSkills = {};
 		this.nextLevelExp = opts.nextLevelExp;
-		this.curTasks = getCurTasksInfo(opts.curTasks);
+		this.curTasks = getCurTasksInfo(opts.curTasks||[]);
 
 		//Init fight skills
 		for(var i = 0; i < opts.fightSkills.length; i++){

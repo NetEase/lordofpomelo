@@ -182,10 +182,9 @@ Map.prototype.initCollisons = function(){
 	var collision;
 
 	for(var x = 0; x < this.weightMap.length; x++){
-		map[x] = [];
-
 		var array = this.weightMap[x];
 		var length = array.length;
+		var collisions = [];
 		for(var y = 0; y < length; y++){
 			//conllisions start
 			if(!flag && (array[y] === Infinity)){
@@ -197,22 +196,21 @@ Map.prototype.initCollisons = function(){
 			if(flag && array[y] === 1){
 				flag = false;
 				collision.length = y - collision.start;
-				map[x].push(collision);
+				collisions.push(collision);
 			}else if(flag && (y === length - 1)){
 				flag = false;
 				collision.length = y - collision.start + 1;
-				map[x].push(collision);
+				collisions.push(collision);
 			}
-
-
 		}
+
+		map[x] = {collisions: collisions};
 	}
 
 	this.compressedWeightMap = map;
-	// var l1 = Buffer.byteLength(this.weightMap.toString());
-	// var l2 = Buffer.byteLength(map.toString());
+	// var l1 = Buffer.byteLength(JSON.stringify(this.weightMap));
+	// var l2 = Buffer.byteLength(JSON.stringify(map.toString()));
 	// console.log('l1 : %j, l2 : %j, compress rate : %%j', l1, l2, Math.floor(l2/l1*10000)/100);
-	// this.getWeightMap(map);
 };
 
 /**

@@ -132,62 +132,57 @@
     },
     "required Position position" : 2
   },
-  "area.playerHandler.enterScene1" : {
-    "message Area" : {
-      "Entities" : {
-        "message NPC" : {
-          "required uInt32 entityId" : 1,
-          "required uInt32 kindId" : 2,
-          "required uInt32 x" : 3,
-          "required uInt32 y" : 4
-        },
-        "message Mob" : {
-          "required uInt32 entityId" : 1,
-          "required uInt32 kindId" : 2,
-          "required uInt32 x" : 3,
-          "required uInt32 y" : 4,
-          "required uInt32 level" : 5,
-          "required uInt32 walkSpeed" : 6,
-          "required uInt32 hp" : 7,
-          "required uInt32 maxHp" : 8
-        },
-        "message Item" : {
-          "required uInt32 entityId" : 1,
-          "required uInt32 kindId" : 2,
-          "required uInt32 x" : 3,
-          "required uInt32 y" : 4,
-          "required uInt32 playerId" : 5
-        },
-        "message Equipment" : {
-          "required uInt32 entityId" : 1,
-          "required uInt32 kindId" : 2,
-          "required uInt32 x" : 3,
-          "required uInt32 y" : 4,
-          "required uInt32 playerId" : 5
-        },
-        "message Player" : {
-          "required uInt32 entityId" : 1,
-          "required uInt32 kindId" : 2,
-          "required uInt32 x" : 3,
-          "required uInt32 y" : 4,
-          "required uInt32 level" : 5,
-          "required uInt32 walkSpeed" : 6,
-          "required uInt32 hp" : 7,
-          "required uInt32 maxHp" : 8,
-          "required uInt32 mp" : 9,
-          "required uInt32 maxMp" : 10,
-          "required uInt32 id" : 11,
-          "required string name" : 12
-        },
-        "repeated NPC npc" : 1,
-        "repeated Mob mob" : 2,
-        "repeated Item item" : 3,
-        "repeated Equipment euipment" : 4,
-        "repeated Player player" : 5
+  "area.playerHandler.enterScene" : {
+    "message Entities" : {
+      "message NPC" : {
+        "required uInt32 entityId" : 1,
+        "required uInt32 kindId" : 2,
+        "required uInt32 x" : 3,
+        "required uInt32 y" : 4
       },
-      "required uInt32 id" : 1,
-      "required uInt32 level" : 2,
-      "required Entities entities" : 3
+      "message Mob" : {
+        "required uInt32 entityId" : 1,
+        "required uInt32 kindId" : 2,
+        "required uInt32 x" : 3,
+        "required uInt32 y" : 4,
+        "required uInt32 level" : 5,
+        "required uInt32 walkSpeed" : 6,
+        "required uInt32 hp" : 7,
+        "required uInt32 maxHp" : 8
+      },
+      "message Item" : {
+        "required uInt32 entityId" : 1,
+        "required uInt32 kindId" : 2,
+        "required uInt32 x" : 3,
+        "required uInt32 y" : 4,
+        "required uInt32 playerId" : 5
+      },
+      "message Equipment" : {
+        "required uInt32 entityId" : 1,
+        "required uInt32 kindId" : 2,
+        "required uInt32 x" : 3,
+        "required uInt32 y" : 4,
+        "required uInt32 playerId" : 5
+      },
+      "message Player" : {
+        "required uInt32 entityId" : 1,
+        "required uInt32 kindId" : 2,
+        "required uInt32 x" : 3,
+        "required uInt32 y" : 4,
+        "required uInt32 level" : 5,
+        "required uInt32 walkSpeed" : 6,
+        "required uInt32 hp" : 7,
+        "required uInt32 maxHp" : 8,
+        "required uInt32 mp" : 9,
+        "required uInt32 maxMp" : 10,
+        "required uInt32 id" : 11,
+        "required string name" : 12
+      },
+      "repeated NPC npc" : 1,
+      "repeated Mob mob" : 2,
+      "repeated Item item" : 3,
+      "repeated Equipment euipment" : 4,
+      "repeated Player player" : 5
     },
     "message Player" : {
       "message Bag" : {
@@ -235,11 +230,13 @@
       "required uInt32 dodgeRate" : 19,
       "required uInt32 nextLevelExp" : 20,
       "required uInt32 skillPoint" : 21,
-      "required Bag bag" : 22,
-      "required Equipments equipments" : 23,
-      "repeated FightSkill fightSkills" : 24
+      "required string type" : 22,
+      "required Bag bag" : 23,
+      "required Equipments equipments" : 24,
+      "repeated FightSkill fightSkills" : 25
     },
-    "required Player curPlayer" : 2,
+    "optional Entities entities" : 1,
+    "optional Player curPlayer" : 2,
     "message Map" : {
       "message Collisions" : {
         "message Collison" : {
