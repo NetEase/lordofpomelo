@@ -95,7 +95,7 @@ app.configure('production|development', 'connector', function(){
 	app.set('connectorConfig',
 		{
 			connector : pomelo.connectors.hybiconnector,
-			heartbeat : 3000,
+			heartbeat : 3,
 			useDict : true,
 			useProtobuf : true,
 			handshake : function(msg, cb){
@@ -108,10 +108,6 @@ app.configure('production|development', 'gate', function(){
 	app.set('connectorConfig',
 		{
 			connector : pomelo.connectors.hybiconnector,
-			heartbeat : 3000,
-			handshake : function(msg, cb){
-				cb(null, {});
-			}
 		});
 });
 // Configure for chat server
