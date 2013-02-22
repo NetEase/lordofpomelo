@@ -63,8 +63,6 @@ handler.enterScene = function(msg, session, next) {
           weightMap: map.compressedWeightMap
         }
     };
-
-    console.warn(data.map.weightMap);
 		next(null, data);
 
 		if (!area.addEntity(player)) {

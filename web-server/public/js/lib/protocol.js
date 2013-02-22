@@ -1,16 +1,31 @@
-(function (exports,ByteArray, global) {
+(function (exports, ByteArray, global) {
   var Protocol = exports;
-  var BODY_HEADER = 5;
-  var HEAD_HEADER = 4;
-  var DEF_ROUTE_LEN = 2;
-  var ProHead = {};
-  var ProBody = {};
 
-  var copyArray = function(dest,doffset,src,soffset,length){
-    for(var index = 0;index<length;index++){
-      dest[doffset++] = src[soffset++];
-    }
-  };
+  var PKG_HEAD_BYTES = 4;
+  var MSG_FLAG_BYTES = 1;
+  var MSG_ROUTE_CODE_BYTES = 2;
+  var MSG_ID_MAX_BYTES = 5;
+  var MSG_ROUTE_LEN_BYTES = 1;
+
+  var MSG_ROUTE_CODE_MAX = 0xffff;
+
+  var MSG_COMPRESS_ROUTE_MASK = 0x1;
+  var MSG_TYPE_MASK = 0x7;
+
+  var Package = Protocol.Package = {};
+  var Message = Protocol.Message = {};
+
+  Package.TYPE_HANDSHAKE = 1;
+  Package.TYPE_HANDSHAKE_ACK = 2;
+  Package.TYPE_HEARTBEAT = 3;
+  Package.TYPE_DATA = 4;
+  Package.TYPE_KICK = 5;
+
+  Message.TYPE_REQUEST = 0;
+  Message.TYPE_NOTIFY = 1;
+  Message.TYPE_RESPONSE = 2;
+  Message.TYPE_PUSH = 3;
+
   /**
    * pomele client encode
    * id message id;
@@ -18,8 +33,8 @@
    * msg message body
    * socketio current support string
    */
-  Protocol.strencode = function(str){
-    var byteArray = new ByteArray(str.length*3);
+  Protocol.strencode = function(str) {
+    var byteArray = new ByteArray(str.length * 3);
     var offset = 0;
     for(var i = 0; i < str.length; i++){
       var charCode = str.charCodeAt(i);
@@ -37,7 +52,7 @@
       }
     }
     var _buffer = new ByteArray(offset);
-    copyArray(_buffer,0,byteArray,0,offset);
+    copyArray(_buffer, 0, byteArray, 0, offset);
     return _buffer;
   };
 
@@ -46,7 +61,7 @@
    * msg String data
    * return Message Object
    */
-  Protocol.strdecode = function(buffer){
+  Protocol.strdecode = function(buffer) {
     var bytes = new ByteArray(buffer);
     var array = [];
     var offset = 0;
@@ -68,381 +83,251 @@
     return String.fromCharCode.apply(null, array);
   };
 
-
   /**
+   * Package protocol encode.
    *
-   * pomele client Head message encode
+   * Pomelo package format:
+   * +------+-------------+------------------+
+   * | type | body length |       body       |
+   * +------+-------------+------------------+
    *
-   * @param flag message flag
-   * @param body message Byte Array
-   * return Byte Array;
+   * Head: 4bytes
+   *   0: package type,
+   *      1 - handshake,
+   *      2 - handshake ack,
+   *      3 - heartbeat,
+   *      4 - data
+   *      5 - kick
+   *   1 - 3: big-endian body length
+   * Body: body length bytes
    *
+   * @param  {Number}    type   package type
+   * @param  {ByteArray} body   body content in bytes
+   * @return {ByteArray}        new byte array that contains encode result
    */
-
-  ProHead.encode = function(flag,buffer){
-    var length = buffer.length;
-    var _buffer = new ByteArray(HEAD_HEADER+length);
+  Package.encode = function(type, body){
+    var length = body ? body.length : 0;
+    var buffer = new ByteArray(PKG_HEAD_BYTES + length);
     var index = 0;
-    _buffer[index++] = flag & 0xFF;
-    _buffer[index++] = length>>16 & 0xFF;
-    _buffer[index++] = length>>8 & 0xFF;
-    _buffer[index++] = length & 0xFF;
-    copyArray(_buffer,index,buffer,index-HEAD_HEADER,length);
-    return _buffer;
+    buffer[index++] = type & 0xff;
+    buffer[index++] = (length >> 16) & 0xff;
+    buffer[index++] = (length >> 8) & 0xff;
+    buffer[index++] = length & 0xff;
+    if(body) {
+      copyArray(buffer, index, body, 0, length);
+    }
+    return buffer;
   };
 
-
   /**
+   * Package protocol decode.
+   * See encode for package format.
    *
-   * pomele client Head message decode
-   *
-   * @param buffer message Byte Array
-   *
-   * return Object{'flag':flag,'buffer':body};
-   *
+   * @param  {ByteArray} buffer byte array containing package content
+   * @return {Object}           {type: package type, buffer: body byte array}
    */
-  ProHead.decode = function(buffer){
+  Package.decode = function(buffer){
     var bytes =  new ByteArray(buffer);
-    var flag = bytes[0];
+    var type = bytes[0];
     var index = 1;
-    var length = ((bytes[index++])  << 16  |  (bytes[index++]) << 8 | bytes[index++]) >>>0;
-    var _buffer = new ByteArray(length);
-    copyArray(_buffer,0,bytes,HEAD_HEADER,length);
-    return {'flag':flag,'buffer':_buffer};
+    var length = ((bytes[index++]) << 16 | (bytes[index++]) << 8 | bytes[index++]) >>> 0;
+    var body = length ? new ByteArray(length) : null;
+    copyArray(body, 0, bytes, PKG_HEAD_BYTES, length);
+    return {'type': type, 'body': body};
   };
 
+  /**
+   * Message protocol encode.
+   *
+   * @param  {Number} id            message id
+   * @param  {Number} type          message type
+   * @param  {Number} compressRoute whether compress route
+   * @param  {Number|String} route  route code or route string
+   * @param  {Buffer} msg           message body bytes
+   * @return {Buffer}               encode result
+   */
+  Message.encode = function(id, type, compressRoute, route, msg){
+    // caculate message max length
+    var idBytes = msgHasId(type) ? caculateMsgIdBytes(id) : 0;
+    var msgLen = MSG_FLAG_BYTES + idBytes;
+
+    if(msgHasRoute(type)) {
+      if(compressRoute) {
+        if(typeof route !== 'number'){
+          throw new Error('error flag for number route!');
+        }
+        msgLen += MSG_ROUTE_CODE_BYTES;
+      } else {
+        msgLen += MSG_ROUTE_LEN_BYTES;
+        if(route) {
+          route = Protocol.strencode(route);
+          if(route.length>255) {
+            throw new Error('route maxlength is overflow');
+          }
+          msgLen += route.length;
+        }
+      }
+    }
+
+    if(msg) {
+      msgLen += msg.length;
+    }
+
+    var buffer = new ByteArray(msgLen);
+    var offset = 0;
+
+    // add flag
+    offset = encodeMsgFlag(type, compressRoute, buffer, offset);
+
+    // add message id
+    if(msgHasId(type)) {
+      offset = encodeMsgId(id, idBytes, buffer, offset);
+    }
+
+    // add route
+    if(msgHasRoute(type)) {
+      offset = encodeMsgRoute(compressRoute, route, buffer, offset);
+    }
+
+    // add body
+    if(msg) {
+      offset = encodeMsgBody(msg, buffer, offset);
+    }
+
+    return buffer;
+  };
 
   /**
+   * Message protocol decode.
    *
-   * pomele client message body encode
-   *
-   * @param id   id;
-   * @param flag(0,1,3)   type;
-   * @param route  ByteArray
-   * @param msg   ByteArray
-   *
-   * return Byte Array
-   *
+   * @param  {Buffer|Uint8Array} buffer message bytes
+   * @return {Object}            message object
    */
+  Message.decode = function(buffer) {
+    var bytes =  new ByteArray(buffer);
+    var bytesLen = bytes.length || bytes.byteLength;
+    var offset = 0;
+    var id = 0;
+    var route = null;
 
-  ProBody.encode = function(id,flag,route,msg){
-    var bufferLen = msg.length;
+    // parse flag
+    var flag = bytes[offset++];
+    var compressRoute = flag & MSG_COMPRESS_ROUTE_MASK;
+    var type = (flag >> 1) & MSG_TYPE_MASK;
 
-    if ((flag&0x01) === 0) {
-      route = Protocol.strencode(route);
-      if (route.length>255) {
-        throw new Error('route maxlength is overflow');
+    // parse id
+    if(msgHasId(type)) {
+      var byte = bytes[offset++];
+      id = byte & 0x7f;
+      while(byte & 0x80) {
+        id <<= 7;
+        byte = bytes[offset++];
+        id |= byte & 0x7f;
       }
-
-      bufferLen += BODY_HEADER + 1 + route.length;
-    }else{
-      if(typeof route !== 'number'){
-        throw new Error('error flag for number route!');
-      }
-      //Id length 4, flag 1, route 2
-      bufferLen += BODY_HEADER + 2;
     }
 
-    var _buffer = new ByteArray(bufferLen);
-    var index = 0;
-
-    //Add flag
-    _buffer[index++] =  flag & 0xFF;
-
-    //publish message has no route
-    if ((flag&0x02) === 0){
-      _buffer[index++] = (id>>24) & 0xFF;
-      _buffer[index++] = (id>>16) & 0xFF;
-      _buffer[index++] = (id>>8) & 0xFF;
-      _buffer[index++] = id & 0xFF;
+    // parse route
+    if(msgHasRoute(type)) {
+      if(compressRoute) {
+        route = (bytes[offset++]) << 8 | bytes[offset++];
+      } else {
+        var routeLen = bytes[offset++];
+        if(routeLen) {
+          route = new ByteArray(routeLen);
+          copyArray(route, 0, bytes, offset, routeLen);
+          route = Protocol.strdecode(route);
+        } else {
+          route = '';
+        }
+        offset += routeLen;
+      }
     }
 
-    //Add route
-    if ((flag&0x01) === 0) {
-      _buffer[index++] = route.length & 0xFF;
-      copyArray(_buffer,index,route,0,route.length);
-      index += route.length;
-    }else{
-      if(route > 0xffff){
+    // parse body
+    var bodyLen = bytesLen - offset;
+    var body = new ByteArray(bodyLen);
+
+    copyArray(body, 0, bytes, offset, bodyLen);
+
+    return {'id': id, 'type': type, 'compressRoute': compressRoute,
+            'route': route, 'body': body};
+  };
+
+  var copyArray = function(dest, doffset, src, soffset, length) {
+    if('function' === typeof src.copy) {
+      // Buffer
+      src.copy(dest, doffset, soffset, soffset + length);
+    } else {
+      // Uint8Array
+      for(var index=0; index<length; index++){
+        dest[doffset++] = src[soffset++];
+      }
+    }
+  };
+
+  var msgHasId = function(type) {
+    return type === Message.TYPE_REQUEST || type === Message.TYPE_RESPONSE;
+  };
+
+  var msgHasRoute = function(type) {
+    return type === Message.TYPE_REQUEST || type === Message.TYPE_NOTIFY ||
+           type === Message.TYPE_PUSH;
+  };
+
+  var caculateMsgIdBytes = function(id) {
+    var len = 0;
+    do {
+      len += 1;
+      id >>= 7;
+    } while(id > 0);
+    return len;
+  };
+
+  var encodeMsgFlag = function(type, compressRoute, buffer, offset) {
+    if(type !== Message.TYPE_REQUEST && type !== Message.TYPE_NOTIFY &&
+       type !== Message.TYPE_RESPONSE && type !== Message.TYPE_PUSH) {
+      throw new Error('unkonw message type: ' + type);
+    }
+
+    buffer[offset] = (type << 1) | (compressRoute ? 1 : 0);
+
+    return offset + MSG_FLAG_BYTES;
+  };
+
+  var encodeMsgId = function(id, idBytes, buffer, offset) {
+    var index = offset + idBytes - 1;
+    buffer[index--] = id & 0x7f;
+    while(index >= offset) {
+      id >>= 7;
+      buffer[index--] = id & 0x7f | 0x80;
+    }
+    return offset + idBytes;
+  };
+
+  var encodeMsgRoute = function(compressRoute, route, buffer, offset) {
+    if (compressRoute) {
+      if(route > MSG_ROUTE_CODE_MAX){
         throw new Error('route number is overflow');
       }
 
-      _buffer[index++] = (route>>8) & 0xFF;
-      _buffer[index++] = route & 0xFF;
-    }
-
-    copyArray(_buffer,index,msg,0,msg.length);
-    return _buffer;
-  };
-
-  /**
-   *
-   * pomelo client message decode
-   * @param msg  Byte Array to decode
-   *
-   * return Object{'id':id,'flag':flag,'route':route,'buffer':body}
-   */
-
-  ProBody.decode = function(buffer){
-    var bytes =  new ByteArray(buffer);
-    var bytesLen = bytes.length || bytes.byteLength;
-    var index = 0;
-    var id = 0;
-    var route = '';
-    var flag = bytes[index++];
-
-    if ((flag&0x02) === 0){
-      id = ((bytes[index++] <<24) | (bytes[index++])  << 16  |  (bytes[index++]) << 8 | bytes[index++]) >>>0;
-    }
-
-
-    var routeLen = DEF_ROUTE_LEN;
-    if ((flag&0x01) === 0) {
-      routeLen = bytes[index++];
-      route = new ByteArray(routeLen);
-      copyArray(route,0,bytes,index,routeLen);
-
-      route = Protocol.strdecode(route);
-      index += routeLen;
-    }else{
-      route = (bytes[index++]) << 8 | bytes[index++];
-    }
-
-    var _bufferLen = bytesLen-index;
-    var _buffer = new ByteArray(_bufferLen);
-
-    //console.error('start : %j, length : %j, routeLen', index, _bufferLen, routeLen)
-    copyArray(_buffer,0,bytes,index,_bufferLen);
-
-    return {'id':id,'flag':flag,'route':route,'buffer':_buffer};
-  };
-
-  Protocol.head = ProHead;
-  Protocol.encode = Protocol.head.encode;
-  Protocol.decode = Protocol.head.decode;
-  Protocol.body = ProBody;
-})('object' === typeof module ? module.exports : (this.Protocol = {}),'object' === typeof module ? Buffer:Uint8Array, this);
-(function (exports,ByteArray, global) {
-  var Protocol = exports;
-  var BODY_HEADER = 5;
-  var HEAD_HEADER = 4;
-  var DEF_ROUTE_LEN = 2;
-  var ProHead = {};
-  var ProBody = {};
-
-  var copyArray = function(dest,doffset,src,soffset,length){
-    for(var index = 0;index<length;index++){
-      dest[doffset++] = src[soffset++];
-    }
-  };
-  /**
-   * pomele client encode
-   * id message id;
-   * route message route
-   * msg message body
-   * socketio current support string
-   */
-  Protocol.strencode = function(str){
-    var byteArray = new ByteArray(str.length*3);
-    var offset = 0;
-    for(var i = 0; i < str.length; i++){
-      var charCode = str.charCodeAt(i);
-      var codes = null;
-      if(charCode <= 0x7f){
-        codes = [charCode];
-      }else if(charCode <= 0x7ff){
-        codes = [0xc0|(charCode>>6), 0x80|(charCode & 0x3f)];
-      }else{
-        codes = [0xe0|(charCode>>12), 0x80|((charCode & 0xfc0)>>6), 0x80|(charCode & 0x3f)];
-      }
-      for(var j = 0; j < codes.length; j++){
-        byteArray[offset] = codes[j];
-        ++offset;
+      buffer[offset++] = (route >> 8) & 0xff;
+      buffer[offset++] = route & 0xff;
+    } else {
+      if(route) {
+        buffer[offset++] = route.length & 0xff;
+        copyArray(buffer, offset, route, 0, route.length);
+        offset += route.length;
+      } else {
+        buffer[offset++] = 0;
       }
     }
-    var _buffer = new ByteArray(offset);
-    copyArray(_buffer,0,byteArray,0,offset);
-    return _buffer;
+
+    return offset;
   };
 
-  /**
-   * client decode
-   * msg String data
-   * return Message Object
-   */
-  Protocol.strdecode = function(buffer){
-    var bytes = new ByteArray(buffer);
-    var array = [];
-    var offset = 0;
-    var charCode = 0;
-    var end = bytes.length;
-    while(offset < end){
-      if(bytes[offset] < 128){
-        charCode = bytes[offset];
-        offset += 1;
-      }else if(bytes[offset] < 224){
-        charCode = ((bytes[offset] & 0x3f)<<6) + (bytes[offset+1] & 0x3f);
-        offset += 2;
-      }else{
-        charCode = ((bytes[offset] & 0x0f)<<12) + ((bytes[offset+1] & 0x3f)<<6) + (bytes[offset+2] & 0x3f);
-        offset += 3;
-      }
-      array.push(charCode);
-    }
-    return String.fromCharCode.apply(null, array);
+  var encodeMsgBody = function(msg, buffer, offset) {
+    copyArray(buffer, offset, msg, 0, msg.length);
+    return offset + msg.length;
   };
 
-
-  /**
-   *
-   * pomele client Head message encode
-   *
-   * @param flag message flag
-   * @param body message Byte Array
-   * return Byte Array;
-   *
-   */
-
-  ProHead.encode = function(flag,buffer){
-    var length = buffer.length;
-    var _buffer = new ByteArray(HEAD_HEADER+length);
-    var index = 0;
-    _buffer[index++] = flag & 0xFF;
-    _buffer[index++] = length>>16 & 0xFF;
-    _buffer[index++] = length>>8 & 0xFF;
-    _buffer[index++] = length & 0xFF;
-    copyArray(_buffer,index,buffer,index-HEAD_HEADER,length);
-    return _buffer;
-  };
-
-
-  /**
-   *
-   * pomele client Head message decode
-   *
-   * @param buffer message Byte Array
-   *
-   * return Object{'flag':flag,'buffer':body};
-   *
-   */
-  ProHead.decode = function(buffer){
-    var bytes =  new ByteArray(buffer);
-    var flag = bytes[0];
-    var index = 1;
-    var length = ((bytes[index++])  << 16  |  (bytes[index++]) << 8 | bytes[index++]) >>>0;
-    var _buffer = new ByteArray(length);
-    copyArray(_buffer,0,bytes,HEAD_HEADER,length);
-    return {'flag':flag,'buffer':_buffer};
-  };
-
-
-  /**
-   *
-   * pomele client message body encode
-   *
-   * @param id   id;
-   * @param flag(0,1,3)   type;
-   * @param route  ByteArray
-   * @param msg   ByteArray
-   *
-   * return Byte Array
-   *
-   */
-
-  ProBody.encode = function(id,flag,route,msg){
-    var bufferLen = msg.length;
-
-    if ((flag&0x01) === 0) {
-      route = Protocol.strencode(route);
-      if (route.length>255) {
-        throw new Error('route maxlength is overflow');
-      }
-
-      bufferLen += BODY_HEADER + 1 + route.length;
-    }else{
-      if(typeof route !== 'number'){
-        throw new Error('error flag for number route!');
-      }
-      //Id length 4, flag 1, route 2
-      bufferLen += BODY_HEADER + 2;
-    }
-
-    var _buffer = new ByteArray(bufferLen);
-    var index = 0;
-
-    //Add flag
-    _buffer[index++] =  flag & 0xFF;
-
-    //publish message has no route
-    if ((flag&0x02) === 0){
-      _buffer[index++] = (id>>24) & 0xFF;
-      _buffer[index++] = (id>>16) & 0xFF;
-      _buffer[index++] = (id>>8) & 0xFF;
-      _buffer[index++] = id & 0xFF;
-    }
-
-    //Add route
-    if ((flag&0x01) === 0) {
-      _buffer[index++] = route.length & 0xFF;
-      copyArray(_buffer,index,route,0,route.length);
-      index += route.length;
-    }else{
-      if(route > 0xffff){
-        throw new Error('route number is overflow');
-      }
-
-      _buffer[index++] = (route>>8) & 0xFF;
-      _buffer[index++] = route & 0xFF;
-    }
-
-    copyArray(_buffer,index,msg,0,msg.length);
-    return _buffer;
-  };
-
-  /**
-   *
-   * pomelo client message decode
-   * @param msg  Byte Array to decode
-   *
-   * return Object{'id':id,'flag':flag,'route':route,'buffer':body}
-   */
-
-  ProBody.decode = function(buffer){
-    var bytes =  new ByteArray(buffer);
-    var bytesLen = bytes.length || bytes.byteLength;
-    var index = 0;
-    var id = 0;
-    var route = '';
-    var flag = bytes[index++];
-
-    if ((flag&0x02) === 0){
-      id = ((bytes[index++] <<24) | (bytes[index++])  << 16  |  (bytes[index++]) << 8 | bytes[index++]) >>>0;
-    }
-
-
-    var routeLen = DEF_ROUTE_LEN;
-    if ((flag&0x01) === 0) {
-      routeLen = bytes[index++];
-      route = new ByteArray(routeLen);
-      copyArray(route,0,bytes,index,routeLen);
-
-      route = Protocol.strdecode(route);
-      index += routeLen;
-    }else{
-      route = (bytes[index++]) << 8 | bytes[index++];
-    }
-
-    var _bufferLen = bytesLen-index;
-    var _buffer = new ByteArray(_bufferLen);
-
-    //console.error('start : %j, length : %j, routeLen', index, _bufferLen, routeLen)
-    copyArray(_buffer,0,bytes,index,_bufferLen);
-
-    return {'id':id,'flag':flag,'route':route,'buffer':_buffer};
-  };
-
-  Protocol.head = ProHead;
-  Protocol.encode = Protocol.head.encode;
-  Protocol.decode = Protocol.head.decode;
-  Protocol.body = ProBody;
-})('object' === typeof module ? module.exports : (this.Protocol = {}),'object' === typeof module ? Buffer:Uint8Array, this);
+})('object' === typeof module ? module.exports : (this.Protocol = {}),'object' === typeof module ? Buffer : Uint8Array, this);

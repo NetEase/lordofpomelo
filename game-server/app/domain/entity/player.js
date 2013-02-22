@@ -369,7 +369,7 @@ Player.prototype.getInfo = function() {
 	//console.warn('character : %j', this.characterData);
 	//console.warn('skill : %j', playerData.fightSkills);
 	//console.warn('tasks : %j', this._getCurTasksInfo());
-	console.warn('player : %j', playerData);
+	//console.warn('player : %j', playerData);
 	return playerData;
 };
 

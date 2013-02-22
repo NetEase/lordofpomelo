@@ -94,7 +94,7 @@ app.configure('production|development', 'connector', function(){
 
 	app.set('connectorConfig',
 		{
-			connector : pomelo.connectors.hybiconnector,
+			connector : pomelo.connectors.hybridconnector,
 			heartbeat : 3,
 			useDict : true,
 			useProtobuf : true,
@@ -107,7 +107,7 @@ app.configure('production|development', 'connector', function(){
 app.configure('production|development', 'gate', function(){
 	app.set('connectorConfig',
 		{
-			connector : pomelo.connectors.hybiconnector,
+			connector : pomelo.connectors.hybridconnector,
 		});
 });
 // Configure for chat server

@@ -45,7 +45,6 @@ exp.init = function(opts) {
 	opts.weightMap = true;
 	map = new Map(opts);
 	//Init AOI
-	console.error(opts);
 	aoi = aoiManager.getService(opts);
 	aoiEventManager.addEvent(aoi.aoi);
 

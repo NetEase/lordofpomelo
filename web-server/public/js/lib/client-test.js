@@ -249,8 +249,6 @@
   var reqId = 0;
   var callbacks = {};
   var handlers = {};
-  //Map from request id to route
-  var routeMap = {};
 
   var heartbeatInterval = 5000;
   var heartbeatTimeout = heartbeatInterval * 2;
@@ -268,6 +266,7 @@
 
   var initCallback = null;
 
+
   pomelo.init = function(params, cb){
     pomelo.params = params;
     params.debug = true;
@@ -281,20 +280,52 @@
     }
 
     if (!params.type) {
-      console.log('init websocket');
       handshakeBuffer.user = params.user;
       this.initWebSocket(url,cb);
     }
   };
 
-  pomelo.initWebSocket = function(url,cb){
-    console.log(url);
+  pomelo.initSocketIO = function(url,cb){
+    socket = io.connect(url, {'force new connection': true, reconnect: false});
+    socket.on('connect', function(){
+      if (!!cb) { cb(socket);}
+    });
+
+    socket.on('reconnect', function() {
+      console.log('reconnect');
+    });
+
+    socket.on('message', function(data){
+      if(typeof data === 'string') {
+        data = JSON.parse(data);
+      }
+      if(data instanceof Array) {
+        processMessageBatch(pomelo, data);
+      } else {
+        processMessage(pomelo, data);
+      }
+    });
+
+    socket.on('error', function(err) {
+      pomelo.emit('io-error', err);
+      console.log(err);
+    });
+
+    socket.on('disconnect', function(reason) {
+      pomelo.emit('disconnect', reason);
+    });
+
+  };
+
+  pomelo.initWebSocket = function(url,cb) {
     var onopen = function(event){
       console.log('[pomeloclient.init] websocket connected!');
       var obj = Package.encode(Package.TYPE_HANDSHAKE, Protocol.strencode(JSON.stringify(handshakeBuffer)));
       send(obj);
     };
     var onmessage = function(event) {
+      var pkg = Package.decode(event.data);
+
       processPackage(Package.decode(event.data), cb);
     };
     var onerror = function(event) {
@@ -319,7 +350,7 @@
       if(socket.close) socket.close();
       console.log('disconnect');
       socket = null;
-      }
+    }
 
     if(heartbeatId) {
       clearTimeout(heartbeatId);
@@ -339,10 +370,8 @@
     }
     msg = filter(msg);
     reqId++;
-    sendMessage(reqId, route, msg);
-
     callbacks[reqId] = cb;
-    routeMap[reqId] = route;
+    sendMessage(reqId, route, msg);
   };
 
   pomelo.notify = function(route, msg) {
@@ -364,11 +393,8 @@
   };
 
   var send = function(packet){
-    socket.send(packet.buffer);
+    socket.send(packet);
   };
-
-
-  var handler = {};
 
   var heartbeat = function(data) {
     var obj = Package.encode(Package.TYPE_HEARTBEAT);
@@ -411,15 +437,6 @@
     //probuff decode
     //var msg = Protocol.strdecode(data);
     var msg = Message.decode(data);
-
-    if(msg.id > 0){
-      msg.route = routeMap[msg.id];
-      delete routeMap[msg.id];
-      if(!msg.route){
-        return;
-      }
-    }
-
     msg.body = deCompose(msg);
 
     processMessage(pomelo, msg);
@@ -470,9 +487,9 @@
     return msg;
   };
 
-  var deCompose = function(msg){
-    var protos = !!pomelo.data.protos?pomelo.data.protos.server:{};
-    var abbrs = pomelo.data.abbrs;
+  var deCompose = function(msg) {
+    var protos = pomelo.protos ? pomelo.protos.server : {};
+    var abbrs = pomelo.abbrs || {};
     var route = msg.route;
 
     //Decompose route from dict
@@ -521,38 +538,8 @@
     heartbeatInterval = data.sys.heartbeat;       // heartbeat interval
     heartbeatTimeout = heartbeatInterval * 2;     // max heartbeat timeout
 
-    initData(data);
-
     setDict(data.sys.dict);
+
     initProtos(data.sys.protos);
   };
-
-  //Initilize data used in pomelo client
-  var initData = function(data){
-    pomelo.data = pomelo.data || {};
-    var dict = data.sys.dict;
-    var protos = data.sys.protos;
-
-    //Init compress dict
-    if(!!dict){
-      pomelo.data.dict = dict;
-      pomelo.data.abbrs = {};
-
-      for(var route in dict){
-        pomelo.data.abbrs[dict[route]] = route;
-      }
-    }
-
-    //Init protobuf protos
-    if(!!protos){
-      pomelo.data.protos = {
-        server : protos.server || {},
-        client : protos.client || {}
-      };
-      if(!!protobuf){
-        protobuf.init({encoderProtos: protos.client, decoderProtos: protos.server});
-      }
-    }
-  };
-
 })();

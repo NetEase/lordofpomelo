@@ -4,7 +4,7 @@
 		"port" : "3306",
 		"database" : "Pomelo",
 		"user" : "xy",
-		"password" : "123"
+		"password" : "dev"
 	},
 
 	"production": {
@@ -12,6 +12,6 @@
 		"port" : "3306",
 		"database" : "Pomelo",
 		"user" : "xy",
-		"password" : "123"
+		"password" : "dev"
 	}
 }
