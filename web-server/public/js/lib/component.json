@@ -1,13 +1,6 @@
 {
   "name": "pomelo-client",
   "description": "pomelo-client",
-  "local": [
-    "boot"
-  ],
-  "paths": [
-    "local"
-  ],
-  "dependencies": {
-    "component/emitter": "*"
-  }
+  "local": [ "boot" ],
+  "paths": [ "local"]
 }
