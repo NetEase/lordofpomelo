@@ -36,10 +36,10 @@ __resources__["/componentAdder.js"] = {meta: {mimetype: "application/javascript"
 		var player = area.getCurPlayer();
 		var sprite = player.getSprite();
 		if (event.type === 'mousePressed'){
-			var endX = event.mouseX - sprite.getMapPosition().x;
-			var endY = event.mouseY - sprite.getMapPosition().y;
-			var startX = sprite.getPosition().x;
-			var startY = sprite.getPosition().y;
+			var endX = Math.floor(event.mouseX - sprite.getMapPosition().x);
+			var endY = Math.floor(event.mouseY - sprite.getMapPosition().y);
+			var startX = Math.floor(sprite.getPosition().x);
+			var startY = Math.floor(sprite.getPosition().y);
 			var moveMessage = {
 				startX: startX,
 				startY: startY,

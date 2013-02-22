@@ -332,12 +332,13 @@
   };
 
   pomelo.request = function(route, msg, cb) {
+    msg = msg||{};
     route = route || msg.route;
     if(!route) {
       console.log('fail to send request without route.');
       return;
     }
-    msg = filter(msg);
+
     reqId++;
     sendMessage(reqId, route, msg);
 
@@ -463,11 +464,6 @@
     for(var i=0, l=msgs.length; i<l; i++) {
       processMessage(pomelo, msgs[i]);
     }
-  };
-
-  var filter = function(msg) {
-    msg.timestamp = Date.now();
-    return msg;
   };
 
   var deCompose = function(msg){

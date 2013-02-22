@@ -135,13 +135,6 @@ handler.move = function(msg, session, next) {
     return;
   }
 
-	/**
-	var startTime = new Date().getTime();
-	while(new Date().getTime() < 5 * 1000 + startTime) {
-
-	}
-	*/
-
   var action = new Move({
     entity: player,
     path: path,

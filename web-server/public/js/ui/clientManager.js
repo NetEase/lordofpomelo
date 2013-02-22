@@ -306,7 +306,7 @@ __resources__["/clientManager.js"] = {
     }
 
     function enterScene(){
-      pomelo.request("area.playerHandler.enterScene",{ uid:pomelo.uid, playerId: pomelo.playerId, areaId: pomelo.areaId},function(data){
+      pomelo.request("area.playerHandler.enterScene", null, function(data){
         app.init(data);
       });
     }
@@ -327,7 +327,8 @@ __resources__["/clientManager.js"] = {
 			var needTime = Math.floor(totalDistance / sprite.getSpeed() * 1000 + app.getDelayTime());
 			var speed = totalDistance/needTime * 1000;
       sprite.movePath(paths.path, speed);
-      pomelo.request('area.playerHandler.move',{ path: paths.path}, function(result) {
+      console.log(paths.path);
+      pomelo.request('area.playerHandler.move', {path: paths.path}, function(result) {
         if(result.code === Message.ERR){
           console.warn('curPlayer move error!');
 					sprite.translateTo(paths.path[0].x, paths.path[0].y);
