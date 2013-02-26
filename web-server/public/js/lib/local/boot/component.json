@@ -1,0 +1,10 @@
+{
+  "name": "boot",
+  "description": "Main app boot component",
+  "dependencies": {
+    "component/emitter":"master",
+    "pomelonode/pomelo-jsclient-socket.io": "master",
+    "component/jquery": "*"
+  },
+  "scripts": ["index.js"]
+}

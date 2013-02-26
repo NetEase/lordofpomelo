@@ -1,0 +1,1 @@
+cd public/js/lib &&  component build -v
