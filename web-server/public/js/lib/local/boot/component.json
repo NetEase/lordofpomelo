@@ -5,7 +5,7 @@
     "component/emitter":"master",
     "NetEase/pomelo-protocol": "0.3.x",
     "pomelonode/pomelo-protobuf": "*",
-    "NetEase/pomelo-jsclient": "0.3.x"
+    "pomelonode/pomelo-jsclient-socket": "master"
   },
   "scripts": ["index.js"]
 }

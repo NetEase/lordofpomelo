@@ -7,5 +7,5 @@
   var protobuf = require('pomelo-protobuf');
   window.protobuf = protobuf;
   
-  var pomelo = require('pomelo-jsclient');
+  var pomelo = require('pomelo-jsclient-socket');
   window.pomelo = pomelo;
