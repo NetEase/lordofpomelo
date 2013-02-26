@@ -9,3 +9,6 @@
   
   var pomelo = require('pomelo-jsclient-socket');
   window.pomelo = pomelo;
+
+  var jquery = require('jquery');
+  window.$ = jquery;
