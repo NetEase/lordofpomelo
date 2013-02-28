@@ -27,6 +27,9 @@
   Protobuf.decode = function(key, msg){
     return Protobuf.decoder.decode(key, msg);
   };
+
+  // exports to support for components
+  module.exports = Protobuf;
 })('object' === typeof module ? module.exports : (this.protobuf = {}), this);
 
 /**

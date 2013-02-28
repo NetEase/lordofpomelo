@@ -351,7 +351,7 @@ __resources__["/clientManager.js"] = {
         if (entity.died) {
           return;
         }
-        pomelo.notify('area.fightHandler.attack',{areaId :areaId, playerId: playerId, targetId: targetId, skillId: skillId });
+        pomelo.notify('area.fightHandler.attack',{targetId: targetId});
       } else if (entity.type === EntityType.NPC) {
         pomelo.notify('area.playerHandler.npcTalk',{areaId :areaId, playerId: playerId, targetId: targetId});
       } else if (entity.type === EntityType.ITEM || entity.type === EntityType.EQUIPMENT) {

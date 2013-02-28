@@ -62,7 +62,12 @@
   "onNPCTalk" : {
     "required uInt32 npc" : 1,
     "required string npcword" : 2,
-    "required string myword" : 3
+    "required string myword" : 3,
+    "optional string action" : 4,
+    "message Params" : {
+      "optional uInt32 target" : 1
+    },
+    "optional Params params" : 5
   },
   "onRevive" : {
     "required uInt32 entityId" : 1,

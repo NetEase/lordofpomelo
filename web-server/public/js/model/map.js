@@ -356,7 +356,6 @@ __resources__["/map.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 
 
 	pro.findPath = function(x, y, x1, y1){
-		console.trace();
 		if( x < 0 || x > this.width || y < 0 || y > this.height || x1 < 0 || x1 > this.width || y1 < 0 || y1 > this.height){
 			return null;
 		}

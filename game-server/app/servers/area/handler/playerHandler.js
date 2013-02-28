@@ -60,7 +60,7 @@ handler.enterScene = function(msg, session, next) {
           height: map.height,
           tileW : map.tileW,
           tileH : map.tileH,
-          weightMap: map.compressedWeightMap
+          weightMap: map.collisions
         }
     };
 		next(null, data);
@@ -213,10 +213,6 @@ handler.useItem = function(msg, session, next) {
 handler.npcTalk = function(msg, session, next) {
   var player = area.getPlayer(session.get('playerId'));
   player.target = msg.targetId;
-  next(null, {
-    route: msg.route,
-    code: consts.MESSAGE.RES
-  });
   next();
 };
 
@@ -229,7 +225,6 @@ handler.npcTalk = function(msg, session, next) {
  * @param {Function} next
  * @api public
  */
-
 handler.pickItem = function(msg, session, next) {
   var player = area.getPlayer(session.get('playerId'));
   var target = area.getEntity(msg.targetId);

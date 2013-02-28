@@ -28,7 +28,9 @@ exp.addEventForNPC = function (npc){
 		var msg = {
 			npc : data.npc,
 			npcword : npcword,
-			myword: myword
+			myword: myword,
+			player : data.player,
+			kindId : npc.kindId
 		};
 
 		if (npc.kindType === consts.NpcType.TRAVERSE_NPC) {

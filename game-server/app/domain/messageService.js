@@ -6,8 +6,8 @@ var EntityType = require('../consts/consts').EntityType;
 
 var exp = module.exports;
 
-exp.pushMessage = function (msg, cb) {
-  area.channel().pushMessage(msg, errHandler);
+exp.pushMessage = function (route, msg, cb) {
+  area.channel().pushMessage(route, msg, errHandler);
 };
 
 exp.pushMessageByUids = function (uids, route, msg) {

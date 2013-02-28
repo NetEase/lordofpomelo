@@ -15,6 +15,22 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 
 	function init() {
 		/**
+		 * Handle change area message
+		 * @param  data {Object} The message
+		 */
+		pomelo.on('onChangeArea', function(data) {
+			if(!data.success) {
+				return;
+			}
+			clientManager.loadResource({jsonLoad: false}, function() {
+				pomelo.areaId = data.target;
+				pomelo.request("area.playerHandler.enterScene",{uid:pomelo.uid, playerId: pomelo.playerId, areaId: pomelo.areaId}, function(msg) {
+					app.init(msg);
+				});
+			});
+		});
+
+		/**
 		 * Handle add entities message
 		 * @param data {Object} The message, contains entities to add
 		 */
