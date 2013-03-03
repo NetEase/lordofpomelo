@@ -222,9 +222,6 @@ Map.prototype.initCollisons = function(){
 	}
 
 	this.collisions = map;
-	// var l1 = Buffer.byteLength(JSON.stringify(this.weightMap));
-	// var l2 = Buffer.byteLength(JSON.stringify(map.toString()));
-	// console.log('l1 : %j, l2 : %j, compress rate : %%j', l1, l2, Math.floor(l2/l1*10000)/100);
 };
 
 Map.prototype.getWeightMap = function(collisions){
@@ -653,7 +650,6 @@ Map.prototype._testLine = function(x, y, x1, y1) {
 	var maxTileY = (tileY > tileY1 ? tileY : tileY1) * this.tileW;
 
 	if((maxTileY-minY) === 0) {
-		console.error('logic error!');
 		return true;
 	}
 

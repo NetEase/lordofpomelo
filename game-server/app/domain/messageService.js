@@ -11,7 +11,6 @@ exp.pushMessage = function (route, msg, cb) {
 };
 
 exp.pushMessageByUids = function (uids, route, msg) {
-  //console.error('pushMessageByUids real route: %j, msg : %j', route, msg);
 	pomelo.app.get('channelService').pushMessageByUids(route, msg, uids, errHandler);
 };
 
