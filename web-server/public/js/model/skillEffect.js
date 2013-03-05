@@ -9,7 +9,7 @@ __resources__["/skillEffect.js"] = {meta: {mimetype: "application/javascript"}, 
 
 	/**
 	 * SkillEffect animation, which is created by skillId and player
-	 * 
+	 *
 	 * @param {Object} opts, contains skillId, player and position
 	 * @api public
 	 */
@@ -29,7 +29,7 @@ __resources__["/skillEffect.js"] = {meta: {mimetype: "application/javascript"}, 
 		var animationData = dataApi.effect.findById(this.id);
 		var width = animationData.width;
 		var height = animationData.height;
-		var totalFrames = animationData.totalFrames; 
+		var totalFrames = animationData.totalFrames;
 		var img = getImageByName(animationData.className);
 
 		var ani = new FrameAnimation({
@@ -62,7 +62,7 @@ __resources__["/skillEffect.js"] = {meta: {mimetype: "application/javascript"}, 
 		effectNode.exec('addAnimation', animation);
 		scene.addNode(effectNode, sprite.curNode);
 		effectNode.exec('translate', this.position.x, this.position.y, 0.5);
-		animation.onFrameEnd = function(t, dt) { 
+		animation.onFrameEnd = function(t, dt) {
 			if (animation.isDone()) {
 				sprite.curNode.removeChild(effectNode);
 			}
@@ -82,8 +82,6 @@ __resources__["/skillEffect.js"] = {meta: {mimetype: "application/javascript"}, 
 		var img = ResMgr.loadImage(aniIamgeUrl);
 		if(img) {
 			return img;
-		}else {
-			console.error('the iamge is not exist!');
 		}
 	};
 

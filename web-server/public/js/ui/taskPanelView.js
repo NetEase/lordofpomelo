@@ -39,7 +39,7 @@ __resources__["/taskPanelView.js"] = {meta: {mimetype: "application/javascript" 
 			var li = '';
 			for (var t in tasks) {
 				li += ('<li data-id="' + t + '">' + tasks[t].name + '</li>');
-			} 
+			}
 			if (li !== '') {
 				$ul.html(li);
 				var $lis = $ul.find('li').on('click', function() {
@@ -60,16 +60,15 @@ __resources__["/taskPanelView.js"] = {meta: {mimetype: "application/javascript" 
 				$intro.html('');
 				$adward.html('');
 				$state.html('');
-				$notice.html('<span>There is not new task to be completed!</span>'); 
+				$notice.html('<span>There is not new task to be completed!</span>');
 			}
 		});
     $btn.off().on('click', function() {
       var type = $btn.data('type');
       var taskId = $ul.find('li.selected').eq(0).data('id');
-      if (!taskId) { 
+      if (!taskId) {
         return;
       }
-      //console.log(type);
       if (type === 'accept') {
 				taskHandler.exec('startTask', {taskId: taskId});
       } else if (type === 'commit') {
@@ -99,7 +98,7 @@ __resources__["/taskPanelView.js"] = {meta: {mimetype: "application/javascript" 
 				});
 			}
 		});
-	}; 
+	};
 
 	var setState = function(task) {
 		var $state = $panel.find('.intro p.u-tlt');
@@ -117,7 +116,7 @@ __resources__["/taskPanelView.js"] = {meta: {mimetype: "application/javascript" 
 		if (!task.taskData) {
 			task.taskData = {};
 		}
-		
+
 		if (task.taskState == 1) {
 			$btn.html('Commit').data('type', 'commit').show();
       $questBtn.removeClass('f1').addClass('f2');

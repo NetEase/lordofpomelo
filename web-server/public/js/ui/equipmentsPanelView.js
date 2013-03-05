@@ -83,8 +83,6 @@ __resources__["/equipmentsPanelView.js"] = {
           pomelo.request('area.equipHandler.unEquip', {type: kind}, function(data) {
             if (data.status) {
               player.equipments.unEquip(kind);
-            } else {
-              console.log('unequip fail from server!');
             }
           });
         }

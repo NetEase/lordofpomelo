@@ -39,15 +39,13 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			var area = app.getCurArea();
 
 			if(!area) {
-				console.warn('entity not exist!');
+				console.warn('area not exist!');
 				return;
 			}
 
 			for(var key in entities){
 				var array = entities[key];
 
-				if(key === 'npc')
-					console.warn('add npc');
 				for(var i = 0; i < array.length; i++){
 					if(!area.getEntity(array[i].entityId)){
 						var entity = utils.buildEntity(key, array[i]);

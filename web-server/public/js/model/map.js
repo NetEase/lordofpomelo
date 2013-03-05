@@ -172,9 +172,6 @@ __resources__["/map.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 		var x3 = (x0 + maxTileX) / 2, y3 = y + dy / dx * (x3 - x);
 
 		if(this.isReachable(x3, y3)){
-			if(!this._checkLinePath1(x, y, x1, y1)) {
-				console.error('check error');
-			}
 			return true;
 		}
 		return false;
@@ -375,7 +372,7 @@ __resources__["/map.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 
 		var path = this.pfinder(tx1, ty1, tx2, ty2);
 		if(!path || !path.paths){
-			console.error('can not find path');
+			console.warn('can not find path');
 			return null;
 		}
 
@@ -408,7 +405,6 @@ __resources__["/map.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 			var p0 = path[i-1];
 			var p1 = path[i];
 			if(!this._checkLinePath(p0.x, p0.y, p1.x, p1.y)){
-				//console.log('error ! i, p0, p1', i, p0, p1);
 				return false;
 			}
 		}

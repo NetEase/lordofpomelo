@@ -26,7 +26,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	 */
 	var Sprite = function(opts) {
 		this.entity = opts;
-		this.mapNode = this.entity.map.node; 
+		this.mapNode = this.entity.map.node;
 		this.curNode = null;
 		this.bloodbarNode = null;
 
@@ -70,7 +70,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 		var x = this.entity.x, y = this.entity.y;
 		var staticImg = null;
 		switch(this.entity.type) {
-			case EntityType.NPC: 
+			case EntityType.NPC:
 			staticImg =  ResMgr.loadImage(imgAndJsonUrl + 'npc/' + this.entity.kindId + '.png');
 			break;
 			case EntityType.ITEM:
@@ -81,7 +81,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			break;
 		}
 		var staticModel = new model.ImageModel({
-			image: staticImg		
+			image: staticImg
 		});
 		staticModel.set('ratioAnchorPoint', {
 			x: 0.5,
@@ -156,12 +156,12 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	//Update entity' name.
 	Sprite.prototype.updateName = function() {
 		var name = this.entity.name + '-' + this.entity.level;
-		this.nameNode.model.text = name; 
+		this.nameNode.model.text = name;
 	};
 
 	/**
 	 * Action makes up animation.
-	 * 
+	 *
 	 * @param {Object} dir, orientation of action
 	 * @param {String} actionName, the name of action
 	 * @param {Function} cb
@@ -169,7 +169,6 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	 */
 	Sprite.prototype._action = function(dir, actionName, callback) {
 		if(!this.curNode) {
-			console.log(this.entity.entityId);
 			return;
 		}
 		if (typeof(dir) === 'undefined') {
@@ -208,7 +207,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 					actionAnimation: actionAnimation,
 					loopAnimation: loopAnimation
 				};
-			} 
+			}
 			actionAnimation.onFrameEnd = function(t, dt) {
 				if (self.curNode && actionAnimation.isDone()) {
 					if (!!callback) {
@@ -274,8 +273,8 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			this.returnAnimation(this.diedAnimation);
 			this.removeAnimation(this.diedAnimation);
 			this.diedAnimation = null;
-		} 
-	}
+		}
+	};
 
 	//Stand animation, one of four basic animation.
 	Sprite.prototype.stand = function(dir) {
@@ -284,7 +283,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	};
 
 	//Initialized animation
-	Sprite.prototype._initStand = function(dir) {  
+	Sprite.prototype._initStand = function(dir) {
 		var result = this._action(dir, 'Stand');
 		this.standAnimation = result.actionAnimation;
 		this.standFrameLoop = result.loopAnimation;
@@ -387,14 +386,14 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			[2000, {x: 3, y: 3},'linear'],
 			[3000, {x: 4, y: 4}, 'sine'],
 			[4000, {x: 2, y: 2}]
-			); 
+			);
 		var rotAni = new animate.RotateTo(
 			[0, 0, 'sine'],
 			[2000, 2.0 * Math.PI, 'sine'],
 			[4000, 0 * Math.PI]
 			);
 		var paraAni = new animate.ParallelAnimation({
-			animations: [scaleAni, rotAni] 
+			animations: [scaleAni, rotAni]
 		});
 		gradeNode.exec('addAnimation', paraAni);
 		this.entity.scene.addNode(gradeNode, this.curNode);
@@ -452,7 +451,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 				var pos = self.getPosition();
 				self.entity.x = pos.x;
 				self.entity.y = pos.y;
-			} 
+			}
 			if (!self.isCurPlayer) {
 				app.getCurArea().removeEntity(self.entity.entityId);
 			} else {
@@ -477,7 +476,6 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			return;
 		}
 		if(!path || path.length <= 1) {
-			console.error('invalid path: ' + path);
 			return;
 		}
 
@@ -542,7 +540,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			}
 
 			if(self._checkPathStep(index)) {
-				self._movePathStep(index); 
+				self._movePathStep(index);
 				return;
 			}
 			self.stopWholeAnimations();
@@ -713,9 +711,6 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 	 */
 
 	Sprite.prototype.revive = function(data, callback) {
-		if (!this.mapNode) {
-			console.log('mapNode no exist!');
-		}
 		this.entity.scene.addNode(this.curNode, this.mapNode);
 		this.reduceBlood();
 		this.translateTo(data.x, data.y);
