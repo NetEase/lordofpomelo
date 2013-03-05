@@ -58,7 +58,6 @@ var mapData = function(fields, item) {
  */
 Data.prototype.findBy = function(attr, value) {
   var result = [];
-  //console.log(' findBy ' + attr + '  value:' + value + '  index: ' + index);
   var i, item;
   for (i in this.data) {
     item = this.data[i];

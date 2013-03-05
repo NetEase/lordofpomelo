@@ -3,6 +3,7 @@ var geometry = require('../../util/geometry');
 var PathCache = require('../../util/pathCache');
 var logger = require('pomelo-logger').getLogger(__filename);
 var formula = require('../../consts/formula');
+var fs = require('fs');
 
 /**
  * The data structure for map in the area
@@ -30,6 +31,7 @@ Map.prototype.init = function(opts) {
 		logger.error('Load map failed! ');
 	} else {
 		this.configMap(map);
+		this.id = opts.id;
 		this.width = opts.width;
 		this.height = opts.height;
 		this.tileW = 20;
@@ -39,9 +41,22 @@ Map.prototype.init = function(opts) {
 
 		this.pathCache = new PathCache({limit:1000});
 		this.pfinder = buildFinder(this);
+
 		if(weightMap) {
-			this.initWeightMap();
-			this.initCollisons();
+			//Use cache map first
+			var path = process.cwd() + '/tmp/map.json';
+			var maps = fs.existsSync(path)?require(path) : {};
+
+			if(!!maps[this.id]){
+				this.collisions = maps[this.id].collisions;
+				this.weightMap = this.getWeightMap(this.collisions);
+			}else{
+				this.initWeightMap();
+				this.initCollisons();
+				maps[this.id] = {version : Date.now(), collisions : this.collisions};
+				fs.writeFileSync(path, JSON.stringify(maps));
+			}
+
 		}
 	}
 };
@@ -92,7 +107,6 @@ Map.prototype.initWeightMap = function() {
 		}
 	}
 
-	//logger.error("collisions : %j", collisions);
 	//Use all collsions to construct the weight map
 	for(i = 0; i < collisions.length; i++) {
 		var collision = collisions[i];
@@ -207,10 +221,33 @@ Map.prototype.initCollisons = function(){
 		map[x] = {collisions: collisions};
 	}
 
-	this.compressedWeightMap = map;
-	// var l1 = Buffer.byteLength(JSON.stringify(this.weightMap));
-	// var l2 = Buffer.byteLength(JSON.stringify(map.toString()));
-	// console.log('l1 : %j, l2 : %j, compress rate : %%j', l1, l2, Math.floor(l2/l1*10000)/100);
+	this.collisions = map;
+};
+
+Map.prototype.getWeightMap = function(collisions){
+	var map = [];
+	var x, y;
+	for(x = 0; x < this.rectW; x++) {
+		var row = [];
+		for(y = 0; y < this.rectH; y++) {
+			row.push(1);
+		}
+		map.push(row);
+	}
+
+	for(x = 0; x < collisions.length; x++){
+		var array = collisions[x].collisions;
+		if(!array){
+			continue;
+		}
+		for(var j = 0; j < array.length; j++){
+			var c = array[j];
+			for(var k = 0; k < c.length; k++){
+				map[x][c.start+k] = Infinity;
+			}
+		}
+	}
+	return map;
 };
 
 /**
@@ -613,7 +650,6 @@ Map.prototype._testLine = function(x, y, x1, y1) {
 	var maxTileY = (tileY > tileY1 ? tileY : tileY1) * this.tileW;
 
 	if((maxTileY-minY) === 0) {
-		console.error('logic error!');
 		return true;
 	}
 

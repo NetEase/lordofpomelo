@@ -83,8 +83,6 @@ app.configure('production|development', 'area|auth|connector|master', function()
 	app.load(pomelo.sync, {path:__dirname + '/app/dao/mapping', dbclient: dbclient});
 });
 
-
-
 app.configure('production|development', 'connector', function(){
 	var dictionary = app.components['__dictionary__'];
 	var dict = null;

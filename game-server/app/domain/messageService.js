@@ -6,12 +6,11 @@ var EntityType = require('../consts/consts').EntityType;
 
 var exp = module.exports;
 
-exp.pushMessage = function (msg, cb) {
-  area.channel().pushMessage(msg, errHandler);
+exp.pushMessage = function (route, msg, cb) {
+  area.channel().pushMessage(route, msg, errHandler);
 };
 
 exp.pushMessageByUids = function (uids, route, msg) {
-  //console.error('pushMessageByUids real route: %j, msg : %j', route, msg);
 	pomelo.app.get('channelService').pushMessageByUids(route, msg, uids, errHandler);
 };
 

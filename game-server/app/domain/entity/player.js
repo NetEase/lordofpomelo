@@ -70,7 +70,6 @@ Player.prototype.afterKill = function(target) {
 //Add experience
 Player.prototype.addExperience = function(exp) {
 	this.experience += exp;
-	//console.error('after kill: exp : %j, max exp : %j', this.experience, this.nextLevelExp);
 	if (this.experience >= this.nextLevelExp) {
 		this.upgrade();
 	}
@@ -304,7 +303,6 @@ Player.prototype.recover = function(lastTick){
 	if(!this.isRecover){
 		this.revocerWaitTime -= 100;
 	}
-	var time = Date.now();
 
 	this.hp += (time - lastTime)/ this.maxHp;
 	if(hp >= this.maxHp){
@@ -360,16 +358,9 @@ Player.prototype.getInfo = function() {
 	var playerData = this.strip();
 	playerData.bag = this.bag.getData();
 	playerData.equipments = this.equipments;
-	//playerData.characterData = this.characterData;
 	playerData.fightSkills = this.getFightSkillData();
 	playerData.curTasks = this._getCurTasksInfo();
 
-	//console.warn('bag : %j', playerData.bag);
-	//console.warn('equip : %j', this.equipments);
-	//console.warn('character : %j', this.characterData);
-	//console.warn('skill : %j', playerData.fightSkills);
-	//console.warn('tasks : %j', this._getCurTasksInfo());
-	//console.warn('player : %j', playerData);
 	return playerData;
 };
 
