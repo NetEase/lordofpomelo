@@ -3,8 +3,7 @@ __resources__["/clientManager.js"] = {
 		mimetype: "application/javascript"
 	},
 	data: function(exports, require, module, __filename, __dirname) {
-		//var clientManager = require('Manager');
-		var heroSelectView = require('heroSelectView');//选角色管理
+		var heroSelectView = require('heroSelectView');  // role manager
 
 		var pomelo = window.pomelo;
 		var app = require('app');
@@ -126,13 +125,12 @@ __resources__["/clientManager.js"] = {
      * }
      */
     function entry(host, port, token, callback) {
-      //初始化socketClient
-      //TODO for development
+      // init socketClient
+      // TODO for development
       if(host === '127.0.0.1') {
         host = config.GATE_HOST;
       }
       pomelo.init({host: host, port: port, log: true}, function() {
-        //token = 'd72357c4c7f9b6a8e0b6a93c4d8652b1903114819c36749e53b97d1a78372387';
         pomelo.request('connector.entryHandler.entry', {token: token}, function(data) {
           var player = data.player;
 
@@ -327,7 +325,6 @@ __resources__["/clientManager.js"] = {
 			var needTime = Math.floor(totalDistance / sprite.getSpeed() * 1000 + app.getDelayTime());
 			var speed = totalDistance/needTime * 1000;
       sprite.movePath(paths.path, speed);
-      console.log(paths.path);
       pomelo.request('area.playerHandler.move', {path: paths.path}, function(result) {
         if(result.code === Message.ERR){
           console.warn('curPlayer move error!');
@@ -397,10 +394,9 @@ __resources__["/clientManager.js"] = {
     }
 
 
-    //暴露的接口和对象
+    // export object and interfaces
     exports.init = init;
     exports.entry = entry;
-    //exports.register = register;
     exports.enterScene = enterScene;
     exports.move = move;
     exports.loadResource = loadResource;
