@@ -1463,7 +1463,12 @@ require.register("pomelonode-pomelo-jsclient-websocket/lib/pomelo-client.js", fu
   };
 
   pomelo.request = function(route, msg, cb) {
-    msg = msg||{};
+    if(arguments.length === 2 && typeof msg === 'function') {
+      cb = msg;
+      msg = {};
+    } else {
+      msg = msg || {};
+    }
     route = route || msg.route;
     if(!route) {
       return;
@@ -1477,6 +1482,7 @@ require.register("pomelonode-pomelo-jsclient-websocket/lib/pomelo-client.js", fu
   };
 
   pomelo.notify = function(route, msg) {
+    msg = msg || {};
     sendMessage(0, route, msg);
   };
 
