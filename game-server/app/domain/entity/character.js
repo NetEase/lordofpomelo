@@ -21,7 +21,7 @@ var Character = function(opts) {
 	// the entity who hate me
 	// I would notify my enemies to forget me when I disapear or die
 	this.enemies = {};
-  
+
 	// the entity I hate
 	// I would set my target as the entity that I hate most
 	this.haters = {};
@@ -61,7 +61,7 @@ module.exports = Character;
 
 
 /**
- * Add skills to the fightSkills. 
+ * Add skills to the fightSkills.
  *
  * @param {Array} fightSkills
  * @api public
@@ -71,6 +71,25 @@ Character.prototype.addFightSkills = function(fightSkills) {
 		var skill = fightskill.create(fightSkills[i]);
 		this.fightSkills[skill.skillId] = skill;
 	}
+};
+
+/**
+ * Get fight skill data
+ *
+ * @api public
+ */
+Character.prototype.getFightSkillData = function(){
+	var data = [];
+	for(var key in this.fightSkills){
+		var fs = {
+			id : Number(key),
+			level : this.fightSkills[key].level
+		};
+
+		data.push(fs);
+	}
+
+	return data;
 };
 
 /**
@@ -144,7 +163,7 @@ Character.prototype.resetMp = function(maxMp) {
 
 /**
  * Recover the mp.
- * 
+ *
  * @param {Number} mpValue
  * @api public
  */
@@ -175,7 +194,7 @@ Character.prototype.move = function(targetX, targetY, useCache, cb) {
 	useCache = useCache || false;
 	if(useCache){
 		var paths = area.map().findPath(this.x, this.y, targetX, targetY, useCache);
-	
+
 		if(!!paths){
 			this.emit('move', {character: this, paths: paths});
 			utils.invokeCallback(cb, null, true);
@@ -208,18 +227,18 @@ Character.prototype.attack = function(target, skillId) {
 	if (this.confused) {
 		return {result: consts.AttackResult.ATTACKER_CONFUSED};
 	}
-	
+
 	//You cann't attack a died character!
 	if (target.died){
 		return {result: consts.AttackResult.KILLED};
 	}
-	
+
 	var skill = this.fightSkills[skillId];
 	this.setTarget(target.entityId);
 
 	// set up the relationship between attacker and attackee
 	this.addEnemy(target.entityId);
-	
+
 	var result = skill.use(this, target);
 	this.emit('attack', {areaId : target.areaId, attackerId : this.entityId, targetId: target.entityId, skillId: skillId, result: result});
 	return result;
@@ -227,7 +246,7 @@ Character.prototype.attack = function(target, skillId) {
 
 /**
  * Take hit and get damage.
- * 
+ *
  * @param {Character} attacker
  * @param {Number} damage
  * @api public
@@ -253,7 +272,7 @@ Character.prototype.reduceHp = function(damageValue) {
 
 /**
  * Reduce mp.
- * 
+ *
  * @param {Number} mp
  * @api public
  */
@@ -266,7 +285,7 @@ Character.prototype.reduceMp = function(mp) {
 
 /**
  * Get attackValue.
- * 
+ *
  * @return {Number}
  * @api private
  */
@@ -354,7 +373,7 @@ Character.prototype.addEnemy = function(enemyId) {
 
 /**
  * Forget the enemy.
- * 
+ *
  * @param {Number} entityId
  * @api public
  */

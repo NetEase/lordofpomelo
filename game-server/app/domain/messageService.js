@@ -6,24 +6,23 @@ var EntityType = require('../consts/consts').EntityType;
 
 var exp = module.exports;
 
-exp.pushMessage = function (msg, cb) {
-  area.channel().pushMessage(msg, errHandler);
+exp.pushMessage = function (route, msg, cb) {
+  area.channel().pushMessage(route, msg, errHandler);
 };
 
-exp.pushMessageByUids = function (msg, uids) {
-	pomelo.app.get('channelService').pushMessageByUids(msg, uids, errHandler);
+exp.pushMessageByUids = function (uids, route, msg) {
+	pomelo.app.get('channelService').pushMessageByUids(route, msg, uids, errHandler);
 };
 
-exp.pushMessageToPlayer = function (route, msg) {
-  var uids = [route];
-  exp.pushMessageByUids(msg, uids, errHandler);
+exp.pushMessageToPlayer = function (uid, route, msg) {
+  exp.pushMessageByUids([uid], route, msg);
 };
 
 exp.pushMessageByAOI = function (msg, pos, ignoreList) {
   var uids = timer.getWatcherUids(pos, [EntityType.PLAYER], ignoreList);
 
   if (uids.length > 0) {
-      exp.pushMessageByUids(msg, uids);
+    exp.pushMessageByUids(uids, msg.route, msg);
   }
 };
 

@@ -18,14 +18,14 @@ var id = 1;
 var Entity = function(opts) {
 	EventEmitter.call(this);
 	this.entityId = id++;
-	this.kindId = opts.kindId;
+	this.kindId = Number(opts.kindId);
 	this.kindName = opts.kindName;
 	this.englishName = opts.englishName;
 	this.type = opts.type;
 	this.x = opts.x;
 	this.y = opts.y;
-	
-	this.areaId = opts.areaId || 1;
+
+	this.areaId = Number(opts.areaId || 1);
 
 };
 
@@ -38,9 +38,9 @@ util.inherits(Entity, EventEmitter);
 module.exports = Entity;
 
 /**
- * Get entityId 
+ * Get entityId
  *
- * @return {Number} 
+ * @return {Number}
  * @api public
  */
 

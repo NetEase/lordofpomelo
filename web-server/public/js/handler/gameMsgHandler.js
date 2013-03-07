@@ -8,6 +8,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 	var EntityType = require('consts').EntityType;
 	var SkillEffect = require('skillEffect');
 	var utils = require('utils');
+	var dataApi = require('dataApi');
 	var clientManager = require('clientManager');
 
 	exports.init = init;
@@ -24,8 +25,8 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			clientManager.loadResource({jsonLoad: false}, function() {
 				pomelo.areaId = data.target;
 				pomelo.request("area.playerHandler.enterScene",{uid:pomelo.uid, playerId: pomelo.playerId, areaId: pomelo.areaId}, function(msg) {
-					app.init(msg.data);
-				});	
+					app.init(msg);
+				});
 			});
 		});
 
@@ -33,16 +34,28 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 		 * Handle add entities message
 		 * @param data {Object} The message, contains entities to add
 		 */
-		pomelo.on('addEntities', function(data){
-			var entities = data.entities;
+		pomelo.on('onAddEntities', function(data){
+			var entities = data;
 			var area = app.getCurArea();
+
 			if(!area) {
+				console.warn('entity not exist!');
 				return;
 			}
-			for(var i = 0; i < entities.length; i++){
-				var entity = area.getEntity(entities[i].entityId);
-				if(!entity){
-					area.addEntity(entities[i]);
+
+			for(var key in entities){
+				var array = entities[key];
+
+				if(key === 'npc')
+					console.warn('add npc');
+				for(var i = 0; i < array.length; i++){
+					if(!area.getEntity(array[i].entityId)){
+						var entity = utils.buildEntity(key, array[i]);
+						area.addEntity(entity);
+					}else{
+						console.warn('add exist entity!');
+					}
+
 				}
 			}
 		});
@@ -64,7 +77,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 		 * Handle remove entities message
 		 * @param data {Object} The message, contains entitiy ids to remove
 		 */
-		pomelo.on('removeEntities', function(data){
+		pomelo.on('onRemoveEntities', function(data){
 			var entities = data.entities;
 			var area = app.getCurArea();
 			var player = area.getCurPlayer();
@@ -103,7 +116,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			var distanceLimit = 100;
 
 			if (realDistance > distanceLimit) {
-				player.getSprite().translateTo(serverPosition.x, serverPosition.y);	
+				player.getSprite().translateTo(serverPosition.x, serverPosition.y);
 			}
 		});
 
@@ -123,8 +136,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 		 * Handle update task data message
 		 * @param data {Object} The message, contains the info for update task
 		 */
-		pomelo.on('onUpdateTaskData', function(data) {
-			var reData = data.taskData;
+		pomelo.on('onUpdateTaskData', function(reData) {
 			app.getCurPlayer().updateTaskData(reData);
 		});
 
@@ -198,13 +210,13 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			var target = area.getEntity(data.target);
 
 			if(!attacker || !target){
-				//console.log('attacker or target not exist ! attacker: ' + data.attacker + ', target : ' + data.target);
+				console.log('attacker or target not exist ! attacker: ' + data.attacker + ', target : ' + data.target);
 				return;
 			}
 
 			var attackerSprite = attacker.getSprite();
 			var targetSprite = target.getSprite();
-			var attackerPos = data.attackerPos || attackerSprite.getPosition();
+			var attackerPos = attackerSprite.getPosition();
 			var targetPos = targetSprite.getPosition();
 			var resultData = data.result;
 			var result = resultData.result;
@@ -259,7 +271,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 				}
 			});
 		});
-	}	
+	}
 
 	/**
 	 * the action invokes when the result is success
@@ -279,7 +291,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 
 	/**
 	 * the action invokes when the result is killed
-	 * @param {Object} data 
+	 * @param {Object} data
 	 */
 	var killedAction = function(data) {
 		if (!!data.target.died) {
@@ -303,12 +315,14 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 		});
 		data.targetSprite.died({x1: data.targetPos.x, y1: data.targetPos.y, x2: data.attackerPos.x, y2: data.attackerPos.y}, function(){
 		var items = data.resultData.items;
-			if (!!items) {
+
+			if (!!items && items.length > 0) {
 				for (var i = 0; i < items.length; i ++) {
-					app.getCurArea().addEntity(items[i]);
+					var item = utils.buildEntity(items[i].type, items[i]);
+					app.getCurArea().addEntity(item);
 				}
 			 }
-		}); 
+		});
 	};
 
 	var uiUpdate = function() {
@@ -319,4 +333,26 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 		player.emit('change:maxMp');
 		player.emit('change:experience');
 	};
+
+	function buildItem(data){
+		var item;
+		switch(data.type){
+			case 'item' :
+				item = utils.clone(dataApi.item.findById(data.kindId));
+			break;
+			case 'equipment' :
+				item = utils.clone(dataApi.equipment.findById(data.kindId));
+			break;
+			default :
+				return null;
+		}
+
+		item.x = data.x;
+		item.y = data.y;
+		item.entityId = data.entityId;
+		item.playerId = data.playerId;
+		item.type = data.type;
+
+		return item;
+	}
 }};

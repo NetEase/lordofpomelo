@@ -53,7 +53,7 @@ Move.prototype.update = function(){
 			//If the index exceed the last point, means the move is finished
 			if(index >= path.length){
 				this.finished = true;
-				this.entity.isMoving = true;
+				this.entity.isMoving = false;
 				break;
 			}
 
@@ -69,9 +69,9 @@ Move.prototype.update = function(){
 	this.pos = pos;
 	this.index = index;
 
-	this.entity.x = pos.x;
-	this.entity.y = pos.y;
-	
+	this.entity.x = Math.floor(pos.x);
+	this.entity.y = Math.floor(pos.y);
+
 	//Update the aoi module
 	var watcher = {id : this.entity.entityId, type : this.entity.type};
   timer.updateObject(watcher, oldPos, pos);
@@ -79,8 +79,7 @@ Move.prototype.update = function(){
 	if(this.entity.type === consts.EntityType.PLAYER){
 		this.entity.save();
 		if (this.tickNumber % 10 === 0) {
-			messageService.pushMessageToPlayer({uid:this.entity.userId, sid : this.entity.serverId}, {
-				route: 'onPathCheckout',
+			messageService.pushMessageToPlayer({uid:this.entity.userId, sid : this.entity.serverId}, 'onPathCheckout', {
 				entityId: this.entity.entityId,
 				position: {
 					x: this.entity.x,

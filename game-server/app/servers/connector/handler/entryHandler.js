@@ -2,6 +2,7 @@ var Code = require('../../../../../shared/code');
 var userDao = require('../../../dao/userDao');
 var async = require('async');
 var channelUtil = require('../../../util/channelUtil');
+var logger = require('pomelo-logger').getLogger(__filename);
 
 module.exports = function(app) {
 	return new Handler(app);
@@ -9,13 +10,16 @@ module.exports = function(app) {
 
 var Handler = function(app) {
 	this.app = app;
+
+	if(!this.app)
+		logger.error(app);
 };
 
 var pro = Handler.prototype;
 
 /**
  * New client entry game server. Check token and bind user info into session.
- * 
+ *
  * @param  {Object}   msg     request message
  * @param  {Object}   session current session object
  * @param  {Function} next    next stemp callback
@@ -45,7 +49,7 @@ pro.entry = function(msg, session, next) {
 				next(null, {code: Code.ENTRY.FA_USER_NOT_EXIST});
 				return;
 			}
-			
+
 			uid = user.id;
 			userDao.getPlayersByUid(user.id, cb);
 		}, function(res, cb) {
@@ -67,7 +71,7 @@ pro.entry = function(msg, session, next) {
 			session.on('closed', onUserLeave.bind(null, self.app));
 			session.pushAll(cb);
 		}, function(cb) {
-			self.app.rpc.chat.chatRemote.add(session, player.userId, player.name, 
+			self.app.rpc.chat.chatRemote.add(session, player.userId, player.name,
 				channelUtil.getGlobalChannelName(), cb);
 		}
 	], function(err) {
@@ -75,6 +79,7 @@ pro.entry = function(msg, session, next) {
 			next(err, {code: Code.FAIL});
 			return;
 		}
+
 		next(null, {code: Code.OK, player: players ? players[0] : null});
 	});
 };
@@ -84,6 +89,10 @@ var onUserLeave = function (app, session, reason) {
 		return;
 	}
 
-	app.rpc.area.playerRemote.playerLeave(session, {playerId: session.get('playerId'), areaId: session.get('areaId')}, null);
+	app.rpc.area.playerRemote.playerLeave(session, {playerId: session.get('playerId'), areaId: session.get('areaId')}, function(err){
+		if(!!err){
+			logger.error('user leave error! %j', error);
+		}
+	});
 	app.rpc.chat.chatRemote.kick(session, session.uid, null);
 };

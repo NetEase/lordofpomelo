@@ -2,7 +2,7 @@
 
 Lordofpomelo is a browser-based MMORPG(massively multiplayer online role-playing game). 
 The backend is written in node.js based on [pomelo](https://github.com/NetEase/pomelo),
-which is a fast, scalable, distributed game server framework for node.js. The frontend uses the HTML5 Canvas to draw 
+which is a fast, scalable, distributed game server framework for node.js. The frontend uses the HTML5 Canvas to draw. 
 the map and renders the animations by colorbox, which is a client side game engine written in JavaScript based on HTML5.
 In this game, the client communicates via websockets with the server. 
 
@@ -11,6 +11,7 @@ In this game, the client communicates via websockets with the server.
  * Documentation: <http://github.com/netease/pomelo>
  * Wiki: <https://github.com/netease/pomelo/wiki/>
  * Issues: <https://github.com/netease/pomelo/issues/>
+ * Google plus: <https://plus.google.com/communities/111412421246485271700/>
  * Tags: game, nodejs 
 
 ## Screenshot
@@ -71,7 +72,7 @@ Colorbox is our team's another open source project. It is a client side game eng
 
 (The MIT License)
 
-Copyright (c) 2012 Netease, Inc. and other contributors
+Copyright (c) 2012-2013 Netease, Inc. and other contributors
 
 Permission is hereby granted, free of charge, to any person obtaining
 a copy of this software and associated documentation files (the

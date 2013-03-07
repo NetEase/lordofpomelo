@@ -42,31 +42,29 @@ handler.enterScene = function(msg, session, next) {
 
     player.serverId = session.frontendId;
 
-    pomelo.app.rpc.chat.chatRemote.add(session, session.uid,  
+    pomelo.app.rpc.chat.chatRemote.add(session, session.uid,
     player.name, channelUtil.getAreaChannelName(areaId), null);
 		var map = area.map();
-		
+
 		if(!map.isReachable(player.x, player.y)){
-			var pos = map.getBornPoint();	
+			var pos = map.getBornPoint();
 			player.x = pos.x;
 			player.y = pos.y;
 		}
-		
-		next(null, {
-			code: consts.MESSAGE.RES,
-			data: {
-				area: area.getAreaInfo({x: player.x, y: player.y}, player.range), 
+		var data = {
+        entities: area.getAreaInfo({x: player.x, y: player.y}, player.range),
         curPlayer: player.getInfo(),
-				mapData: {
-					mapWeight: map.width,
-					mapHeight: map.height,
-					tileW : map.tileW,
-					tileH : map.tileH,
-					weightMap: map.weightMap
-				}
-			}
-		});
-		
+        map: {
+          name : map.name,
+          width: map.width,
+          height: map.height,
+          tileW : map.tileW,
+          tileH : map.tileH,
+          weightMap: map.collisions
+        }
+    };
+		next(null, data);
+
 		if (!area.addEntity(player)) {
       logger.error("Add player to area faild! areaId : " + player.areaId);
 //      next(new Error('fail to add user into area'), {
@@ -75,7 +73,7 @@ handler.enterScene = function(msg, session, next) {
 //      });
 //      return;
     }
-    
+
   });
 };
 
@@ -111,7 +109,7 @@ handler.changeView = function(msg, session, next){
 };
 
 /**
- * Player moves. Player requests move with the given movePath.  
+ * Player moves. Player requests move with the given movePath.
  * Handle the request from client, and response result to client
  *
  * @param {Object} msg
@@ -137,13 +135,6 @@ handler.move = function(msg, session, next) {
     return;
   }
 
-	/**
-	var startTime = new Date().getTime();
-	while(new Date().getTime() < 5 * 1000 + startTime) {
-
-	}
-	*/
-
   var action = new Move({
     entity: player,
     path: path,
@@ -155,11 +146,11 @@ handler.move = function(msg, session, next) {
   if (timer.addAction(action)) {
 			player.isMoving = true;
 			//Update state
-			if(player.x != path[0].x || player.y != path[0].y){
+			if(player.x !== path[0].x || player.y !== path[0].y){
 				  timer.updateObject({id:player.entityId, type:consts.EntityType.PLAYER}, {x : player.x, y : player.y}, path[0]);
-  				timer.updateWatcher({id:player.entityId, type:consts.EntityType.PLAYER}, {x : player.x, y : player.y}, path[0], player.range, player.range);
-			}  	
-  	
+          timer.updateWatcher({id:player.entityId, type:consts.EntityType.PLAYER}, {x : player.x, y : player.y}, path[0], player.range, player.range);
+			}
+
       messageService.pushMessageByAOI({
       route: 'onMove',
       entityId: player.entityId,
@@ -198,10 +189,10 @@ handler.changeArea = function(msg, session, next) {
 	var target = msg.target;
 
 	var req = {
-    areaId: areaId, 
-    target: target, 
-    uid: session.uid, 
-    playerId: session.get('playerId'), 
+    areaId: areaId,
+    target: target,
+    uid: session.uid,
+    playerId: session.get('playerId'),
     frontendId: session.frontendId
   };
 
@@ -222,23 +213,18 @@ handler.useItem = function(msg, session, next) {
 handler.npcTalk = function(msg, session, next) {
   var player = area.getPlayer(session.get('playerId'));
   player.target = msg.targetId;
-  next(null, {
-    route: msg.route,
-    code: consts.MESSAGE.RES
-  });
   next();
 };
 
 /**
- * Player pick up item. 
+ * Player pick up item.
  * Handle the request from client, and set player's target
- * 
+ *
  * @param {Object} msg
  * @param {Object} session
  * @param {Function} next
  * @api public
  */
-
 handler.pickItem = function(msg, session, next) {
   var player = area.getPlayer(session.get('playerId'));
   var target = area.getEntity(msg.targetId);

@@ -24,16 +24,16 @@ __resources__["/app.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 	 * @param data {Object} The data for init area
 	 */
 	function init(data) {
-		var mapData = data.mapData;
+		var map = data.map;
 		pomelo.player = data.curPlayer;
 		switchManager.selectView('gamePanel');
 		if(inited){
-			configData(data.area);
-			area = new Area(data.area, mapData);
+			configData(data);
+			area = new Area(data, map);
 		}else{
 			initColorBox();
-			configData(data.area);
-			area = new Area(data.area, mapData);
+			configData(data);
+			area = new Area(data, map);
 
 			area.run();
 			chat.init();

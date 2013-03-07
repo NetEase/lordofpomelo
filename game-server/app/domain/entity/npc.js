@@ -54,23 +54,23 @@ Npc.prototype.talk = function(player) {
   }
 
   this.emit('onNPCTalk', {npc: this.entityId, player : player.entityId});
-  
+
   return {result: consts.NPC.SUCCESS};
 };
 
 /**
  * Check out task and traverse to the target area by the condition
  * in area one, the condition is to kill the boss mob
- * in area two, no condition exists 
+ * in area two, no condition exists
  *
  * @param {Object} msg
  * @api public
  */
-Npc.prototype.traverse = function(msg) {
+Npc.prototype.traverse = function(route, msg) {
 	var player = area.getEntity(msg.player);
 	//If don't need task test, just change area.
 	if (!TraverseTask[msg.kindId]){
-		changeArea(msg);
+		changeArea(route, msg);
 		return;
 	}
 	TaskDao.getTaskByIds(player.id, TraverseTask[msg.kindId], function(err, tasks) {
@@ -79,19 +79,19 @@ Npc.prototype.traverse = function(msg) {
 			//For test only
 			task.taskState = consts.TaskState.COMPLETED;
 			if (task.taskState === consts.TaskState.COMPLETED) {
-				changeArea(msg);
+				changeArea(route, msg);
 			} else {
-				messageService.pushMessageToPlayer({uid:player.userId, sid : player.serverId},msg);
+				messageService.pushMessageToPlayer({uid:player.userId, sid : player.serverId}, route, msg);
 			}
 		} else {
-			messageService.pushMessageToPlayer({uid:player.userId, sid : player.serverId},msg);
+			messageService.pushMessageToPlayer({uid:player.userId, sid : player.serverId}, route, msg);
 		}
 	});
 };
 
-var changeArea = function(msg) {
+var changeArea = function(route, msg) {
 	var player = area.getEntity(msg.player);
 	msg.action = 'changeArea';
 	msg.params = {target : TraverseNpc[msg.kindId]};
-	messageService.pushMessageToPlayer({uid: player.userId, sid: player.serverId}, msg);
+	messageService.pushMessageToPlayer({uid: player.userId, sid: player.serverId}, route, msg);
 };

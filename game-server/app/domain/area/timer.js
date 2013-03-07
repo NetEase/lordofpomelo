@@ -21,7 +21,7 @@ function tick() {
     item.update();
 
     if(item.died) {
-      messageService.pushMessage({route:'onRemoveItem', entityId:id});
+      messageService.pushMessage('onRemoveEntities', {entities: [id]});
       area.removeEntity(id);
     }
   }
@@ -54,7 +54,7 @@ exp.abortAction = function(type, id) {
 
 /**
  * Abort all action for a given id in area
- * @param id {Number} 
+ * @param id {Number}
  */
 exp.abortAllAction = function(id) {
   area.actionManager().abortAllAction(id);

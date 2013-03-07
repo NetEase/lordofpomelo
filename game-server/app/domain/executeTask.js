@@ -56,10 +56,7 @@ executeTask.updateTaskData = function(player, killed) {
 		}
 	}
 	if (!!reData) {
-	  messageService.pushMessageToPlayer({uid:player.userId, sid : player.serverId}, {
-		route: 'onUpdateTaskData',
-		taskData: reData
-		});
+	  messageService.pushMessageToPlayer({uid:player.userId, sid : player.serverId}, 'onUpdateTaskData', reData);
 	}
 };
 
@@ -72,9 +69,7 @@ executeTask.updateTaskData = function(player, killed) {
  */
 var isCompleted = function(player, taskId) {
 		player.completeTask(taskId);
-    messageService.pushMessageToPlayer({uid:player.userId, sid : player.serverId}, {
-		 route: 'onTaskCompleted',
-		 code: 200,
+    messageService.pushMessageToPlayer({uid:player.userId, sid : player.serverId}, 'onTaskCompleted', {
 		 taskId: taskId
 	 });
 };

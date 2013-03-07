@@ -11,6 +11,7 @@ __resources__["/mainPanelView.js"] = {
     var dialogPanel = require('dialogPanelView');
     var config = require('config');
     var app = require('app');
+    var dataApi = require('dataApi');
     var pomelo = window.pomelo;
     // bottom nav li
     var $li;
@@ -47,7 +48,7 @@ __resources__["/mainPanelView.js"] = {
       setMpBar(player.mp, player.maxMp);
       setExp(player.experience, player.nextLevelExp);
 
-      initSkillPanel(player.fightSkills);
+      initSkillPanel();
       bindHotkeys();
       playerPanel.init();
       equipmentsPanel.init();
@@ -157,7 +158,7 @@ __resources__["/mainPanelView.js"] = {
       var i, sk, $cli;
       for (i in skills) {
         if (i > 1) {
-          sk = skills[i].skillData; 
+          sk = dataApi.fightskill.findById(skills[i].id);
           $cli = $li.eq(i - 2).data('skillId', sk.id).html('<img src="' + config.IMAGE_URL + 'skill/item_' + sk.imageUrl + '.jpg" alt="" title="' + sk.name + ' 等级:' + skills[i].level + '&#10;' + sk.desc +'"><span class="num">'+ skills[i].level +'</span>');
           skillBox[sk.id] = new SkillCD(sk.id, $cli, sk.cooltime *1000, function(skillId) {
             pomelo.notify("area.fightHandler.useSkill",{ skillId: skillId, playerId: pomelo.playerId});
@@ -170,7 +171,8 @@ __resources__["/mainPanelView.js"] = {
       this.id = id;
       this.$box = $box;
       this.$box.addClass('skill-box');
-      //var $img = $box.children('img');
+      //var $img
+       $box.children('img');
       //var r = 20.8;
       this.inCD = false;
       for (var i = 0; i < 4; i++ ) {
@@ -244,7 +246,7 @@ __resources__["/mainPanelView.js"] = {
               });
             });
           });
-        }); 
+        });
       });
     };
 

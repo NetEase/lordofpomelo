@@ -3,8 +3,7 @@ __resources__["/clientManager.js"] = {
 		mimetype: "application/javascript"
 	},
 	data: function(exports, require, module, __filename, __dirname) {
-		//var clientManager = require('Manager');
-		var heroSelectView = require('heroSelectView');//选角色管理
+		var heroSelectView = require('heroSelectView');  // role manager
 
 		var pomelo = window.pomelo;
 		var app = require('app');
@@ -21,7 +20,7 @@ __resources__["/clientManager.js"] = {
 
     var alert = window.alert;
 		var self = this;
-		
+
 		var loading = false;
     var httpHost = location.href.replace(location.hash, '');
 
@@ -87,7 +86,7 @@ __resources__["/clientManager.js"] = {
           alert('Username or password is invalid!');
           loading = false;
           return;
-        } 
+        }
         if (data.code !== 200) {
           alert('Username is not exists!');
           loading = false;
@@ -121,19 +120,18 @@ __resources__["/clientManager.js"] = {
      * route: connector.entryHandler.entry
      * response：
      * {
-     *   code: [Number], 
+     *   code: [Number],
      *   player: [Object]
      * }
      */
     function entry(host, port, token, callback) {
-      //初始化socketClient
-      //TODO for development
+      // init socketClient
+      // TODO for development
       if(host === '127.0.0.1') {
         host = config.GATE_HOST;
       }
       pomelo.init({host: host, port: port, log: true}, function() {
-        //token = 'd72357c4c7f9b6a8e0b6a93c4d8652b1903114819c36749e53b97d1a78372387';
-        pomelo.request('connector.entryHandler.entry', { token: token}, function(data) {
+        pomelo.request('connector.entryHandler.entry', {token: token}, function(data) {
           var player = data.player;
 
           if (callback) {
@@ -275,7 +273,7 @@ __resources__["/clientManager.js"] = {
           enterScene();
         }
       });
-      setTimeout(function(){ 
+      setTimeout(function(){
         if (!entered) {
           entered = true;
           enterScene();
@@ -306,8 +304,8 @@ __resources__["/clientManager.js"] = {
     }
 
     function enterScene(){
-      pomelo.request("area.playerHandler.enterScene",{ uid:pomelo.uid, playerId: pomelo.playerId, areaId: pomelo.areaId},function(data){
-        app.init(data.data);
+      pomelo.request("area.playerHandler.enterScene", null, function(data){
+        app.init(data);
       });
     }
 
@@ -319,7 +317,7 @@ __resources__["/clientManager.js"] = {
       if(!paths || !paths.path){
         return;
       }
-      var curPlayer = app.getCurArea().getCurPlayer();	
+      var curPlayer = app.getCurArea().getCurPlayer();
 
       var area = app.getCurArea();
       var sprite = curPlayer.getSprite();
@@ -327,7 +325,7 @@ __resources__["/clientManager.js"] = {
 			var needTime = Math.floor(totalDistance / sprite.getSpeed() * 1000 + app.getDelayTime());
 			var speed = totalDistance/needTime * 1000;
       sprite.movePath(paths.path, speed);
-      pomelo.request('area.playerHandler.move',{ path: paths.path}, function(result) {
+      pomelo.request('area.playerHandler.move', {path: paths.path}, function(result) {
         if(result.code === Message.ERR){
           console.warn('curPlayer move error!');
 					sprite.translateTo(paths.path[0].x, paths.path[0].y);
@@ -350,14 +348,14 @@ __resources__["/clientManager.js"] = {
         if (entity.died) {
           return;
         }
-        pomelo.notify('area.fightHandler.attack',{areaId :areaId, playerId: playerId, targetId: targetId, skillId: skillId });
+        pomelo.notify('area.fightHandler.attack',{targetId: targetId});
       } else if (entity.type === EntityType.NPC) {
         pomelo.notify('area.playerHandler.npcTalk',{areaId :areaId, playerId: playerId, targetId: targetId});
       } else if (entity.type === EntityType.ITEM || entity.type === EntityType.EQUIPMENT) {
 				var curPlayer = app.getCurPlayer();
 				var bag = curPlayer.bag;
 				if (bag.isFull()) {
-					curPlayer.getSprite().hintOfBag();	
+					curPlayer.getSprite().hintOfBag();
 					return;
 				}
         pomelo.notify('area.playerHandler.pickItem',{areaId :areaId, playerId: playerId, targetId: targetId});
@@ -396,10 +394,9 @@ __resources__["/clientManager.js"] = {
     }
 
 
-    //暴露的接口和对象
+    // export object and interfaces
     exports.init = init;
     exports.entry = entry;
-    //exports.register = register;
     exports.enterScene = enterScene;
     exports.move = move;
     exports.loadResource = loadResource;

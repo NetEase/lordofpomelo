@@ -21,9 +21,27 @@ util.inherits(Bag, Persistent);
 
 module.exports = Bag;
 
-
 Bag.prototype.get = function(index) {
   return this.items[index];
+};
+
+Bag.prototype.getData = function() {
+  var data = {};
+
+  data.id = this.id;
+  data.itemCount = this.itemCount;
+
+  data.items = [];
+  for(var key in this.items){
+    var item = {
+      key : Number(key),
+      id : this.items[key].id,
+      type : this.items[key].type
+    };
+    data.items.push(item);
+  }
+
+  return data;
 };
 
 /**

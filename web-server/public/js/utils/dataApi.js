@@ -4,7 +4,7 @@ __resources__["/dataApi.js"] = {
   },
 
   data: function(exports, require, module, __filename, __dirname) {
-    
+
     function Data(key) {
       this.key = key;
       this.data = null;
@@ -88,6 +88,8 @@ __resources__["/dataApi.js"] = {
     exports.fightskill = new Data('fightskill');
     exports.equipment = new Data( 'equipment');
     exports.item = new Data('item');
+    exports.character = new Data('character');
+    exports.npc = new Data('npc');
     exports.animation = new AnimationData();
     exports.effect = new Effect();
 

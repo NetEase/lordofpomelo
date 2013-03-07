@@ -161,9 +161,10 @@ userDao.getPlayerAllInfo = function (playerId, cb) {
 		var fightSkills = results[3];
 		var tasks = results[4];
 		player.bag = bag;
-		player.equipments = equipments;
+		player.setEquipments(equipments);
 		player.addFightSkills(fightSkills);
 		player.curTasks = tasks || {};
+		
 		if (!!err){
 			utils.invokeCallback(cb,err);
 		}else{

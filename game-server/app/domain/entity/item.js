@@ -1,5 +1,5 @@
 /**
- * Module dependencies 
+ * Module dependencies
  */
 var util = require('util');
 var Entity = require('./entity');
@@ -21,10 +21,11 @@ var Item = function(opts) {
 	this.hp = opts.hp;
 	this.mp = opts.mp;
 	this.price = opts.price;
-	this.playerLevel = opts.playerLevel;
+	this.heroLevel = opts.heroLevel;
 	this.imgId = opts.imgId;
 	this.lifetime = 30000;
 	this.time = Date.now();
+	this.playerId = opts.playerId;
 	this.died = false;
 };
 

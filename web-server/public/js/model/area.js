@@ -8,6 +8,7 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 	var Equipment = require('equipment');
 	var TimeSync = require('timeSync');
 	var ComponentAdder = require('componentAdder');
+	var utils = require('utils');
 
 	var logic = require("logic");
 	var Level = require('level').Level;
@@ -27,10 +28,10 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 
 	var logicTickHandler = function(callback) {
 		setTimeout(callback, 1000/60);
-	}
+	};
 
-	var Area = function(opts, mapData){
-		this.playerId = opts.playerId;
+	var Area = function(opts, map){
+		this.playerId = opts.curPlayer.id;
 		this.entities = {};
 		this.players = {};
 		this.map = null;
@@ -41,9 +42,8 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 		this.gd = opts.gd;
 		this.gv = opts.gv;
 
-		this.mapData = mapData;
 		this.isStopped = false;
-		this.init(opts);
+		this.init(opts, map);
 	};
 
 	var pro = Area.prototype;
@@ -52,17 +52,22 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 	 * Init area, it will init colorbox, entities
 	 * @param opts {Object} The data for init area, contains entities in the player view, data for map and data for current player.
 	 */
-	pro.init = function(opts){
+	pro.init = function(opts, map){
 		this.initColorBox();
 
 		// width , height should be invoked by map data
-		this.map = new Map({mapData: this.mapData,scene:this.scene, name: opts.map.name, pos:{x: 0, y: 0}, width:opts.map.width, height:opts.map.height});
+		this.map = new Map({map: map, scene:this.scene, pos:{x: 0, y: 0}});
 		//Add current player
 		this.addEntity(pomelo.player);
-		
+
 		for(var key in opts.entities){
-			this.addEntity(opts.entities[key]);
+			var array = opts.entities[key];
+			for(var i = 0; i < array.length; i++){
+				var entity = utils.buildEntity(key, array[i]);
+				this.addEntity(entity);
+			}
 		}
+
 		this.playerId = pomelo.playerId;
 
 		var pos = this.getCurPlayer().getSprite().getPosition();
@@ -71,7 +76,7 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 		var width = parseInt(getComputedStyle(document.getElementById("m-main")).width);
 		var height = parseInt(getComputedStyle(document.getElementById("m-main")).height);
 		pomelo.notify('area.playerHandler.changeView',{width:width, height:height});
-		
+
 		this.componentAdder.addComponent();
 	};
 
@@ -117,7 +122,7 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 
 	/**
 	 * Get entity from area
-	 * @param id {Number} The entity id 
+	 * @param id {Number} The entity id
 	 * @api public
 	 */
 	pro.getEntity = function(id){
@@ -166,7 +171,7 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 			return false;
 		}
 
-		var eNode = e.getSprite().curNode; 
+		var eNode = e.getSprite().curNode;
 		if (!eNode._parent) {
 			console.log('this entity curNode de father is null');
 			this.scene.addNode(eNode, this.map.node);
@@ -204,7 +209,7 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 	/**
 	 * Get player for given player id
 	 * @param playerId {String} Player id
-	 * @return {Object} Return the player or null if the player doesn't exist. 
+	 * @return {Object} Return the player or null if the player doesn't exist.
 	 * @api public
 	 */
 	pro.getPlayer = function(playerId){

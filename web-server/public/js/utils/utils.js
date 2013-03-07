@@ -2,6 +2,7 @@
 __resources__["/utils.js"] = {meta: {mimetype: "application/javascript"}, data: function(exports, require, module, __filename, __dirname) {
 
   var aniOrientation = require('consts').aniOrientation;
+  var dataApi = require('dataApi');
 
   module.exports.distance = function(sx, sy, ex, ey) {
     var dx = ex - sx;
@@ -77,28 +78,63 @@ __resources__["/utils.js"] = {meta: {mimetype: "application/javascript"}, data: 
 			orientation = aniOrientation.RIGHT_DOWN;
     }
 		return orientation;
-		/**
-    if (distX >= 0 && distY < 0) {//quadrant 1
-      return {
-        orientation:  aniOrientation.LEFT,
-        flipX: false
-      };
-    } else if (distX < 0 && distY < 0) {//quadrant 2
-      return {
-        orientation:  aniOrientation.LEFT,
-        flipX: true
-      };
-    } else if (distX <0 && distY >= 0) {//quadrant 3
-      return {
-        orientation:  aniOrientation.RIGHT,
-        flipX: false
-      };
-    } else {//quadrant 4
-      return {
-        orientation:  aniOrientation.RIGHT,
-        flipX: true
-      };
-    }
-		**/
   };
+
+  /**
+	 * clone an object
+	 */
+	module.exports.clone = function(origin) {
+		if(!origin) {
+			return;
+		}
+
+		var obj = {};
+		for(var f in origin) {
+			if(origin.hasOwnProperty(f)) {
+				obj[f] = origin[f];
+			}
+		}
+		return obj;
+	};
+
+  module.exports.buildEntity = function(type, data){
+    var entity = {};
+
+    var index = type;
+    if(type === 'mob' || type === 'player'){
+      index = 'character';
+    }
+    //Build entity from original data
+    if(!!dataApi[index]){
+      entity = this.clone(dataApi[index].findById(data.kindId));
+    }else{
+      return null;
+    }
+
+    for(var key in data){
+      entity[key] = data[key];
+    }
+
+    entity.type = type;
+    return entity;
+  };
+
+  function buildItem(type, data){
+    var item;
+    var api;
+
+    if(type === 'item'){
+      item = module.exports.clone(dataApi.item.findById(data.kindId));
+    }else{
+      item = module.exports.clone(dataApi.equipment.findById(data.kindId));
+    }
+
+    item.x = data.x;
+    item.y = data.y;
+    item.entityId = data.entityId;
+    item.playerId = data.playerId;
+    item.type = data.type;
+
+    return item;
+  }
 }};

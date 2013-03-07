@@ -17,16 +17,16 @@ ChatRemote.prototype.add = function(uid, playerName, channelName, cb) {
 
 /**
  * leave Channel
- * uid 
- * channelName 
+ * uid
+ * channelName
  */
 ChatRemote.prototype.leave =function(uid, channelName, cb){
 	this.chatService(uid, channelName);
-	cb(); 
+	cb();
 };
 
 /**
- * kick out user 
+ * kick out user
  *
  */
 ChatRemote.prototype.kick = function(uid, cb){

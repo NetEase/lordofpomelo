@@ -46,6 +46,7 @@ exp.addEventForCharacter = function(character) {
 		var result = args.result;
 		var attacker = area.getEntity(args.attackerId);
 		var target = area.getEntity(args.targetId);
+		var attackerPos = {x: attacker.x, y: attacker.y};
 
 		//Print an error when attacker or target not exist, this should not happened!
 		if(!target || !attacker){
@@ -57,8 +58,7 @@ exp.addEventForCharacter = function(character) {
 			attacker : args.attackerId,
 			target : args.targetId,
 			result: args.result,
-			skillId: args.skillId,
-			attackerPos: {x: attacker.x, y: attacker.y}
+			skillId: args.skillId
 		};
 		
 		//If the attack killed the target, then do the clean up work
@@ -95,7 +95,7 @@ exp.addEventForCharacter = function(character) {
 			}
 			
 			attacker.target = null;
-			messageService.pushMessageByAOI(msg, msg.attackerPos);
+			messageService.pushMessageByAOI(msg, attackerPos);
 		} else if(result.result === consts.AttackResult.SUCCESS) {
 			if (!target) {
 				logger.error('[onattack] attack result: target is null!	attackerId: ' + args.attackerId + '	targetId: ' + args.targetId +' result: ' + result);
@@ -104,7 +104,7 @@ exp.addEventForCharacter = function(character) {
 			if(target.type === EntityType.MOB) {
 				timer.enterAI(target.entityId);
 			}
-			messageService.pushMessageByAOI(msg, msg.attackerPos);
+			messageService.pushMessageByAOI(msg, attackerPos);
 		}
 	});
 };

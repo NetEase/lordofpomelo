@@ -20,7 +20,7 @@ __resources__["/item.js"] = {meta: {mimetype: "application/javascript"}, data: f
 		this.hp = opts.hp;
 		this.mp = opts.mp;
 		this.price = opts.price;
-		this.playerLevel = opts.playerLevel;
+		this.heroLevel = opts.heroLevel;
 		this.imgId = opts.imgId;
 		Entity.call(this, opts);	
 	};
