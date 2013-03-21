@@ -29,8 +29,10 @@
   //Map from request id to route
   var routeMap = {};
 
-  var heartbeatInterval = 5000;
-  var heartbeatTimeout = heartbeatInterval * 2;
+  var heartbeatInterval = 0;
+  var heartbeatTimeout = 0;
+  var nextHeartbeatTimeout = 0;
+  var gapThreshold = 100;   // heartbeat gap threashold
   var heartbeatId = null;
   var heartbeatTimeoutId = null;
 
@@ -69,14 +71,18 @@
     };
     var onmessage = function(event) {
       processPackage(Package.decode(event.data), cb);
+      // new package arrived, update the heartbeat timeout
+      if(heartbeatTimeout) {
+        nextHeartbeatTimeout = Date.now() + heartbeatTimeout;
+      }
     };
     var onerror = function(event) {
       pomelo.emit('io-error', event);
-      console.log('socket error: ', event);
+      console.error('socket error: ', event);
     };
     var onclose = function(event){
       pomelo.emit('close',event);
-      console.log('socket close: ', event);
+      console.error('socket close: ', event);
     };
     socket = new WebSocket(url);
     socket.binaryType = 'arraybuffer';
@@ -159,6 +165,11 @@
   var handler = {};
 
   var heartbeat = function(data) {
+    if(!heartbeatInterval) {
+      // no heartbeat
+      return;
+    }
+
     var obj = Package.encode(Package.TYPE_HEARTBEAT);
     if(heartbeatTimeoutId) {
       clearTimeout(heartbeatTimeoutId);
@@ -174,12 +185,20 @@
       heartbeatId = null;
       send(obj);
 
-      heartbeatTimeoutId = setTimeout(function() {
-        console.error('server heartbeat timeout');
-        pomelo.emit('heartbeat timeout');
-        pomelo.disconnect();
-      }, heartbeatTimeout);
+      nextHeartbeatTimeout = Date.now() + heartbeatTimeout;
+      heartbeatTimeoutId = setTimeout(heartbeatTimeoutCb, heartbeatTimeout);
     }, heartbeatInterval);
+  };
+
+  var heartbeatTimeoutCb = function() {
+    var gap = nextHeartbeatTimeout - Date.now();
+    if(gap > gapThreshold) {
+      heartbeatTimeoutId = setTimeout(heartbeatTimeoutCb, gap);
+    } else {
+      console.error('server heartbeat timeout');
+      pomelo.emit('heartbeat timeout');
+      pomelo.disconnect();
+    }
   };
 
   var handshake = function(data){
@@ -206,7 +225,6 @@
 
   var onData = function(data){
     //probuff decode
-    //var msg = Protocol.strdecode(data);
     var msg = Message.decode(data);
 
     if(msg.id > 0){
@@ -231,7 +249,7 @@
   handlers[Package.TYPE_DATA] = onData;
   handlers[Package.TYPE_KICK] = onKick;
 
-  var processPackage = function(msg){
+  var processPackage = function(msg) {
     handlers[msg.type](msg.body);
   };
 
@@ -283,8 +301,11 @@
 
   var handshakeInit = function(data){
     if(data.sys && data.sys.heartbeat) {
-      heartbeatInterval = data.sys.heartbeat;       // heartbeat interval
-      heartbeatTimeout = heartbeatInterval * 2;     // max heartbeat timeout
+      heartbeatInterval = data.sys.heartbeat * 1000;   // heartbeat interval
+      heartbeatTimeout = heartbeatInterval * 2;        // max heartbeat timeout
+    } else {
+      heartbeatInterval = 0;
+      heartbeatTimeout = 0;
     }
 
     initData(data);
