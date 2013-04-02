@@ -4,8 +4,8 @@
 logs/*.log
 !.gitignore
 node_modules/*
-web-server/public/js/lib/components/*
-web-server/public/js/lib/build/*
+web-server/public/js/lib/components/
+web-server/public/js/lib/build/
 .project
 .settings/
 **/*.svn

@@ -16,7 +16,7 @@ var consts = require('../../../consts/consts');
 var exp = module.exports;
 
 /**
- * Player exits. It will persistent player's state in the database. 
+ * Player exits. It will persistent player's state in the database.
  *
  * @param {Object} args
  * @param {Function} cb
@@ -31,7 +31,7 @@ exp.playerLeave = function(args, cb){
 		utils.invokeCallback(cb);
 		return;
 	}
-	
+
 	if(player.hp == 0){
 		player.hp = Math.floor(player.maxHp/2);
 	}
@@ -40,7 +40,7 @@ exp.playerLeave = function(args, cb){
 	equipmentsDao.update(player.equipments);
 	tasksUpdate(player.curTasks);
 	area.removePlayer(playerId);
-	messageService.pushMessage({route: 'onUserLeave', code: consts.MESSAGE.RES, playerId: playerId});
+	//messageService.pushMessage({route: 'onUserLeave', code: consts.MESSAGE.RES, playerId: playerId});
 	utils.invokeCallback(cb);
 };
 
