@@ -46,8 +46,6 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			for(var key in entities){
 				var array = entities[key];
 
-				if(key === 'npc')
-					console.warn('add npc');
 				for(var i = 0; i < array.length; i++){
 					if(!area.getEntity(array[i].entityId)){
 						var entity = utils.buildEntity(key, array[i]);
@@ -124,8 +122,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 		 * Handle player upgrade message
 		 * @param data {Object} The message, contains the info for player upgrade
 		 */
-		pomelo.on('onUpgrade' , function(data) {
-			var playerData = data.player;
+		pomelo.on('onUpgrade' , function(playerData) {
 			var area = app.getCurArea();
 			var player = area.getPlayer(playerData.id);
 			player.upgrade(playerData);
