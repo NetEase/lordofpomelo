@@ -1,6 +1,7 @@
 var Code = require('../../../shared/code');
 var utils = require('../util/utils');
 var dispatcher = require('../util/dispatcher');
+var Event = require('../consts/consts').Event;
 
 var ChatService = function(app) {
 	this.app = app;
@@ -13,7 +14,7 @@ module.exports = ChatService;
 
 /**
  * Add player into the channel
- * 
+ *
  * @param {String} uid         user id
  * @param {String} playerName  player's role name
  * @param {String} channelName channel name
@@ -42,7 +43,7 @@ ChatService.prototype.add = function(uid, playerName, channelName) {
 
 /**
  * User leaves the channel
- * 
+ *
  * @param  {String} uid         user id
  * @param  {String} channelName channel name
  */
@@ -58,10 +59,10 @@ ChatService.prototype.leave = function(uid, channelName) {
 };
 
 /**
- * Kick user from chat service. 
- * This operation would remove the user from all channels and 
+ * Kick user from chat service.
+ * This operation would remove the user from all channels and
  * clear all the records of the user.
- * 
+ *
  * @param  {String} uid user id
  */
 ChatService.prototype.kick = function(uid) {
@@ -84,7 +85,7 @@ ChatService.prototype.kick = function(uid) {
 
 /**
  * Push message bu the specified channel
- * 
+ *
  * @param  {String}   channelName channel name
  * @param  {Object}   msg         message json object
  * @param  {Function} cb          callback function
@@ -96,12 +97,12 @@ ChatService.prototype.pushByChannel = function(channelName, msg, cb) {
 		return;
 	}
 
-	channel.pushMessage(msg, cb);
+	channel.pushMessage(Event.chat, msg, cb);
 };
 
 /**
  * Push message to the specified player
- * 
+ *
  * @param  {String}   playerName player's role name
  * @param  {Object}   msg        message json object
  * @param  {Function} cb         callback
@@ -113,7 +114,7 @@ ChatService.prototype.pushByPlayerName = function(playerName, msg, cb) {
 		return;
 	}
 
-	this.app.get('channelService').pushMessageByUids(msg, [{uid: record.uid, sid: record.sid}], cb);
+	this.app.get('channelService').pushMessageByUids(Event.chat, msg, [{uid: record.uid, sid: record.sid}], cb);
 };
 
 /**

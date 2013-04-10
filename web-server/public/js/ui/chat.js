@@ -24,7 +24,7 @@ __resources__["/chat.js"] = {meta: {mimetype: "application/javascript"}, data: f
 		var self = this;
 		msgBox = $('.m-chat .body');
 		$('.m-chat').height('0px');
-		typeTarget = $('.m-chat .type'); 
+		typeTarget = $('.m-chat .type');
 		typeTarget.height('56px').hide();
 		$('.m-chat .s-fc7').hide();
 		$('.m-chat .s-fc9').hide();
@@ -73,8 +73,7 @@ __resources__["/chat.js"] = {meta: {mimetype: "application/javascript"}, data: f
 			});
 		});
 
-		pomelo.on('onChat', function(data) {
-			var msg = data.msg;
+		pomelo.on('onChat', function(msg) {
 			if (msgArray.length>100) {
 				msgArray = [];
 				msgBox.html('');
@@ -150,7 +149,7 @@ __resources__["/chat.js"] = {meta: {mimetype: "application/javascript"}, data: f
 		var text = '';
 		for (var id in tmpArray) {
 			var msg = tmpArray[id];
-			text = msgBox.html() + self.render(msg); 
+			text = msgBox.html() + self.render(msg);
 			msgBox.html(text);
 		}
 		this.nickClick();
@@ -186,7 +185,7 @@ __resources__["/chat.js"] = {meta: {mimetype: "application/javascript"}, data: f
 		if (defaultScope ===SCOPE.PRI && toName === pomelo.player.name) {
 			alert('are you crazy');
 			return ;
-		} 
+		}
 		msg = {from: pomelo.player.name, scope: defaultScope, content: content, areaId: pomelo.areaId, toName: toName};
 		pomelo.request(route, msg, function(data) {
 			self.response(data,msg);
