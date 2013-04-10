@@ -54,7 +54,7 @@ app.configure('production|development', function() {
 	app.route('connector', routeUtil.connector);
 
 	app.loadConfig('mysql', app.getBase() + '/../shared/config/mysql.json');
-	app.filter(pomelo.timeout());
+	app.filter(pomelo.filters.timeout());
 });
 
 // Configure for auth server
