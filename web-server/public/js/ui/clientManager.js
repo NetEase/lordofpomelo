@@ -1,4 +1,4 @@
-__resources__["/clientManager.js"] = {
+﻿__resources__["/clientManager.js"] = {
 	meta: {
 		mimetype: "application/javascript"
 	},
@@ -25,7 +25,7 @@ __resources__["/clientManager.js"] = {
     var httpHost = location.href.replace(location.hash, '');
 
 		pomelo.on('websocket-error', function(){
-			lodading = false;
+			loading = false;
 		});
 
 		function init() {
