@@ -1,6 +1,5 @@
 var Action = require('./action');
 var util = require('util');
-var timer = require('../area/timer');
 var messageService = require('../messageService');
 var consts = require('../../consts/consts');
 var logger = require('pomelo-logger').getLogger(__filename);
@@ -15,6 +14,7 @@ var Move = function(opts){
 
 	Action.call(this, opts);
 	this.entity = opts.entity;
+	this.area = this.entity.area;
 	this.path = opts.path;
 	this.speed = Number(opts.speed);
 	this.time = Date.now();
@@ -74,8 +74,8 @@ Move.prototype.update = function(){
 
 	//Update the aoi module
 	var watcher = {id : this.entity.entityId, type : this.entity.type};
-  timer.updateObject(watcher, oldPos, pos);
-  timer.updateWatcher(watcher, oldPos, pos, this.entity.range, this.entity.range);
+  this.area.timer.updateObject(watcher, oldPos, pos);
+  this.area.timer.updateWatcher(watcher, oldPos, pos, this.entity.range, this.entity.range);
 	if(this.entity.type === consts.EntityType.PLAYER){
 		this.entity.save();
 		if (this.tickNumber % 10 === 0) {

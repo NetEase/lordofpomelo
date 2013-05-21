@@ -2,7 +2,6 @@
  * Module dependencies
  */
 var consts = require('../consts/consts');
-var area = require('./area/area');
 var messageService = require('./messageService');
 var taskData = require('../util/dataApi').task;
 var taskDao = require('../dao/taskDao');
@@ -35,7 +34,7 @@ executeTask.updateTaskData = function(player, killed) {
 		var taskDesc = task.desc.split(';');
 		var taskType = task.type;
 		var killedNum = task.completeCondition[taskDesc[1]];
-		if (taskType == consts.TaskType.KILL_MOB && killed.type === consts.EntityType.MOB &&	killed.kindId == taskDesc[1]) {
+		if (taskType === consts.TaskType.KILL_MOB && killed.type === consts.EntityType.MOB &&	killed.kindId === taskDesc[1]) {
 			task.taskData.mobKilled += 1;
 			reData = reData || {};
 			reData[id] = task.taskData;
@@ -44,7 +43,7 @@ executeTask.updateTaskData = function(player, killed) {
 			if (player.curTasks[id].taskData.mobKilled >= killedNum) {
 				isCompleted(player, id);
 			}
-		} else if (taskType == consts.TaskType.KILL_PLAYER && killed.type === consts.EntityType.PLAYER && killed.level >= player.level) {
+		} else if (taskType === consts.TaskType.KILL_PLAYER && killed.type === consts.EntityType.PLAYER && killed.level >= player.level) {
 			task.taskData.playerKilled += 1;
 			reData = reData || {};
 			reData[id] = task.taskData;

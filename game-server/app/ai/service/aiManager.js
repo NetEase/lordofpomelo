@@ -1,11 +1,10 @@
 var Blackboard = require('../meta/blackboard');
-var area = require('../../domain/area/area');
 
 var exp = module.exports;
 
 var Manager = function(opts) {
 	this.brainService = opts.brainService;
-	this.area = area;
+	this.area = opts.area;
 	this.players = {};
 	this.mobs = {};
 };
@@ -46,22 +45,22 @@ pro.addCharacters = function(cs) {
 			if(this.players[c.entityId]) {
 				continue;
 			}
-			
+
 			brain = this.brainService.getBrain('player', Blackboard.create({
-				manager: this, 
-				area: this.area,	
-				curCharacter: c 
+				manager: this,
+				area: this.area,
+				curCharacter: c
 			}));
 			this.players[c.entityId] = brain;
 		} else {
 			if(this.mobs[c.entityId]) {
 				continue;
 			}
-			
+
 			brain = this.brainService.getBrain(c.characterName, Blackboard.create({
-				manager: this, 
-				area: this.area,	
-				curCharacter: c 
+				manager: this,
+				area: this.area,
+				curCharacter: c
 			}));
 			this.mobs[c.entityId] = brain;
 		}

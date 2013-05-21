@@ -1,11 +1,8 @@
 /**
  * Module dependencies
  */
-
-var area = require('../../../domain/area/area');
 var messageService = require('../../../domain/messageService');
-var timer = require('../../../domain/area/timer');
-var world = require('../../../domain/world');
+var areaService = require('../../../services/areaService');
 var userDao = require('../../../dao/userDao');
 var Move = require('../../../domain/action/move');
 var actionManager = require('../../../domain/action/actionManager');
@@ -27,8 +24,10 @@ var handler = module.exports;
  * @api public
  */
 handler.enterScene = function(msg, session, next) {
+  var area = session.area;
   var playerId = session.get('playerId');
   var areaId = session.get('areaId');
+
   userDao.getPlayerAllInfo(playerId, function(err, player) {
     if (err || !player) {
       logger.error('Get user for userDao failed! ' + err.stack);
@@ -44,13 +43,15 @@ handler.enterScene = function(msg, session, next) {
 
     pomelo.app.rpc.chat.chatRemote.add(session, session.uid,
     player.name, channelUtil.getAreaChannelName(areaId), null);
-		var map = area.map();
+		var map = area.map;
 
+    //Reset the player's position if current pos is unreachable
 		if(!map.isReachable(player.x, player.y)){
 			var pos = map.getBornPoint();
 			player.x = pos.x;
 			player.y = pos.y;
 		}
+
 		var data = {
         entities: area.getAreaInfo({x: player.x, y: player.y}, player.range),
         curPlayer: player.getInfo(),
@@ -67,11 +68,11 @@ handler.enterScene = function(msg, session, next) {
 
 		if (!area.addEntity(player)) {
       logger.error("Add player to area faild! areaId : " + player.areaId);
-//      next(new Error('fail to add user into area'), {
-//        route: msg.route,
-//        code: consts.MESSAGE.ERR
-//      });
-//      return;
+      next(new Error('fail to add user into area'), {
+       route: msg.route,
+       code: consts.MESSAGE.ERR
+      });
+      return;
     }
 
   });
@@ -86,6 +87,8 @@ handler.enterScene = function(msg, session, next) {
  * @api public
  */
 handler.changeView = function(msg, session, next){
+  var timer = session.area.timer;
+
 	var playerId = session.get('playerId');
 	var width = msg.width;
 	var height = msg.height;
@@ -93,7 +96,7 @@ handler.changeView = function(msg, session, next){
 	var radius = width>height ? width : height;
 
 	var range = Math.ceil(radius / 600);
-	var player = area.getPlayer(playerId);
+	var player = session.area.getPlayer(playerId);
 
 	if(range < 0 || !player){
 		next(new Error('invalid range or player'));
@@ -118,6 +121,9 @@ handler.changeView = function(msg, session, next){
  * @api public
  */
 handler.move = function(msg, session, next) {
+  var area = session.area;
+  var timer = area.timer;
+
   var path = msg.path;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
@@ -125,7 +131,7 @@ handler.move = function(msg, session, next) {
 
   player.target = null;
 
-  if(!area.map().verifyPath(path)){
+  if(!area.map.verifyPath(path)){
     logger.warn('The path is illigle!! The path is: %j', msg.path);
     next(null, {
       route: msg.route,
@@ -151,7 +157,7 @@ handler.move = function(msg, session, next) {
           timer.updateWatcher({id:player.entityId, type:consts.EntityType.PLAYER}, {x : player.x, y : player.y}, path[0], player.range, player.range);
 			}
 
-      messageService.pushMessageByAOI({
+      messageService.pushMessageByAOI(area, {
       route: 'onMove',
       entityId: player.entityId,
       path: path,
@@ -167,7 +173,7 @@ handler.move = function(msg, session, next) {
 
 //drop equipment or item
 handler.dropItem = function(msg, session, next) {
-  var player = area.getPlayer(session.get('playerId'));
+  var player = session.area.getPlayer(session.get('playerId'));
 
   player.bag.removeItem(msg.index);
 
@@ -176,7 +182,7 @@ handler.dropItem = function(msg, session, next) {
 
 //add equipment or item
 handler.addItem = function(msg, session, next) {
-  var player = area.getPlayer(session.get('playerId'));
+  var player = session.area.getPlayer(session.get('playerId'));
 
   var bagIndex = player.bag.addItem(msg.item);
 
@@ -196,14 +202,14 @@ handler.changeArea = function(msg, session, next) {
     frontendId: session.frontendId
   };
 
-	world.changeArea(req, session, function(err) {
+	areaService.changeArea(req, session, function(err) {
 		next(null, {areaId: areaId, target: target, success: true});
 	});
 };
 
 //Use item
 handler.useItem = function(msg, session, next) {
-  var player = area.getPlayer(session.get('playerId'));
+  var player = session.area.getPlayer(session.get('playerId'));
 
   var status = player.useItem(msg.index);
 
@@ -211,7 +217,7 @@ handler.useItem = function(msg, session, next) {
 };
 
 handler.npcTalk = function(msg, session, next) {
-  var player = area.getPlayer(session.get('playerId'));
+  var player = session.area.getPlayer(session.get('playerId'));
   player.target = msg.targetId;
   next();
 };
@@ -226,6 +232,8 @@ handler.npcTalk = function(msg, session, next) {
  * @api public
  */
 handler.pickItem = function(msg, session, next) {
+  var area = session.area;
+
   var player = area.getPlayer(session.get('playerId'));
   var target = area.getEntity(msg.targetId);
   if(!player || !target || (target.type !== consts.EntityType.ITEM && target.type !== consts.EntityType.EQUIPMENT)){
@@ -242,7 +250,7 @@ handler.pickItem = function(msg, session, next) {
 
 //Player  learn skill
 handler.learnSkill = function(msg, session, next) {
-  var player = area.getPlayer(session.get('playerId'));
+  var player = session.area.getPlayer(session.get('playerId'));
   var status = player.learnSkill(msg.skillId);
 
   next(null, {status: status, skill: player.fightSkills[msg.skillId]});
@@ -250,7 +258,7 @@ handler.learnSkill = function(msg, session, next) {
 
 //Player upgrade skill
 handler.upgradeSkill = function(msg, session, next) {
-  var player = area.getPlayer(session.get('playerId'));
+  var player = session.area.getPlayer(session.get('playerId'));
   var status = player.upgradeSkill(msg.skillId);
 
   next(null, {status: status});

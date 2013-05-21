@@ -1,9 +1,7 @@
 var dataApi = require('../../util/dataApi');
-var Map = require('./../map/map');
 var MobZone = require('./../map/mobzone');
 var NPC = require('./../entity/npc');
 var pomelo = require('pomelo');
-var Queue = require('pomelo-collection').queue;
 var ai = require('../../ai/ai');
 var patrol = require('../../patrol/patrol');
 var ActionManager = require('./../action/actionManager');
@@ -11,140 +9,152 @@ var aoiManager = require('pomelo-aoi');
 var eventManager = require('./../event/eventManager');
 var aoiEventManager = require('./../aoi/aoiEventManager');
 var EntityType = require('../../consts/consts').EntityType;
-var timer = require('./timer');
+var Timer = require('./timer');
 var logger = require('pomelo-logger').getLogger(__filename);
-
-var exp = module.exports;
-
-var id = 0;
-var level = 0;
-var map = null;
-var actionManager = null;
-var aiManager = null;
-var patrolManager = null;
-
-//The map from player to entity
-var players = {};
-var users = {};
-var entities = {};
-var zones = {};
-var items = {};
-var channel = null;
-var aoi = null;
 
 /**
  * Init areas
  * @param {Object} opts
  * @api public
  */
-exp.init = function(opts) {
-	//Init Map
-	id = opts.id;
-	level = opts.level;
+var Instance = function(opts){
+  this.areaId = opts.id;
+  this.type = opts.type;
+  this.map = opts.map;
 
-	opts.weightMap = true;
-	map = new Map(opts);
-	//Init AOI
-	aoi = aoiManager.getService(opts);
-	aoiEventManager.addEvent(aoi.aoi);
+  //The map from player to entity
+  this.players = {};
+  this.users = {};
+  this.entities = {};
+  this.zones = {};
+  this.items = {};
+  this.channel = null;
 
-	//Init mob zones
-	initMobZones(map.getMobZones());
-	initNPCs(this);
+  this.playerNum = 0;
+  this.emptyTime = Date.now();
+  //Init AOI
+  this.aoi = aoiManager.getService(opts);
 
-	aiManager = ai.createManager();
-	patrolManager = patrol.createManager({area:this});
-	actionManager = new ActionManager();
-	run();
+  this.aiManager = ai.createManager({area:this});
+  this.patrolManager = patrol.createManager({area:this});
+  this.actionManager = new ActionManager();
+
+  this.timer = new Timer({
+    area : this,
+    interval : 100
+  });
+
+  this.start();
 };
+
+module.exports = Instance;
 
 /**
  * @api public
  */
-function run() {
-	aiManager.start();
-	timer.run();
-}
+Instance.prototype.start = function() {
+  aoiEventManager.addEvent(this, this.aoi.aoi);
+
+  //Init mob zones
+  this.initMobZones(this.map.getMobZones());
+  this.initNPCs(this);
+
+  this.aiManager.start();
+  this.timer.run();
+};
+
+Instance.prototype.close = function(){
+  this.timer.close();
+};
 
 /**
  * Init npcs
  * @api private
  */
-function initNPCs() {
-	var npcs = map.getNPCs();
+Instance.prototype.initNPCs = function() {
+  var npcs = this.map.getNPCs();
 
-	for(var i = 0; i < npcs.length; i++) {
-		var data = npcs[i];
+  for(var i = 0; i < npcs.length; i++) {
+    var data = npcs[i];
 
-		data.kindId = data.id;
-		var npcInfo = dataApi.npc.findById(data.kindId);
-		data.kindName = npcInfo.name;
-		data.englishName = npcInfo.englishName;
-		data.kindType = npcInfo.kindType;
-		data.orientation = data.orientation;
-		data.areaId = id;
-		exp.addEntity(new NPC(data));
-	}
-}
+    data.kindId = data.id;
+    var npcInfo = dataApi.npc.findById(data.kindId);
+    data.kindName = npcInfo.name;
+    data.englishName = npcInfo.englishName;
+    data.kindType = npcInfo.kindType;
+    data.orientation = data.orientation;
+    data.areaId = this.id;
 
-function getChannel() {
-	if(channel) {
-		return channel;
-	}
+    this.addEntity(new NPC(data));
+  }
+};
 
-	channel = pomelo.app.get('channelService').getChannel('area_' + id, true);
-	return channel;
-}
+Instance.prototype.getChannel = function() {
+  if(!this.channel){
+    this.channel = pomelo.app.get('channelService').getChannel('instance_' + this.id, true);
+  }
+
+  return this.channel;
+};
 
 /**
  * Init all zones in area
  * @api private
  */
-function initMobZones(mobZones) {
-	for(var i = 0; i < mobZones.length; i++) {
-		var zone = new MobZone(mobZones[i]);
-		zones[zone.zoneId] = zone;
-	}
-}
+Instance.prototype.initMobZones = function(mobZones) {
+  for(var i = 0; i < mobZones.length; i++) {
+    var opts = mobZones[i];
+    opts.area = this;
+    var zone = new MobZone(opts);
+    this.zones[zone.zoneId] = zone;
+  }
+};
 
 /**
  * Add entity to area
  * @param {Object} e Entity to add to the area.
  */
-exp.addEntity = function(e) {
-	if(!e || !e.entityId) {
-		return false;
-	}
+Instance.prototype.addEntity = function(e) {
+  var entities = this.entities;
+  var players = this.players;
+  var users = this.users;
 
-	if(!!players[e.id]) {
-		logger.error('add player twice! player : %j', e);
-		return false;
-	}
+  if(!e || !e.entityId) {
+    return false;
+  }
 
-	entities[e.entityId] = e;
-	eventManager.addEvent(e);
+  if(!!players[e.id]) {
+    logger.error('add player twice! player : %j', e);
+    return false;
+  }
 
-	if(e.type === EntityType.PLAYER) {
-		getChannel().add(e.userId, e.serverId);
-		aiManager.addCharacters([e]);
+  //Set area and areaId
+  e.area = this;
 
-		aoi.addWatcher({id: e.entityId, type: e.type}, {x : e.x, y: e.y}, e.range);
-		players[e.id] = e.entityId;
-		users[e.userId] = e.id;
-	}else if(e.type === EntityType.MOB) {
-		aiManager.addCharacters([e]);
+  entities[e.entityId] = e;
+  eventManager.addEvent(e);
 
-		aoi.addWatcher({id: e.entityId, type: e.type}, {x : e.x, y: e.y}, e.range);
-	}else if(e.type === EntityType.NPC) {
+  if(e.type === EntityType.PLAYER) {
+    this.getChannel().add(e.userId, e.serverId);
+    this.aiManager.addCharacters([e]);
 
-	}else if(e.type === EntityType.ITEM) {
-		items[e.entityId] = e.entityId;
-	}else if(e.type === EntityType.EQUIPMENT) {
-		items[e.entityId] = e.entityId;
-	}
+    this.aoi.addWatcher({id: e.entityId, type: e.type}, {x : e.x, y: e.y}, e.range);
+    players[e.id] = e.entityId;
+    users[e.userId] = e.id;
 
-	aoi.addObject({id:e.entityId, type:e.type}, {x: e.x, y: e.y});
-	return true;
+    this.playerNum++;
+  }else if(e.type === EntityType.MOB) {
+    this.aiManager.addCharacters([e]);
+
+    this.aoi.addWatcher({id: e.entityId, type: e.type}, {x : e.x, y: e.y}, e.range);
+  }else if(e.type === EntityType.ITEM) {
+    this.items[e.entityId] = e.entityId;
+  }else if(e.type === EntityType.EQUIPMENT) {
+    this.items[e.entityId] = e.entityId;
+  }
+
+  this.aoi.addObject({id:e.entityId, type:e.type}, {x: e.x, y: e.y});
+  return true;
 };
 
 /**
@@ -152,72 +162,82 @@ exp.addEntity = function(e) {
  * @param {Number} entityId The entityId to remove
  * @return {boolean} remove result
  */
-exp.removeEntity = function(entityId) {
-	var e = entities[entityId];
-	if(!e) {
-		return true;
-	}
+Instance.prototype.removeEntity = function(entityId) {
+  var zones = this.zones;
+  var entities = this.entities;
+  var players = this.players;
+  var users = this.users;
+  var items = this.items;
 
-	//If the entity belong to a subzone, remove it
-	if(!!zones[e.zoneId]) {
-		zones[e.zoneId].remove(entityId);
-	}
+  var e = entities[entityId];
+  if(!e) return true;
 
-	//If the entity is a player, remove it
-	if(e.type === 'player') {
-		getChannel().leave(e.userId, pomelo.app.getServerId());
-		aiManager.removeCharacter(e.entityId);
-		patrolManager.removeCharacter(e.entityId);
-		aoi.removeObject({id:e.entityId, type: e.type}, {x: e.x, y: e.y});
-		actionManager.abortAllAction(entityId);
+  //If the entity belong to a subzone, remove it
+  if(!!zones[e.zoneId]) {
+    zones[e.zoneId].remove(entityId);
+  }
 
-		e.forEachEnemy(function(enemy) {
-			enemy.forgetHater(e.entityId);
-		});
+  //If the entity is a player, remove it
+  if(e.type === 'player') {
+    this.getChannel().leave(e.userId, pomelo.app.getServerId());
+    this.aiManager.removeCharacter(e.entityId);
+    this.patrolManager.removeCharacter(e.entityId);
+    this.aoi.removeObject({id:e.entityId, type: e.type}, {x: e.x, y: e.y});
+    this.actionManager.abortAllAction(entityId);
 
-		e.forEachHater(function(hater) {
-			hater.forgetEnemy(e.entityId);
-		});
+    e.forEachEnemy(function(enemy) {
+      enemy.forgetHater(e.entityId);
+    });
 
-		aoi.removeWatcher(e, {x : e.x, y: e.y}, e.range);
-		delete players[e.id];
-		delete users[e.userId];
-	}else if(e.type === 'mob') {
-		aiManager.removeCharacter(e.entityId);
-		patrolManager.removeCharacter(e.entityId);
-		aoi.removeObject({id: e.entityId, type: e.type}, {x: e.x, y: e.y});
-		actionManager.abortAllAction(entityId);
+    e.forEachHater(function(hater) {
+      hater.forgetEnemy(e.entityId);
+    });
 
-		e.forEachEnemy(function(enemy) {
-			enemy.forgetHater(e.entityId);
-		});
+    this.aoi.removeWatcher(e, {x : e.x, y: e.y}, e.range);
+    delete players[e.id];
+    delete users[e.userId];
 
-		e.forEachHater(function(hater) {
-			hater.forgetEnemy(e.entityId);
-		});
+    this.playerNum--;
 
-		aoi.removeWatcher(e, {x : e.x, y: e.y}, e.range);
-	}else if(e.type === EntityType.ITEM) {
-		delete items[entityId];
-	}else if(e.type === EntityType.EQUIPMENT) {
-		delete items[entityId];
-	}
+    if(this.playerNum === 0){
+      this.emptyTime = Date.now();
+    }
+  }else if(e.type === 'mob') {
+    this.aiManager.removeCharacter(e.entityId);
+    this.patrolManager.removeCharacter(e.entityId);
+    this.aoi.removeObject({id: e.entityId, type: e.type}, {x: e.x, y: e.y});
+    this.actionManager.abortAllAction(entityId);
 
-	aoi.removeObject(e, {x: e.x, y: e.y});
-	delete entities[entityId];
-	return true;
+    e.forEachEnemy(function(enemy) {
+      enemy.forgetHater(e.entityId);
+    });
+
+    e.forEachHater(function(hater) {
+      hater.forgetEnemy(e.entityId);
+    });
+
+    this.aoi.removeWatcher(e, {x : e.x, y: e.y}, e.range);
+  }else if(e.type === EntityType.ITEM) {
+    delete items[entityId];
+  }else if(e.type === EntityType.EQUIPMENT) {
+    delete items[entityId];
+  }
+
+  this.aoi.removeObject(e, {x: e.x, y: e.y});
+  delete entities[entityId];
+  return true;
 };
 
 /**
  * Get entity from area
  * @param {Number} entityId.
  */
-exp.getEntity = function(entityId) {
-	var entity = entities[entityId];
-	if (!entity) {
-		return null;
-	}
-	return entity;
+Instance.prototype.getEntity = function(entityId) {
+  var entity = this.entities[entityId];
+  if (!entity) {
+    return null;
+  }
+  return entity;
 };
 
 /**
@@ -225,72 +245,64 @@ exp.getEntity = function(entityId) {
  * @param {Array} The given entities' list.
  * @return {Map} The entities
  */
-exp.getEntities = function(ids) {
-	var result = {};
+Instance.prototype.getEntities = function(ids) {
+  var result = {};
 
-	result.length = 0;
-	for(var i = 0; i < ids.length; i++) {
-		var entity = entities[ids[i]];
-		if(!!entity) {
-			if(!result[entity.type]){
-				result[entity.type] = [];
-			}
+  result.length = 0;
+  for(var i = 0; i < ids.length; i++) {
+    var entity = this.entities[ids[i]];
+    if(!!entity) {
+      if(!result[entity.type]){
+        result[entity.type] = [];
+      }
 
-			result[entity.type].push(entity);
-			result.length++;
-		}
-	}
+      result[entity.type].push(entity);
+      result.length++;
+    }
+  }
 
-	return result;
+  return result;
 };
 
-exp.getAllPlayers = function() {
-	var _players = [];
-	for(var id in players) {
-		_players.push(entities[players[id]]);
-	}
+Instance.prototype.getAllPlayers = function() {
+  var _players = [];
+  for(var id in this.players) {
+    _players.push(this.entities[this.players[id]]);
+  }
 
-	return _players;
+  return _players;
 };
 
-exp.getAllEntities = function() {
-	return entities;
+Instance.prototype.getAllEntities = function() {
+  return this.entities;
 };
 
-exp.getPlayer = function(playerId) {
-	var entityId = players[playerId];
+Instance.prototype.getPlayer = function(playerId) {
+  var entityId = this.players[playerId];
 
-	if(!!entityId) {
-		return entities[entityId];
-	}
+  if(!!entityId) {
+    return this.entities[entityId];
+  }
 
-	return null;
+  return null;
 };
 
-exp.removePlayer = function(playerId) {
-	var entityId = players[playerId];
+Instance.prototype.removePlayer = function(playerId) {
+  var entityId = this.players[playerId];
 
-	if(!!entityId) {
-		delete players[playerId];
-		this.removeEntity(entityId);
-	}
+  if(!!entityId) {
+    this.removeEntity(entityId);
+  }
 };
 
-exp.getPlayerByUid = function(uid){
-	if(!!users[uid]){
-		return this.getPlayer(users[uid]);
-	}
+Instance.prototype.removePlayerByUid = function(uid){
+  var users = this.users;
+  var playerId = users[uid];
 
-	return null;
-};
-
-exp.removePlayerByUid = function(uid){
-	var playerId = users[uid];
-
-	if(!!playerId){
-		delete users[uid];
-		this.removePlayer(playerId);
-	}
+  if(!!playerId){
+    delete users[uid];
+    this.removePlayer(playerId);
+  }
 };
 
 /**
@@ -298,9 +310,9 @@ exp.removePlayerByUid = function(uid){
  * @param {Object} pos Given position, like {10,20}.
  * @param {Number} range The range of the view, is the circle radius.
  */
-exp.getAreaInfo = function(pos, range) {
-	var ids = aoi.getIdsByPos(pos, range);
-	return this.getEntities(ids);
+Instance.prototype.getAreaInfo = function(pos, range) {
+  var ids = this.aoi.getIdsByPos(pos, range);
+  return this.getEntities(ids);
 };
 
 /**
@@ -309,65 +321,27 @@ exp.getAreaInfo = function(pos, range) {
  * @param {Array} types The types of the object need to find.
  * @param {Number} range The range of the view, is the circle radius.
  */
-exp.getEntitiesByPos = function(pos, types, range) {
-	var idsMap = aoi.getIdsByRange(pos, range, types);
-	var result = {};
-	for(var type in idsMap) {
-		if(!result[type]) {
-			result[type] = [];
-		}
-		for(var i = 0; i < idsMap[type].length; i++) {
-			var id = idsMap[type][i];
-			if(!!entities[id]) {
-				result[type].push(entities[id]);
-			}else{
-				logger.error('AOI data error ! type : %j, id : %j', type, id);
-			}
-		}
-	}
-	return result;
+Instance.prototype.getEntitiesByPos = function(pos, types, range) {
+  var entities = this.entities;
+  var idsMap = this.aoi.getIdsByRange(pos, range, types);
+  var result = {};
+  for(var type in idsMap) {
+    if(type === 'npc' || type === 'item') continue;
+    if(!result[type]) {
+      result[type] = [];
+    }
+    for(var i = 0; i < idsMap[type].length; i++) {
+      var id = idsMap[type][i];
+      if(!!entities[id]) {
+        result[type].push(entities[id]);
+      }else{
+        logger.error('AOI data error ! type : %j, id : %j', type, id);
+      }
+    }
+  }
+  return result;
 };
 
-exp.id = function() {
-	return id;
-};
-
-exp.channel = function () {
-	return getChannel();
-};
-
-exp.entities = function () {
-	return entities;
-};
-
-exp.items = function() {
-	return items;
-};
-
-exp.zones = function() {
-	return zones;
-};
-
-exp.actionManager = function() {
-	return actionManager;
-};
-
-exp.aiManager = function() {
-	return aiManager;
-};
-
-exp.patrolManager = function() {
-	return patrolManager;
-};
-
-exp.aoi = function() {
-	return aoi;
-};
-
-exp.timer = function() {
-	return timer;
-};
-
-exp.map = function() {
-	return map;
+Instance.prototype.isEmpty = function(){
+  return this.playerNum === 0;
 };

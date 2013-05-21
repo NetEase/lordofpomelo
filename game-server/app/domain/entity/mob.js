@@ -9,8 +9,6 @@ var Character = require('./character');
 var dataApi = require('../../util/dataApi');
 var Item = require('./item');
 var Equipment = require('./equipment');
-var area = require('./../area/area');
-var timer = require('./../area/timer');
 var fightSkill = require('./../fightskill');
 var logger = require('pomelo-logger').getLogger(__filename);
 
@@ -105,7 +103,7 @@ Mob.prototype.increaseHateFor = function(entityId, points) {
 		this.haters[entityId] = points;
 	}
 	this.target = this.getMostHater();
-	timer.enterAI(this.entityId);
+	this.area.timer.enterAI(this.entityId);
 };
 
 //Get the most hater
@@ -141,7 +139,7 @@ Mob.prototype.forgetHater = function(entityId) {
 
 Mob.prototype.forEachHater = function(cb) {
 	for(var id in this.haters){
-		var hater = area.getEntity(id);
+		var hater = this.area.getEntity(id);
 		if(hater){
 			cb(hater);
 		} else {
@@ -152,7 +150,7 @@ Mob.prototype.forEachHater = function(cb) {
 
 //Increase hate for the player who is coming.
 Mob.prototype.onPlayerCome = function(entityId) {
-	var player = area.getEntity(entityId);
+	var player = this.area.getEntity(entityId);
 
 	//Only hit a live person
 	if(!!player && !player.died){
@@ -192,7 +190,7 @@ Mob.prototype.dropItems = function(player) {
 //Drop Item down
 Mob.prototype._dropItem = function(player) {
 	var level = Math.min(this.level, player.level);
-	var pos = area.map().genPos(this, 200);
+	var pos = this.area.map.genPos(this, 200);
 	if(!pos){
 		logger.warn('Generate position for drop item error!');
 		return null;
@@ -226,7 +224,7 @@ Mob.prototype._dropItem = function(player) {
 Mob.prototype._dropEquipment = function(player) {
 	var level = formula.dropItemLv(this.level, player.level);
 
-	var pos = area.map().genPos(this, 200);
+	var pos = this.area.map.genPos(this, 200);
 	if(!pos){
 		logger.warn('Generate position for drop equipment error!');
 		return null;

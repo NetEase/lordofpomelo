@@ -8,7 +8,6 @@ var dataApi = require('../../util/dataApi');
 var formula = require('../../consts/formula');
 var consts = require('../../consts/consts');
 var Entity = require('./entity');
-var area = require('./../area/area');
 var fightskill = require('./../fightskill');
 var logger = require('pomelo-logger').getLogger(__filename);
 
@@ -192,8 +191,9 @@ Character.prototype.recoverMp = function(mpValue) {
  */
 Character.prototype.move = function(targetX, targetY, useCache, cb) {
 	useCache = useCache || false;
+
 	if(useCache){
-		var paths = area.map().findPath(this.x, this.y, targetX, targetY, useCache);
+		var paths = this.area.map.findPath(this.x, this.y, targetX, targetY, useCache);
 
 		if(!!paths){
 			this.emit('move', {character: this, paths: paths});
@@ -209,7 +209,7 @@ Character.prototype.move = function(targetX, targetY, useCache, cb) {
 				closure.emit('move', {character: closure, paths: paths});
 				utils.invokeCallback(cb, null, true);
 			}else{
-				logger.warn('No path exist! {x: %j, y: %j} , target: {x: %j, y: %j} ', closure.x, closure.y, targetX, targetY);
+				logger.warn('Remote find path failed! No path exist! {x: %j, y: %j} , target: {x: %j, y: %j} ', closure.x, closure.y, targetX, targetY);
 				utils.invokeCallback(cb, 'find path error', false);
 			}
 		});
@@ -240,7 +240,13 @@ Character.prototype.attack = function(target, skillId) {
 	this.addEnemy(target.entityId);
 
 	var result = skill.use(this, target);
-	this.emit('attack', {areaId : target.areaId, attackerId : this.entityId, targetId: target.entityId, skillId: skillId, result: result});
+	this.emit('attack', {
+		attacker : this,
+		target: target,
+		skillId: skillId,
+		result: result
+	});
+
 	return result;
 };
 
@@ -352,7 +358,7 @@ Character.prototype.removeBuff = function(buff) {
 Character.prototype.forEachEnemy = function(callback) {
 	var enemy;
 	for(var enemyId in this.enemies) {
-		enemy = area.getEntity(enemyId);
+		enemy = this.area.getEntity(enemyId);
 		if(!enemy) {
 			delete this.enemies[enemyId];
 			continue;

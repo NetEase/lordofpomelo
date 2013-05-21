@@ -13,7 +13,6 @@ var fightskillDao = require('../../dao/fightskillDao');
 var taskDao = require('../../dao/taskDao');
 var fightskill = require('./../fightskill');
 var logger = require('pomelo-logger').getLogger(__filename);
-var area = require('./../area/area');
 
 /**
  * Initialize a new 'Player' with the given 'opts'.
@@ -162,7 +161,7 @@ Player.prototype.unEquip = function(kind) {
  */
 Player.prototype.useItem = function(index) {
 	var item = this.bag.get(index);
-  if (!item || item.type != 'item') {
+  if (!item || item.type !== 'item') {
     return false;
   }
   var itm = dataApi.item.findById(item.id);
@@ -221,7 +220,7 @@ Player.prototype.upgradeSkill = function(skillId) {
  * @api public
  */
 Player.prototype.pickItem = function(entityId) {
-	var item = area.getEntity(entityId);
+	var item = this.area.getEntity(entityId);
 
 	var result = {player : this, item : item};
 
@@ -397,7 +396,7 @@ Player.prototype.getMostHater = function() {
 	if(entityId <= 0) {
 		return null;
 	}
-	return area.getEntity(entityId);
+	return this.area.getEntity(entityId);
 };
 
 // Forget the hater
@@ -418,7 +417,7 @@ Player.prototype.forgetHater = function(entityId) {
  */
 Player.prototype.forEachHater = function(cb) {
 	for(var id in this.haters) {
-		var hater = area.getEntity(id);
+		var hater = this.area.getEntity(id);
 		if(hater) {
 			cb(hater);
 		} else {
@@ -430,7 +429,7 @@ Player.prototype.forEachHater = function(cb) {
 Player.prototype.setEquipments = function(equipments){
 	this.equipments = equipments;
 	this.setTotalAttackAndDefence();
-}
+};
 
 /**
  * Get part of curTasks information.

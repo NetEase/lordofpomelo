@@ -386,12 +386,16 @@ Map.prototype.isReachable = function(x, y) {
 		return false;
 	}
 
+	try{
 	var x1 = Math.floor(x/this.tileW);
 	var y1 = Math.floor(y/this.tileH);
 
 	if(!this.weightMap[x1] || !this.weightMap[x1][y1]) {
 		return false;
   }
+}catch(e){
+	console.error('reachable error : %j', e);
+}
 
 	return this.weightMap[x1][y1] === 1;
 };

@@ -3,8 +3,6 @@
  */
 var handler = module.exports;
 var consts = require('../../../consts/consts');
-var area = require('../../../domain/area/area');
-var timer = require('../../../domain/area/timer');
 var logger = require('pomelo-logger').getLogger(__filename);
 var Fightskill = require('../../../util/dataApi').fightskill;
 var Code = require('../../../../../shared/code');
@@ -18,17 +16,17 @@ var Code = require('../../../../../shared/code');
  * @api public
  */
 handler.attack = function(msg, session, next) {
-	var player = area.getPlayer(session.get('playerId'));
-	var target = area.getEntity(msg.targetId);
-	
+	var player = session.area.getPlayer(session.get('playerId'));
+	var target = session.area.getEntity(msg.targetId);
+
 	if(!target || !player || (player.target === target.entityId) || (player.entityId === target.entityId) || target.died){
 		next();
 		return;
 	}
-	
-	timer.abortAction('move', player.entityId);
+
+	session.area.timer.abortAction('move', player.entityId);
 	player.target = target.entityId;
-	
+
 	next();
 };
 
@@ -44,13 +42,13 @@ handler.attack = function(msg, session, next) {
 handler.useSkill = function(msg, session, next) {
 	var playerId = msg.playerId;
 	var skillId = msg.skillId;
-	var player = area.getPlayer(msg.playerId);
-	var target = area.getEntity(player.target);
-	if (!target || (target.type != consts.EntityType.PLAYER && target.type != consts.EntityType.MOB)) {
+	var player = session.area.getPlayer(msg.playerId);
+	var target = session.area.getEntity(player.target);
+	if (!target || (target.type !== consts.EntityType.PLAYER && target.type !== consts.EntityType.MOB)) {
 		next();
 		return;
 	}
-	
+
 	next();
 	player.attack(target, skillId);
 };
