@@ -61,7 +61,7 @@ function Team(){
 	init();
 }
 
-Team.prototype.createChannel = function(palyerId) {
+Team.prototype.createChannel = function(playerId) {
 	if(this.channel || this.getPlayerNum() <= 1) {
 		return this.channel;
 	}
@@ -81,7 +81,7 @@ Team.prototype.createChannel = function(palyerId) {
 	return null;
 };
 
-Team.prototype.addPlayer2Channel = function(palyerId) {
+Team.prototype.addPlayer2Channel = function(playerId) {
 	if(!this.channel) {
 		return false;
 	}
@@ -93,7 +93,7 @@ Team.prototype.addPlayer2Channel = function(palyerId) {
 	return false;
 };
 
-Team.prototype.removePlayerFromChannel = function(palyerId) {
+Team.prototype.removePlayerFromChannel = function(playerId) {
 	if(!this.channel) {
 		return false;
 	}
@@ -105,24 +105,24 @@ Team.prototype.removePlayerFromChannel = function(palyerId) {
 	return false;
 };
 
-function doAddPlayer(teamObj, palyerId) {
+function doAddPlayer(teamObj, playerId) {
 	for(var i in teamObj.playerIdArray)
 	{
 		if(i === PLAYER_ID_NONE)
 		{
-			i = palyerId;
+			i = playerId;
 			return true;
 		}
 	}
 	return false;
 }
 
-Team.prototype.addPlayer = function(palyerId) {
+Team.prototype.addPlayer = function(playerId) {
 	if(!this.isTeamHasPosition()) {
 		return JOIN_TEAM_RET_CODE.NO_POSITION;
 	}
 
-	if(this.isPlayerInTeam(palyerId)) {
+	if(this.isPlayerInTeam(playerId)) {
 		return JOIN_TEAM_RET_CODE.ALREADY_IN_TEAM;
 	}
 
@@ -144,7 +144,7 @@ Team.prototype.addPlayer = function(palyerId) {
 		return JOIN_TEAM_RET_CODE.SYS_ERROR;
 	}
 
-	if(!this.isPlayerInTeam(palyerId)) {
+	if(!this.isPlayerInTeam(playerId)) {
 		return JOIN_TEAM_RET_CODE.SYS_ERROR;
 	}
 
@@ -195,10 +195,10 @@ Team.prototype.getFirstPlayerId = function() {
 };
 
 // 检查某玩家是否在本队伍中
-Team.prototype.isPlayerInTeam = function(palyerId) {
+Team.prototype.isPlayerInTeam = function(playerId) {
 	for(var i in this.playerIdArray)
 	{
-		if(i != PLAYER_ID_NONE && i === palyerId)
+		if(i != PLAYER_ID_NONE && i === playerId)
 			return true;
 	}
 	return false;
@@ -225,6 +225,7 @@ Team.prototype.pushInfo2Everyone = function() {
 		}
 		if(infoObjDict)
 		{
+			// use channel
 			messageService.pushMessageToPlayer({uid : player.userId, sid : player.serverId}, 'onUpdateTeam', infoObjDict);
 		}
 	}
@@ -259,10 +260,10 @@ Team.prototype.disbandTeam = function() {
 };
 
 // 将某玩家踢出本队伍
-Team.prototype.removePlayerById = function(palyerId) {
+Team.prototype.removePlayerById = function(playerId) {
 	for(var i in this.playerIdArray)
 	{
-		if(i != PLAYER_ID_NONE && i === palyerId) {
+		if(i != PLAYER_ID_NONE && i === playerId) {
 			i = PLAYER_ID_NONE;
 			break;
 		}
@@ -294,12 +295,6 @@ Team.prototype.pushChatMsg2All = function(content) {
 };
 
 ///////////////////////////////////////////////////////
-// 创建新队伍
-function CreatNewTeam(){
-	return (new Team());
-}
-///////////////////////////////////////////////////////
-
 /**
  * Player create a team, and response the result information : success(1)/failed(0)
  *
@@ -315,17 +310,17 @@ handler.createTeam = function(msg, session, next) {
 	var result = JOIN_TEAM_RET_CODE.SYS_ERROR;
 
 	if(!player) {
-    logger.warn('The request(createTeam) is illigle, the player is null : msg = %j.', msg);
+    logger.warn('The request(createTeam) is illegal, the player is null : msg = %j.', msg);
   	next();
 		return;
 	}
 
-	teamObj = CreatNewTeam();
+	teamObj = new Team();
 
 	result = teamObj.addPlayer(playerId);
 	if(result === JOIN_TEAM_RET_CODE.OK) {
 		// 设置队长id
-		teamObj.setCaptainId(palyerId);
+		teamObj.setCaptainId(playerId);
 		gTeamObjDict[teamObj.teamId] = teamObj;
 	}
 
@@ -347,20 +342,20 @@ handler.disbandTeam = function(msg, session, next) {
 	var result = false;
 
 	if(!player) {
-    logger.warn('The request(disbandTeam) is illigle, the player is null : msg = %j.', msg);
+    logger.warn('The request(disbandTeam) is illegal, the player is null : msg = %j.', msg);
   	next();
 		return;
 	}
 
   var teamObj = gTeamObjDict[msg.teamId];
 	if(!teamObj) {
-    logger.warn('The request(disbandTeam) is illigle, the team is null : msg = %j.', msg);
+    logger.warn('The request(disbandTeam) is illegal, the team is null : msg = %j.', msg);
   	next(null, {result : result});
 		return;
 	}
 
 	if(playerId != teamObj.captainId) {
-    logger.warn('The request(disbandTeam) is illigle, the player is not the captain : msg = %j.', msg);
+    logger.warn('The request(disbandTeam) is illegal, the player is not the captain : msg = %j.', msg);
   	next(null, {result : result});
 		return;
 	}
@@ -388,20 +383,20 @@ handler.inviteJoinTeam = function(msg, session, next) {
 	var result = false;
 
 	if(!player) {
-    logger.warn('The request(inviteJoinTeam) is illigle, the player is null : msg = %j.', msg);
+    logger.warn('The request(inviteJoinTeam) is illegal, the player is null : msg = %j.', msg);
   	next();
 		return;
 	}
 
 	var teamObj = gTeamObjDict[player.teamId];
 	if(!teamObj) {
-    logger.warn('The request(inviteJoinTeam) is illigle, the team is null : msg = %j.', msg);
+    logger.warn('The request(inviteJoinTeam) is illegal, the team is null : msg = %j.', msg);
   	next();
 		return;
 	}
 
 	if(playerId != teamObj.captainId) {
-    logger.warn('The request(inviteJoinTeam) is illigle, the player is not the captain : msg = %j.', msg);
+    logger.warn('The request(inviteJoinTeam) is illegal, the player is not the captain : msg = %j.', msg);
   	next();
 		return;
 	}
@@ -413,7 +408,7 @@ handler.inviteJoinTeam = function(msg, session, next) {
 
 	var invitee = area.getPlayer(msg.inviteeId);
 	if(!invitee) {
-    logger.warn('The request(inviteJoinTeam) is illigle, the invitee is null : msg = %j.', msg);
+    logger.warn('The request(inviteJoinTeam) is illegal, the invitee is null : msg = %j.', msg);
 		next();
 		return;
 	}
@@ -437,27 +432,27 @@ handler.inviteJoinTeamReply = function(msg, session, next) {
 	var player = area.getPlayer(playerId);
 
 	if(!player) {
-    logger.warn('The request(inviteJoinTeamReply) is illigle, the player is null : msg = %j.', msg);
+    logger.warn('The request(inviteJoinTeamReply) is illegal, the player is null : msg = %j.', msg);
   	next();
 		return;
 	}
 
 	var teamObj = gTeamObjDict[msg.teamId];
 	if(!teamObj) {
-    logger.warn('The request(inviteJoinTeamReply) is illigle, the team is null : msg = %j.', msg);
+    logger.warn('The request(inviteJoinTeamReply) is illegal, the team is null : msg = %j.', msg);
   	next();
 		return;
 	}
 
 	if(msg.captainId != teamObj.captainId) {
-    logger.warn('The request(inviteJoinTeamReply) is illigle, the player is not the captain : msg = %j.', msg);
+    logger.warn('The request(inviteJoinTeamReply) is illegal, the player is not the captain : msg = %j.', msg);
   	next();
 		return;
 	}
 
 	var captainObj = area.getPlayer(msg.captainId);
 	if(!captainObj) {
-    logger.warn('The request(inviteJoinTeamReply) is illigle, the captain is null : msg = %j.', msg);
+    logger.warn('The request(inviteJoinTeamReply) is illegal, the captain is null : msg = %j.', msg);
   	next();
 		return;
 	}
@@ -488,7 +483,7 @@ handler.applyJoinTeam = function(msg, session, next) {
 	var player = area.getPlayer(playerId);
 
 	if(!player) {
-    logger.warn('The request(applyJoinTeam) is illigle, the player is null : msg = %j.', msg);
+    logger.warn('The request(applyJoinTeam) is illegal, the player is null : msg = %j.', msg);
   	next();
 		return;
 	}
@@ -500,7 +495,7 @@ handler.applyJoinTeam = function(msg, session, next) {
 
 	var teamObj = gTeamObjDict[msg.teamId];
 	if(!teamObj) {
-    logger.warn('The request(applyJoinTeam) is illigle, the team is null : msg = %j.', msg);
+    logger.warn('The request(applyJoinTeam) is illegal, the team is null : msg = %j.', msg);
   	next();
 		return;
 	}
@@ -512,7 +507,7 @@ handler.applyJoinTeam = function(msg, session, next) {
 
 	var captainObj = area.getPlayer(teamObj.captainId);
 	if(!captainObj) {
-    logger.warn('The request(applyJoinTeam) is illigle, the captain is null : msg = %j.', msg);
+    logger.warn('The request(applyJoinTeam) is illegal, the captain is null : msg = %j.', msg);
   	next();
 		return;
 	}
@@ -536,27 +531,27 @@ handler.applyJoinTeamReply = function(msg, session, next) {
 	var player = area.getPlayer(playerId);
 
 	if(!player) {
-    logger.warn('The request(applyJoinTeamReply) is illigle, the player is null : msg = %j.', msg);
+    logger.warn('The request(applyJoinTeamReply) is illegal, the player is null : msg = %j.', msg);
   	next();
 		return;
 	}
 
 	var teamObj = gTeamObjDict[msg.teamId];
 	if(!teamObj) {
-    logger.warn('The request(applyJoinTeamReply) is illigle, the team is null : msg = %j.', msg);
+    logger.warn('The request(applyJoinTeamReply) is illegal, the team is null : msg = %j.', msg);
   	next();
 		return;
 	}
 
 	if(playerId != teamObj.captainId) {
-    logger.warn('The request(applyJoinTeamReply) is illigle, the player is not the captain : msg = %j.', msg);
+    logger.warn('The request(applyJoinTeamReply) is illegal, the player is not the captain : msg = %j.', msg);
   	next();
 		return;
 	}
 
 	var applicant = area.getPlayer(msg.applicantId);
 	if(!applicant) {
-    logger.warn('The request(applyJoinTeamReply) is illigle, the applicant is null : msg = %j.', msg);
+    logger.warn('The request(applyJoinTeamReply) is illegal, the applicant is null : msg = %j.', msg);
   	next();
 		return;
 	}
@@ -573,7 +568,7 @@ handler.applyJoinTeamReply = function(msg, session, next) {
 	else {
 		// 向申请者(msg.applicantId)推送消息:队长拒绝了申请
 		var msg = {
-			reply : false;
+			reply : false
 		};
 		messageService.pushMessageToPlayer({uid : applicant.userId, sid : applicant.serverId}, 'onApplyJoinTeamReply', msg);
 	}
@@ -600,7 +595,7 @@ handler.kickOutOfTeam = function(msg, session, next) {
 	var player = area.getPlayer(playerId);
 
 	if(!player) {
-    logger.warn('The request(kickOutOfTeam) is illigle, the player is null : msg = %j.', msg);
+    logger.warn('The request(kickOutOfTeam) is illegal, the player is null : msg = %j.', msg);
   	next();
 		return;
 	}
@@ -612,20 +607,20 @@ handler.kickOutOfTeam = function(msg, session, next) {
 
   var teamObj = gTeamObjDict[msg.teamId];
 	if(!teamObj) {
-    logger.warn('The request(kickOutOfTeam) is illigle, the team is null : msg = %j.', msg);
+    logger.warn('The request(kickOutOfTeam) is illegal, the team is null : msg = %j.', msg);
   	next();
 		return;
 	}
 
 	if(playerId != teamObj.captainId) {
-    logger.warn('The request(kickOutOfTeam) is illigle, the player is not the captain : msg = %j.', msg);
+    logger.warn('The request(kickOutOfTeam) is illegal, the player is not the captain : msg = %j.', msg);
   	next();
 		return;
 	}
 
 	var kickedPlayer = area.getPlayer(msg.kickedPlayerId);
 	if(!kickedPlayer) {
-    logger.warn('The request(kickOutOfTeam) is illigle, the kicked player is null : msg = %j.', msg);
+    logger.warn('The request(kickOutOfTeam) is illegal, the kicked player is null : msg = %j.', msg);
   	next();
 		return;
 	}
@@ -656,14 +651,14 @@ handler.leaveTeam = function(msg, session, next) {
 	var player = area.getPlayer(playerId);
 
 	if(!player) {
-    logger.warn('The request(leaveTeam) is illigle, the player is null : msg = %j.', msg);
+    logger.warn('The request(leaveTeam) is illegal, the player is null : msg = %j.', msg);
   	next();
 		return;
 	}
 
   var teamObj = gTeamObjDict[msg.teamId];
 	if(!teamObj) {
-    logger.warn('The request(leaveTeam) is illigle, the team is null : msg = %j.', msg);
+    logger.warn('The request(leaveTeam) is illegal, the team is null : msg = %j.', msg);
   	next();
 		return;
 	}
@@ -703,20 +698,20 @@ handler.depute2Member = function(msg, session, next) {
 	var player = area.getPlayer(playerId);
 
 	if(!player) {
-    logger.warn('The request(depute2Member) is illigle, the player is null : msg = %j.', msg);
+    logger.warn('The request(depute2Member) is illegal, the player is null : msg = %j.', msg);
   	next();
 		return;
 	}
 
   var teamObj = gTeamObjDict[msg.teamId];
 	if(!teamObj) {
-    logger.warn('The request(depute2Member) is illigle, the team is null : msg = %j.', msg);
+    logger.warn('The request(depute2Member) is illegal, the team is null : msg = %j.', msg);
   	next();
 		return;
 	}
 
 	if(playerId != teamObj.captainId) {
-    logger.warn('The request(depute2Member) is illigle, the player is not the captain : msg = %j.', msg);
+    logger.warn('The request(depute2Member) is illegal, the player is not the captain : msg = %j.', msg);
   	next();
 		return;
 	}
@@ -744,20 +739,20 @@ handler.chatInTeam = function(msg, session, next) {
 	var player = area.getPlayer(playerId);
 
 	if(!player) {
-    logger.warn('The request(chatInTeam) is illigle, the player is null : msg = %j.', msg);
+    logger.warn('The request(chatInTeam) is illegal, the player is null : msg = %j.', msg);
   	next();
 		return;
 	}
 
   var teamObj = gTeamObjDict[msg.teamId];
 	if(!teamObj) {
-    logger.warn('The request(chatInTeam) is illigle, the team is null : msg = %j.', msg);
+    logger.warn('The request(chatInTeam) is illegal, the team is null : msg = %j.', msg);
   	next();
 		return;
 	}
 
 	if(!teamObj.isPlayerInTeam(playerId)) {
-    logger.warn('The request(chatInTeam) is illigle, the player is not int team : msg = %j.', msg);
+    logger.warn('The request(chatInTeam) is illegal, the player is not int team : msg = %j.', msg);
   	next();
 		return;
 	}

@@ -539,6 +539,6 @@ Player.prototype.leaveTeam = function(isSendMsg, isVoluntary) {
 
 // 角色是否在队伍中
 Player.prototype.isInTeam = function() {
-	return (this.teamId != consts.TEAM.TEAM_ID_NONE)
+	return (this.teamId != consts.TEAM.TEAM_ID_NONE);
 };
 
