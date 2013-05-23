@@ -104,6 +104,13 @@ module.exports = {
 	},
 
 	/**
+	 * 组队相关常量
+	 */
+	TEAM : {
+		TEAM_ID_NONE : 0, // 角色无队伍(不在任何队伍中)
+	},
+
+	/**
 	 * check a entity that whether can be picked.
 	 */
 	 isPickable: function(entity) {

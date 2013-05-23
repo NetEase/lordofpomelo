@@ -84,7 +84,7 @@ ChatService.prototype.kick = function(uid) {
 };
 
 /**
- * Push message bu the specified channel
+ * Push message by the specified channel
  *
  * @param  {String}   channelName channel name
  * @param  {Object}   msg         message json object
