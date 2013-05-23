@@ -14,7 +14,6 @@ var taskDao = require('../../dao/taskDao');
 var fightskill = require('./../fightskill');
 var logger = require('pomelo-logger').getLogger(__filename);
 var area = require('./../area/area');
-var messageService = require('../messageService');
 
 /**
  * Initialize a new 'Player' with the given 'opts'.
@@ -41,8 +40,6 @@ var Player = function(opts) {
 	this.roleData = dataApi.role.findById(this.kindId);
 	this.curTasks = opts.curTasks;
 	this.range = opts.range || 2;
-	// 角色所在的队伍id, 默认为0(没有队伍).
-	this.teamId = consts.TEAM.TEAM_ID_NONE;
 
 	this.setTotalAttackAndDefence();
 };
@@ -491,54 +488,3 @@ Player.prototype.toJSON = function() {
 		range: this.range
 	};
 };
-
-/**
- * Parse String to json for team member.
- * It covers object's method
- *
- * @param {String} data
- * @return {Object}
- * @api public
- */
-Player.prototype.toJSON4Team = function(isCaptain) {
-	return {
-		id: this.id,
-		name: this.name,
-		hp: this.hp,
-		mp: this.mp,
-		maxHp: this.maxHp,
-		maxMp: this.maxMp,
-		level: this.level,
-		teamId: this.teamId,
-		isCaptain: isCaptain || false,
-	};
-};
-
-// 角色加入队伍
-Player.prototype.joinTeam = function(teamId) {
-	if(teamId === consts.TEAM.TEAM_ID_NONE)
-		return false;
-	this.teamId = teamId;
-};
-
-// 角色离开队伍
-Player.prototype.leaveTeam = function(isSendMsg, isVoluntary) {
-	isSendMsg = isSendMsg || false;
-	isVoluntary = isVoluntary || false;
-	if(this.teamId === consts.TEAM.TEAM_ID_NONE)
-		return false;
-	this.teamId = consts.TEAM.TEAM_ID_NONE;
-	if(isSendMsg) {
-		// 通知该角色对应客户端离开队伍
-		var msg = {
-			isVoluntary: isVoluntary,
-		};
-		messageService.pushMessageToPlayer({uid : this.userId, sid : this.serverId}, "onMyselfLeaveTeam", msg);
-	}
-};
-
-// 角色是否在队伍中
-Player.prototype.isInTeam = function() {
-	return (this.teamId != consts.TEAM.TEAM_ID_NONE);
-};
-
