@@ -1255,6 +1255,7 @@
          "y":0
         }, 
         {
+         "color":"#00ff00",
          "height":36,
          "name":"npc",
          "objects":[
@@ -1263,7 +1264,7 @@
                  "name":"npc309",
                  "properties":
                     {
-                     "id":"309"
+                     "id":"305"
                     },
                  "type":"",
                  "width":62,
@@ -1385,7 +1386,7 @@
                  "y":1219
                 }, 
                 {
-                 "height":66,
+                 "height":59,
                  "name":"mob4",
                  "properties":
                     {
@@ -1397,9 +1398,9 @@
                      "refreshTime":"5000"
                     },
                  "type":"",
-                 "width":74,
-                 "x":1673,
-                 "y":541
+                 "width":66,
+                 "x":1671,
+                 "y":548
                 }],
          "opacity":1,
          "type":"objectgroup",

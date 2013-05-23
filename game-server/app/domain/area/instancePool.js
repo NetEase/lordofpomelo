@@ -9,6 +9,7 @@ var exp = module.exports;
 
 var instances;
 var intervel;
+var maps = {};
 
 exp.init = function(opts){
   instances = {};
@@ -19,13 +20,18 @@ exp.init = function(opts){
 
 exp.create = function(params){
   var id = params.instanceId;
+  var areaId = params.areaId;
 
   if(instances[id]) return false;
 
-  var opts = dataApi.area.findById(params.areaId);
+  //get area map
+  var opts = dataApi.area.findById(areaId);
+  if(!maps[areaId]){
+    maps[areaId] = new Map(opts);
+  }
+  opts.map = maps[areaId];
 
-  console.error('targe id : %j, opts : %j', params, opts);
-  opts.map = new Map(opts);
+  //Create instance
   var instance = new Instance(opts);
 
   instances[id] = instance;

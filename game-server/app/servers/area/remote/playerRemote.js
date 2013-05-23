@@ -11,6 +11,7 @@ var consts = require('../../../consts/consts');
 var areaService = require('../../../services/areaService');
 var consts = require('../../../consts/consts');
 var pomelo = require('pomelo');
+var logger = require('pomelo-logger').getLogger(__filename);
 
 var exp = module.exports;
 
@@ -25,6 +26,10 @@ exp.playerLeave = function(args, cb){
 	var playerId = args.playerId;
 	var area = pomelo.app.areaManager.getArea(args.instanceId);
 	var player = area.getPlayer(playerId);
+
+	if(!player){
+		logger.warn('player not in the area ! %j', args);
+	}
 	var sceneId = player.areaId;
 
 	if(!player) {
