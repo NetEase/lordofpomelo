@@ -104,10 +104,10 @@ module.exports = {
 	},
 
 	/**
-	 * 组队相关常量
+	 * Team
 	 */
 	TEAM : {
-		TEAM_ID_NONE : 0, // 角色无队伍(不在任何队伍中)
+		TEAM_ID_NONE : 0 // player without team(not in any team)
 	},
 
 	/**

@@ -12,45 +12,43 @@ var dataApi = require('../../../util/dataApi');
 
 var handler = module.exports;
 
-// 全服务器所有队伍容器(teamId:teamObj)
+// global team container(teamId:teamObj)
 var gTeamObjDict = {};
-// 队伍中所能容纳的最大玩家数量
+// max member num in a team
 var MAX_MEMBER_NUM = 3;
-// 空玩家id
+// none player id in a team(placeholder)
 var PLAYER_ID_NONE = 0;
-// 全局队伍id
+// global team id
 var gTeamId = 1;
-// 队伍成员的头衔(普通成员/队长)
+// team member title(member/captain)
 var TEAM_TITLE = {
 	MEMBER  : 0,
 	CAPTAIN : 1,	
 };
-// 受邀加入队伍玩家的回复
+// player's replying code
 var JOIN_TEAM_REPLY = {
 	REJECT : 0,
 	ACCEPT : 1,	
 };
-// 尝试加入队伍时的返回码
+// return code of trying to join a team
 var JOIN_TEAM_RET_CODE = {
-	OK							: 0,	// 成功加入
-	NO_POSITION			: -1,	// 队伍中没有空位置了
-	ALREADY_IN_TEAM	: -2,	// 已经在本队伍中了
-	IN_OTHER_TEAM		: -3,	// 已经在其他队伍中了
-	SYS_ERROR				: -4,	// 系统错误
+	OK							: 0,	// join ok
+	NO_POSITION			: -1,	// there is no position
+	ALREADY_IN_TEAM	: -2,	// already in the team
+	IN_OTHER_TEAM		: -3,	// already in other team
+	SYS_ERROR				: -4,	// system error
 };
 ///////////////////////////////////////////////////////
 function Team(){
 	this.teamId = 0;
-	// 队员数量
 	this.playerNum = 0;
-	// 队长id
 	this.captainId = 0;
 	this.playerIdArray = new Array(MAX_MEMBER_NUM);
-	// 队伍频道, 用于在本队伍范围内推送消息
+	// team channel, push msg within the team
 	this.channel = null;
 
 	var _this = this; 
-	// 构造函数
+	// constructor
 	var init = function()	{
 		_this.teamId = ++gTeamId;
 		for(var i in _this.playerIdArray) {
@@ -131,7 +129,7 @@ Team.prototype.addPlayer = function(playerId) {
 		return JOIN_TEAM_RET_CODE.SYS_ERROR;
 	}
 
-	// 如果角色已经有队伍了则不能再加入其他队伍
+	// if the player is already in a team, can't join other
 	if(playerObj.teamId != consts.TEAM.TEAM_ID_NONE) {
 		return JOIN_TEAM_RET_CODE.IN_OTHER_TEAM;
 	}
@@ -158,33 +156,32 @@ Team.prototype.addPlayer = function(playerId) {
 		this.playerNum++;
 	}
 
-	// 通知队伍中每个角色其他角色的信息
 	this.pushInfo2Everyone();
 
 	return JOIN_TEAM_RET_CODE.OK;
 };
 
-// 设置队长id(角色id)
+// the captain_id is just a player_id
 Team.prototype.setCaptainId = function(captainId) {
 	this.captainId = captainId;
 };
 
-// 队伍中的队员数量
+// player num in the team
 Team.prototype.getPlayerNum = function() {
 	return this.playerNum;
 };
 
-// 队伍中是否还有空位
+// is there a empty position in the team
 Team.prototype.isTeamHasPosition = function() {
 	return this.getPlayerNum() < MAX_MEMBER_NUM;
 };
 
-// 队伍中是否有队员
+// is there any member in the team
 Team.prototype.isTeamHasMember = function() {
 	return this.getPlayerNum() > 0;
 };
 
-// 获取队伍中首个角色的id
+// the first real player_id in the team
 Team.prototype.getFirstPlayerId = function() {
 	for(var i in this.playerIdArray)
 	{
@@ -194,7 +191,7 @@ Team.prototype.getFirstPlayerId = function() {
 	return PLAYER_ID_NONE;
 };
 
-// 检查某玩家是否在本队伍中
+// check if a player in the team
 Team.prototype.isPlayerInTeam = function(playerId) {
 	for(var i in this.playerIdArray)
 	{
@@ -204,7 +201,7 @@ Team.prototype.isPlayerInTeam = function(playerId) {
 	return false;
 };
 
-// 向队伍中每个角色推送其他角色的信息
+// push the team members' info to everyone
 Team.prototype.pushInfo2Everyone = function() {
 	for(var i in this.playerIdArray)
 	{
@@ -232,7 +229,7 @@ Team.prototype.pushInfo2Everyone = function() {
 	return true;
 };
 
-// 向队伍中剩余的角色推送某角色离开队伍的信息
+// notify the rest of team members of the left player
 Team.prototype.pushLeaveMsg2Else = function(leavePlayerId) {
 	if(!this.channel) {
 		return false;
@@ -244,9 +241,9 @@ Team.prototype.pushLeaveMsg2Else = function(leavePlayerId) {
 	return true;
 };
 
-// 解散队伍
+// disband the team
 Team.prototype.disbandTeam = function() {
-	// 根据游戏设定, 在某些情况下可能不允许解散队伍
+	// under some conditions, the team can't be disbanded
 	// return false;
 	this.channel.pushMessage('onDisbandTeam', {}, null);
 	for(var i in this.playerIdArray)
@@ -259,7 +256,7 @@ Team.prototype.disbandTeam = function() {
 	return true;
 };
 
-// 将某玩家踢出本队伍
+// remove a player from the team
 Team.prototype.removePlayerById = function(playerId) {
 	for(var i in this.playerIdArray)
 	{
@@ -282,7 +279,7 @@ Team.prototype.removePlayerById = function(playerId) {
 	return true;
 };
 
-// 向队伍中剩余的角色推送某角色离开队伍的信息
+// push msg to all of the team members 
 Team.prototype.pushChatMsg2All = function(content) {
 	if(!this.channel) {
 		return false;
@@ -319,7 +316,6 @@ handler.createTeam = function(msg, session, next) {
 
 	result = teamObj.addPlayer(playerId);
 	if(result === JOIN_TEAM_RET_CODE.OK) {
-		// 设置队长id
 		teamObj.setCaptainId(playerId);
 		gTeamObjDict[teamObj.teamId] = teamObj;
 	}
@@ -415,7 +411,7 @@ handler.inviteJoinTeam = function(msg, session, next) {
 
 	var infoObj = player.toJSON4Team(true);
 
-	// 向受邀者发送邀请信息
+	// send invitation to the invitee
 	messageService.pushMessageToPlayer({uid : invitee.userId, sid : invitee.serverId}, 'onInviteJoinTeam', infoObj);
 };
 
@@ -461,7 +457,7 @@ handler.inviteJoinTeamReply = function(msg, session, next) {
 		var result = teamObj.addPlayer(playerId);
   	next(null, {result : result});
 	} else {
-		// 向邀请发出者(队长:msg.captainId)推送消息:受邀者拒绝加入队伍
+		// push msg to the inviter(the captain) that the invitee reject to join the team
 		var msg = {
 			reply : false;
 		};
@@ -513,7 +509,7 @@ handler.applyJoinTeam = function(msg, session, next) {
 	}
 
 	var infoObj = player.toJSON4Team();
-	// 向队长发送申请信息
+	// send the application to the captain
 	messageService.pushMessageToPlayer({uid : captainObj.userId, sid : captainObj.serverId}, 'onApplyJoinTeam', infoObj);
   next();
 };
@@ -566,7 +562,7 @@ handler.applyJoinTeamReply = function(msg, session, next) {
   	next(null, {result : result});
 	}
 	else {
-		// 向申请者(msg.applicantId)推送消息:队长拒绝了申请
+		// push msg to the applicant that the capatain rejected
 		var msg = {
 			reply : false
 		};
@@ -575,7 +571,9 @@ handler.applyJoinTeamReply = function(msg, session, next) {
   next();
 };
 
-// 当有玩家离开队伍时检查成员数量, 如果为0则自动解散
+// check member num when a member leaves the team,
+// if there is no member in the team,
+// disband the team automatically
 function try2DisbandTeam(teamObj) {
 	if(!teamObj.isTeamHasMember()) {
 		delete gTeamObjDict[teamObj.teamId];
@@ -672,7 +670,8 @@ handler.leaveTeam = function(msg, session, next) {
 
 	teamObj.removePlayerById(playerId);
 
-	// 如果是队长主动离队则将队长转让给下一个队员
+	// if the captain leaves the team,
+	// depute the captain to the next member
 	if(playerId === teamObj.captainId) {
 		var firstPlayerId = teamObj.getFirstPlayerId();
 		if(firstPlayerId != PLAYER_ID_NONE) {

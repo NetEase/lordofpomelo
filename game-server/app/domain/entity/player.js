@@ -41,7 +41,7 @@ var Player = function(opts) {
 	this.roleData = dataApi.role.findById(this.kindId);
 	this.curTasks = opts.curTasks;
 	this.range = opts.range || 2;
-	// 角色所在的队伍id, 默认为0(没有队伍).
+	// player's team id, default 0(not in any team).
 	this.teamId = consts.TEAM.TEAM_ID_NONE;
 
 	this.setTotalAttackAndDefence();
@@ -514,14 +514,14 @@ Player.prototype.toJSON4Team = function(isCaptain) {
 	};
 };
 
-// 角色加入队伍
+// player joins a team
 Player.prototype.joinTeam = function(teamId) {
 	if(teamId === consts.TEAM.TEAM_ID_NONE)
 		return false;
 	this.teamId = teamId;
 };
 
-// 角色离开队伍
+// player leaves the team
 Player.prototype.leaveTeam = function(isSendMsg, isVoluntary) {
 	isSendMsg = isSendMsg || false;
 	isVoluntary = isVoluntary || false;
@@ -529,7 +529,7 @@ Player.prototype.leaveTeam = function(isSendMsg, isVoluntary) {
 		return false;
 	this.teamId = consts.TEAM.TEAM_ID_NONE;
 	if(isSendMsg) {
-		// 通知该角色对应客户端离开队伍
+		// notify the client of leaving the team
 		var msg = {
 			isVoluntary: isVoluntary,
 		};
@@ -537,7 +537,7 @@ Player.prototype.leaveTeam = function(isSendMsg, isVoluntary) {
 	}
 };
 
-// 角色是否在队伍中
+// check if player in a team
 Player.prototype.isInTeam = function() {
 	return (this.teamId != consts.TEAM.TEAM_ID_NONE);
 };
