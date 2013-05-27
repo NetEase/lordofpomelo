@@ -107,7 +107,15 @@ module.exports = {
 	 * Team
 	 */
 	TEAM : {
-		TEAM_ID_NONE : 0 // player without team(not in any team)
+		TEAM_ID_NONE : 0, // player without team(not in any team)
+		PLAYER_ID_NONE : 0, // none player id in a team(placeholder)
+		JOIN_TEAM_RET_CODE : {
+			OK							: 0,	// join ok
+			NO_POSITION			: -1,	// there is no position
+			ALREADY_IN_TEAM	: -2,	// already in the team
+			IN_OTHER_TEAM		: -3,	// already in other team
+			SYS_ERROR				: -4,	// system error
+		} // return code of trying to join a team
 	},
 
 	/**
