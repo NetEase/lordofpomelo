@@ -4,7 +4,6 @@
 var Item = require('./entity/item');
 var Equipment = require('./entity/equipment');
 var dataApi = require('../util/dataApi');
-var area = require('./area/area');
 var messageService = require('./messageService');
 
 /**
@@ -20,7 +19,7 @@ var taskReward = module.exports;
  * @param {Array} ids
  * @api public
  */
-taskReward.reward = function(player, ids) {
+taskReward.reward = function(area, player, ids) {
 	if (ids.length < 1) {
 		return;
 	}

@@ -1,7 +1,6 @@
 var util = require('util');
 var Zone = require('./zone');
 var Mob = require('./../entity/mob');
-var area = require('./../area/area');
 var utils = require('../../util/utils');
 var dataApi = require('../../util/dataApi');
 var logger = require('pomelo-logger').getLogger(__filename);
@@ -13,19 +12,20 @@ var defaultLimit = 10;
  */
 var MobZone = function(opts) {
 	Zone.call(this, opts);
-
+	this.area = opts.area;
+	this.map = opts.area.map;
 	this.mobId = opts.mobId;
 	this.mobData = utils.clone(dataApi.character.findById(this.mobId));
-	
+
 	this.mobData.zoneId = this.zoneId;
-	this.mobData.areaId = area.id();
-	
+	this.mobData.areaId = this.area.id;
+	this.mobData.area = this.area;
 	this.mobData.kindId = this.mobData.id;
 	this.mobData.kindName = this.mobData.name;
 	this.mobData.level = opts.level || 1;
 	this.mobData.weaponLevel = opts.weaponLevel || 1;
 	this.mobData.armorLevel = opts.armorLevel || 1;
-	
+
 	this.limit = opts.mobNum||defaultLimit;
 	this.count = 0;
 	this.mobs = {};
@@ -50,7 +50,7 @@ MobZone.prototype.update = function() {
 			this.lastGenTime = time;
 		}
 	}
-	
+
 	if(this.count === this.limit) {
 		this.lastGenTime = time;
 	}
@@ -66,18 +66,24 @@ MobZone.prototype.generateMobs = function() {
 		return;
 	}
 
+	var count = 0, limit = 20;
 	do{
 		mobData.x = Math.floor(Math.random()*this.width) + this.x;
 		mobData.y = Math.floor(Math.random()*this.height) + this.y;
-	} while(!area.map().isReachable(mobData.x, mobData.y));
+	} while(!this.map.isReachable(mobData.x, mobData.y) && count++ < limit);
+
+	if(count > limit){
+		logger.error('generate mob failed! mob data : %j, area : %j, retry %j times', mobData, this.area.id, count);
+		return;
+	}
 
 	var mob = new Mob(mobData);
 	mob.spawnX = mob.x;
 	mob.spawnY = mob.y;
 	genPatrolPath(mob);
-
 	this.add(mob);
-	area.addEntity(mob);
+
+	this.area.addEntity(mob);
 	this.count++;
 };
 
@@ -107,10 +113,11 @@ var MAX_PATH_COST = 300;
  * Generate patrol path for mob
  */
 var genPatrolPath = function(mob) {
+	var map = mob.area.map;
 	var path = [];
 	var x = mob.x, y = mob.y, p;
 	for(var i=0; i<PATH_LENGTH; i++) {
-		p = genPoint(x, y);
+		p = genPoint(map, x, y);
 		if(!p) {
 			logger.warn("Find path for mob faild! mobId : %j", mob.entityId);
 			break;
@@ -129,7 +136,7 @@ var genPatrolPath = function(mob) {
  * @param count {Number} The retry count before give up
  * @api private
  */
-var genPoint = function(originX, originY, count) {
+var genPoint = function(map, originX, originY, count) {
 	count = count || 0;
 	var disx = Math.floor(Math.random() * 100) + 100;
 	var disy = Math.floor(Math.random() * 100) + 100;
@@ -147,22 +154,22 @@ var genPoint = function(originX, originY, count) {
 
 	if(x < 0) {
 		x = originX + disx;
-	} else if(x > area.map().width) {
+	} else if(x > map.width) {
 		x = originX - disx;
 	}
 	if(y < 0) {
 		y = originY + disy;
-	} else if(y > area.map().height) {
+	} else if(y > map.height) {
 		y = originY - disy;
 	}
 
-	if(checkPoint(originX, originY, x, y)) {
+	if(checkPoint(map, originX, originY, x, y)) {
 		return {x: x, y: y};
 	} else {
 		if(count > 10) {
 			return;
 		}
-		return genPoint(originX, originY, count + 1);
+		return genPoint(map, originX, originY, count + 1);
 	}
 };
 
@@ -171,12 +178,12 @@ var genPoint = function(originX, originY, count) {
  * @param ox, oy {Number} Start point
  * @param dx, dy {Number} End point
  */
-var checkPoint = function(ox, oy, dx, dy) {
-	if(!area.map().isReachable(dx, dy)) {
+var checkPoint = function(map, ox, oy, dx, dy) {
+	if(!map.isReachable(dx, dy)) {
 		return false;
 	}
 
-	var res = area.map().findPath(ox, oy, dx, dy);
+	var res = map.findPath(ox, oy, dx, dy);
 	if(!res || !res.path || res.cost > MAX_PATH_COST) {
 		return false;
 	}

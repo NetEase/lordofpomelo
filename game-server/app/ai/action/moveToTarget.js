@@ -42,14 +42,14 @@ pro.doAction = function() {
 	}
 
 	if(formula.inRange(character, target, distance)) {
-		this.blackboard.area.timer().abortAction('move', character.entityId);
+		this.blackboard.area.timer.abortAction('move', character.entityId);
 		this.blackboard.distanceLimit = 0;
 		this.blackboard.moved = false;
 		return bt.RES_SUCCESS;
 	}
 
 	if(character.type === consts.EntityType.MOB) {
-		if(Math.abs(character.x - character.spawnX) > 500 || 
+		if(Math.abs(character.x - character.spawnX) > 500 ||
 			Math.abs(character.y - character.spawnY) > 500) {
 			//we move too far and it is time to turn back
 			character.forgetHater(targetId);
@@ -58,18 +58,18 @@ pro.doAction = function() {
 		}
 	}
 
-	
+
 	var targetPos = this.blackboard.targetPos;
 	var closure = this;
-	
+
 	if(!this.blackboard.moved){
 		character.move(target.x, target.y, false, function(err, result){
 			if(err || result === false){
 				closure.blackboard.moved = false;
 				character.target = null;
 			}
-		}); 
-		
+		});
+
 		this.blackboard.targetPos = {x: target.x, y : target.y};
 		this.blackboard.moved = true;
 	} else if(targetPos && (targetPos.x !== target.x || targetPos.y !== target.y)) {
@@ -80,13 +80,13 @@ pro.doAction = function() {
 		if(((dis1 * 3 > dis2) && (dis1 < distance)) || !this.blackboard.moved){
 			targetPos.x = target.x;
 			targetPos.y = target.y;
-			
+
 			character.move(target.x, target.y, false, function(err, result){
 				if(err || result === false){
 					closure.blackboard.moved = false;
 					character.target = null;
 				}
-			}); 
+			});
 		}
 	}
 	return bt.RES_WAIT;

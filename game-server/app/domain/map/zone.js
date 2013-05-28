@@ -12,6 +12,7 @@ var Zone = function(opts) {
 	this.height = opts.height;
 	this.x = opts.x;
 	this.y = opts.y;
+  this.area = opts.area;
 };
 
 util.inherits(Zone, EventEmitter);

@@ -1,6 +1,8 @@
 var pomelo = require('pomelo');
-var world = require('./app/domain/world');
-var area = require('./app/domain/area/area');
+var areaService = require('./app/services/areaService');
+var instanceManager = require('./app/services/instanceManager');
+var scene = require('./app/domain/area/scene');
+var instancePool = require('./app/domain/area/instancePool');
 var dataApi = require('./app/util/dataApi');
 var routeUtil = require('./app/util/routeUtil');
 var playerFilter = require('./app/servers/area/filter/playerFilter');
@@ -20,10 +22,10 @@ app.configure('production', function() {
 
 // configure for global
 app.configure('production|development', function() {
-	var sceneInfo = require('./app/modules/sceneInfo');
+	//var sceneInfo = require('./app/modules/sceneInfo');
 	var onlineUser = require('./app/modules/onlineUser');
 	if(typeof app.registerAdmin === 'function'){
-		app.registerAdmin(sceneInfo, {app: app});
+		//app.registerAdmin(sceneInfo, {app: app});
 		app.registerAdmin(onlineUser, {app: app});
 	}
 	//Set areasIdMap, a map from area id to serverId.
@@ -68,12 +70,26 @@ app.configure('production|development', 'area', function(){
 	app.filter(pomelo.filters.serial());
 	app.before(playerFilter());
 
-	var areaId = app.get('curServer').area;
-	if(!areaId || areaId < 0) {
-		throw new Error('load area config failed');
+	//Load scene server and instance server
+	var server = app.curServer;
+	if(server.instance){
+		instancePool.init(require('./config/instance.json'));
+		app.areaManager = instancePool;
+	}else{
+		scene.init(dataApi.area.findById(server.area));
+		app.areaManager = scene;
 	}
-	world.init(dataApi.area.all());
-	area.init(dataApi.area.findById(areaId));
+
+	//Init areaService
+	areaService.init();
+});
+
+app.configure('production|development', 'manager', function(){
+	var events = pomelo.events;
+
+	app.event.on(events.ADD_SERVERS, instanceManager.addServers);
+
+	app.event.on(events.REMOVE_SERVERS, instanceManager.removeServers);
 });
 
 // Configure database

@@ -26,7 +26,7 @@ var Entity = function(opts) {
 	this.y = opts.y;
 
 	this.areaId = Number(opts.areaId || 1);
-
+	this.area = opts.area;
 };
 
 util.inherits(Entity, EventEmitter);

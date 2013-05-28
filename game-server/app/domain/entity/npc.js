@@ -9,7 +9,6 @@ var TraverseTask = require('../../consts/consts').TraverseTask;
 var consts = require('../../consts/consts');
 var formula = require('../../consts/formula');
 var executeTask = require('./../executeTask');
-var area = require('../area/area');
 var messageService = require('../messageService');
 var TaskDao = require('../../dao/taskDao');
 
@@ -53,7 +52,7 @@ Npc.prototype.talk = function(player) {
     return {result: consts.NPC.NOT_IN_RANGE, distance: TALK_RANGE};
   }
 
-  this.emit('onNPCTalk', {npc: this.entityId, player : player.entityId});
+  this.emit('onNPCTalk', {npc: this, player : player});
 
   return {result: consts.NPC.SUCCESS};
 };
@@ -67,19 +66,20 @@ Npc.prototype.talk = function(player) {
  * @api public
  */
 Npc.prototype.traverse = function(route, msg) {
-	var player = area.getEntity(msg.player);
+	var player = this.area.getEntity(msg.player);
 	//If don't need task test, just change area.
 	if (!TraverseTask[msg.kindId]){
-		changeArea(route, msg);
+		this.changeArea(route, msg);
 		return;
 	}
+
 	TaskDao.getTaskByIds(player.id, TraverseTask[msg.kindId], function(err, tasks) {
 		if (tasks && tasks.length > 0) {
 			var task = tasks[0];
 			//For test only
 			task.taskState = consts.TaskState.COMPLETED;
 			if (task.taskState === consts.TaskState.COMPLETED) {
-				changeArea(route, msg);
+				this.changeArea(route, msg);
 			} else {
 				messageService.pushMessageToPlayer({uid:player.userId, sid : player.serverId}, route, msg);
 			}
@@ -89,8 +89,17 @@ Npc.prototype.traverse = function(route, msg) {
 	});
 };
 
-var changeArea = function(route, msg) {
-	var player = area.getEntity(msg.player);
+Npc.prototype.toJSON = function() {
+	return {
+		entityId: this.entityId,
+		kindId: this.kindId,
+		x: this.x,
+		y: this.y
+	};
+};
+
+Npc.prototype.changeArea = function(route, msg) {
+	var player = this.area.getEntity(msg.player);
 	msg.action = 'changeArea';
 	msg.params = {target : TraverseNpc[msg.kindId]};
 	messageService.pushMessageToPlayer({uid: player.userId, sid: player.serverId}, route, msg);

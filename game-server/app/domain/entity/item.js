@@ -49,3 +49,13 @@ Item.prototype.update = function(){
 		this.died = true;
 	}
 };
+
+Item.prototype.toJSON = function() {
+	return {
+		entityId: this.entityId,
+		kindId: this.kindId,
+		x: this.x,
+		y: this.y,
+		playerId: this.playerId
+	};
+};

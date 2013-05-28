@@ -1,6 +1,5 @@
 var dataApi = require('../util/dataApi');
 var utils = require('../util/utils');
-var area = require('./area/area');
 var messageService = require('./messageService');
 var pomelo = require('pomelo');
 var userDao = require('../dao/userDao');
