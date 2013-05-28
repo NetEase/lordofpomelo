@@ -1,10 +1,10 @@
 {
 	"development": {
-	 "host" : "pomelo.com",
+	 "host" : "127.0.0.1",
 		"port" : "3306",
 		"database" : "Pomelo",
-		"user" : "xy",
-		"password" : "dev"
+		"user" : "root",
+		"password" : "pomelo"
 	},
 
 	"production": {
