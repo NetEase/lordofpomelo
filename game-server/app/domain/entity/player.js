@@ -531,7 +531,7 @@ Player.prototype.leaveTeam = function(isSendMsg, isVoluntary) {
 		var msg = {
 			isVoluntary: isVoluntary,
 		};
-		//messageService.pushMessageToPlayer({uid : this.userId, sid : this.serverId}, "onMyselfLeaveTeam", msg);
+		// messageService.pushMessageToPlayer({uid : this.userId, sid : this.serverId}, "onMyselfLeaveTeam", msg);
 	}
 };
 

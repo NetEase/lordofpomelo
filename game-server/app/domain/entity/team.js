@@ -3,8 +3,7 @@
  */
 var consts = require('../../consts/consts');
 var pomelo = require('pomelo');
-var area = require('./../area/area');
-var messageService = require('../messageService');
+var area = require('../area/area');
 
 // max member num in a team
 var MAX_MEMBER_NUM = 3;
@@ -125,6 +124,11 @@ Team.prototype.addPlayer = function(playerId) {
 // the captain_id is just a player_id
 Team.prototype.setCaptainId = function(captainId) {
 	this.captainId = captainId;
+};
+
+// is the player the captain of the team
+Team.prototype.isCaptainById = function(playerId) {
+  return playerId === this.captainId;
 };
 
 // player num in the team

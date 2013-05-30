@@ -132,7 +132,7 @@ handler.move = function(msg, session, next) {
   player.target = null;
 
   if(!area.map.verifyPath(path)){
-    logger.warn('The path is illigle!! The path is: %j', msg.path);
+    logger.warn('The path is illegal!! The path is: %j', msg.path);
     next(null, {
       route: msg.route,
       code: consts.MESSAGE.ERR
