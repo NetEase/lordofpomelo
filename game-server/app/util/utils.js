@@ -41,31 +41,25 @@ utils.size = function(obj) {
 	return size;
 };
 
-// print the file name and the line number
-{
-	Object.defineProperty(global, '__STACK__', {
-		get: function(){
-			var orig = Error.prepareStackTrace;
-			Error.prepareStackTrace = function(_, stack){ return stack; };
-			var err = new Error;
-			Error.captureStackTrace(err, arguments.callee);
-			var stack = err.stack;
-			Error.prepareStackTrace = orig;
-			return stack;
-		}
-	});
+// print the file name and the line number ~ begin
+function getStack(){
+	var orig = Error.prepareStackTrace;
+	Error.prepareStackTrace = function(_, stack) {
+		return stack;
+	};
+	var err = new Error();
+	Error.captureStackTrace(err, arguments.callee);
+	var stack = err.stack;
+	Error.prepareStackTrace = orig;
+	return stack;
+}
 
-	Object.defineProperty(global, '__FILE__', {
-			get: function() {
-					return __STACK__[2].getFileName();
-			}
-	});
+function getFileName(stack) {
+	return stack[1].getFileName();
+}
 
-	Object.defineProperty(global, '__LINE__', {
-		get: function(){
-			return __STACK__[2].getLineNumber();
-		}
-	});
+function getLineNumber(stack){
+	return stack[1].getLineNumber();
 }
 
 utils.myPrint = function() {
@@ -73,10 +67,12 @@ utils.myPrint = function() {
 	if(len <= 0) {
 		return;
 	}
-	var aimStr = '\'' + __FILE__ + '\' @' + __LINE__ + ' :\n';
+	var stack = getStack();
+	var aimStr = '\'' + getFileName(stack) + '\' @' + getLineNumber(stack) + ' :\n';
 	for(var i = 0; i < len; ++i) {
 		aimStr += arguments[i];
 	}
 	console.log('\n' + aimStr);
 };
+// print the file name and the line number ~ end
 
