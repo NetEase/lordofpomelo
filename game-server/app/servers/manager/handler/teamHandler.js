@@ -1,11 +1,9 @@
 /**
  * Module dependencies
  */
-var area = require('../../../domain/area/area');
 var messageService = require('../../../domain/messageService');
 var logger = require('pomelo-logger').getLogger(__filename);
 var consts = require('../../../consts/consts');
-var Team = require('../../../domain/entity/team');
 var teamManager = require('../../../services/teamManager');
 
 var handler = module.exports;
@@ -29,6 +27,7 @@ var JOIN_TEAM_REPLY = {
  * @api public
  */
 handler.createTeam = function(msg, session, next) {
+  var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
 
@@ -40,7 +39,7 @@ handler.createTeam = function(msg, session, next) {
     return;
   }
 
-	result = teamManager.createTeam(playerId);
+	result = teamManager.createTeam(player, area);
   next(null, {result : result});
 };
 
@@ -53,6 +52,7 @@ handler.createTeam = function(msg, session, next) {
  * @api public
  */
 handler.disbandTeam = function(msg, session, next) {
+  var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
 
@@ -77,7 +77,7 @@ handler.disbandTeam = function(msg, session, next) {
     return;
   }
 
-  result = teamManager.disbandTeamById(msg.teamId);
+  result = teamManager.disbandTeamById(msg.teamId, area);
 
   next(null, {result : result});
 };
@@ -91,6 +91,7 @@ handler.disbandTeam = function(msg, session, next) {
  * @api public
  */
 handler.inviteJoinTeam = function(msg, session, next) {
+  var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
 
@@ -142,6 +143,7 @@ handler.inviteJoinTeam = function(msg, session, next) {
  * @api public
  */
 handler.inviteJoinTeamReply = function(msg, session, next) {
+  var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
 
@@ -172,7 +174,7 @@ handler.inviteJoinTeamReply = function(msg, session, next) {
   }
 
   if(msg.reply === JOIN_TEAM_REPLY.ACCEPT) {
-    var result = teamObj.addPlayer(playerId);
+    var result = teamObj.addPlayer(player, area);
     next(null, {result : result});
   } else {
     // push tmpMsg to the inviter(the captain) that the invitee reject to join the team
@@ -193,6 +195,7 @@ handler.inviteJoinTeamReply = function(msg, session, next) {
  * @api public
  */
 handler.applyJoinTeam = function(msg, session, next) {
+  var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
 
@@ -241,6 +244,7 @@ handler.applyJoinTeam = function(msg, session, next) {
  * @api public
  */
 handler.applyJoinTeamReply = function(msg, session, next) {
+  var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
 
@@ -276,7 +280,7 @@ handler.applyJoinTeamReply = function(msg, session, next) {
   }
 
   if(msg.reply === JOIN_TEAM_REPLY.ACCEPT) {
-    var result = teamObj.addPlayer(msg.applicantId);
+    var result = teamObj.addPlayer(applicant, area);
     next(null, {result : result});
   } else {
     // push tmpMsg to the applicant that the capatain rejected
@@ -297,6 +301,7 @@ handler.applyJoinTeamReply = function(msg, session, next) {
  * @api public
  */
 handler.kickOutOfTeam = function(msg, session, next) {
+  var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
 
@@ -338,7 +343,7 @@ handler.kickOutOfTeam = function(msg, session, next) {
 
   kickedPlayer.leaveTeam(true);
 
-  teamObj.removePlayerById(msg.kickedPlayerId);
+  teamObj.removePlayer(kickedPlayer);
   teamManager.try2DisbandTeam(teamObj);
 
   next();
@@ -353,6 +358,7 @@ handler.kickOutOfTeam = function(msg, session, next) {
  * @api public
  */
 handler.leaveTeam = function(msg, session, next) {
+  var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
 
@@ -376,7 +382,7 @@ handler.leaveTeam = function(msg, session, next) {
 
   player.leaveTeam(true, true);
 
-  teamObj.removePlayerById(playerId);
+  teamObj.removePlayer(player);
 
   // if the captain leaves the team,
   // depute the captain to the next member
@@ -401,6 +407,7 @@ handler.leaveTeam = function(msg, session, next) {
  * @api public
  */
 handler.depute2Member = function(msg, session, next) {
+  var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
 
@@ -442,6 +449,7 @@ handler.depute2Member = function(msg, session, next) {
  * @api public
  */
 handler.chatInTeam = function(msg, session, next) {
+  var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
 

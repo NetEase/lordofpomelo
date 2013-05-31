@@ -12,9 +12,10 @@ var gTeamObjDict = {};
 var gTeamId = 0;
 
 // create new team, add the player(captain) to the team
-exp.createTeam = function(playerId) {
+exp.createTeam = function(player, area) {
+	var playerId = player.id;
   var teamObj = new Team(++gTeamId);
-  var result = teamObj.addPlayer(playerId);
+  var result = teamObj.addPlayer(player, area);
   if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK) {
     teamObj.setCaptainId(playerId);
     gTeamObjDict[teamObj.teamId] = teamObj;
@@ -27,13 +28,13 @@ exp.getTeamById = function(teamId) {
 	return teamObj || null;
 };
 
-exp.disbandTeamById = function(teamId) {
+exp.disbandTeamById = function(teamId, area) {
   var result = false;
   var teamObj = gTeamObjDict[teamId];
 	if(!teamObj) {
 		return result;
 	}
-  result = teamObj.disbandTeam();
+  result = teamObj.disbandTeam(area);
   if(result) {
     delete gTeamObjDict[teamId];
   }

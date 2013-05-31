@@ -305,10 +305,9 @@ Player.prototype.recover = function(lastTick){
 		this.revocerWaitTime -= 100;
 	}
 
-	this.hp += (time - lastTime)/ this.maxHp;
-	if(hp >= this.maxHp){
-		this.hp == this.maxHp;
-
+	this.hp += (time - lastTick)/ this.maxHp;
+	if(this.hp >= this.maxHp){
+		this.hp = this.maxHp;
 		this.isRecover = false;
 	}
 };
@@ -514,9 +513,11 @@ Player.prototype.toJSON4Team = function(isCaptain) {
 
 // player joins a team
 Player.prototype.joinTeam = function(teamId) {
-	if(teamId === consts.TEAM.TEAM_ID_NONE)
+	if(teamId === consts.TEAM.TEAM_ID_NONE) {
 		return false;
+	}
 	this.teamId = teamId;
+	return true;
 };
 
 // player leaves the team
@@ -537,6 +538,6 @@ Player.prototype.leaveTeam = function(isSendMsg, isVoluntary) {
 
 // check if player in a team
 Player.prototype.isInTeam = function() {
-	return (this.teamId != consts.TEAM.TEAM_ID_NONE);
+	return (this.teamId !== consts.TEAM.TEAM_ID_NONE);
 };
 

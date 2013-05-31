@@ -3,7 +3,6 @@
  */
 var consts = require('../../consts/consts');
 var pomelo = require('pomelo');
-var area = require('../area/area');
 
 // max member num in a team
 var MAX_MEMBER_NUM = 3;
@@ -20,15 +19,16 @@ function Team(teamId){
 	// constructor
 	var init = function()	{
 		_this.teamId = teamId;
-		for(var i in _this.playerIdArray) {
-			i = consts.TEAM.PLAYER_ID_NONE;
+		var arr = _this.playerIdArray;
+		for(var i = 0; i < arr.length; ++i) {
+			arr[i] = consts.TEAM.PLAYER_ID_NONE;
 		}
 	};
 
 	init();
 }
 
-Team.prototype.createChannel = function(playerId) {
+Team.prototype.createChannel = function() {
 	if(this.channel) {
 		return this.channel;
 	}
@@ -39,11 +39,10 @@ Team.prototype.createChannel = function(playerId) {
 	return null;
 };
 
-Team.prototype.addPlayer2Channel = function(playerId) {
+Team.prototype.addPlayer2Channel = function(player) {
 	if(!this.channel) {
 		return false;
 	}
-	var player = area.getPlayer(playerId);
 	if(player) {
 		this.channel.add(player.userId, player.serverId);
 		return true;
@@ -51,11 +50,10 @@ Team.prototype.addPlayer2Channel = function(playerId) {
 	return false;
 };
 
-Team.prototype.removePlayerFromChannel = function(playerId) {
+Team.prototype.removePlayerFromChannel = function(player) {
 	if(!this.channel) {
 		return false;
 	}
-	var player = area.getPlayer(playerId);
 	if(player) {
 		this.channel.leave(player.userId, player.serverId);
 		return true;
@@ -64,27 +62,27 @@ Team.prototype.removePlayerFromChannel = function(playerId) {
 };
 
 function doAddPlayer(teamObj, playerId) {
-	for(var i in teamObj.playerIdArray) {
-		if(i === consts.TEAM.PLAYER_ID_NONE) {
-			i = playerId;
+	var arr = teamObj.playerIdArray;
+	for(var i in arr) {
+		if(arr[i] === consts.TEAM.PLAYER_ID_NONE) {
+			arr[i] = playerId;
 			return true;
 		}
 	}
 	return false;
 }
 
-Team.prototype.addPlayer = function(playerId) {
+Team.prototype.addPlayer = function(playerObj, area) {
+	if(!playerObj) {
+		return consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
+	}
+	var playerId = playerObj.id;
 	if(!this.isTeamHasPosition()) {
 		return consts.TEAM.JOIN_TEAM_RET_CODE.NO_POSITION;
 	}
 
 	if(this.isPlayerInTeam(playerId)) {
 		return consts.TEAM.JOIN_TEAM_RET_CODE.ALREADY_IN_TEAM;
-	}
-
-	var playerObj = area.getPlayer(playerId);
-	if(!playerObj) {
-		return consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
 	}
 
 	// if the player is already in a team, can't join other
@@ -108,7 +106,7 @@ Team.prototype.addPlayer = function(playerId) {
 		return consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
 	}
 
-	if(!this.addPlayer2Channel()) {
+	if(!this.addPlayer2Channel(playerObj)) {
 		return consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
 	}
 
@@ -116,7 +114,7 @@ Team.prototype.addPlayer = function(playerId) {
 		this.playerNum++;
 	}
 
-	this.pushInfo2Everyone();
+	this.pushInfo2Everyone(area);
 
 	return consts.TEAM.JOIN_TEAM_RET_CODE.OK;
 };
@@ -148,9 +146,10 @@ Team.prototype.isTeamHasMember = function() {
 
 // the first real player_id in the team
 Team.prototype.getFirstPlayerId = function() {
-	for(var i in this.playerIdArray) {
-		if(i !== consts.TEAM.PLAYER_ID_NONE) {
-			return i;
+	var arr = this.playerIdArray;
+	for(var i in arr) {
+		if(arr[i] !== consts.TEAM.PLAYER_ID_NONE) {
+			return arr[i];
 		}
 	}
 	return consts.TEAM.PLAYER_ID_NONE;
@@ -158,8 +157,9 @@ Team.prototype.getFirstPlayerId = function() {
 
 // check if a player in the team
 Team.prototype.isPlayerInTeam = function(playerId) {
-	for(var i in this.playerIdArray) {
-		if(i !== consts.TEAM.PLAYER_ID_NONE && i === playerId) {
+	var arr = this.playerIdArray;
+	for(var i in arr) {
+		if(arr[i] !== consts.TEAM.PLAYER_ID_NONE && arr[i] === playerId) {
 			return true;
 		}
 	}
@@ -167,13 +167,14 @@ Team.prototype.isPlayerInTeam = function(playerId) {
 };
 
 // push the team members' info to everyone
-Team.prototype.pushInfo2Everyone = function() {
+Team.prototype.pushInfo2Everyone = function(area) {
 	var infoObjDict = {};
-	for(var i in this.playerIdArray) {
-		if(i === consts.TEAM.PLAYER_ID_NONE) {
+	var arr = this.playerIdArray;
+	for(var i in arr) {
+		if(arr[i] === consts.TEAM.PLAYER_ID_NONE) {
 			continue;
 		}
-		var player = area.getPlayer(i);
+		var player = area.getPlayer(arr[i]);
 		if(!player) {
 			continue;
 		}
@@ -200,30 +201,33 @@ Team.prototype.pushLeaveMsg2Else = function(leavePlayerId) {
 };
 
 // disband the team
-Team.prototype.disbandTeam = function() {
+Team.prototype.disbandTeam = function(area) {
 	// under some conditions, the team can't be disbanded
 	// return false;
 	this.channel.pushMessage('onDisbandTeam', {}, null);
-	for(var i in this.playerIdArray) {
-		if(i === consts.TEAM.PLAYER_ID_NONE) {
+	var arr = this.playerIdArray;
+	for(var i in arr) {
+		if(arr[i] === consts.TEAM.PLAYER_ID_NONE) {
 			continue;
 		}
-		var tmpPlayer = area.getPlayer(i);
+		var tmpPlayer = area.getPlayer(arr[i]);
 		tmpPlayer.leaveTeam();
 	}
 	return true;
 };
 
 // remove a player from the team
-Team.prototype.removePlayerById = function(playerId) {
-	for(var i in this.playerIdArray) {
-		if(i !== consts.TEAM.PLAYER_ID_NONE && i === playerId) {
-			i = consts.TEAM.PLAYER_ID_NONE;
+Team.prototype.removePlayer = function(player) {
+	var playerId = player.id;
+	var arr = this.playerIdArray;
+	for(var i in arr) {
+		if(arr[i] !== consts.TEAM.PLAYER_ID_NONE && arr[i] === playerId) {
+			arr[i] = consts.TEAM.PLAYER_ID_NONE;
 			break;
 		}
 	}
 
-	this.removePlayerFromChannel(playerId);
+	this.removePlayerFromChannel(player);
 	
 	if(this.playerNum > 0) {
 		this.playerNum--;
