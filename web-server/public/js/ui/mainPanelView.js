@@ -151,7 +151,6 @@ __resources__["/mainPanelView.js"] = {
 
       $createTeam.on('click', function() {
         console.log('click createTeam ...');
-        // pomelo.request("area.teamHandler.createTeam", {playerId: pomelo.playerId});
         pomelo.request("area.teamHandler.createTeam");
         $teamMenu.hide();
       });

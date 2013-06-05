@@ -53,7 +53,16 @@ Handler.prototype.createTeam = function(msg, session, next) {
         }
       }
       utils.myPrint("player.teamId = ", player.teamId);
-      next(null, {result : result});
+      if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK && player.teamId > 0) {
+          var ignoreList = {};
+          messageService.pushMessageByAOI(area, {
+            route: 'onBecomeTeamCaptain',
+            playerId: playerId,
+            teamId: player.teamId},
+            {x: player.x, y: player.y}, ignoreList
+          );
+       }
+      next(null, {result: result});
     });
 };
 

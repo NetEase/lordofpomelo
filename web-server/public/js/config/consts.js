@@ -65,7 +65,8 @@ __resources__["/consts.js"] = {
         BLACK_BLOOD_NODE: 1.2,
         NAME_NODE: 1.5,
         UPDATE_NODE: 2,
-        NUMBER_NODE: 2
+        NUMBER_NODE: 2,
+        CAPTAIN_FLAG_NODE: 1.5
       },
 
       CacheType: {

@@ -106,6 +106,18 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			sprite.movePath(path, speed);
 		});
 
+		/**
+		 * Handle 'become team captain' message
+		 * @param data {Object}
+		 */
+		pomelo.on('onBecomeTeamCaptain', function(data) {
+			var area = app.getCurArea();
+			var player = area.getPlayer(data.playerId);
+			player.getSprite().showCaptainFlag(true);
+			player.teamId = data.teamId;
+			console.log("player.teamId = ", player.teamId);
+		});
+
 		pomelo.on('onPathCheckout', function(data) {
 			var player = app.getCurArea().getEntity(data.entityId);
 			var serverPosition = data.position;

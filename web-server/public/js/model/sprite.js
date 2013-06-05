@@ -29,6 +29,8 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 		this.mapNode = this.entity.map.node; 
 		this.curNode = null;
 		this.bloodbarNode = null;
+		// team captain flag
+		this.captainFlagNode = null;
 
 		this.moveAnimation = null;
 		this.attackAnimation = null;
@@ -132,6 +134,8 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			var darkBloodBarNode = bloodbarNodes.darkBloodBarNode;
 			this.entity.scene.addNode(this.bloodbarNode, frameNode);
 			this.entity.scene.addNode(darkBloodBarNode, frameNode);
+			this.captainFlagNode = noEntityNode.createCaptainFlagNode({scene: this.entity.scene});
+			this.entity.scene.addNode(this.captainFlagNode, frameNode);
 			var json = new Animation({
 				kindId: this.entity.kindId,
 				type: this.entity.type,
@@ -144,6 +148,8 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			this.bloodbarNode.exec('translate', -26, -height, NodeCoordinate.RED_BLOOD_NODE);
 			darkBloodBarNode.exec('translate', -26, -height, NodeCoordinate.BLACK_BLOOD_NODE);
 			this.nameNode.exec('translate',0 ,-(height + 10), NodeCoordinate.NAME_NODE);
+			this.captainFlagNode.exec('translate', -30, -height+10, NodeCoordinate.CAPTAIN_FLAG_NODE);
+			this.showCaptainFlag(false);
 			this.reduceBlood();
 		}
 		if (this.entity.kindId === consts.SpecialCharacter.Angle) {
@@ -275,7 +281,7 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			this.removeAnimation(this.diedAnimation);
 			this.diedAnimation = null;
 		} 
-	}
+	};
 
 	//Stand animation, one of four basic animation.
 	Sprite.prototype.stand = function(dir) {
@@ -342,6 +348,13 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			//callback();
 		//});
 		this.attackAnimation = attackAnimation;
+	};
+
+	// show/hide the captain flag
+	Sprite.prototype.showCaptainFlag = function(isShow) {
+		isShow = isShow || false;
+		var x = isShow ? 1 : 0;
+		this.captainFlagNode.exec('scale', {x: x, y: 1});
 	};
 
 	//Update the bloodbarNode state
