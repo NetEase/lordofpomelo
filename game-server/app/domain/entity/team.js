@@ -3,6 +3,7 @@
  */
 var consts = require('../../consts/consts');
 var pomelo = require('pomelo');
+var utils = require('../../util/utils');
 
 // max member num in a team
 var MAX_MEMBER_NUM = 3;
@@ -64,6 +65,10 @@ Team.prototype.removePlayerFromChannel = function(player) {
 */
 
 function doAddPlayer(teamObj, playerId) {
+	utils.myPrint('playerId = ', playerId);
+	if (!playerId) {
+		return false;
+	}
 	var arr = teamObj.playerIdArray;
 	for(var i in arr) {
 		if(arr[i] === consts.TEAM.PLAYER_ID_NONE) {

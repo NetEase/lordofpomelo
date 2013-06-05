@@ -25,7 +25,7 @@ __resources__["/mainPanelView.js"] = {
     var $exp, $expBar;
     // team menu
     var $avatarImg;
-    var $teamMenu, $createTeam, $disbandTeam;
+    var $teamMenu, $createTeam, $joinFirstTeam, $disbandTeam;
     var inited = false;
 
     var init = function() {
@@ -42,6 +42,7 @@ __resources__["/mainPanelView.js"] = {
       $avatarImg = $('#mainPanel .avatar img');
       $teamMenu = $('#mainPanel .m-player .teamMenu');
       $createTeam = $('#mainPanel .m-player .teamMenu .menuItem #createTeam');
+      $joinFirstTeam = $('#mainPanel .m-player .teamMenu .menuItem #joinFirstTeam');
       $disbandTeam = $('#mainPanel .m-player .teamMenu .menuItem #disbandTeam');
 
       $li = $('.m-nav li');
@@ -152,6 +153,12 @@ __resources__["/mainPanelView.js"] = {
       $createTeam.on('click', function() {
         console.log('click createTeam ...');
         pomelo.request("area.teamHandler.createTeam");
+        $teamMenu.hide();
+      });
+
+      $joinFirstTeam.on('click', function() {
+        console.log('click joinFirstTeam ...');
+        pomelo.request("area.teamHandler.joinFirstTeam");
         $teamMenu.hide();
       });
 

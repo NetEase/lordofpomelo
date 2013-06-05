@@ -35,7 +35,7 @@ Handler.prototype.createTeam = function(msg, session, next) {
     return;
   }
 
-  // if the player is already in a team, can't join other
+  // if the player is already in a team, can't create team
   if(player.teamId !== consts.TEAM.TEAM_ID_NONE) {
     return;
   }
@@ -498,5 +498,47 @@ Handler.prototype.chatInTeam = function(msg, session, next) {
   teamObj.pushChatMsg2All(msg.content);
 
   next();
+};
+
+/**
+ * Player join the first team, and response the result information : success(1)/failed(0)
+ *
+ * @param {Object} msg
+ * @param {Object} session
+ * @param {Function} next
+ * @api public
+ */
+Handler.prototype.joinFirstTeam = function(msg, session, next) {
+  var area = session.area;
+  var playerId = session.get('playerId');
+  utils.myPrint('Handler ~ joinFirstTeam is running ... ~ playerId = ', playerId);
+  var player = area.getPlayer(playerId);
+
+  if(!player) {
+    logger.warn('The request(joinFirstTeam) is illegal, the player is null : msg = %j.', msg);
+    next();
+    return;
+  }
+
+  // if the player is already in a team, can't join other
+  if(player.teamId !== consts.TEAM.TEAM_ID_NONE) {
+    return;
+  }
+
+  var args = {playerId : playerId};
+  this.app.rpc.manager.teamRemote.joinFirstTeam(session, args,
+    function(ret) {
+      var result = parseInt(ret.result, null);
+      var teamId = parseInt(ret.teamId, null);
+      utils.myPrint("result = ", result);
+      utils.myPrint("teamId = ", teamId);
+      if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK && teamId > 0) {
+        if(!player.joinTeam(teamId)) {
+          result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
+        }
+      }
+      utils.myPrint("player.teamId = ", player.teamId);
+      next(null, {result: result});
+    });
 };
 

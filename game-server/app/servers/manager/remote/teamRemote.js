@@ -22,11 +22,20 @@ TeamRemote.prototype.canCreateGameCopy = function(args, cb){
   utils.invokeCallback(cb, null, {result : result});
 };
 
+// create a new team
 TeamRemote.prototype.createTeam = function(args, cb) {
 	var playerId = args.playerId;
   utils.myPrint('TeamRemote ~ createTeam is running ...typeof args = ', typeof args);
   utils.myPrint('args = ', args);
 	var ret = teamManager.createTeam(playerId);
+
+  utils.invokeCallback(cb, ret);
+};
+
+//player trys to join first team
+TeamRemote.prototype.joinFirstTeam = function(args, cb){
+  var playerId = args.playerId;
+  var ret = teamManager.joinFirstTeam(playerId);
 
   utils.invokeCallback(cb, ret);
 };

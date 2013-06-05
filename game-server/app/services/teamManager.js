@@ -3,6 +3,7 @@
  */
 var Team = require('../domain/entity/team');
 var consts = require('../consts/consts');
+var utils = require('../util/utils');
 
 var exp = module.exports;
 
@@ -47,5 +48,21 @@ exp.try2DisbandTeam = function(teamObj) {
   if(!teamObj.isTeamHasMember()) {
     delete gTeamObjDict[teamObj.teamId];
   }
+};
+
+exp.joinFirstTeam = function(playerId) {
+  var teamId = 0;
+  var keys = Object.keys(gTeamObjDict);
+  if (keys.length > 0) {
+    teamId = keys[0];
+  }
+  var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
+  var teamObj = gTeamObjDict[teamId];
+  if (teamObj) {
+    result = teamObj.addPlayer(playerId);
+  }
+
+  utils.myPrint("playerIdArray = ", teamObj.playerIdArray);
+  return {result: result, teamId: teamId};
 };
 
