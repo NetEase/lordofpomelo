@@ -122,10 +122,20 @@ module.exports = {
 			NO_POSITION			: -1,	// there is no position
 			ALREADY_IN_TEAM	: -2,	// already in the team
 			IN_OTHER_TEAM		: -3,	// already in other team
-			SYS_ERROR				: -4,	// system error
-		} // return code of trying to join a team
+			SYS_ERROR				: -4	// system error
+		}, // return code of trying to join a team
+		
+		TEAM_TITLE : {
+			MEMBER  : 0,
+			CAPTAIN : 1
+		}, // team member title(member/captain)
+		
+		JOIN_TEAM_REPLY : {
+			REJECT : 0,
+			ACCEPT : 1
+		} // player's replying code
 	},
-
+	
 	/**
 	 * check a entity that whether can be picked.
 	 */

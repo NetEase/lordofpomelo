@@ -4,20 +4,17 @@
 var messageService = require('../../../domain/messageService');
 var logger = require('pomelo-logger').getLogger(__filename);
 var consts = require('../../../consts/consts');
-var teamManager = require('../../../services/teamManager');
+var utils = require('../../../util/utils');
 
-var handler = module.exports;
 
-// team member title(member/captain)
-var TEAM_TITLE = {
-  MEMBER  : 0,
-  CAPTAIN : 1,
+module.exports = function(app) {
+  return new Handler(app);
 };
-// player's replying code
-var JOIN_TEAM_REPLY = {
-  REJECT : 0,
-  ACCEPT : 1,
+
+var Handler = function(app) {
+  this.app = app;
 };
+
 /**
  * Player create a team, and response the result information : success(1)/failed(0)
  *
@@ -26,12 +23,11 @@ var JOIN_TEAM_REPLY = {
  * @param {Function} next
  * @api public
  */
-handler.createTeam = function(msg, session, next) {
+Handler.prototype.createTeam = function(msg, session, next) {
   var area = session.area;
   var playerId = session.get('playerId');
+  utils.myPrint('Handler ~ createTeam is running ... ~ playerId = ', playerId);
   var player = area.getPlayer(playerId);
-
-  var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
 
   if(!player) {
     logger.warn('The request(createTeam) is illegal, the player is null : msg = %j.', msg);
@@ -39,8 +35,26 @@ handler.createTeam = function(msg, session, next) {
     return;
   }
 
-	result = teamManager.createTeam(player, area);
-  next(null, {result : result});
+  // if the player is already in a team, can't join other
+  if(player.teamId !== consts.TEAM.TEAM_ID_NONE) {
+    return;
+  }
+
+  var args = {playerId : playerId};
+	this.app.rpc.manager.teamRemote.createTeam(session, args,
+    function(ret) {
+      var result = parseInt(ret.result, null);
+      var teamId = parseInt(ret.teamId, null);
+      utils.myPrint("result = ", result);
+      utils.myPrint("teamId = ", teamId);
+      if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK && teamId > 0) {
+        if(!player.joinTeam(teamId)) {
+          result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
+        }
+      }
+      utils.myPrint("player.teamId = ", player.teamId);
+      next(null, {result : result});
+    });
 };
 
 /**
@@ -51,7 +65,7 @@ handler.createTeam = function(msg, session, next) {
  * @param {Function} next
  * @api public
  */
-handler.disbandTeam = function(msg, session, next) {
+Handler.prototype.disbandTeam = function(msg, session, next) {
   var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
@@ -64,7 +78,7 @@ handler.disbandTeam = function(msg, session, next) {
     return;
   }
 
-  var teamObj = teamManager.getTeamById(msg.teamId);
+  var teamObj = this.app.rpc.manager.teamRemote.getTeamById(msg.teamId);
   if(!teamObj) {
     logger.warn('The request(disbandTeam) is illegal, the team is null : msg = %j.', msg);
     next(null, {result : result});
@@ -77,7 +91,7 @@ handler.disbandTeam = function(msg, session, next) {
     return;
   }
 
-  result = teamManager.disbandTeamById(msg.teamId, area);
+  result = this.app.rpc.manager.teamRemote.disbandTeamById(msg.teamId, area);
 
   next(null, {result : result});
 };
@@ -90,7 +104,7 @@ handler.disbandTeam = function(msg, session, next) {
  * @param {Function} next
  * @api public
  */
-handler.inviteJoinTeam = function(msg, session, next) {
+Handler.prototype.inviteJoinTeam = function(msg, session, next) {
   var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
@@ -103,7 +117,7 @@ handler.inviteJoinTeam = function(msg, session, next) {
     return;
   }
 
-  var teamObj = teamManager.getTeamById(player.teamId);
+  var teamObj = this.app.rpc.manager.teamRemote.getTeamById(player.teamId);
   if(!teamObj) {
     logger.warn('The request(inviteJoinTeam) is illegal, the team is null : msg = %j.', msg);
     next();
@@ -142,7 +156,7 @@ handler.inviteJoinTeam = function(msg, session, next) {
  * @param {Function} next
  * @api public
  */
-handler.inviteJoinTeamReply = function(msg, session, next) {
+Handler.prototype.inviteJoinTeamReply = function(msg, session, next) {
   var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
@@ -153,7 +167,7 @@ handler.inviteJoinTeamReply = function(msg, session, next) {
     return;
   }
 
-  var teamObj = teamManager.getTeamById(msg.teamId);
+  var teamObj = this.app.rpc.manager.teamRemote.getTeamById(msg.teamId);
   if(!teamObj) {
     logger.warn('The request(inviteJoinTeamReply) is illegal, the team is null : msg = %j.', msg);
     next();
@@ -173,7 +187,7 @@ handler.inviteJoinTeamReply = function(msg, session, next) {
     return;
   }
 
-  if(msg.reply === JOIN_TEAM_REPLY.ACCEPT) {
+  if(msg.reply === consts.TEAM.JOIN_TEAM_REPLY.ACCEPT) {
     var result = teamObj.addPlayer(player, area);
     next(null, {result : result});
   } else {
@@ -194,7 +208,7 @@ handler.inviteJoinTeamReply = function(msg, session, next) {
  * @param {Function} next
  * @api public
  */
-handler.applyJoinTeam = function(msg, session, next) {
+Handler.prototype.applyJoinTeam = function(msg, session, next) {
   var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
@@ -210,7 +224,7 @@ handler.applyJoinTeam = function(msg, session, next) {
     return;
   }
 
-  var teamObj = teamManager.getTeamById(msg.teamId);
+  var teamObj = this.app.rpc.manager.teamRemote.getTeamById(msg.teamId);
   if(!teamObj) {
     logger.warn('The request(applyJoinTeam) is illegal, the team is null : msg = %j.', msg);
     next();
@@ -243,7 +257,7 @@ handler.applyJoinTeam = function(msg, session, next) {
  * @param {Function} next
  * @api public
  */
-handler.applyJoinTeamReply = function(msg, session, next) {
+Handler.prototype.applyJoinTeamReply = function(msg, session, next) {
   var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
@@ -254,7 +268,7 @@ handler.applyJoinTeamReply = function(msg, session, next) {
     return;
   }
 
-  var teamObj = teamManager.getTeamById(msg.teamId);
+  var teamObj = this.app.rpc.manager.teamRemote.getTeamById(msg.teamId);
   if(!teamObj) {
     logger.warn('The request(applyJoinTeamReply) is illegal, the team is null : msg = %j.', msg);
     next();
@@ -279,7 +293,7 @@ handler.applyJoinTeamReply = function(msg, session, next) {
     return;
   }
 
-  if(msg.reply === JOIN_TEAM_REPLY.ACCEPT) {
+  if(msg.reply === consts.TEAM.JOIN_TEAM_REPLY.ACCEPT) {
     var result = teamObj.addPlayer(applicant, area);
     next(null, {result : result});
   } else {
@@ -300,7 +314,7 @@ handler.applyJoinTeamReply = function(msg, session, next) {
  * @param {Function} next
  * @api public
  */
-handler.kickOutOfTeam = function(msg, session, next) {
+Handler.prototype.kickOutOfTeam = function(msg, session, next) {
   var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
@@ -316,7 +330,7 @@ handler.kickOutOfTeam = function(msg, session, next) {
     return;
   }
 
-  var teamObj = teamManager.getTeamById(msg.teamId);
+  var teamObj = this.app.rpc.manager.teamRemote.getTeamById(msg.teamId);
   if(!teamObj) {
     logger.warn('The request(kickOutOfTeam) is illegal, the team is null : msg = %j.', msg);
     next();
@@ -344,7 +358,7 @@ handler.kickOutOfTeam = function(msg, session, next) {
   kickedPlayer.leaveTeam(true);
 
   teamObj.removePlayer(kickedPlayer);
-  teamManager.try2DisbandTeam(teamObj);
+  this.app.rpc.manager.teamRemote.try2DisbandTeam(teamObj);
 
   next();
 };
@@ -357,7 +371,7 @@ handler.kickOutOfTeam = function(msg, session, next) {
  * @param {Function} next
  * @api public
  */
-handler.leaveTeam = function(msg, session, next) {
+Handler.prototype.leaveTeam = function(msg, session, next) {
   var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
@@ -368,7 +382,7 @@ handler.leaveTeam = function(msg, session, next) {
     return;
   }
 
-  var teamObj = teamManager.getTeamById(msg.teamId);
+  var teamObj = this.app.rpc.manager.teamRemote.getTeamById(msg.teamId);
   if(!teamObj) {
     logger.warn('The request(leaveTeam) is illegal, the team is null : msg = %j.', msg);
     next();
@@ -393,7 +407,7 @@ handler.leaveTeam = function(msg, session, next) {
     }
   }
 
-  teamManager.try2DisbandTeam(teamObj);
+  this.app.rpc.manager.teamRemote.try2DisbandTeam(teamObj);
 
   next();
 };
@@ -406,7 +420,7 @@ handler.leaveTeam = function(msg, session, next) {
  * @param {Function} next
  * @api public
  */
-handler.depute2Member = function(msg, session, next) {
+Handler.prototype.depute2Member = function(msg, session, next) {
   var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
@@ -417,7 +431,7 @@ handler.depute2Member = function(msg, session, next) {
     return;
   }
 
-  var teamObj = teamManager.getTeamById(msg.teamId);
+  var teamObj = this.app.rpc.manager.teamRemote.getTeamById(msg.teamId);
   if(!teamObj) {
     logger.warn('The request(depute2Member) is illegal, the team is null : msg = %j.', msg);
     next();
@@ -448,7 +462,7 @@ handler.depute2Member = function(msg, session, next) {
  * @param {Function} next
  * @api public
  */
-handler.chatInTeam = function(msg, session, next) {
+Handler.prototype.chatInTeam = function(msg, session, next) {
   var area = session.area;
   var playerId = session.get('playerId');
   var player = area.getPlayer(playerId);
@@ -459,7 +473,7 @@ handler.chatInTeam = function(msg, session, next) {
     return;
   }
 
-  var teamObj = teamManager.getTeamById(msg.teamId);
+  var teamObj = this.app.rpc.manager.teamRemote.getTeamById(msg.teamId);
   if(!teamObj) {
     logger.warn('The request(chatInTeam) is illegal, the team is null : msg = %j.', msg);
     next();

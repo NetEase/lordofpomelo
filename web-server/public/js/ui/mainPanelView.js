@@ -23,6 +23,9 @@ __resources__["/mainPanelView.js"] = {
     var $level;
     // experience value
     var $exp, $expBar;
+    // team menu
+    var $avatarImg;
+    var $teamMenu, $createTeam, $disbandTeam;
     var inited = false;
 
     var init = function() {
@@ -36,6 +39,11 @@ __resources__["/mainPanelView.js"] = {
       $level = $('#mainPanel .m-player .name span').eq(1);
       $exp = $('#mainPanel .m-asset .pos6 span');
       $expBar = $('#mainPanel .m-asset .icon-ll');
+      $avatarImg = $('#mainPanel .avatar img');
+      $teamMenu = $('#mainPanel .m-player .teamMenu');
+      $createTeam = $('#mainPanel .m-player .teamMenu .menuItem #createTeam');
+      $disbandTeam = $('#mainPanel .m-player .teamMenu .menuItem #disbandTeam');
+
       $li = $('.m-nav li');
 
       initNav();
@@ -47,6 +55,7 @@ __resources__["/mainPanelView.js"] = {
       setHpBar(player.hp, player.maxHp);
       setMpBar(player.mp, player.maxMp);
       setExp(player.experience, player.nextLevelExp);
+      initTeamMenu();
 
       initSkillPanel();
       bindHotkeys();
@@ -131,6 +140,27 @@ __resources__["/mainPanelView.js"] = {
           $expBar.show().css('width',  (val * 100 / val2) + '%');
         }
       }
+    };
+
+    // init team menu
+    var initTeamMenu = function() {
+      $teamMenu.hide();
+      $avatarImg.on('click', function() {
+        $teamMenu.toggle();
+      });
+
+      $createTeam.on('click', function() {
+        console.log('click createTeam ...');
+        // pomelo.request("area.teamHandler.createTeam", {playerId: pomelo.playerId});
+        pomelo.request("area.teamHandler.createTeam");
+        $teamMenu.hide();
+      });
+
+      $disbandTeam.on('click', function() {
+        console.log('click disbandTeam ...');
+        pomelo.request("area.teamHandler.disbandTeam", {playerId: pomelo.playerId});
+        $teamMenu.hide();
+      });
     };
 
     var bindHotkeys = function() {
