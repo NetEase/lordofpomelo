@@ -117,6 +117,10 @@ module.exports = {
 	TEAM : {
 		TEAM_ID_NONE : 0, // player without team(not in any team)
 		PLAYER_ID_NONE : 0, // none player id in a team(placeholder)
+		AREA_ID_NONE : 0, // none area id (placeholder)
+		USER_ID_NONE : 0, // none user id (placeholder)
+		SERVER_ID_NONE : 0, // none server id (placeholder)
+		PLAYER_INFO_NONE : '', // none player info	(placeholder)
 		JOIN_TEAM_RET_CODE : {
 			OK							: 0,	// join ok
 			NO_POSITION			: -1,	// there is no position
@@ -133,7 +137,11 @@ module.exports = {
 		JOIN_TEAM_REPLY : {
 			REJECT : 0,
 			ACCEPT : 1
-		} // player's replying code
+		}, // player's replying code
+
+		// sys return
+		OK : 1,
+		FAILED : 0
 	},
 	
 	/**

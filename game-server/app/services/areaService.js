@@ -90,11 +90,11 @@ exp.changeArea = function(args, session, cb) {
           var params = {areaId : args.target};
           params.id = playerId;
 
-          // if(area.type === AreaType.INSTANCE_SINGLE){
-          //   params.id = playerId;
-          // }else{
-          //   params.id = player.groupId;
-          // }
+          if(area.type === AreaType.INSTANCE_SINGLE) {
+             params.id = playerId;
+           } else {
+             params.id = player.teamId;
+           }
 
           //Get target instance
           app.rpc.manager.instanceRemote.create(session, params, function(err, result){

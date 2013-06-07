@@ -13,14 +13,14 @@ var gTeamObjDict = {};
 var gTeamId = 0;
 
 // create new team, add the player(captain) to the team
-exp.createTeam = function(playerId) {
+exp.createTeam = function(data) {
   var teamObj = new Team(++gTeamId);
-  var result = teamObj.addPlayer(playerId);
+  var result = teamObj.addPlayer(data);
   if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK) {
-    teamObj.setCaptainId(playerId);
+    teamObj.setCaptainId(data.playerId);
     gTeamObjDict[teamObj.teamId] = teamObj;
   }
-	return {result : result, teamId : teamObj.teamId};
+	return {result: result, teamId: teamObj.teamId};
 };
 
 exp.getTeamById = function(teamId) {
@@ -28,17 +28,17 @@ exp.getTeamById = function(teamId) {
 	return teamObj || null;
 };
 
-exp.disbandTeamById = function(teamId) {
-  var result = false;
+exp.disbandTeamById = function(playerId, teamId) {
   var teamObj = gTeamObjDict[teamId];
-	if(!teamObj) {
-		return result;
+	if(!teamObj || !teamObj.isCaptainById(playerId)) {
+    return {result: consts.TEAM.FAILED};
 	}
-  result = teamObj.disbandTeam();
-  if(result) {
+
+  var ret = teamObj.disbandTeam();
+  if(ret.result) {
     delete gTeamObjDict[teamId];
   }
-	return result;
+	return ret;
 };
 
 // check member num when a member leaves the team,
@@ -50,7 +50,7 @@ exp.try2DisbandTeam = function(teamObj) {
   }
 };
 
-exp.joinFirstTeam = function(playerId) {
+exp.joinFirstTeam = function(data) {
   var teamId = 0;
   var keys = Object.keys(gTeamObjDict);
   if (keys.length > 0) {
@@ -59,7 +59,7 @@ exp.joinFirstTeam = function(playerId) {
   var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
   var teamObj = gTeamObjDict[teamId];
   if (teamObj) {
-    result = teamObj.addPlayer(playerId);
+    result = teamObj.addPlayer(data);
   }
 
   utils.myPrint("playerIdArray = ", teamObj.playerIdArray);

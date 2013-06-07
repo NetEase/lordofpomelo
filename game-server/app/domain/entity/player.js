@@ -513,7 +513,7 @@ Player.prototype.toJSON4Team = function(isCaptain) {
 
 // player joins a team
 Player.prototype.joinTeam = function(teamId) {
-	if(teamId === consts.TEAM.TEAM_ID_NONE) {
+	if(!teamId || teamId === consts.TEAM.TEAM_ID_NONE) {
 		return false;
 	}
 	this.teamId = teamId;
@@ -521,19 +521,11 @@ Player.prototype.joinTeam = function(teamId) {
 };
 
 // player leaves the team
-Player.prototype.leaveTeam = function(isSendMsg, isVoluntary) {
-	isSendMsg = isSendMsg || false;
-	isVoluntary = isVoluntary || false;
+Player.prototype.leaveTeam = function() {
 	if(this.teamId === consts.TEAM.TEAM_ID_NONE)
 		return false;
 	this.teamId = consts.TEAM.TEAM_ID_NONE;
-	if(isSendMsg) {
-		// notify the client of leaving the team
-		var msg = {
-			isVoluntary: isVoluntary,
-		};
-		// messageService.pushMessageToPlayer({uid : this.userId, sid : this.serverId}, "onMyselfLeaveTeam", msg);
-	}
+	return true;
 };
 
 // check if player in a team

@@ -19,23 +19,34 @@ TeamRemote.prototype.canCreateGameCopy = function(args, cb){
     result = teamObj.isCaptainById(playerId);
 	}
 
-  utils.invokeCallback(cb, null, {result : result});
+  utils.invokeCallback(cb, null, result);
 };
 
 // create a new team
 TeamRemote.prototype.createTeam = function(args, cb) {
-	var playerId = args.playerId;
   utils.myPrint('TeamRemote ~ createTeam is running ...typeof args = ', typeof args);
   utils.myPrint('args = ', args);
-	var ret = teamManager.createTeam(playerId);
+  utils.myPrint('playerInfo = ', JSON.stringify(args.playerInfo));
+	var ret = teamManager.createTeam(args);
 
-  utils.invokeCallback(cb, ret);
+  utils.invokeCallback(cb, null, ret);
 };
 
-//player trys to join first team
+// player trys to join first team
 TeamRemote.prototype.joinFirstTeam = function(args, cb){
   var playerId = args.playerId;
   var ret = teamManager.joinFirstTeam(playerId);
 
-  utils.invokeCallback(cb, ret);
+  utils.invokeCallback(cb, null, ret);
+};
+
+// disband a team
+TeamRemote.prototype.disbandTeamById = function(args, cb){
+  var playerId = args.playerId;
+  var teamId = args.teamId;
+  var ret = teamManager.disbandTeamById(playerId, teamId);
+
+  utils.myPrint('TeamRemote ~ disbandTeamById is running ... typeof idArray = ', typeof ret.idArray);
+  utils.myPrint('TeamRemote ~ disbandTeamById is running ... idArray = ', ret.idArray);
+  utils.invokeCallback(cb, null, ret);
 };

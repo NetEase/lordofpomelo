@@ -6,6 +6,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 	var mainPanel = require('mainPanelView');
 	var dialogPanel = require('dialogPanelView');
 	var EntityType = require('consts').EntityType;
+	var TeamConsts = require('consts').Team;
 	var SkillEffect = require('skillEffect');
 	var utils = require('utils');
 	var dataApi = require('dataApi');
@@ -107,15 +108,31 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 		});
 
 		/**
-		 * Handle 'become team captain' message
+		 * Handle 'teamId change' message
 		 * @param data {Object}
 		 */
-		pomelo.on('onBecomeTeamCaptain', function(data) {
+		pomelo.on('onTeamIdChange', function(data) {
+			var player = app.getCurPlayer();
+			if(data.teamId >= TeamConsts.TEAM_ID_NONE && !player.isCaptain) {
+				player.teamId = data.teamId;
+				var isShow = data.teamId > TeamConsts.TEAM_ID_NONE ? true : false;
+				player.getSprite().showTeamMemberFlag(isShow);
+			}
+			console.log("OnTeamIdChange ~ playerId, teamId = ", player.teamId);
+		});
+
+		/**
+		 * Handle 'team captain status change' message
+		 * @param data {Object}
+		 */
+		pomelo.on('onTeamCaptainStatusChange', function(data) {
 			var area = app.getCurArea();
 			var player = area.getPlayer(data.playerId);
-			player.getSprite().showCaptainFlag(true);
+			var isShow = data.teamId > TeamConsts.TEAM_ID_NONE ? true : false;
+			player.getSprite().showCaptainFlag(isShow);
 			player.teamId = data.teamId;
-			console.log("player.teamId = ", player.teamId);
+			player.isCaptain = isShow;
+			console.log("OnTeamCaptainStatusChange ~ playerId, teamId = ", data.playerId, player.teamId);
 		});
 
 		pomelo.on('onPathCheckout', function(data) {
@@ -157,7 +174,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			var tasks = app.getCurPlayer().curTasks;
 			var completeTask = tasks[data.taskId];
 			completeTask.setState(1);
-			mainPanel.notify('The task has been completed！');
+			mainPanel.notify('The task has been completed!');
 		});
 
 		/**

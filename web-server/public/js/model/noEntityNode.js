@@ -89,6 +89,30 @@ __resources__["/noEntityNode.js"] = {meta: {mimetype: "application/javascript"},
 	};
 
 	/**
+	 * Create team member flag node
+	 *
+	 * @param {Object} data
+	 * @return {Object}
+	 * @api public
+	 */
+	NoEntityNode.createTeamMemberFlagNode = function(data) {
+		var flagModel = new model.RectModel({
+			x: 0,
+			y: 0,
+			width: 30,
+			height: 30,
+			fill: 'rgb(0,0,255)',
+			stroke:'rgb(0,0,255)'
+		});
+
+		var flagNode = data.scene.createNode({
+			model: flagModel
+		});
+
+		return flagNode;
+	};
+
+	/**
 	 * Create captain flag node
 	 *
 	 * @param {Object} data

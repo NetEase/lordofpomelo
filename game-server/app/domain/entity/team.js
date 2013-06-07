@@ -14,7 +14,7 @@ function Team(teamId){
 	this.captainId = 0;
 	this.playerIdArray = new Array(MAX_MEMBER_NUM);
 	// team channel, push msg within the team
-	// this.channel = null;
+	this.channel = null;
 
 	var _this = this; 
 	// constructor
@@ -22,14 +22,16 @@ function Team(teamId){
 		_this.teamId = teamId;
 		var arr = _this.playerIdArray;
 		for(var i = 0; i < arr.length; ++i) {
-			arr[i] = consts.TEAM.PLAYER_ID_NONE;
+			arr[i] = {playerId: consts.TEAM.PLAYER_ID_NONE, areaId: consts.TEAM.AREA_ID_NONE,
+				userId: consts.TEAM.USER_ID_NONE, serverId: consts.TEAM.SERVER_ID_NONE,
+				playerInfo: consts.TEAM.PLAYER_INFO_NONE};
 		}
+		_this.createChannel();
 	};
 
 	init();
 }
 
-/*
 Team.prototype.createChannel = function() {
 	if(this.channel) {
 		return this.channel;
@@ -41,75 +43,80 @@ Team.prototype.createChannel = function() {
 	return null;
 };
 
-Team.prototype.addPlayer2Channel = function(player) {
+Team.prototype.addPlayer2Channel = function(data) {
 	if(!this.channel) {
 		return false;
 	}
-	if(player) {
-		this.channel.add(player.userId, player.serverId);
+	if(data) {
+		this.channel.add(data.userId, data.serverId);
 		return true;
 	}
 	return false;
 };
 
-Team.prototype.removePlayerFromChannel = function(player) {
+Team.prototype.removePlayerFromChannel = function(data) {
 	if(!this.channel) {
 		return false;
 	}
-	if(player) {
-		this.channel.leave(player.userId, player.serverId);
+	if(data) {
+		this.channel.leave(data.userId, data.serverId);
 		return true;
 	}
 	return false;
 };
-*/
 
-function doAddPlayer(teamObj, playerId) {
-	utils.myPrint('playerId = ', playerId);
-	if (!playerId) {
-		return false;
-	}
+function doAddPlayer(teamObj, data) {
+	utils.myPrint('data = ', data);
+	utils.myPrint('playerInfo= ', data.playerInfo);
 	var arr = teamObj.playerIdArray;
 	for(var i in arr) {
-		if(arr[i] === consts.TEAM.PLAYER_ID_NONE) {
-			arr[i] = playerId;
+		if(arr[i].playerId === consts.TEAM.PLAYER_ID_NONE && arr[i].areaId === consts.TEAM.AREA_ID_NONE) {
+			utils.myPrint('arr[i] = ', JSON.stringify(arr[i]));
+			arr[i] = {playerId: data.playerId, areaId: data.areaId,
+				userId: data.userId, serverId: data.serverId, playerInfo: data.playerInfo};
 			return true;
 		}
 	}
 	return false;
 }
 
-Team.prototype.addPlayer = function(playerId) {
-	if(playerId <= 0) {
+Team.prototype.addPlayer = function(data) {
+	if (!data || typeof data !== 'object') {
 		return consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
 	}
+	for (var i in data) {
+		if(!data[i] || data[i] <= 0) {
+			return consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
+		}	
+	}
+
 	if(!this.isTeamHasPosition()) {
 		return consts.TEAM.JOIN_TEAM_RET_CODE.NO_POSITION;
 	}
 
-	if(this.isPlayerInTeam(playerId)) {
+	if(this.isPlayerInTeam(data.playerId)) {
 		return consts.TEAM.JOIN_TEAM_RET_CODE.ALREADY_IN_TEAM;
 	}
 
-	if(!doAddPlayer(this, playerId)) {
+	if(!doAddPlayer(this, data)) {
 		return consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
 	}
 
-	if(!this.isPlayerInTeam(playerId)) {
+	if(!this.isPlayerInTeam(data.playerId)) {
+		// utils.myPrint('SYS_ERROR ~ 1');
 		return consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
 	}
 
-	/*
-	if(!this.addPlayer2Channel(playerId)) {
+	if(!this.addPlayer2Channel(data)) {
+		// utils.myPrint('SYS_ERROR ~ 2');
 		return consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
 	}
-	*/
 
 	if(this.playerNum < MAX_MEMBER_NUM) {
 		this.playerNum++;
 	}
 
-	// this.pushInfo2Everyone();
+	this.pushInfo2Everyone();
 
 	return consts.TEAM.JOIN_TEAM_RET_CODE.OK;
 };
@@ -143,8 +150,8 @@ Team.prototype.isTeamHasMember = function() {
 Team.prototype.getFirstPlayerId = function() {
 	var arr = this.playerIdArray;
 	for(var i in arr) {
-		if(arr[i] !== consts.TEAM.PLAYER_ID_NONE) {
-			return arr[i];
+		if(arr[i].playerId !== consts.TEAM.PLAYER_ID_NONE && arr[i].areaId !== consts.TEAM.AREA_ID_NONE) {
+			return arr[i].playerId;
 		}
 	}
 	return consts.TEAM.PLAYER_ID_NONE;
@@ -154,29 +161,23 @@ Team.prototype.getFirstPlayerId = function() {
 Team.prototype.isPlayerInTeam = function(playerId) {
 	var arr = this.playerIdArray;
 	for(var i in arr) {
-		if(arr[i] !== consts.TEAM.PLAYER_ID_NONE && arr[i] === playerId) {
+		if(arr[i].playerId !== consts.TEAM.PLAYER_ID_NONE && arr[i].playerId === playerId) {
 			return true;
 		}
 	}
 	return false;
 };
 
-/*
 // push the team members' info to everyone
 Team.prototype.pushInfo2Everyone = function() {
 	var infoObjDict = {};
 	var arr = this.playerIdArray;
 	for(var i in arr) {
-		if(arr[i] === consts.TEAM.PLAYER_ID_NONE) {
+		var playerId = arr[i].playerId;
+		if(playerId === consts.TEAM.PLAYER_ID_NONE) {
 			continue;
 		}
-		var player = area.getPlayer(arr[i]);
-		if(!player) {
-			continue;
-		}
-
-		var infoObj = player.toJSON4Team(this.captainId === i);
-		infoObjDict[i] = infoObj;
+		infoObjDict[playerId] = arr[i].playerInfo;
 	}
 
 	if(Object.keys(infoObjDict).length > 0) {
@@ -195,52 +196,45 @@ Team.prototype.pushLeaveMsg2Else = function(leavePlayerId) {
 	this.channel.pushMessage('onTeammateLeaveTeam', msg, null);
 	return true;
 };
-*/
 
 // disband the team
 Team.prototype.disbandTeam = function() {
-	// under some conditions, the team can't be disbanded
-	// return false;
-	// this.channel.pushMessage('onDisbandTeam', {}, null);
+	this.channel.pushMessage('onDisbandTeam', {}, null);
+	var idArray = [];
 	var arr = this.playerIdArray;
 	for(var i in arr) {
-		if(arr[i] === consts.TEAM.PLAYER_ID_NONE) {
+		if(arr[i].playerId === consts.TEAM.PLAYER_ID_NONE || arr[i].areaId === consts.TEAM.AREA_ID_NONE) {
 			continue;
 		}
-		/*
-		var tmpPlayer = area.getPlayer(arr[i]);
-		tmpPlayer.leaveTeam();
-		*/
+		idArray.push(arr[i]);
 	}
-	return true;
+	return {result: consts.TEAM.OK, idArray: idArray};
 };
 
 // remove a player from the team
 Team.prototype.removePlayer = function(playerId) {
 	var arr = this.playerIdArray;
 	for(var i in arr) {
-		if(arr[i] !== consts.TEAM.PLAYER_ID_NONE && arr[i] === playerId) {
-			arr[i] = consts.TEAM.PLAYER_ID_NONE;
+		if(arr[i].playerId !== consts.TEAM.PLAYER_ID_NONE && arr[i].playerId === playerId) {
+			this.removePlayerFromChannel(arr[i]);
+			arr[i] = {playerId: consts.TEAM.PLAYER_ID_NONE, areaId: consts.TEAM.AREA_ID_NONE,
+				userId: consts.TEAM.USER_ID_NONE, serverId: consts.TEAM.SERVER_ID_NONE,
+				playerInfo: consts.TEAM.PLAYER_INFO_NONE};
 			break;
 		}
 	}
-
-	// this.removePlayerFromChannel(player);
 	
 	if(this.playerNum > 0) {
 		this.playerNum--;
 	}
 
-	/*
 	if(this.isTeamHasMember()) {
 		this.pushLeaveMsg2Else(playerId);
 	}
-	*/
 
 	return true;
 };
 
-/*
 // push msg to all of the team members 
 Team.prototype.pushChatMsg2All = function(content) {
 	if(!this.channel) {
@@ -252,7 +246,6 @@ Team.prototype.pushChatMsg2All = function(content) {
 	this.channel.pushMessage('onChatInTeam', msg, null);
 	return true;
 };
-*/
 
 ///////////////////////////////////////////////////////
 /**

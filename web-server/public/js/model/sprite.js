@@ -29,8 +29,9 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 		this.mapNode = this.entity.map.node; 
 		this.curNode = null;
 		this.bloodbarNode = null;
-		// team captain flag
+		// team captain/member flag
 		this.captainFlagNode = null;
+		this.teamMemberFlagNode = null;
 
 		this.moveAnimation = null;
 		this.attackAnimation = null;
@@ -135,7 +136,9 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			this.entity.scene.addNode(this.bloodbarNode, frameNode);
 			this.entity.scene.addNode(darkBloodBarNode, frameNode);
 			this.captainFlagNode = noEntityNode.createCaptainFlagNode({scene: this.entity.scene});
+			this.teamMemberFlagNode = noEntityNode.createTeamMemberFlagNode({scene: this.entity.scene});
 			this.entity.scene.addNode(this.captainFlagNode, frameNode);
+			this.entity.scene.addNode(this.teamMemberFlagNode, frameNode);
 			var json = new Animation({
 				kindId: this.entity.kindId,
 				type: this.entity.type,
@@ -149,7 +152,9 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			darkBloodBarNode.exec('translate', -26, -height, NodeCoordinate.BLACK_BLOOD_NODE);
 			this.nameNode.exec('translate',0 ,-(height + 10), NodeCoordinate.NAME_NODE);
 			this.captainFlagNode.exec('translate', -30, -height+10, NodeCoordinate.CAPTAIN_FLAG_NODE);
+			this.teamMemberFlagNode.exec('translate', -30, -height+10, NodeCoordinate.TEAM_MEMBER_FLAG_NODE);
 			this.showCaptainFlag(false);
+			this.showTeamMemberFlag(false);
 			this.reduceBlood();
 		}
 		if (this.entity.kindId === consts.SpecialCharacter.Angle) {
@@ -350,7 +355,14 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 		this.attackAnimation = attackAnimation;
 	};
 
-	// show/hide the captain flag
+	// show/hide the team member flag
+	Sprite.prototype.showTeamMemberFlag = function(isShow) {
+		isShow = isShow || false;
+		var x = isShow ? 1 : 0;
+		this.teamMemberFlagNode.exec('scale', {x: x, y: 1});
+	};
+
+	// show/hide the team captain flag
 	Sprite.prototype.showCaptainFlag = function(isShow) {
 		isShow = isShow || false;
 		var x = isShow ? 1 : 0;
