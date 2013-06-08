@@ -42,7 +42,7 @@ Handler.prototype.createTeam = function(msg, session, next) {
   }
 
   var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
-  var playerInfo = player.toJSON4Team();
+  var playerInfo = player.toJSON4Team(true);
   var args = {playerId: playerId, areaId: area.areaId,
     userId: player.userId, serverId: player.serverId, playerInfo: playerInfo};
 	this.app.rpc.manager.teamRemote.createTeam(session, args,
@@ -561,11 +561,14 @@ Handler.prototype.joinFirstTeam = function(msg, session, next) {
     return;
   }
 
-  var args = {playerId : playerId};
+  var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
+  var playerInfo = player.toJSON4Team();
+  var args = {playerId: playerId, areaId: area.areaId,
+    userId: player.userId, serverId: player.serverId, playerInfo: playerInfo};
   this.app.rpc.manager.teamRemote.joinFirstTeam(session, args,
     function(err, ret) {
-      var result = parseInt(ret.result, null);
-      var teamId = parseInt(ret.teamId, null);
+      result = ret.result;
+      var teamId = ret.teamId;
       utils.myPrint("result = ", result);
       utils.myPrint("teamId = ", teamId);
       if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK && teamId > 0) {
@@ -577,7 +580,7 @@ Handler.prototype.joinFirstTeam = function(msg, session, next) {
         }
       }
       utils.myPrint("player.teamId = ", player.teamId);
-      next(null, {result: result});
     });
+  next(null, {result: result});
 };
 

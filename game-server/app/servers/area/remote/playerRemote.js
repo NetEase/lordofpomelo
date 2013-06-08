@@ -29,6 +29,7 @@ exp.playerLeave = function(args, cb){
 
 	if(!player){
 		logger.warn('player not in the area ! %j', args);
+		return;
 	}
 	var sceneId = player.areaId;
 

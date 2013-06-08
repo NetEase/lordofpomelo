@@ -34,8 +34,7 @@ TeamRemote.prototype.createTeam = function(args, cb) {
 
 // player trys to join first team
 TeamRemote.prototype.joinFirstTeam = function(args, cb){
-  var playerId = args.playerId;
-  var ret = teamManager.joinFirstTeam(playerId);
+  var ret = teamManager.joinFirstTeam(args);
 
   utils.invokeCallback(cb, null, ret);
 };

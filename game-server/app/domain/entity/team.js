@@ -71,9 +71,10 @@ function doAddPlayer(teamObj, data) {
 	var arr = teamObj.playerIdArray;
 	for(var i in arr) {
 		if(arr[i].playerId === consts.TEAM.PLAYER_ID_NONE && arr[i].areaId === consts.TEAM.AREA_ID_NONE) {
-			utils.myPrint('arr[i] = ', JSON.stringify(arr[i]));
+			data.playerInfo.teamId = teamObj.teamId;
 			arr[i] = {playerId: data.playerId, areaId: data.areaId,
 				userId: data.userId, serverId: data.serverId, playerInfo: data.playerInfo};
+			utils.myPrint('arr[i] = ', JSON.stringify(arr[i]));
 			return true;
 		}
 	}
@@ -103,12 +104,10 @@ Team.prototype.addPlayer = function(data) {
 	}
 
 	if(!this.isPlayerInTeam(data.playerId)) {
-		// utils.myPrint('SYS_ERROR ~ 1');
 		return consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
 	}
 
 	if(!this.addPlayer2Channel(data)) {
-		// utils.myPrint('SYS_ERROR ~ 2');
 		return consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
 	}
 
