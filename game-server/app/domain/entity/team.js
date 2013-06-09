@@ -12,7 +12,7 @@ function Team(teamId){
 	this.teamId = 0;
 	this.playerNum = 0;
 	this.captainId = 0;
-	this.playerIdArray = new Array(MAX_MEMBER_NUM);
+	this.playerDataArray = new Array(MAX_MEMBER_NUM);
 	// team channel, push msg within the team
 	this.channel = null;
 
@@ -20,7 +20,7 @@ function Team(teamId){
 	// constructor
 	var init = function()	{
 		_this.teamId = teamId;
-		var arr = _this.playerIdArray;
+		var arr = _this.playerDataArray;
 		for(var i = 0; i < arr.length; ++i) {
 			arr[i] = {playerId: consts.TEAM.PLAYER_ID_NONE, areaId: consts.TEAM.AREA_ID_NONE,
 				userId: consts.TEAM.USER_ID_NONE, serverId: consts.TEAM.SERVER_ID_NONE,
@@ -68,7 +68,7 @@ Team.prototype.removePlayerFromChannel = function(data) {
 function doAddPlayer(teamObj, data) {
 	utils.myPrint('data = ', data);
 	utils.myPrint('playerInfo= ', data.playerInfo);
-	var arr = teamObj.playerIdArray;
+	var arr = teamObj.playerDataArray;
 	for(var i in arr) {
 		if(arr[i].playerId === consts.TEAM.PLAYER_ID_NONE && arr[i].areaId === consts.TEAM.AREA_ID_NONE) {
 			data.playerInfo.teamId = teamObj.teamId;
@@ -115,7 +115,7 @@ Team.prototype.addPlayer = function(data) {
 		this.playerNum++;
 	}
 
-	this.pushInfo2Everyone();
+	this.updateTeamInfo();
 
 	return consts.TEAM.JOIN_TEAM_RET_CODE.OK;
 };
@@ -147,7 +147,7 @@ Team.prototype.isTeamHasMember = function() {
 
 // the first real player_id in the team
 Team.prototype.getFirstPlayerId = function() {
-	var arr = this.playerIdArray;
+	var arr = this.playerDataArray;
 	for(var i in arr) {
 		if(arr[i].playerId !== consts.TEAM.PLAYER_ID_NONE && arr[i].areaId !== consts.TEAM.AREA_ID_NONE) {
 			return arr[i].playerId;
@@ -158,7 +158,7 @@ Team.prototype.getFirstPlayerId = function() {
 
 // check if a player in the team
 Team.prototype.isPlayerInTeam = function(playerId) {
-	var arr = this.playerIdArray;
+	var arr = this.playerDataArray;
 	for(var i in arr) {
 		if(arr[i].playerId !== consts.TEAM.PLAYER_ID_NONE && arr[i].playerId === playerId) {
 			return true;
@@ -168,9 +168,9 @@ Team.prototype.isPlayerInTeam = function(playerId) {
 };
 
 // push the team members' info to everyone
-Team.prototype.pushInfo2Everyone = function() {
+Team.prototype.updateTeamInfo = function() {
 	var infoObjDict = {};
-	var arr = this.playerIdArray;
+	var arr = this.playerDataArray;
 	for(var i in arr) {
 		var playerId = arr[i].playerId;
 		if(playerId === consts.TEAM.PLAYER_ID_NONE) {
@@ -198,21 +198,22 @@ Team.prototype.pushLeaveMsg2Else = function(leavePlayerId) {
 
 // disband the team
 Team.prototype.disbandTeam = function() {
-	this.channel.pushMessage('onDisbandTeam', {}, null);
-	var idArray = [];
-	var arr = this.playerIdArray;
+	var dataArray = [], playerIdArray = [];
+	var arr = this.playerDataArray;
 	for(var i in arr) {
 		if(arr[i].playerId === consts.TEAM.PLAYER_ID_NONE || arr[i].areaId === consts.TEAM.AREA_ID_NONE) {
 			continue;
 		}
-		idArray.push(arr[i]);
+		dataArray.push(arr[i]);
+		playerIdArray.push(arr[i].playerId);
 	}
-	return {result: consts.TEAM.OK, idArray: idArray};
+	this.channel.pushMessage('onDisbandTeam', playerIdArray, null);
+	return {result: consts.TEAM.OK, dataArray: dataArray};
 };
 
 // remove a player from the team
 Team.prototype.removePlayer = function(playerId) {
-	var arr = this.playerIdArray;
+	var arr = this.playerDataArray;
 	for(var i in arr) {
 		if(arr[i].playerId !== consts.TEAM.PLAYER_ID_NONE && arr[i].playerId === playerId) {
 			this.removePlayerFromChannel(arr[i]);

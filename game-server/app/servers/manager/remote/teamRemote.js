@@ -45,7 +45,6 @@ TeamRemote.prototype.disbandTeamById = function(args, cb){
   var teamId = args.teamId;
   var ret = teamManager.disbandTeamById(playerId, teamId);
 
-  utils.myPrint('TeamRemote ~ disbandTeamById is running ... typeof idArray = ', typeof ret.idArray);
-  utils.myPrint('TeamRemote ~ disbandTeamById is running ... idArray = ', ret.idArray);
+  utils.myPrint('TeamRemote ~ disbandTeamById is running ... dataArray = ', ret.dataArray);
   utils.invokeCallback(cb, null, ret);
 };

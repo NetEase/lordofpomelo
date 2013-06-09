@@ -62,7 +62,6 @@ exp.joinFirstTeam = function(data) {
     result = teamObj.addPlayer(data);
   }
 
-  utils.myPrint("playerIdArray = ", teamObj.playerIdArray);
   return {result: result, teamId: teamId};
 };
 

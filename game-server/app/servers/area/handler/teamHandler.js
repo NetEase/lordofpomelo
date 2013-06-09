@@ -103,30 +103,16 @@ Handler.prototype.disbandTeam = function(msg, session, next) {
     function(err, ret) {
       result = parseInt(ret.result, null);
       utils.myPrint("1 ~ result = ", result);
-      utils.myPrint("idArray = ", ret.idArray);
+      utils.myPrint("dataArray = ", ret.dataArray);
       if(result === consts.TEAM.OK) {
-        for (var i in ret.idArray) {
-          var tmpPlayerId = ret.idArray[i];
+        for (var i in ret.dataArray) {
+          var tmpPlayerId = ret.dataArray[i].playerId;
           var tmpPlayer = area.getPlayer(tmpPlayerId);
           if (!tmpPlayer || !tmpPlayer.leaveTeam()) {
             result = consts.TEAM.FAILED;
-          } else {
-            var infoObj = {playerId: tmpPlayerId, teamId: tmpPlayer.teamId};
-            messageService.pushMessageToPlayer({uid: tmpPlayer.userId, sid: tmpPlayer.serverId}, 'onTeamIdChange', infoObj);
           }
           utils.myPrint("tmpPlayer.teamId = ", tmpPlayer.teamId);
         }
-      }
-      utils.myPrint("2 ~ result = ", result);
-      utils.myPrint("player.teamId = ", player.teamId);
-      if(result === consts.TEAM.OK) {
-        var ignoreList = {};
-        messageService.pushMessageByAOI(area, {
-          route: 'onTeamCaptainStatusChange',
-          playerId: playerId,
-          teamId: player.teamId},
-          {x: player.x, y: player.y}, ignoreList
-        );
       }
     });
 

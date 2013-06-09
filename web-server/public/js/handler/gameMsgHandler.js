@@ -107,6 +107,29 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			sprite.movePath(path, speed);
 		});
 
+
+		/**
+		 * Handle 'disband team' message
+		 * @param data {Object}
+		 */
+		pomelo.on('onDisbandTeam', function(playerIdArray) {
+			var area = app.getCurArea();
+			console.log("OnDisbandTeam ~ playerIdArray = ", JSON.stringify(playerIdArray));
+			for (var i in playerIdArray) {
+				var playerId = playerIdArray[i];
+				var player = area.getPlayer(playerId);
+				if (!player) {
+					continue;
+				}
+				player.getSprite().showCaptainFlag(false);
+				player.getSprite().showTeamMemberFlag(false);
+				player.teamId = TeamConsts.TEAM_ID_NONE;
+				player.isCaptain = false;
+				console.log("OnDisbandTeam ~ playerId = ", player.id);
+				console.log("OnDisbandTeam ~ entityId = ", player.entityId);
+			}
+		});
+
 		/**
 		 * Handle 'update team' message
 		 * @param data {Object}
@@ -131,22 +154,6 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 				console.log("OnUpdateTeam ~ playerId, teamId = ", playerId, player.teamId);
 			}
 		});
-
-		/**
-		 * Handle 'teamId change' message
-		 * @param data {Object}
-		 */
-		/*
-		pomelo.on('onTeamIdChange', function(data) {
-			var player = app.getCurPlayer();
-			if(data.teamId >= TeamConsts.TEAM_ID_NONE && !player.isCaptain) {
-				player.teamId = data.teamId;
-				var isShow = data.teamId > TeamConsts.TEAM_ID_NONE ? true : false;
-				player.getSprite().showTeamMemberFlag(isShow);
-			}
-			console.log("OnTeamIdChange ~ playerId, teamId = ", player.teamId);
-		});
-		*/
 
 		/**
 		 * Handle 'team captain status change' aoi message
