@@ -25,7 +25,7 @@ __resources__["/mainPanelView.js"] = {
     var $exp, $expBar;
     // team menu
     var $avatarImg;
-    var $teamMenu, $createTeam, $joinFirstTeam, $disbandTeam;
+    var $teamMenu, $createTeam, $joinFirstTeam, $leaveTeam, $disbandTeam;
     var inited = false;
 
     var init = function() {
@@ -44,6 +44,7 @@ __resources__["/mainPanelView.js"] = {
       $createTeam = $('#mainPanel .m-player .teamMenu .menuItem #createTeam');
       $joinFirstTeam = $('#mainPanel .m-player .teamMenu .menuItem #joinFirstTeam');
       $disbandTeam = $('#mainPanel .m-player .teamMenu .menuItem #disbandTeam');
+      $leaveTeam = $('#mainPanel .m-player .teamMenu .menuItem #leaveTeam');
 
       $li = $('.m-nav li');
 
@@ -168,6 +169,14 @@ __resources__["/mainPanelView.js"] = {
           {playerId: pomelo.playerId, teamId: player.teamId});
         $teamMenu.hide();
       });
+
+      $leaveTeam.on('click', function() {
+        console.log('click leaveTeam ...');
+        pomelo.request("area.teamHandler.leaveTeam",
+          {playerId: pomelo.playerId, teamId: player.teamId});
+        $teamMenu.hide();
+      });
+      
     };
 
     var bindHotkeys = function() {

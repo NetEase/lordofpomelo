@@ -107,6 +107,24 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			sprite.movePath(path, speed);
 		});
 
+		/**
+		 * Handle 'teammate leave team' message
+		 * @param data {Object}
+		 */
+		pomelo.on('onTeammateLeaveTeam', function(data) {
+			var area = app.getCurArea();
+			console.log("OnTeammateLeaveTeam ~ 1 ~ playerId = ", data.playerId);
+			var player = area.getPlayer(data.playerId);
+			if (!player) {
+				return;
+			}
+			player.getSprite().showCaptainFlag(false);
+			player.getSprite().showTeamMemberFlag(false);
+			player.teamId = TeamConsts.TEAM_ID_NONE;
+			player.isCaptain = false;
+			console.log("OnTeammateLeaveTeam ~ 2 ~ playerId = ", player.id);
+			console.log("OnTeammateLeaveTeam ~ entityId = ", player.entityId);
+		});
 
 		/**
 		 * Handle 'disband team' message

@@ -122,7 +122,7 @@ module.exports = {
 		SERVER_ID_NONE : 0, // none server id (placeholder)
 		PLAYER_INFO_NONE : '', // none player info	(placeholder)
 		JOIN_TEAM_RET_CODE : {
-			OK							: 0,	// join ok
+			OK							: 1,	// join ok
 			NO_POSITION			: -1,	// there is no position
 			ALREADY_IN_TEAM	: -2,	// already in the team
 			IN_OTHER_TEAM		: -3,	// already in other team

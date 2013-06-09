@@ -51,10 +51,10 @@ exp.try2DisbandTeam = function(teamObj) {
 };
 
 exp.joinFirstTeam = function(data) {
-  var teamId = 0;
+  var teamId = consts.TEAM.TEAM_ID_NONE;
   var keys = Object.keys(gTeamObjDict);
   if (keys.length > 0) {
-    teamId = keys[0];
+    teamId = parseInt(keys[0], null);
   }
   var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
   var teamObj = gTeamObjDict[teamId];
@@ -63,5 +63,21 @@ exp.joinFirstTeam = function(data) {
   }
 
   return {result: result, teamId: teamId};
+};
+
+exp.leaveTeamById = function(playerId, teamId, cb) {
+  var teamObj = gTeamObjDict[teamId];
+  if(!teamObj) {
+    return {result: consts.TEAM.FAILED};
+  }
+
+  var _this = this;
+  teamObj.removePlayer(playerId, function(err, ret) {
+    if (ret.toDisband) {
+      _this.disbandTeamById(playerId, teamId);
+      delete ret.toDisband;
+    }
+    utils.invokeCallback(cb, null, ret);
+  });
 };
 

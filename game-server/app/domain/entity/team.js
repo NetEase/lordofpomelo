@@ -184,39 +184,45 @@ Team.prototype.updateTeamInfo = function() {
 	}
 };
 
-// notify the rest of team members of the left player
-Team.prototype.pushLeaveMsg2Else = function(leavePlayerId) {
+// notify the members of the left player
+Team.prototype.pushLeaveMsg2All = function(leavePlayerId, cb) {
+	var ret = {result: consts.TEAM.OK};
 	if(!this.channel) {
-		return false;
+		cb(null, ret);
+		return;
 	}
 	var msg = {
-		leavePlayerId : leavePlayerId
+		playerId: leavePlayerId
 	};
-	this.channel.pushMessage('onTeammateLeaveTeam', msg, null);
-	return true;
+	this.channel.pushMessage('onTeammateLeaveTeam', msg, function(err, _) {
+		cb(null, ret);
+	});
 };
 
 // disband the team
 Team.prototype.disbandTeam = function() {
-	var dataArray = [], playerIdArray = [];
+	var playerIdArray = [];
 	var arr = this.playerDataArray;
 	for(var i in arr) {
 		if(arr[i].playerId === consts.TEAM.PLAYER_ID_NONE || arr[i].areaId === consts.TEAM.AREA_ID_NONE) {
 			continue;
 		}
-		dataArray.push(arr[i]);
 		playerIdArray.push(arr[i].playerId);
 	}
-	this.channel.pushMessage('onDisbandTeam', playerIdArray, null);
-	return {result: consts.TEAM.OK, dataArray: dataArray};
+	if (playerIdArray.length > 0) {
+		this.channel.pushMessage('onDisbandTeam', playerIdArray, null);
+	}
+
+	return {result: consts.TEAM.OK, playerIdArray: playerIdArray};
 };
 
 // remove a player from the team
-Team.prototype.removePlayer = function(playerId) {
+Team.prototype.removePlayer = function(playerId, cb) {
 	var arr = this.playerDataArray;
+	var tmpData = null;
 	for(var i in arr) {
 		if(arr[i].playerId !== consts.TEAM.PLAYER_ID_NONE && arr[i].playerId === playerId) {
-			this.removePlayerFromChannel(arr[i]);
+			tmpData = utils.clone(arr[i]);
 			arr[i] = {playerId: consts.TEAM.PLAYER_ID_NONE, areaId: consts.TEAM.AREA_ID_NONE,
 				userId: consts.TEAM.USER_ID_NONE, serverId: consts.TEAM.SERVER_ID_NONE,
 				playerInfo: consts.TEAM.PLAYER_INFO_NONE};
@@ -224,15 +230,29 @@ Team.prototype.removePlayer = function(playerId) {
 		}
 	}
 	
-	if(this.playerNum > 0) {
-		this.playerNum--;
-	}
+  if(this.isPlayerInTeam(playerId)) {
+		var ret = {result: consts.TEAM.FAILED};
+	  utils.invokeCallback(cb, null, ret);
+		return;
+  }
 
-	if(this.isTeamHasMember()) {
-		this.pushLeaveMsg2Else(playerId);
-	}
+  var _this = this;
+  // async network operation
+	this.pushLeaveMsg2All(playerId, function(err, ret) {
+	  // if the captain leaves the team, disband the team
+	  if (_this.isCaptainById(playerId)) {
+			ret = _this.disbandTeam();
+			ret.toDisband = true;
+	  } else {
+			_this.removePlayerFromChannel(tmpData);
+	  }
 
-	return true;
+		if(_this.playerNum > 0) {
+			_this.playerNum--;
+		}
+
+	  utils.invokeCallback(cb, null, ret);
+	});
 };
 
 // push msg to all of the team members 

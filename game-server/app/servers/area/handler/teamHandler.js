@@ -53,18 +53,19 @@ Handler.prototype.createTeam = function(msg, session, next) {
       var teamId = ret.teamId;
       utils.myPrint("result = ", result);
       utils.myPrint("teamId = ", teamId);
-      if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK && teamId > 0) {
+      if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK && teamId > consts.TEAM.TEAM_ID_NONE) {
         if(!player.joinTeam(teamId)) {
           result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
         }
       }
       utils.myPrint("player.teamId = ", player.teamId);
-      if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK && player.teamId > 0) {
+      if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK && player.teamId > consts.TEAM.TEAM_ID_NONE) {
           var ignoreList = {};
           messageService.pushMessageByAOI(area, {
             route: 'onTeamCaptainStatusChange', playerId: playerId, teamId: player.teamId},
             {x: player.x, y: player.y}, ignoreList
           );
+          player.isCaptain = true;
        }
     });
 
@@ -92,7 +93,7 @@ Handler.prototype.disbandTeam = function(msg, session, next) {
     return;
   }
 
-  if(player.teamId <= 0 || msg.teamId !== player.teamId) {
+  if(player.teamId <= consts.TEAM.TEAM_ID_NONE || msg.teamId !== player.teamId) {
     logger.warn('The request(disbandTeam) is illegal, the teamId is wrong : msg = %j.', msg);
     next(null, {result : result});
     return;   
@@ -101,17 +102,25 @@ Handler.prototype.disbandTeam = function(msg, session, next) {
   var args = {playerId: playerId, teamId: player.teamId};
   this.app.rpc.manager.teamRemote.disbandTeamById(session, args,
     function(err, ret) {
-      result = parseInt(ret.result, null);
+      result = ret.result;
       utils.myPrint("1 ~ result = ", result);
-      utils.myPrint("dataArray = ", ret.dataArray);
+      utils.myPrint("playerIdArray = ", ret.playerIdArray);
       if(result === consts.TEAM.OK) {
-        for (var i in ret.dataArray) {
-          var tmpPlayerId = ret.dataArray[i].playerId;
+        for (var i in ret.playerIdArray) {
+          var tmpPlayerId = ret.playerIdArray[i];
           var tmpPlayer = area.getPlayer(tmpPlayerId);
           if (!tmpPlayer || !tmpPlayer.leaveTeam()) {
             result = consts.TEAM.FAILED;
           }
           utils.myPrint("tmpPlayer.teamId = ", tmpPlayer.teamId);
+        }
+        if (player.isCaptain) {
+          var ignoreList = {};
+          messageService.pushMessageByAOI(area, {
+            route: 'onTeamCaptainStatusChange', playerId: playerId, teamId: player.teamId},
+            {x: player.x, y: player.y}, ignoreList
+            );
+          player.isCaptain = false;
         }
       }
     });
@@ -405,40 +414,57 @@ Handler.prototype.leaveTeam = function(msg, session, next) {
   var player = area.getPlayer(playerId);
 
   if(!player) {
-    logger.warn('The request(leaveTeam) is illegal, the player is null : msg = %j.', msg);
+    logger.warn('The request(leaveTeam) is illegal, the player is null: msg = %j.', msg);
     next();
     return;
   }
 
-  // var teamObj = this.app.rpc.manager.teamRemote.getTeamById(msg.teamId);
-  var teamObj = null;
-  if(!teamObj) {
-    logger.warn('The request(leaveTeam) is illegal, the team is null : msg = %j.', msg);
-    next();
-    return;
+  var result = consts.TEAM.FAILED;
+
+  utils.myPrint("player.teamId = ", player.teamId);
+  utils.myPrint("typeof player.teamId = ", typeof player.teamId);
+
+  utils.myPrint("msg.teamId = ", msg.teamId);
+  utils.myPrint("typeof msg.teamId = ", typeof msg.teamId);
+
+  if(player.teamId <= consts.TEAM.TEAM_ID_NONE || player.teamId !== msg.teamId) {
+    logger.warn('The request(leaveTeam) is illegal, the teamId is wrong: msg = %j.', msg);
+    next(null, {result: result});
+    return;   
   }
 
-  if(!teamObj.isPlayerInTeam(msg.kickedPlayerId)) {
-    next();
-    return;
-  }
+  var args = {playerId: playerId, teamId: player.teamId};
+  this.app.rpc.manager.teamRemote.leaveTeamById(session, args,
+    function(err, ret) {
+      result = ret.result;
+      utils.myPrint("1 ~ result = ", result);
+      if(result === consts.TEAM.OK && !player.leaveTeam()) {
+        result = consts.TEAM.FAILED;
+      }
+      if (player.isCaptain) {
+        var ignoreList = {};
+        messageService.pushMessageByAOI(area, {
+          route: 'onTeamCaptainStatusChange', playerId: playerId, teamId: player.teamId},
+          {x: player.x, y: player.y}, ignoreList
+          );
+        player.isCaptain = false;
+      }
+      utils.myPrint("teamId = ", player.teamId);
+      // for disbanding the team        
+      if(result === consts.TEAM.OK && !!ret.playerIdArray && ret.playerIdArray.length > 0) {
+        for (var i in ret.playerIdArray) {
+          var tmpPlayerId = ret.playerIdArray[i];
+          var tmpPlayer = area.getPlayer(tmpPlayerId);
+          if (!tmpPlayer || !tmpPlayer.leaveTeam()) {
+            result = consts.TEAM.FAILED;
+          }
+          utils.myPrint("tmpPlayerId = ", tmpPlayerId);
+          utils.myPrint("tmpPlayer.teamId = ", tmpPlayer.teamId);
+        }
+      }
+    });
 
-  player.leaveTeam();
-
-  teamObj.removePlayer(player);
-
-  // if the captain leaves the team,
-  // depute the captain to the next member
-  if(!teamObj.isCaptainById(playerId)) {
-    var firstPlayerId = teamObj.getFirstPlayerId();
-    if(firstPlayerId !== consts.TEAM.PLAYER_ID_NONE) {
-      teamObj.setCaptainId(firstPlayerId);
-    }
-  }
-
-  // this.app.rpc.manager.teamRemote.try2DisbandTeam(teamObj);
-
-  next();
+  next(null, {result: result});
 };
 
 /**
@@ -544,6 +570,8 @@ Handler.prototype.joinFirstTeam = function(msg, session, next) {
 
   // if the player is already in a team, can't join other
   if(player.teamId !== consts.TEAM.TEAM_ID_NONE) {
+    logger.warn('The request(joinFirstTeam) is illegal, the player is already in a team : msg = %j.', msg);
+    next();
     return;
   }
 
@@ -557,7 +585,7 @@ Handler.prototype.joinFirstTeam = function(msg, session, next) {
       var teamId = ret.teamId;
       utils.myPrint("result = ", result);
       utils.myPrint("teamId = ", teamId);
-      if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK && teamId > 0) {
+      if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK && teamId > consts.TEAM.TEAM_ID_NONE) {
         if(!player.joinTeam(teamId)) {
           result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
         } else {
