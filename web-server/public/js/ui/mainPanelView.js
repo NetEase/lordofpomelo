@@ -153,26 +153,26 @@ __resources__["/mainPanelView.js"] = {
 
       $createTeam.on('click', function() {
         console.log('click createTeam ...');
-        pomelo.request("area.teamHandler.createTeam");
+        pomelo.notify("area.teamHandler.createTeam");
         $teamMenu.hide();
       });
 
       $joinFirstTeam.on('click', function() {
         console.log('click joinFirstTeam ...');
-        pomelo.request("area.teamHandler.joinFirstTeam");
+        pomelo.notify("area.teamHandler.joinFirstTeam");
         $teamMenu.hide();
       });
 
       $disbandTeam.on('click', function() {
         console.log('click disbandTeam ...');
-        pomelo.request("area.teamHandler.disbandTeam",
+        pomelo.notify("area.teamHandler.disbandTeam",
           {playerId: pomelo.playerId, teamId: player.teamId});
         $teamMenu.hide();
       });
 
       $leaveTeam.on('click', function() {
         console.log('click leaveTeam ...');
-        pomelo.request("area.teamHandler.leaveTeam",
+        pomelo.notify("area.teamHandler.leaveTeam",
           {playerId: pomelo.playerId, teamId: player.teamId});
         $teamMenu.hide();
       });

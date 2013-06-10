@@ -67,9 +67,9 @@ Handler.prototype.createTeam = function(msg, session, next) {
           );
           player.isCaptain = true;
        }
-    });
 
-  next(null, {result: result});
+     next();
+    });
 };
 
 /**
