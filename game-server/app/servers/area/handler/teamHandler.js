@@ -45,7 +45,7 @@ Handler.prototype.createTeam = function(msg, session, next) {
   var playerInfo = player.toJSON4Team(true);
   var args = {playerId: playerId, areaId: area.areaId,
     userId: player.userId, serverId: player.serverId, playerInfo: playerInfo};
-	this.app.rpc.manager.teamRemote.createTeam(session, args,
+    this.app.rpc.manager.teamRemote.createTeam(session, args,
     function(err, ret) {
       utils.myPrint("ret.result = ", ret.result);
       utils.myPrint("typeof ret.result = ", typeof ret.result);
@@ -95,8 +95,8 @@ Handler.prototype.disbandTeam = function(msg, session, next) {
 
   if(player.teamId <= consts.TEAM.TEAM_ID_NONE || msg.teamId !== player.teamId) {
     logger.warn('The request(disbandTeam) is illegal, the teamId is wrong : msg = %j.', msg);
-    next(null, {result : result});
-    return;   
+    next();
+    return;
   }
 
   var args = {playerId: playerId, teamId: player.teamId};
@@ -125,7 +125,7 @@ Handler.prototype.disbandTeam = function(msg, session, next) {
       }
     });
 
-  next(null, {result : result});
+  next();
 };
 
 /**
@@ -223,7 +223,7 @@ Handler.prototype.inviteJoinTeamReply = function(msg, session, next) {
 
   if(msg.reply === consts.TEAM.JOIN_TEAM_REPLY.ACCEPT) {
     var result = teamObj.addPlayer(player, area);
-    next(null, {result : result});
+    next();
   } else {
     // push tmpMsg to the inviter(the captain) that the invitee reject to join the team
     var tmpMsg = {
@@ -331,7 +331,7 @@ Handler.prototype.applyJoinTeamReply = function(msg, session, next) {
 
   if(msg.reply === consts.TEAM.JOIN_TEAM_REPLY.ACCEPT) {
     var result = teamObj.addPlayer(applicant, area);
-    next(null, {result : result});
+    next();
   } else {
     // push tmpMsg to the applicant that the capatain rejected
     var tmpMsg = {
@@ -429,8 +429,8 @@ Handler.prototype.leaveTeam = function(msg, session, next) {
 
   if(player.teamId <= consts.TEAM.TEAM_ID_NONE || player.teamId !== msg.teamId) {
     logger.warn('The request(leaveTeam) is illegal, the teamId is wrong: msg = %j.', msg);
-    next(null, {result: result});
-    return;   
+    next();
+    return;
   }
 
   var args = {playerId: playerId, teamId: player.teamId};
@@ -450,7 +450,7 @@ Handler.prototype.leaveTeam = function(msg, session, next) {
         player.isCaptain = false;
       }
       utils.myPrint("teamId = ", player.teamId);
-      // for disbanding the team        
+      // for disbanding the team
       if(result === consts.TEAM.OK && !!ret.playerIdArray && ret.playerIdArray.length > 0) {
         for (var i in ret.playerIdArray) {
           var tmpPlayerId = ret.playerIdArray[i];
@@ -464,7 +464,7 @@ Handler.prototype.leaveTeam = function(msg, session, next) {
       }
     });
 
-  next(null, {result: result});
+  next();
 };
 
 /**
@@ -588,13 +588,10 @@ Handler.prototype.joinFirstTeam = function(msg, session, next) {
       if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK && teamId > consts.TEAM.TEAM_ID_NONE) {
         if(!player.joinTeam(teamId)) {
           result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
-        } else {
-          var infoObj = {playerId: playerId, teamId: player.teamId};
-          messageService.pushMessageToPlayer({uid: player.userId, sid: player.serverId}, 'onTeamIdChange', infoObj);
         }
       }
       utils.myPrint("player.teamId = ", player.teamId);
     });
-  next(null, {result: result});
+  next();
 };
 

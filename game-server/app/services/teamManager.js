@@ -20,25 +20,25 @@ exp.createTeam = function(data) {
     teamObj.setCaptainId(data.playerId);
     gTeamObjDict[teamObj.teamId] = teamObj;
   }
-	return {result: result, teamId: teamObj.teamId};
+    return {result: result, teamId: teamObj.teamId};
 };
 
 exp.getTeamById = function(teamId) {
   var teamObj = gTeamObjDict[teamId];
-	return teamObj || null;
+    return teamObj || null;
 };
 
 exp.disbandTeamById = function(playerId, teamId) {
   var teamObj = gTeamObjDict[teamId];
-	if(!teamObj || !teamObj.isCaptainById(playerId)) {
+    if(!teamObj || !teamObj.isCaptainById(playerId)) {
     return {result: consts.TEAM.FAILED};
-	}
+    }
 
   var ret = teamObj.disbandTeam();
   if(ret.result) {
     delete gTeamObjDict[teamId];
   }
-	return ret;
+    return ret;
 };
 
 // check member num when a member leaves the team,
