@@ -27,6 +27,11 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 				pomelo.areaId = data.target;
 				pomelo.request("area.playerHandler.enterScene",{uid:pomelo.uid, playerId: pomelo.playerId, areaId: pomelo.areaId}, function(msg) {
 					app.init(msg);
+					var area = app.getCurArea();
+					var player = area.getCurPlayer();
+					player.teamId = pomelo.teamId;
+					console.log("1 ~ onChangeArea ~ playerId, teamId = ", player.id, player.teamId);
+					console.log("2 ~ onChangeArea ~ playerId, teamId = ", pomelo.playerId, pomelo.teamId);
 				});
 			});
 		});
@@ -122,6 +127,9 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			player.getSprite().showTeamMemberFlag(false);
 			player.teamId = TeamConsts.TEAM_ID_NONE;
 			player.isCaptain = false;
+			if (data.playerId === pomelo.playerId) {
+				pomelo.teamId = player.teamId;
+			}
 			console.log("OnTeammateLeaveTeam ~ 2 ~ playerId = ", player.id);
 			console.log("OnTeammateLeaveTeam ~ entityId = ", player.entityId);
 		});
@@ -142,6 +150,9 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 				player.getSprite().showCaptainFlag(false);
 				player.getSprite().showTeamMemberFlag(false);
 				player.teamId = TeamConsts.TEAM_ID_NONE;
+				if (playerId === pomelo.playerId) {
+					pomelo.teamId = player.teamId;
+				}
 				player.isCaptain = false;
 				console.log("OnDisbandTeam ~ playerId = ", player.id);
 				console.log("OnDisbandTeam ~ entityId = ", player.entityId);
@@ -169,6 +180,9 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 				player.getSprite().showTeamMemberFlag(isShow);
 				player.teamId = playerInfo.teamId;
 				player.isCaptain = playerInfo.isCaptain;
+				if (playerId === pomelo.playerId) {
+					pomelo.teamId = player.teamId;
+				}
 				console.log("OnUpdateTeam ~ playerId, teamId = ", playerId, player.teamId);
 			}
 		});
@@ -184,6 +198,9 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			player.getSprite().showCaptainFlag(isShow);
 			player.teamId = data.teamId;
 			player.isCaptain = isShow;
+			if (data.playerId === pomelo.playerId) {
+				pomelo.teamId = player.teamId;
+			}
 			console.log("OnTeamCaptainStatusChange ~ playerId, teamId = ", data.playerId, player.teamId);
 		});
 

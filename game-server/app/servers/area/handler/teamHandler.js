@@ -568,6 +568,7 @@ Handler.prototype.joinFirstTeam = function(msg, session, next) {
 		return;
 	}
 
+
 	// if the player is already in a team, can't join other
 	if(player.teamId !== consts.TEAM.TEAM_ID_NONE) {
 		logger.warn('The request(joinFirstTeam) is illegal, the player is already in a team : msg = %j.', msg);

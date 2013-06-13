@@ -11,6 +11,7 @@ var pomelo = require('pomelo');
 var consts = require('../../../consts/consts');
 var dataApi = require('../../../util/dataApi');
 var channelUtil = require('../../../util/channelUtil');
+var utils = require('../../../util/utils');
 
 var handler = module.exports;
 
@@ -27,6 +28,8 @@ handler.enterScene = function(msg, session, next) {
   var area = session.area;
   var playerId = session.get('playerId');
   var areaId = session.get('areaId');
+	var teamId = session.get('teamId') || consts.TEAM.TEAM_ID_NONE;
+	utils.myPrint("1 ~ GetPlayerAllInfo teamId = ", teamId);
 
   userDao.getPlayerAllInfo(playerId, function(err, player) {
     if (err || !player) {
@@ -40,6 +43,8 @@ handler.enterScene = function(msg, session, next) {
     }
 
     player.serverId = session.frontendId;
+	  player.teamId = teamId;
+	  utils.myPrint("2 ~ GetPlayerAllInfo player.teamId = ", player.teamId);
 
     pomelo.app.rpc.chat.chatRemote.add(session, session.uid,
     player.name, channelUtil.getAreaChannelName(areaId), null);

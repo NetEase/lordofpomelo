@@ -57,7 +57,7 @@ __resources__["/mainPanelView.js"] = {
 			setHpBar(player.hp, player.maxHp);
 			setMpBar(player.mp, player.maxMp);
 			setExp(player.experience, player.nextLevelExp);
-			initTeamMenu(player);
+			initTeamMenu();
 
 			initSkillPanel();
 			bindHotkeys();
@@ -145,7 +145,7 @@ __resources__["/mainPanelView.js"] = {
 		};
 
 		// init team menu
-		var initTeamMenu = function(player) {
+		var initTeamMenu = function() {
 			$teamMenu.hide();
 			$avatarImg.on('click', function() {
 				$teamMenu.toggle();
@@ -167,8 +167,9 @@ __resources__["/mainPanelView.js"] = {
 				console.log('click disbandTeam ...');
 				pomelo.notify("area.teamHandler.disbandTeam", {
 					playerId: pomelo.playerId,
-					teamId: player.teamId
+					teamId: pomelo.teamId
 				});
+				console.log('disbandTeam ~ pomelo.teamId = ', pomelo.teamId);
 				$teamMenu.hide();
 			});
 
@@ -176,8 +177,9 @@ __resources__["/mainPanelView.js"] = {
 				console.log('click leaveTeam ...');
 				pomelo.notify("area.teamHandler.leaveTeam", {
 					playerId: pomelo.playerId,
-					teamId: player.teamId
+					teamId: pomelo.teamId
 				});
+				console.log('leaveTeam ~ pomelo.teamId = ', pomelo.teamId);
 				$teamMenu.hide();
 			});
 
