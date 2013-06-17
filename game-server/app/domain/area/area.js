@@ -9,6 +9,7 @@ var aoiManager = require('pomelo-aoi');
 var eventManager = require('./../event/eventManager');
 var aoiEventManager = require('./../aoi/aoiEventManager');
 var EntityType = require('../../consts/consts').EntityType;
+var utils = require('../../util/utils');
 var Timer = require('./timer');
 var logger = require('pomelo-logger').getLogger(__filename);
 
@@ -143,6 +144,9 @@ Instance.prototype.addEntity = function(e) {
     users[e.userId] = e.id;
 
     this.playerNum++;
+	  utils.myPrint('e = ', JSON.stringify(e));
+	  utils.myPrint('e.teamId = ', JSON.stringify(e.teamId));
+	  utils.myPrint('e.isCaptain = ', JSON.stringify(e.isCaptain));
   }else if(e.type === EntityType.MOB) {
     this.aiManager.addCharacters([e]);
 

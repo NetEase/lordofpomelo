@@ -344,7 +344,9 @@ Player.prototype.strip = function() {
 		hitRate: this.hitRate,
 		dodgeRate: this.dodgeRate,
 		nextLevelExp: this.nextLevelExp,
-		skillPoint: this.skillPoint
+		skillPoint: this.skillPoint,
+		teamId: this.teamId,
+		isCaptain: (this.isCaptain ? 1 : 0)
 	};
 };
 
@@ -485,7 +487,9 @@ Player.prototype.toJSON = function() {
 		level: this.level,
 		walkSpeed: this.walkSpeed,
 		areaId: this.areaId,
-		range: this.range
+		range: this.range,
+		teamId: this.teamId,
+		isCaptain: (this.isCaptain ? 1 : 0)
 	};
 };
 
@@ -493,11 +497,10 @@ Player.prototype.toJSON = function() {
  * Parse String to json for team member.
  * It covers object's method
  *
- * @param {String} data
  * @return {Object}
  * @api public
  */
-Player.prototype.toJSON4Team = function(isCaptain) {
+Player.prototype.toJSON4Team = function() {
 	return {
 		id: this.id,
 		name: this.name,
@@ -507,7 +510,7 @@ Player.prototype.toJSON4Team = function(isCaptain) {
 		maxMp: this.maxMp,
 		level: this.level,
 		teamId: this.teamId,
-		isCaptain: isCaptain || false,
+		isCaptain: (this.isCaptain ? 1 : 0)
 	};
 };
 

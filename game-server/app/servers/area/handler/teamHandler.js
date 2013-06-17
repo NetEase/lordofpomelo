@@ -42,7 +42,7 @@ Handler.prototype.createTeam = function(msg, session, next) {
 	}
 
 	var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
-	var playerInfo = player.toJSON4Team(true);
+	var playerInfo = player.toJSON4Team();
 	var args = {playerId: playerId, areaId: area.areaId,
 		userId: player.userId, serverId: player.serverId, playerInfo: playerInfo};
 		this.app.rpc.manager.teamRemote.createTeam(session, args,
@@ -60,13 +60,17 @@ Handler.prototype.createTeam = function(msg, session, next) {
 			}
 			utils.myPrint("player.teamId = ", player.teamId);
 			if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK && player.teamId > consts.TEAM.TEAM_ID_NONE) {
-					var ignoreList = {};
-					messageService.pushMessageByAOI(area, {
-						route: 'onTeamCaptainStatusChange', playerId: playerId, teamId: player.teamId},
-						{x: player.x, y: player.y}, ignoreList
-					);
-					player.isCaptain = true;
-			 }
+				player.isCaptain = true;
+				var ignoreList = {};
+				messageService.pushMessageByAOI(area,
+					{
+						route: 'onTeamCaptainStatusChange',
+						playerId: playerId,
+						teamId: player.teamId,
+						isCaptain: player.isCaptain
+					},
+					{x: player.x, y: player.y}, ignoreList);
+			}
 
 		 next();
 		});
@@ -115,12 +119,16 @@ Handler.prototype.disbandTeam = function(msg, session, next) {
 					utils.myPrint("tmpPlayer.teamId = ", tmpPlayer.teamId);
 				}
 				if (player.isCaptain) {
-					var ignoreList = {};
-					messageService.pushMessageByAOI(area, {
-						route: 'onTeamCaptainStatusChange', playerId: playerId, teamId: player.teamId},
-						{x: player.x, y: player.y}, ignoreList
-						);
 					player.isCaptain = false;
+					var ignoreList = {};
+					messageService.pushMessageByAOI(area,
+						{
+							route: 'onTeamCaptainStatusChange',
+							playerId: playerId,
+							teamId: player.teamId,
+							isCaptain: player.isCaptain
+						},
+						{x: player.x, y: player.y}, ignoreList);
 				}
 			}
 		});
@@ -175,7 +183,7 @@ Handler.prototype.inviteJoinTeam = function(msg, session, next) {
 		return;
 	}
 
-	var infoObj = player.toJSON4Team(true);
+	var infoObj = player.toJSON4Team();
 
 	// send invitation to the invitee
 	messageService.pushMessageToPlayer({uid : invitee.userId, sid : invitee.serverId}, 'onInviteJoinTeam', infoObj);
@@ -442,12 +450,16 @@ Handler.prototype.leaveTeam = function(msg, session, next) {
 				result = consts.TEAM.FAILED;
 			}
 			if (player.isCaptain) {
-				var ignoreList = {};
-				messageService.pushMessageByAOI(area, {
-					route: 'onTeamCaptainStatusChange', playerId: playerId, teamId: player.teamId},
-					{x: player.x, y: player.y}, ignoreList
-					);
 				player.isCaptain = false;
+				var ignoreList = {};
+				messageService.pushMessageByAOI(area,
+					{
+						route: 'onTeamCaptainStatusChange',
+						playerId: playerId,
+						teamId: player.teamId,
+						isCaptain: player.isCaptain
+					},
+					{x: player.x, y: player.y}, ignoreList);
 			}
 			utils.myPrint("teamId = ", player.teamId);
 			// for disbanding the team

@@ -12,6 +12,7 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 
 	var logic = require("logic");
 	var Level = require('level').Level;
+	var TeamConsts = require('consts').Team;
 	var pomelo = window.pomelo;
 	var isStopped = false;
 
@@ -142,33 +143,47 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 		entity.map = this.map;
 		var e;
 		switch(entity.type){
-			case 'player':
-			entity.walkSpeed = parseInt(entity.walkSpeed);
-			if (entity.id == pomelo.playerId) {
-				var player = pomelo.player;
-				player.scene = this.scene;
-				player.map = this.map;
-				e = new CurPlayer(player);
-			} else {
-				e = new Player(entity);
+			case 'player': {
+				entity.walkSpeed = parseInt(entity.walkSpeed);
+				if (entity.id == pomelo.playerId) {
+					var player = pomelo.player;
+					player.scene = this.scene;
+					player.map = this.map;
+					e = new CurPlayer(player);
+				} else {
+					e = new Player(entity);
+					console.log('AddEntity ~ teamId = ', entity.teamId);
+					console.log('AddEntity ~ isCaptain = ', entity.isCaptain);
+					if (entity.teamId > TeamConsts.TEAM_ID_NONE) {
+						if (entity.isCaptain) {
+							e.getSprite().showCaptainFlag(true);
+						} else {
+							e.getSprite().showTeamMemberFlag(true);
+						}
+					}
+				}
+				this.players[e.id] = e.entityId;
 			}
-			this.players[e.id] = e.entityId;
-			break;
-			case 'npc':
-				e = new NPC(entity);
 				break;
-			case 'mob':
-			entity.walkSpeed = parseInt(entity.walkSpeed);
-			e = new Mob(entity);
-			break;
-			case 'item':
-			e = new Item(entity);
-			break;
-			case 'equipment':
-			e = new Equipment(entity);
-			break;
+			case 'npc': {
+				e = new NPC(entity);
+			}
+				break;
+			case 'mob': {
+				entity.walkSpeed = parseInt(entity.walkSpeed);
+				e = new Mob(entity);
+			}
+				break;
+			case 'item': {
+				e = new Item(entity);
+			}
+				break;
+			case 'equipment': {
+				e = new Equipment(entity);
+			}
+				break;
 			default:
-			return false;
+				return false;
 		}
 
 		var eNode = e.getSprite().curNode;

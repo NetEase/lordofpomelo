@@ -68,7 +68,7 @@ exp.changeArea = function(args, session, cb) {
     player.areaId = target;
     player.x = pos.x;
     player.y = pos.y;
-	  utils.myPrint("1 ~ player.teamId = ", player.teamId);
+		utils.myPrint("1 ~ player.teamId = ", player.teamId);
     userDao.updatePlayer(player, function(err, success) {
       if(err || !success) {
         err = err || 'update player failed!';
@@ -76,13 +76,14 @@ exp.changeArea = function(args, session, cb) {
       } else {
         session.set('areaId', target);
         session.set('serverId', app.get('areaIdMap')[target]);
-	      session.set('teamId', player.teamId);
+				session.set('teamId', player.teamId);
+				session.set('isCaptain', player.isCaptain);
         session.pushAll(function(err) {
           if(err){
             logger.error('Change area for session service failed! error is : %j', err.stack);
           }
           utils.invokeCallback(cb, null);
-	        utils.myPrint("2 ~ player.teamId = ", player.teamId);
+					utils.myPrint("2 ~ player.teamId = ", player.teamId);
         });
       }
     });

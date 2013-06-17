@@ -29,6 +29,7 @@ handler.enterScene = function(msg, session, next) {
   var playerId = session.get('playerId');
   var areaId = session.get('areaId');
 	var teamId = session.get('teamId') || consts.TEAM.TEAM_ID_NONE;
+	var isCaptain = session.get('isCaptain');
 	utils.myPrint("1 ~ GetPlayerAllInfo teamId = ", teamId);
 
   userDao.getPlayerAllInfo(playerId, function(err, player) {
@@ -43,8 +44,8 @@ handler.enterScene = function(msg, session, next) {
     }
 
     player.serverId = session.frontendId;
-	  player.teamId = teamId;
-	  utils.myPrint("2 ~ GetPlayerAllInfo player.teamId = ", player.teamId);
+		player.teamId = teamId;
+		player.isCaptain = isCaptain;
 
     pomelo.app.rpc.chat.chatRemote.add(session, session.uid,
     player.name, channelUtil.getAreaChannelName(areaId), null);
@@ -69,8 +70,11 @@ handler.enterScene = function(msg, session, next) {
           weightMap: map.collisions
         }
     };
+		// utils.myPrint("1.5 ~ GetPlayerAllInfo data = ", JSON.stringify(data));
 		next(null, data);
 
+		utils.myPrint("2 ~ GetPlayerAllInfo player.teamId = ", player.teamId);
+		utils.myPrint("2 ~ GetPlayerAllInfo player.isCaptain = ", player.isCaptain);
 		if (!area.addEntity(player)) {
       logger.error("Add player to area faild! areaId : " + player.areaId);
       next(new Error('fail to add user into area'), {
@@ -158,7 +162,7 @@ handler.move = function(msg, session, next) {
 			player.isMoving = true;
 			//Update state
 			if(player.x !== path[0].x || player.y !== path[0].y){
-				  timer.updateObject({id:player.entityId, type:consts.EntityType.PLAYER}, {x : player.x, y : player.y}, path[0]);
+					timer.updateObject({id:player.entityId, type:consts.EntityType.PLAYER}, {x : player.x, y : player.y}, path[0]);
           timer.updateWatcher({id:player.entityId, type:consts.EntityType.PLAYER}, {x : player.x, y : player.y}, path[0], player.range, player.range);
 			}
 

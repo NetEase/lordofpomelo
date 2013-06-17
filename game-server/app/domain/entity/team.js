@@ -177,6 +177,8 @@ Team.prototype.updateTeamInfo = function() {
 			continue;
 		}
 		infoObjDict[playerId] = arr[i].playerInfo;
+
+		utils.myPrint("typeof playerId = ", typeof playerId);
 	}
 
 	if(Object.keys(infoObjDict).length > 0) {

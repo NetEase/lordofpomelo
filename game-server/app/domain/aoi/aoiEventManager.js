@@ -1,6 +1,7 @@
 var messageService = require('../messageService');
 var EntityType = require('../../consts/consts').EntityType;
 var logger = require('pomelo-logger').getLogger(__filename);
+var utils = require('../../util/utils');
 
 var exp = module.exports;
 
@@ -286,6 +287,12 @@ function onAddEntity(uids, entity) {
 	entities[entity.type] = [entity];
 
   messageService.pushMessageByUids(uids, 'onAddEntities', entities);
+
+	if (entity.type === EntityType.PLAYER) {
+		utils.myPrint('entities = ', JSON.stringify(entities));
+		utils.myPrint('teamId = ', JSON.stringify(entities[entity.type][0].teamId));
+		utils.myPrint('isCaptain = ', JSON.stringify(entities[entity.type][0].isCaptain));
+	}
 }
 
 /**
