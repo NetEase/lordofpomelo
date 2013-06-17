@@ -32,8 +32,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 					if (player) {
 						player.teamId = pomelo.teamId;
 						player.isCaptain = pomelo.isCaptain;
-						console.log("1 ~ onChangeArea ~ playerId, teamId = ", player.id, player.teamId);
-						console.log("2 ~ onChangeArea ~ playerId, teamId = ", pomelo.playerId, pomelo.teamId);
+						console.log("onChangeArea ~ playerId, teamId, isCaptain = ", player.id, player.teamId, player.isCaptain);
 						if (player.teamId > TeamConsts.TEAM_ID_NONE) {
 							player.getSprite().showCaptainFlag(player.isCaptain);
 							player.getSprite().showTeamMemberFlag(!player.isCaptain);
@@ -138,7 +137,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			player.getSprite().showCaptainFlag(false);
 			player.getSprite().showTeamMemberFlag(false);
 			player.teamId = TeamConsts.TEAM_ID_NONE;
-			player.isCaptain = false;
+			player.isCaptain = TeamConsts.NO;
 			if (data.playerId === pomelo.playerId) {
 				pomelo.teamId = player.teamId;
 				pomelo.isCaptain = player.isCaptain;
@@ -163,7 +162,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 				player.getSprite().showCaptainFlag(false);
 				player.getSprite().showTeamMemberFlag(false);
 				player.teamId = TeamConsts.TEAM_ID_NONE;
-				player.isCaptain = false;
+				player.isCaptain = TeamConsts.NO;
 				if (playerId === pomelo.playerId) {
 					pomelo.teamId = player.teamId;
 					pomelo.isCaptain = player.isCaptain;
@@ -211,11 +210,11 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 		pomelo.on('onTeamCaptainStatusChange', function(data) {
 			var area = app.getCurArea();
 			var player = area.getPlayer(data.playerId);
-			var isShow = data.teamId > TeamConsts.TEAM_ID_NONE && data.isCaptain ? true : false;
+			var isShow = (data.teamId > TeamConsts.TEAM_ID_NONE && data.isCaptain) ? true : false;
 			player.getSprite().showCaptainFlag(isShow);
 			player.getSprite().showTeamMemberFlag(!isShow);
 			player.teamId = data.teamId;
-			player.isCaptain = isShow;
+			player.isCaptain = data.isCaptain;
 			if (data.playerId === pomelo.playerId) {
 				pomelo.teamId = player.teamId;
 				pomelo.isCaptain = player.isCaptain;

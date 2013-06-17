@@ -41,6 +41,8 @@ var Player = function(opts) {
 	this.range = opts.range || 2;
 	// player's team id, default 0(not in any team).
 	this.teamId = consts.TEAM.TEAM_ID_NONE;
+	// is the team captain, default false
+	this.isCaptain = consts.TEAM.NO;
 
 	this.setTotalAttackAndDefence();
 };
@@ -346,7 +348,7 @@ Player.prototype.strip = function() {
 		nextLevelExp: this.nextLevelExp,
 		skillPoint: this.skillPoint,
 		teamId: this.teamId,
-		isCaptain: (this.isCaptain ? 1 : 0)
+		isCaptain: this.isCaptain
 	};
 };
 
@@ -489,7 +491,7 @@ Player.prototype.toJSON = function() {
 		areaId: this.areaId,
 		range: this.range,
 		teamId: this.teamId,
-		isCaptain: (this.isCaptain ? 1 : 0)
+		isCaptain: this.isCaptain
 	};
 };
 
@@ -510,7 +512,7 @@ Player.prototype.toJSON4Team = function() {
 		maxMp: this.maxMp,
 		level: this.level,
 		teamId: this.teamId,
-		isCaptain: (this.isCaptain ? 1 : 0)
+		isCaptain: this.isCaptain
 	};
 };
 

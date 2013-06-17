@@ -70,8 +70,10 @@ __resources__["/consts.js"] = {
         TEAM_MEMBER_FLAG_NODE: 1.5
       },
 
-      Team : {
-        TEAM_ID_NONE : 0 // player without team(not in any team)
+      Team: {
+        TEAM_ID_NONE: 0, // player without team(not in any team)
+				YES: 1,
+				NO: 0
       },
     
       CacheType: {

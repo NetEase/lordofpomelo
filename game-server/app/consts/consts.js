@@ -114,14 +114,14 @@ module.exports = {
 	/**
 	 * Team
 	 */
-	TEAM : {
-		TEAM_ID_NONE : 0, // player without team(not in any team)
-		PLAYER_ID_NONE : 0, // none player id in a team(placeholder)
-		AREA_ID_NONE : 0, // none area id (placeholder)
-		USER_ID_NONE : 0, // none user id (placeholder)
-		SERVER_ID_NONE : 0, // none server id (placeholder)
-		PLAYER_INFO_NONE : '', // none player info	(placeholder)
-		JOIN_TEAM_RET_CODE : {
+	TEAM: {
+		TEAM_ID_NONE: 0, // player without team(not in any team)
+		PLAYER_ID_NONE: 0, // none player id in a team(placeholder)
+		AREA_ID_NONE: 0, // none area id (placeholder)
+		USER_ID_NONE: 0, // none user id (placeholder)
+		SERVER_ID_NONE: 0, // none server id (placeholder)
+		PLAYER_INFO_NONE: '', // none player info	(placeholder)
+		JOIN_TEAM_RET_CODE: {
 			OK							: 1,	// join ok
 			NO_POSITION			: -1,	// there is no position
 			ALREADY_IN_TEAM	: -2,	// already in the team
@@ -129,19 +129,23 @@ module.exports = {
 			SYS_ERROR				: -4	// system error
 		}, // return code of trying to join a team
 		
-		TEAM_TITLE : {
-			MEMBER  : 0,
-			CAPTAIN : 1
+		TEAM_TITLE: {
+			MEMBER: 0,
+			CAPTAIN: 1
 		}, // team member title(member/captain)
 		
-		JOIN_TEAM_REPLY : {
-			REJECT : 0,
-			ACCEPT : 1
+		JOIN_TEAM_REPLY: {
+			REJECT: 0,
+			ACCEPT: 1
 		}, // player's replying code
 
 		// sys return
-		OK : 1,
-		FAILED : 0
+		OK: 1,
+		FAILED: 0,
+
+		// yes / no
+		YES: 1,
+		NO: 0
 	},
 	
 	/**

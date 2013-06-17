@@ -160,6 +160,7 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 						} else {
 							e.getSprite().showTeamMemberFlag(true);
 						}
+						e.isCaptain = entity.isCaptain;
 					}
 				}
 				this.players[e.id] = e.entityId;

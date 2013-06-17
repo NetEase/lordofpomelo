@@ -60,7 +60,7 @@ Handler.prototype.createTeam = function(msg, session, next) {
 			}
 			utils.myPrint("player.teamId = ", player.teamId);
 			if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK && player.teamId > consts.TEAM.TEAM_ID_NONE) {
-				player.isCaptain = true;
+				player.isCaptain = consts.TEAM.YES;
 				var ignoreList = {};
 				messageService.pushMessageByAOI(area,
 					{
@@ -119,7 +119,7 @@ Handler.prototype.disbandTeam = function(msg, session, next) {
 					utils.myPrint("tmpPlayer.teamId = ", tmpPlayer.teamId);
 				}
 				if (player.isCaptain) {
-					player.isCaptain = false;
+					player.isCaptain = consts.TEAM.NO;
 					var ignoreList = {};
 					messageService.pushMessageByAOI(area,
 						{
@@ -450,7 +450,7 @@ Handler.prototype.leaveTeam = function(msg, session, next) {
 				result = consts.TEAM.FAILED;
 			}
 			if (player.isCaptain) {
-				player.isCaptain = false;
+				player.isCaptain = consts.TEAM.NO;
 				var ignoreList = {};
 				messageService.pushMessageByAOI(area,
 					{
