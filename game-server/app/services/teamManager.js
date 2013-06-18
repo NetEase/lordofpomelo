@@ -81,3 +81,15 @@ exp.leaveTeamById = function(playerId, teamId, cb) {
 	});
 };
 
+exp.dragMember2gameCopy = function(args, cb) {
+	utils.myPrint('2 ~ DragMember2gameCopy ~ args = ', JSON.stringify(args));
+	var teamId = args.teamId;
+	if (!teamId) {
+		return;
+	}
+	var teamObj = gTeamObjDict[teamId];
+	if(!teamObj) {
+		return;
+	}
+	teamObj.dragMember2gameCopy(args, cb);
+};

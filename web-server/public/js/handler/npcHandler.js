@@ -11,7 +11,7 @@ __resources__["/npcHandler.js"] = {meta: {mimetype: "application/javascript"}, d
         changeArea(params);
         break;
     }
-  };
+  }
 
 	/**
 	 * Change area action.
@@ -20,13 +20,14 @@ __resources__["/npcHandler.js"] = {meta: {mimetype: "application/javascript"}, d
     var areaId = pomelo.areaId, target = params.target;
     pomelo.request("area.playerHandler.changeArea", {
 			uid:pomelo.uid,
-			playerId: pomelo.playerId, 
+			playerId: pomelo.playerId,
 			areaId: areaId,
-			target: target
+			target: target,
+			triggerByPlayer: 1
 		}, function(data) {
-      pomelo.emit('onChangeArea', data);
-		});
-  };
+			pomelo.emit('onChangeArea', data);
+    });
+  }
 
   exports.exec = exec;
 }};

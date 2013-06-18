@@ -108,7 +108,7 @@ module.exports = {
 	AreaType : {
 		SCENE : 1,
 		SINGLE_INSTANCE : 2,
-		GROUP_INSTANCE : 3
+		TEAM_INSTANCE : 3
 	},
 
 	/**

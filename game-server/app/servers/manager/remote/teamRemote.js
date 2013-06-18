@@ -56,10 +56,10 @@ TeamRemote.prototype.leaveTeamById = function(args, cb){
 	var playerId = args.playerId;
 	var teamId = args.teamId;
 	teamManager.leaveTeamById(playerId, teamId, cb);
+};
 
-	/*
-	var ret = teamManager.leaveTeamById(playerId, teamId, cb);
-	utils.myPrint('TeamRemote ~ leaveTeamById is running ... ret = ', JSON.stringify(ret));
-	utils.invokeCallback(cb, null, ret);
-	*/
+// drag the team members to the game copy
+TeamRemote.prototype.dragMember2gameCopy = function(args, cb) {
+	utils.myPrint('1 ~ DragMember2gameCopy ~ args = ', JSON.stringify(args));
+	teamManager.dragMember2gameCopy(args, cb);
 };

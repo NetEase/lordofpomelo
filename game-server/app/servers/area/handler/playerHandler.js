@@ -30,6 +30,7 @@ handler.enterScene = function(msg, session, next) {
   var areaId = session.get('areaId');
 	var teamId = session.get('teamId') || consts.TEAM.TEAM_ID_NONE;
 	var isCaptain = session.get('isCaptain');
+	utils.myPrint("1 ~ GetPlayerAllInfo playerId = ", playerId);
 	utils.myPrint("1 ~ GetPlayerAllInfo teamId = ", teamId);
 
   userDao.getPlayerAllInfo(playerId, function(err, player) {
@@ -200,20 +201,41 @@ handler.addItem = function(msg, session, next) {
 
 //Change area
 handler.changeArea = function(msg, session, next) {
+	var playerId = session.get('playerId');
 	var areaId = msg.areaId;
 	var target = msg.target;
+
+	utils.myPrint('playerId = ', playerId);
+	var player = session.area.getPlayer(playerId);
+	if (!player) {
+		return;
+	}
+	var teamId = player.teamId;
+	var isCaptain = player.isCaptain;
 
 	var req = {
     areaId: areaId,
     target: target,
     uid: session.uid,
-    playerId: session.get('playerId'),
+    playerId: playerId,
     frontendId: session.frontendId
   };
 
-	areaService.changeArea(req, session, function(err) {
-		next(null, {areaId: areaId, target: target, success: true});
-	});
+	utils.myPrint('teamId, isCaptain = ', teamId, isCaptain);
+	utils.myPrint('msg.triggerByPlayer = ', msg.triggerByPlayer);
+	if (teamId && isCaptain && msg.triggerByPlayer) {
+		utils.myPrint('DragMember2gameCopy is running ...');
+		pomelo.app.rpc.manager.teamRemote.dragMember2gameCopy(null, {teamId: teamId, target: target},
+			function(err, ret) {
+				next({success: false});
+			});
+	} else {
+		utils.myPrint('changeArea is running ...');
+		areaService.changeArea(req, session, function(err) {
+			var args = {areaId: areaId, target: target, success: true};
+			next(null, args);
+		});
+	}
 };
 
 //Use item

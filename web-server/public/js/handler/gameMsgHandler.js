@@ -32,13 +32,31 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 					if (player) {
 						player.teamId = pomelo.teamId;
 						player.isCaptain = pomelo.isCaptain;
-						console.log("onChangeArea ~ playerId, teamId, isCaptain = ", player.id, player.teamId, player.isCaptain);
+						console.log("OnChangeArea ~ playerId, teamId, isCaptain = ", player.id, player.teamId, player.isCaptain);
 						if (player.teamId > TeamConsts.TEAM_ID_NONE) {
 							player.getSprite().showCaptainFlag(player.isCaptain);
 							player.getSprite().showTeamMemberFlag(!player.isCaptain);
 						}
 					}
 				});
+			});
+		});
+
+		/**
+		 * Handle drag member to game copy message
+		 * @param  data {Object} The message
+		 */
+		pomelo.on('onDragMember2gameCopy', function(data) {
+			if (!data.target) {
+				return;
+			}
+			pomelo.request("area.playerHandler.changeArea", {
+				uid: pomelo.uid,
+				playerId: pomelo.playerId,
+				areaId: pomelo.areaId,
+				target: data.target
+			}, function(msg) {
+				pomelo.emit('onChangeArea', msg);
 			});
 		});
 

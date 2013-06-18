@@ -269,6 +269,16 @@ Team.prototype.pushChatMsg2All = function(content) {
 	return true;
 };
 
+
+Team.prototype.dragMember2gameCopy = function(args, cb) {
+	if(!this.channel) {
+		return;
+	}
+	utils.myPrint('3 ~ DragMember2gameCopy ~ args = ', JSON.stringify(args));
+	this.channel.pushMessage('onDragMember2gameCopy', args, null);
+	utils.invokeCallback(cb);
+	return;
+};
 ///////////////////////////////////////////////////////
 /**
  * Expose 'Team' constructor.

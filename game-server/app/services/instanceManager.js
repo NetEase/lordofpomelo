@@ -39,7 +39,7 @@ exp.getInstance = function(args, cb){
   //The key of instance
   var instanceId = args.areaId + '_' + args.id;
 
-  //In the instance exist, return the exist instance
+  //If the instance exist, return the instance
   if(instances[instanceId]){
     utils.invokeCallback(cb, null, instances[instanceId]);
     return;

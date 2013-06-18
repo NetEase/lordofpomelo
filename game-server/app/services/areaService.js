@@ -8,7 +8,6 @@ var AreaType = require('../consts/consts').AreaType;
 var async = require('async');
 
 var logger = require('pomelo-logger').getLogger(__filename);
-var utils = require('../util/utils');
 
 var maps = {};
 
@@ -93,14 +92,14 @@ exp.changeArea = function(args, session, cb) {
         function(callback){
           //Construct params
           var params = {areaId : args.target};
-          params.id = playerId;
+					params.id = playerId;
 
-          if(area.type === AreaType.INSTANCE_SINGLE) {
-             params.id = playerId;
-           } else {
-             params.id = player.teamId;
-           }
+					if(targetInfo.type === AreaType.TEAM_INSTANCE && player.teamId){
+						params.id = player.teamId;
+					}
 
+					utils.myPrint('targetInfo.type, AreaType.TEAM_INSTANCE = ', targetInfo.type, AreaType.TEAM_INSTANCE);
+					utils.myPrint('params.id = ', params.id);
           //Get target instance
           app.rpc.manager.instanceRemote.create(session, params, function(err, result){
             if(err){
@@ -108,7 +107,9 @@ exp.changeArea = function(args, session, cb) {
               callback(err, 'getInstance');
             }else{
               session.set('instanceId', result.instanceId);
-              session.set('serverId', result.serverId);
+							session.set('serverId', result.serverId);
+							session.set('teamId', player.teamId);
+							session.set('isCaptain', player.isCaptain);
               session.pushAll();
               callback(null);
             }

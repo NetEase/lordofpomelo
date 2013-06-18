@@ -70,7 +70,7 @@ utils.myPrint = function() {
 	var stack = getStack();
 	var aimStr = '\'' + getFileName(stack) + '\' @' + getLineNumber(stack) + ' :\n';
 	for(var i = 0; i < len; ++i) {
-		aimStr += arguments[i];
+		aimStr += arguments[i] + ' ';
 	}
 	console.log('\n' + aimStr);
 };

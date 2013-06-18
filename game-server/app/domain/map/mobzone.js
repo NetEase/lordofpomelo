@@ -119,7 +119,7 @@ var genPatrolPath = function(mob) {
 	for(var i=0; i<PATH_LENGTH; i++) {
 		p = genPoint(map, x, y);
 		if(!p) {
-			logger.warn("Find path for mob faild! mobId : %j", mob.entityId);
+			// logger.warn("Find path for mob faild! mobId : %j", mob.entityId);
 			break;
 		}
 		path.push(p);
