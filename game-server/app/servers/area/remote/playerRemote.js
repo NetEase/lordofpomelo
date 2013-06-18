@@ -38,6 +38,25 @@ exp.playerLeave = function(args, cb){
 		return;
 	}
 
+	var params = {playerId: playerId, teamId: player.teamId};
+	pomelo.app.rpc.manager.teamRemote.leaveTeamById(null, params,
+		function(err, ret) {
+			var result = ret.result;
+			utils.myPrint("1 ~ result = ", result);
+			// for disbanding the team
+			if(result === consts.TEAM.OK && !!ret.playerIdArray && ret.playerIdArray.length > 0) {
+				for (var i in ret.playerIdArray) {
+					var tmpPlayerId = ret.playerIdArray[i];
+					var tmpPlayer = area.getPlayer(tmpPlayerId);
+					if (tmpPlayer) {
+						tmpPlayer.leaveTeam();
+					}
+					utils.myPrint("tmpPlayerId = ", tmpPlayerId);
+					utils.myPrint("tmpPlayer.teamId = ", tmpPlayer.teamId);
+				}
+			}
+		});
+
 	if(player.hp === 0){
 		player.hp = Math.floor(player.maxHp/2);
 	}

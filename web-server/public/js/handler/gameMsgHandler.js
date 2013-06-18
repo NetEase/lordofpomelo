@@ -230,7 +230,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			var player = area.getPlayer(data.playerId);
 			var isShow = (data.teamId > TeamConsts.TEAM_ID_NONE && data.isCaptain) ? true : false;
 			player.getSprite().showCaptainFlag(isShow);
-			player.getSprite().showTeamMemberFlag(!isShow);
+			player.getSprite().showTeamMemberFlag(false);
 			player.teamId = data.teamId;
 			player.isCaptain = data.isCaptain;
 			if (data.playerId === pomelo.playerId) {

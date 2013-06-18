@@ -223,7 +223,8 @@ handler.changeArea = function(msg, session, next) {
 
 	utils.myPrint('teamId, isCaptain = ', teamId, isCaptain);
 	utils.myPrint('msg.triggerByPlayer = ', msg.triggerByPlayer);
-	if (teamId && isCaptain && msg.triggerByPlayer) {
+	var targetInfo = dataApi.area.findById(target);
+	if ((targetInfo.type === consts.AreaType.TEAM_INSTANCE) && teamId && isCaptain && msg.triggerByPlayer) {
 		utils.myPrint('DragMember2gameCopy is running ...');
 		pomelo.app.rpc.manager.teamRemote.dragMember2gameCopy(null, {teamId: teamId, target: target},
 			function(err, ret) {
