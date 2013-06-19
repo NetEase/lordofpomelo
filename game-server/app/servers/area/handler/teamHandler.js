@@ -5,6 +5,7 @@ var messageService = require('../../../domain/messageService');
 var logger = require('pomelo-logger').getLogger(__filename);
 var consts = require('../../../consts/consts');
 var utils = require('../../../util/utils');
+var dataApi = require('../../../util/dataApi');
 
 
 module.exports = function(app) {
@@ -99,6 +100,12 @@ Handler.prototype.disbandTeam = function(msg, session, next) {
 
 	if(player.teamId <= consts.TEAM.TEAM_ID_NONE || msg.teamId !== player.teamId) {
 		logger.warn('The request(disbandTeam) is illegal, the teamId is wrong : msg = %j.', msg);
+		next();
+		return;
+	}
+
+	utils.myPrint('playerId, IsInTeamInstance = ', playerId, player.isInTeamInstance);
+	if (player.isInTeamInstance) {
 		next();
 		return;
 	}

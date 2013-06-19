@@ -30,6 +30,7 @@ handler.enterScene = function(msg, session, next) {
   var areaId = session.get('areaId');
 	var teamId = session.get('teamId') || consts.TEAM.TEAM_ID_NONE;
 	var isCaptain = session.get('isCaptain');
+	var isInTeamInstance = session.get('isInTeamInstance');
 	utils.myPrint("1 ~ GetPlayerAllInfo playerId = ", playerId);
 	utils.myPrint("1 ~ GetPlayerAllInfo teamId = ", teamId);
 
@@ -47,6 +48,7 @@ handler.enterScene = function(msg, session, next) {
     player.serverId = session.frontendId;
 		player.teamId = teamId;
 		player.isCaptain = isCaptain;
+		player.isInTeamInstance = isInTeamInstance;
 
     pomelo.app.rpc.chat.chatRemote.add(session, session.uid,
     player.name, channelUtil.getAreaChannelName(areaId), null);
@@ -205,11 +207,18 @@ handler.changeArea = function(msg, session, next) {
 	var areaId = msg.areaId;
 	var target = msg.target;
 
+	utils.myPrint('areaId, target = ', areaId, target);
+	if (areaId === target) {
+		next(null, {success: false});
+		return;
+	}
 	utils.myPrint('playerId = ', playerId);
 	var player = session.area.getPlayer(playerId);
 	if (!player) {
+		next(null, {success: false});
 		return;
 	}
+
 	var teamId = player.teamId;
 	var isCaptain = player.isCaptain;
 
@@ -228,7 +237,7 @@ handler.changeArea = function(msg, session, next) {
 		utils.myPrint('DragMember2gameCopy is running ...');
 		pomelo.app.rpc.manager.teamRemote.dragMember2gameCopy(null, {teamId: teamId, target: target},
 			function(err, ret) {
-				next({success: false});
+				next(null, {success: false});
 			});
 	} else {
 		utils.myPrint('changeArea is running ...');

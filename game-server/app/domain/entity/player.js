@@ -43,6 +43,8 @@ var Player = function(opts) {
 	this.teamId = consts.TEAM.TEAM_ID_NONE;
 	// is the team captain, default false
 	this.isCaptain = consts.TEAM.NO;
+	// game copy flag
+	this.isInTeamInstance = false;
 
 	this.setTotalAttackAndDefence();
 };

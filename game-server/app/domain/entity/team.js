@@ -277,6 +277,7 @@ Team.prototype.dragMember2gameCopy = function(args, cb) {
 	utils.myPrint('3 ~ DragMember2gameCopy ~ args = ', JSON.stringify(args));
 	this.channel.pushMessage('onDragMember2gameCopy', args, null);
 	utils.invokeCallback(cb);
+
 	return;
 };
 ///////////////////////////////////////////////////////
