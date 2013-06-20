@@ -66,10 +66,12 @@
     <script src="js/ui/bagPanelView.js" type="text/javascript"></script>
     <script src="js/ui/taskPanelView.js" type="text/javascript"></script>
     <script src="js/ui/dialogPanelView.js" type="text/javascript"></script>
+    <script src="js/ui/playerDialogPanelView.js" type="text/javascript"></script>
     <script src="js/main.js"></script>
     <script src="js/handler/loginMsgHandler.js" type="text/javascript"></script>
     <script src="js/handler/gameMsgHandler.js" type="text/javascript"></script>
     <script src="js/handler/npcHandler.js" type="text/javascript"></script>
+    <script src="js/handler/playerHandler.js" type="text/javascript"></script>
     <script src="js/handler/taskHandler.js" type="text/javascript"></script>
     <script src="js/utils/dataApi.js" type="text/javascript"></script>
     <script src="js/utils/resourceLoader.js" type="text/javascript"></script>
@@ -347,6 +349,18 @@
             </div>
           </section>
           <span class="u-close">close</span>
+        </div>
+        <!-- 单击其他角色时弹出的对话框 -->
+        <div id="playerDialog" class="m-window" style="z-index:1000;display:none;">
+          <section class="wincnt">
+            <p>What do you wanna do?</p>
+            <div class="opt4player">
+              <span class="u-btn f-fl">Attack</span>
+              <span class="u-btn f-fm">Apply</span>
+              <span class="u-btn f-fr">Invite</span>
+            </div>
+          </section>
+          <span class="u-close">Close</span>
         </div>
         <!-- 弹出层  主角+技能 -->
         <div id="playerPanel" class="m-layer player" style="display:none;">

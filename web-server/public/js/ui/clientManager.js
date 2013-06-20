@@ -348,7 +348,11 @@ __resources__["/clientManager.js"] = {
         if (entity.died) {
           return;
         }
-        pomelo.notify('area.fightHandler.attack',{targetId: targetId});
+				if (entity.type === EntityType.PLAYER) {
+					pomelo.emit('onPlayerDialog', {targetId: targetId});
+				} else if (entity.type === EntityType.MOB) {
+					pomelo.notify('area.fightHandler.attack',{targetId: targetId});
+				}
       } else if (entity.type === EntityType.NPC) {
         pomelo.notify('area.playerHandler.npcTalk',{areaId :areaId, playerId: playerId, targetId: targetId});
       } else if (entity.type === EntityType.ITEM || entity.type === EntityType.EQUIPMENT) {

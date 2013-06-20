@@ -110,6 +110,12 @@ Handler.prototype.disbandTeam = function(msg, session, next) {
 		return;
 	}
 
+	if (!player.isCaptain) {
+		logger.warn('The request(disbandTeam) is illegal, the player is not the captain : msg = %j.', msg);
+		next();
+		return;
+	}
+
 	var args = {playerId: playerId, teamId: player.teamId};
 	this.app.rpc.manager.teamRemote.disbandTeamById(session, args,
 		function(err, ret) {
@@ -430,6 +436,12 @@ Handler.prototype.leaveTeam = function(msg, session, next) {
 
 	if(!player) {
 		logger.warn('The request(leaveTeam) is illegal, the player is null: msg = %j.', msg);
+		next();
+		return;
+	}
+
+	utils.myPrint('playerId, IsInTeamInstance = ', playerId, player.isInTeamInstance);
+	if (player.isInTeamInstance) {
 		next();
 		return;
 	}

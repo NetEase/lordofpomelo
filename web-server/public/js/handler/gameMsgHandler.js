@@ -5,6 +5,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 	var AttackResult = require('consts').AttackResult;
 	var mainPanel = require('mainPanelView');
 	var dialogPanel = require('dialogPanelView');
+	var playerDialogPanel = require('playerDialogPanelView');
 	var EntityType = require('consts').EntityType;
 	var TeamConsts = require('consts').Team;
 	var SkillEffect = require('skillEffect');
@@ -40,6 +41,18 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 					}
 				});
 			});
+		});
+
+
+		/**
+		 * Handle click player message
+		 * @param  data {Object} The message
+		 */
+		pomelo.on('onPlayerDialog', function(data) {
+			if (!data || !data.targetId) {
+				return;
+			}
+			playerDialogPanel.open(data);
 		});
 
 		/**

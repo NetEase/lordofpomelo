@@ -9,6 +9,7 @@ __resources__["/mainPanelView.js"] = {
 		var equipmentsPanel = require('equipmentsPanelView');
 		var taskPanel = require('taskPanelView');
 		var dialogPanel = require('dialogPanelView');
+		var playerDialogPanel = require('playerDialogPanelView');
 		var config = require('config');
 		var app = require('app');
 		var dataApi = require('dataApi');
@@ -66,6 +67,7 @@ __resources__["/mainPanelView.js"] = {
 			bagPanel.init();
 			taskPanel.init();
 			dialogPanel.init();
+			playerDialogPanel.init();
 
 		};
 

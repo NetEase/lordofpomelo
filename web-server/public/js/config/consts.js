@@ -87,6 +87,12 @@ __resources__["/consts.js"] = {
         GIVE_UP: 'Give Up',
         ACCEPT: 'Accept',
         DELIVER: 'Deliver'
-      }
+      },
+
+			BtnAction4Player: {
+				ATTACK_PLAYER: 'AttackPlayer',
+				APPLY_JOIN_TEAM: 'ApplyJoinTeam',
+				INVITE_JOIN_TEAM: 'InviteJoinTeam'
+			}
     };
   }};
