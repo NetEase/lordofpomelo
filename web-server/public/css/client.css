@@ -224,6 +224,13 @@ body .skill-box {
 #dialog .wincnt .opt {
   margin: 0 auto 0;
 }
+
+/* playerDialog */
+#playerDialog .opt4player {
+    width: 243px;
+    margin: 76px auto;
+}
+
 .player .zj .wtype li {
   position: relative;
 }
