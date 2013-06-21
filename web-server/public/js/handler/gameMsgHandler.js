@@ -7,6 +7,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 	var dialogPanel = require('dialogPanelView');
 	var playerDialogPanel = require('playerDialogPanelView');
 	var applyJoinTeamPanel = require('applyJoinTeamPanelView');
+	var inviteJoinTeamPanel = require('inviteJoinTeamPanelView');
 	var EntityType = require('consts').EntityType;
 	var TeamConsts = require('consts').Team;
 	var SkillEffect = require('skillEffect');
@@ -57,7 +58,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 		});
 
 		/**
-		 * Handle apply join team message(the captain)
+		 * Handle apply to join team message(the captain)
 		 * @param  data {Object}. The message is applicantInfo.
 		 */
 		pomelo.on('onApplyJoinTeam', function(data) {
@@ -70,6 +71,21 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			}
 			data.teamId = curPlayer.teamId;
 			applyJoinTeamPanel.open(data);
+		});
+
+		/**
+		 * Handle invite to join team message(the invitee)
+		 * @param  data {Object}. The message is captainInfo.
+		 */
+		pomelo.on('onInviteJoinTeam', function(data) {
+			if (!data) {
+				return;
+			}
+			var curPlayer = app.getCurPlayer();
+			if (curPlayer.teamId) {
+				return;
+			}
+			inviteJoinTeamPanel.open(data);
 		});
 
 		/**

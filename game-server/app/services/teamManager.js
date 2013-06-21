@@ -125,3 +125,35 @@ exp.acceptApplicantJoinTeam = function(args) {
 	}
 	return {result: result};
 };
+
+exp.inviteJoinTeam = function(args) {
+	if (!args || !args.teamId) {
+		return;
+	}
+	var teamId = args.teamId;
+	var result = consts.TEAM.FAILED;
+	var teamObj = gTeamObjDict[teamId];
+	if (teamObj) {
+		if (teamObj.isTeamHasPosition() && teamObj.isCaptainById(args.captainId)) {
+			result = consts.TEAM.OK;
+		}
+	}
+
+	return {result: result};
+};
+
+exp.acceptInviteJoinTeam = function(args) {
+	if (!args || !args.teamId) {
+		return;
+	}
+	var teamId = args.teamId;
+	var teamObj = gTeamObjDict[teamId];
+	var result = consts.TEAM.FAILED;
+	if (teamObj) {
+		if(!teamObj.isCaptainById(args.captainId)) {
+			return {result: result};
+		}
+		result = teamObj.addPlayer(args);
+	}
+	return {result: result};
+};

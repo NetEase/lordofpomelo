@@ -78,3 +78,18 @@ TeamRemote.prototype.acceptApplicantJoinTeam = function(args, cb){
 	utils.myPrint('AcceptApplicantJoinTeam ~ ret = ', ret);
 	utils.invokeCallback(cb, null, ret);
 };
+
+// captain invite a player to join the team
+TeamRemote.prototype.inviteJoinTeam = function(args, cb){
+	utils.myPrint('InviteJoinTeam is running ... args = ', JSON.stringify(args));
+	var ret = teamManager.inviteJoinTeam(args);
+	utils.invokeCallback(cb, null, ret);
+};
+
+// accept captain's invitation join team
+TeamRemote.prototype.acceptInviteJoinTeam = function(args, cb){
+	utils.myPrint('AcceptInviteJoinTeam is running ... args = ', JSON.stringify(args));
+	var ret = teamManager.acceptInviteJoinTeam(args);
+	utils.myPrint('AcceptInviteJoinTeam ~ ret = ', ret);
+	utils.invokeCallback(cb, null, ret);
+};

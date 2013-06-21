@@ -161,47 +161,34 @@ Handler.prototype.disbandTeam = function(msg, session, next) {
  */
 Handler.prototype.inviteJoinTeam = function(msg, session, next) {
 	var area = session.area;
-	var playerId = session.get('playerId');
-	var player = area.getPlayer(playerId);
+	var captainId = session.get('playerId');
+	var captainObj = area.getPlayer(captainId);
 
-	var result = false;
-
-	if(!player) {
+	if(!captainObj) {
 		logger.warn('The request(inviteJoinTeam) is illegal, the player is null : msg = %j.', msg);
 		next();
 		return;
 	}
 
-	// var teamObj = this.app.rpc.manager.teamRemote.getTeamById(player.teamId);
-	var teamObj = null;
-	if(!teamObj) {
-		logger.warn('The request(inviteJoinTeam) is illegal, the team is null : msg = %j.', msg);
-		next();
-		return;
-	}
-
-	if(!teamObj.isCaptainById(playerId)) {
-		logger.warn('The request(inviteJoinTeam) is illegal, the player is not the captain : msg = %j.', msg);
-		next();
-		return;
-	}
-
-	if(!teamObj.isTeamHasPosition()) {
-		next();
-		return;
-	}
-
-	var invitee = area.getPlayer(msg.inviteeId);
-	if(!invitee) {
+	var inviteeObj = area.getPlayer(msg.inviteeId);
+	if(!inviteeObj) {
 		logger.warn('The request(inviteJoinTeam) is illegal, the invitee is null : msg = %j.', msg);
 		next();
 		return;
 	}
 
-	var infoObj = player.toJSON4Team();
-
 	// send invitation to the invitee
-	messageService.pushMessageToPlayer({uid : invitee.userId, sid : invitee.serverId}, 'onInviteJoinTeam', infoObj);
+	var args = {captainId: captainId, teamId: msg.teamId};
+	this.app.rpc.manager.teamRemote.inviteJoinTeam(session, args, function(err, ret) {
+			var result = ret.result;
+			utils.myPrint("result = ", result);
+			if(result === consts.TEAM.OK) {
+				var captainInfo = captainObj.toJSON4Team();
+				messageService.pushMessageToPlayer({uid : inviteeObj.userId, sid : inviteeObj.serverId},
+					'onInviteJoinTeam', captainInfo);
+			}
+		});
+	next();
 };
 
 /**
@@ -214,25 +201,11 @@ Handler.prototype.inviteJoinTeam = function(msg, session, next) {
  */
 Handler.prototype.inviteJoinTeamReply = function(msg, session, next) {
 	var area = session.area;
-	var playerId = session.get('playerId');
-	var player = area.getPlayer(playerId);
+	var inviteeId = session.get('playerId');
+	var inviteeObj = area.getPlayer(inviteeId);
 
-	if(!player) {
+	if(!inviteeObj) {
 		logger.warn('The request(inviteJoinTeamReply) is illegal, the player is null : msg = %j.', msg);
-		next();
-		return;
-	}
-
-	// var teamObj = this.app.rpc.manager.teamRemote.getTeamById(msg.teamId);
-	var teamObj = null;
-	if(!teamObj) {
-		logger.warn('The request(inviteJoinTeamReply) is illegal, the team is null : msg = %j.', msg);
-		next();
-		return;
-	}
-
-	if(!teamObj.isCaptainById(msg.captainId)) {
-		logger.warn('The request(inviteJoinTeamReply) is illegal, the player is not the captain : msg = %j.', msg);
 		next();
 		return;
 	}
@@ -244,15 +217,37 @@ Handler.prototype.inviteJoinTeamReply = function(msg, session, next) {
 		return;
 	}
 
-	if(msg.reply === consts.TEAM.JOIN_TEAM_REPLY.ACCEPT) {
-		var result = teamObj.addPlayer(player, area);
+	if (msg.teamId !== captainObj.teamId) {
+		logger.warn('The request(inviteJoinTeamReply) is illegal, the teamId is wrong : msg = %j.', msg);
 		next();
+		return;
+	}
+
+	var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
+	if(msg.reply === consts.TEAM.JOIN_TEAM_REPLY.ACCEPT) {
+		var inviteeInfo = inviteeObj.toJSON4Team();
+		var args = {captainId: msg.captainId, teamId: msg.teamId,
+			playerId: inviteeId, areaId: area.areaId,
+			userId: inviteeObj.userId, serverId: inviteeObj.serverId, playerInfo: inviteeInfo};
+		this.app.rpc.manager.teamRemote.acceptInviteJoinTeam(session, args, function(err, ret) {
+			utils.myPrint('AcceptInviteJoinTeam ~ ret = ', JSON.stringify(ret));
+			result = ret.result;
+			if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK) {
+				if(!inviteeObj.joinTeam(msg.teamId)) {
+					result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
+					messageService.pushMessageToPlayer({uid: captainObj.userId, sid: captainObj.serverId},
+						'onInviteJoinTeamReply', {reply: result});
+				}
+				utils.myPrint('invitee teamId = ', inviteeObj.teamId);
+			} else {
+				messageService.pushMessageToPlayer({uid: captainObj.userId, sid: captainObj.serverId},
+					'onInviteJoinTeamReply', {reply: result});
+			}
+		});
 	} else {
-		// push tmpMsg to the inviter(the captain) that the invitee reject to join the team
-		var tmpMsg = {
-			reply : false
-		};
-		messageService.pushMessageToPlayer({uid : captainObj.userId, sid : captainObj.serverId}, 'onInviteJoinTeamReply', tmpMsg);
+		// push msg to the inviter(the captain) that the invitee reject to join the team
+		messageService.pushMessageToPlayer({uid: captainObj.userId, sid: captainObj.serverId},
+			'onInviteJoinTeamReply', {reply: result});
 	}
 	next();
 };
@@ -269,15 +264,15 @@ Handler.prototype.applyJoinTeam = function(msg, session, next) {
 	utils.myPrint('ApplyJoinTeam ~ msg = ', JSON.stringify(msg));
 	var area = session.area;
 	var applicantId = session.get('playerId');
-	var player = area.getPlayer(applicantId);
+	var applicantObj = area.getPlayer(applicantId);
 
-	if(!player) {
+	if(!applicantObj) {
 		logger.warn('The request(applyJoinTeam) is illegal, the player is null : msg = %j.', msg);
 		next();
 		return;
 	}
 
-	if(player.isInTeam()) {
+	if(applicantObj.isInTeam()) {
 		next();
 		return;
 	}
@@ -300,7 +295,7 @@ Handler.prototype.applyJoinTeam = function(msg, session, next) {
 			var result = ret.result;
 			utils.myPrint("result = ", result);
 			if(result === consts.TEAM.OK) {
-				var applicantInfo = player.toJSON4Team();
+				var applicantInfo = applicantObj.toJSON4Team();
 				messageService.pushMessageToPlayer({uid: captainObj.userId, sid: captainObj.serverId}, 'onApplyJoinTeam', applicantInfo);
 			}
 		});
@@ -308,7 +303,7 @@ Handler.prototype.applyJoinTeam = function(msg, session, next) {
 };
 
 /**
- * Notify: captain replys the application, and push msg to the team members(accept) or only the applicant(reject)
+ * Notify: captain reply the application, and push msg to the team members(accept) or only the applicant(reject)
  *
  * @param {Object} msg
  * @param {Object} session

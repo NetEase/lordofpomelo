@@ -49,9 +49,12 @@ __resources__["/playerHandler.js"] = {meta: {mimetype: "application/javascript"}
 	 * Invite join team action.
 	 */
   function inviteJoinTeam(params) {
+		console.log('InviteJoinTeam ~ params = ', params);
+		console.log('InviteJoinTeam ~ myTeamId = ', params.myTeamId);
+		console.log('InviteJoinTeam ~ myIsCaptain = ', params.myIsCaptain);
 		if (params.myTeamId > TeamC.TEAM_ID_NONE && params.myIsCaptain) {
 			pomelo.notify("area.teamHandler.inviteJoinTeam",
-				{inviteeId: params.targetId, teamId: params.myTeamId});
+				{inviteeId: params.targetPlayerId, teamId: params.myTeamId});
 		}
   }
 

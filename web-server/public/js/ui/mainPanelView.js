@@ -11,6 +11,7 @@ __resources__["/mainPanelView.js"] = {
 		var dialogPanel = require('dialogPanelView');
 		var playerDialogPanel = require('playerDialogPanelView');
 		var applyJoinTeamPanel = require('applyJoinTeamPanelView');
+		var inviteJoinTeamPanel = require('inviteJoinTeamPanelView');
 		var config = require('config');
 		var app = require('app');
 		var dataApi = require('dataApi');
@@ -70,6 +71,7 @@ __resources__["/mainPanelView.js"] = {
 			dialogPanel.init();
 			playerDialogPanel.init();
 			applyJoinTeamPanel.init();
+			inviteJoinTeamPanel.init();
 
 		};
 
