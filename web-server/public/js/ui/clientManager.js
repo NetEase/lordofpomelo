@@ -349,7 +349,10 @@ __resources__["/clientManager.js"] = {
           return;
         }
 				if (entity.type === EntityType.PLAYER) {
-					pomelo.emit('onPlayerDialog', {targetId: targetId});
+					var curPlayer = app.getCurPlayer();
+					pomelo.emit('onPlayerDialog', {targetId: targetId, targetPlayerId: entity.id,
+						targetTeamId: entity.teamId, targetIsCaptain: entity.isCaptain,
+						myTeamId: curPlayer.teamId, myIsCaptain: curPlayer.isCaptain});
 				} else if (entity.type === EntityType.MOB) {
 					pomelo.notify('area.fightHandler.attack',{targetId: targetId});
 				}

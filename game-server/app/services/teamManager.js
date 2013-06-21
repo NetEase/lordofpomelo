@@ -93,3 +93,35 @@ exp.dragMember2gameCopy = function(args, cb) {
 	}
 	teamObj.dragMember2gameCopy(args, cb);
 };
+
+exp.applyJoinTeam = function(args) {
+	if (!args || !args.teamId) {
+		return;
+	}
+	var teamId = args.teamId;
+	var result = consts.TEAM.FAILED;
+	var teamObj = gTeamObjDict[teamId];
+	if (teamObj) {
+		if (teamObj.isTeamHasPosition() && !teamObj.isPlayerInTeam(args.applicantId)) {
+			result = consts.TEAM.OK;
+		}
+	}
+
+	return {result: result};
+};
+
+exp.acceptApplicantJoinTeam = function(args) {
+	if (!args || !args.teamId) {
+		return;
+	}
+	var teamId = args.teamId;
+	var teamObj = gTeamObjDict[teamId];
+	var result = consts.TEAM.FAILED;
+	if (teamObj) {
+		if(!teamObj.isCaptainById(args.captainId)) {
+			return {result: result};
+		}
+		result = teamObj.addPlayer(args);
+	}
+	return {result: result};
+};

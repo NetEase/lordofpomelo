@@ -129,7 +129,9 @@ Handler.prototype.disbandTeam = function(msg, session, next) {
 					if (!tmpPlayer || !tmpPlayer.leaveTeam()) {
 						result = consts.TEAM.FAILED;
 					}
-					utils.myPrint("tmpPlayer.teamId = ", tmpPlayer.teamId);
+					if (tmpPlayer) {
+						utils.myPrint("tmpPlayer.teamId = ", tmpPlayer.teamId);
+					}
 				}
 				if (player.isCaptain) {
 					player.isCaptain = consts.TEAM.NO;
@@ -264,9 +266,10 @@ Handler.prototype.inviteJoinTeamReply = function(msg, session, next) {
  * @api public
  */
 Handler.prototype.applyJoinTeam = function(msg, session, next) {
+	utils.myPrint('ApplyJoinTeam ~ msg = ', JSON.stringify(msg));
 	var area = session.area;
-	var playerId = session.get('playerId');
-	var player = area.getPlayer(playerId);
+	var applicantId = session.get('playerId');
+	var player = area.getPlayer(applicantId);
 
 	if(!player) {
 		logger.warn('The request(applyJoinTeam) is illegal, the player is null : msg = %j.', msg);
@@ -279,29 +282,28 @@ Handler.prototype.applyJoinTeam = function(msg, session, next) {
 		return;
 	}
 
-	// var teamObj = this.app.rpc.manager.teamRemote.getTeamById(msg.teamId);
-	var teamObj = null;
-	if(!teamObj) {
-		logger.warn('The request(applyJoinTeam) is illegal, the team is null : msg = %j.', msg);
-		next();
-		return;
-	}
-
-	if(!teamObj.isTeamHasPosition()) {
-		next();
-		return;
-	}
-
-	var captainObj = area.getPlayer(teamObj.captainId);
+	var captainObj = area.getPlayer(msg.captainId);
 	if(!captainObj) {
 		logger.warn('The request(applyJoinTeam) is illegal, the captain is null : msg = %j.', msg);
 		next();
 		return;
 	}
 
-	var infoObj = player.toJSON4Team();
+	if(captainObj.teamId !== msg.teamId) {
+		logger.warn('The request(applyJoinTeam) is illegal, the teamId is wrong : msg = %j.', msg);
+		next();
+		return;
+	}
 	// send the application to the captain
-	messageService.pushMessageToPlayer({uid : captainObj.userId, sid : captainObj.serverId}, 'onApplyJoinTeam', infoObj);
+	var args = {applicantId: applicantId, teamId: msg.teamId};
+	this.app.rpc.manager.teamRemote.applyJoinTeam(session, args, function(err, ret) {
+			var result = ret.result;
+			utils.myPrint("result = ", result);
+			if(result === consts.TEAM.OK) {
+				var applicantInfo = player.toJSON4Team();
+				messageService.pushMessageToPlayer({uid: captainObj.userId, sid: captainObj.serverId}, 'onApplyJoinTeam', applicantInfo);
+			}
+		});
 	next();
 };
 
@@ -324,16 +326,8 @@ Handler.prototype.applyJoinTeamReply = function(msg, session, next) {
 		return;
 	}
 
-	// var teamObj = this.app.rpc.manager.teamRemote.getTeamById(msg.teamId);
-	var teamObj = null;
-	if(!teamObj) {
-		logger.warn('The request(applyJoinTeamReply) is illegal, the team is null : msg = %j.', msg);
-		next();
-		return;
-	}
-
-	if(!teamObj.isCaptainById(playerId)) {
-		logger.warn('The request(applyJoinTeamReply) is illegal, the player is not the captain : msg = %j.', msg);
+	if (!player.isCaptain || player.teamId !== msg.teamId) {
+		logger.warn('The request(applyJoinTeamReply) is illegal, the teamId is wrong : msg = %j.', msg);
 		next();
 		return;
 	}
@@ -351,14 +345,30 @@ Handler.prototype.applyJoinTeamReply = function(msg, session, next) {
 	}
 
 	if(msg.reply === consts.TEAM.JOIN_TEAM_REPLY.ACCEPT) {
-		var result = teamObj.addPlayer(applicant, area);
-		next();
+		var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
+		var applicantInfo = applicant.toJSON4Team();
+		var args = {captainId: playerId, teamId: msg.teamId,
+			playerId: msg.applicantId, areaId: area.areaId,
+			userId: applicant.userId, serverId: applicant.serverId, playerInfo: applicantInfo};
+		this.app.rpc.manager.teamRemote.acceptApplicantJoinTeam(session, args, function(err, ret) {
+			utils.myPrint('ApplyJoinTeamReply ~ ret = ', JSON.stringify(ret));
+			result = ret.result;
+			if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK) {
+				if(!applicant.joinTeam(msg.teamId)) {
+					result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
+					messageService.pushMessageToPlayer({uid: applicant.userId, sid: applicant.serverId},
+						'onApplyJoinTeamReply', {reply: result});
+				}
+				utils.myPrint('applicant teamId = ', applicant.teamId);
+			} else {
+				messageService.pushMessageToPlayer({uid: applicant.userId, sid: applicant.serverId},
+					'onApplyJoinTeamReply', {reply: ret.result});
+			}
+		});
 	} else {
-		// push tmpMsg to the applicant that the capatain rejected
-		var tmpMsg = {
-			reply : false
-		};
-		messageService.pushMessageToPlayer({uid : applicant.userId, sid : applicant.serverId}, 'onApplyJoinTeamReply', tmpMsg);
+		// push tmpMsg to the applicant that the captain rejected
+		messageService.pushMessageToPlayer({uid: applicant.userId, sid: applicant.serverId},
+			'onApplyJoinTeamReply', {reply: consts.TEAM.JOIN_TEAM_REPLY.REJECT});
 	}
 	next();
 };

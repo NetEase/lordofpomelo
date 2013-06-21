@@ -10,6 +10,7 @@ __resources__["/mainPanelView.js"] = {
 		var taskPanel = require('taskPanelView');
 		var dialogPanel = require('dialogPanelView');
 		var playerDialogPanel = require('playerDialogPanelView');
+		var applyJoinTeamPanel = require('applyJoinTeamPanelView');
 		var config = require('config');
 		var app = require('app');
 		var dataApi = require('dataApi');
@@ -68,6 +69,7 @@ __resources__["/mainPanelView.js"] = {
 			taskPanel.init();
 			dialogPanel.init();
 			playerDialogPanel.init();
+			applyJoinTeamPanel.init();
 
 		};
 

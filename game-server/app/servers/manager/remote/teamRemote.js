@@ -63,3 +63,18 @@ TeamRemote.prototype.dragMember2gameCopy = function(args, cb) {
 	utils.myPrint('1 ~ DragMember2gameCopy ~ args = ', JSON.stringify(args));
 	teamManager.dragMember2gameCopy(args, cb);
 };
+
+// applicant apply to join the team
+TeamRemote.prototype.applyJoinTeam = function(args, cb){
+	utils.myPrint('ApplyJoinTeam is running ... args = ', JSON.stringify(args));
+	var ret = teamManager.applyJoinTeam(args);
+	utils.invokeCallback(cb, null, ret);
+};
+
+// accept applicant join team
+TeamRemote.prototype.acceptApplicantJoinTeam = function(args, cb){
+	utils.myPrint('AcceptApplicantJoinTeam is running ... args = ', JSON.stringify(args));
+	var ret = teamManager.acceptApplicantJoinTeam(args);
+	utils.myPrint('AcceptApplicantJoinTeam ~ ret = ', ret);
+	utils.invokeCallback(cb, null, ret);
+};

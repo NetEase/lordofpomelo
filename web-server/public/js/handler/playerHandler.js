@@ -1,6 +1,7 @@
 __resources__["/playerHandler.js"] = {meta: {mimetype: "application/javascript"}, data: function(exports, require, module, __filename, __dirname) {
 	var pomelo = window.pomelo;
 	var btns = require('consts').BtnAction4Player;
+	var TeamC = require('consts').Team;
 
 	/**
 	 * Execute player action
@@ -35,14 +36,23 @@ __resources__["/playerHandler.js"] = {meta: {mimetype: "application/javascript"}
 	 * Apply join team action.
 	 */
   function applyJoinTeam(params) {
-    pomelo.notify("area.teamHandler.applyJoinTeam", {teamId: params.targetId});
+		console.log('ApplyJoinTeam ~ params = ', params);
+		console.log('ApplyJoinTeam ~ targetTeamId = ', params.targetTeamId);
+		console.log('ApplyJoinTeam ~ targetIsCaptain = ', params.targetIsCaptain);
+		if (params.targetTeamId > TeamC.TEAM_ID_NONE && params.targetIsCaptain) {
+			pomelo.notify("area.teamHandler.applyJoinTeam",
+				{captainId: params.targetPlayerId, teamId: params.targetTeamId});
+		}
   }
 
 	/**
 	 * Invite join team action.
 	 */
   function inviteJoinTeam(params) {
-		pomelo.notify("area.teamHandler.applyJoinTeam", {teamId: params.targetId});
+		if (params.myTeamId > TeamC.TEAM_ID_NONE && params.myIsCaptain) {
+			pomelo.notify("area.teamHandler.inviteJoinTeam",
+				{inviteeId: params.targetId, teamId: params.myTeamId});
+		}
   }
 
   exports.exec = exec;

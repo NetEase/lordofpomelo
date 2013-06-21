@@ -508,13 +508,7 @@ Player.prototype.toJSON4Team = function() {
 	return {
 		id: this.id,
 		name: this.name,
-		hp: this.hp,
-		mp: this.mp,
-		maxHp: this.maxHp,
-		maxMp: this.maxMp,
-		level: this.level,
-		teamId: this.teamId,
-		isCaptain: this.isCaptain
+		level: this.level
 	};
 };
 

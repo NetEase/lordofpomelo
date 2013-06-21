@@ -73,7 +73,11 @@ __resources__["/consts.js"] = {
       Team: {
         TEAM_ID_NONE: 0, // player without team(not in any team)
 				YES: 1,
-				NO: 0
+				NO: 0,
+				JOIN_TEAM_REPLY: {
+					REJECT: 0,
+					ACCEPT: 1
+				} // player's replying code
       },
     
       CacheType: {
@@ -92,7 +96,9 @@ __resources__["/consts.js"] = {
 			BtnAction4Player: {
 				ATTACK_PLAYER: 'AttackPlayer',
 				APPLY_JOIN_TEAM: 'ApplyJoinTeam',
-				INVITE_JOIN_TEAM: 'InviteJoinTeam'
+				INVITE_JOIN_TEAM: 'InviteJoinTeam',
+				ACCEPT_APPLICANT_JOIN_TEAM: 'AcceptApplicantJoinTeam',
+				ACCEPT_JOIN_INVITER_TEAM: 'AcceptJoinInviterTeam'
 			}
     };
   }};
