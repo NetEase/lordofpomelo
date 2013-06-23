@@ -30,6 +30,7 @@ ChatService.prototype.add = function(uid, playerName, channelName) {
 		return Code.OK;
 	}
 
+	utils.myPrint('channelName = ', channelName);
 	var channel = this.app.get('channelService').getChannel(channelName, true);
 	if(!channel) {
 		return Code.CHAT.FA_CHANNEL_CREATE;

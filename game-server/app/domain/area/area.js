@@ -12,6 +12,7 @@ var EntityType = require('../../consts/consts').EntityType;
 var utils = require('../../util/utils');
 var Timer = require('./timer');
 var logger = require('pomelo-logger').getLogger(__filename);
+var channelUtil = require('../../util/channelUtil');
 
 /**
  * Init areas
@@ -92,9 +93,12 @@ Instance.prototype.initNPCs = function() {
 
 Instance.prototype.getChannel = function() {
   if(!this.channel){
-    this.channel = pomelo.app.get('channelService').getChannel('instance_' + this.id, true);
+		var channelName = channelUtil.getAreaChannelName(this.areaId);
+		utils.myPrint('channelName = ', channelName);
+    this.channel = pomelo.app.get('channelService').getChannel(channelName, true);
   }
 
+	utils.myPrint('this.channel = ', this.channel);
   return this.channel;
 };
 

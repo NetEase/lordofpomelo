@@ -31,8 +31,9 @@ handler.enterScene = function(msg, session, next) {
 	var teamId = session.get('teamId') || consts.TEAM.TEAM_ID_NONE;
 	var isCaptain = session.get('isCaptain');
 	var isInTeamInstance = session.get('isInTeamInstance');
-	utils.myPrint("1 ~ GetPlayerAllInfo playerId = ", playerId);
-	utils.myPrint("1 ~ GetPlayerAllInfo teamId = ", teamId);
+	utils.myPrint("1 ~ EnterScene: areaId = ", areaId);
+	utils.myPrint("1 ~ EnterScene: playerId = ", playerId);
+	utils.myPrint("1 ~ EnterScene: teamId = ", teamId);
 
   userDao.getPlayerAllInfo(playerId, function(err, player) {
     if (err || !player) {
@@ -49,9 +50,11 @@ handler.enterScene = function(msg, session, next) {
 		player.teamId = teamId;
 		player.isCaptain = isCaptain;
 		player.isInTeamInstance = isInTeamInstance;
+		areaId = player.areaId;
+		utils.myPrint("2 ~ GetPlayerAllInfo: areaId = ", areaId);
 
     pomelo.app.rpc.chat.chatRemote.add(session, session.uid,
-    player.name, channelUtil.getAreaChannelName(areaId), null);
+			player.name, channelUtil.getAreaChannelName(areaId), null);
 		var map = area.map;
 
     //Reset the player's position if current pos is unreachable

@@ -2,6 +2,7 @@ var Code = require('../../../../../shared/code');
 var SCOPE = {PRI:'279106', AREA:'F7A900', ALL:'D41313'};
 var channelUtil = require('../../../util/channelUtil');
 var logger = require('pomelo-logger').getLogger(__filename);
+var utils = require('../../../util/utils');
 
 module.exports = function(app) {
 	return new ChannelHandler(app, app.get('chatService'));
@@ -23,10 +24,13 @@ ChannelHandler.prototype.send = function(msg, session, next) {
 	uid = session.uid;
 	scope = msg.scope;
 	channelName = getChannelName(msg);
+	utils.myPrint('channelName = ', channelName);
   msg.content = setContent(msg.content);
 	content = {uid: uid, content: msg.content, scope: scope, kind: msg.kind || 0, from: msg.from};
-  var self = this;
 	if (scope !== SCOPE.PRI) {
+		utils.myPrint('ByChannel ~ msg = ', JSON.stringify(msg));
+		utils.myPrint('ByChannel ~ scope = ', scope);
+		utils.myPrint('ByChannel ~ content = ', JSON.stringify(content));
 		this.chatService.pushByChannel(channelName, content, function(err, res) {
 			if(err) {
 				logger.error(err.stack);
@@ -40,6 +44,8 @@ ChannelHandler.prototype.send = function(msg, session, next) {
 			next(null, {code: code});
 		});
 	} else {
+		utils.myPrint('Private ~ scope = ', scope);
+		utils.myPrint('Private ~ content = ', JSON.stringify(content));
 		this.chatService.pushByPlayerName(msg.toName, content, function(err, res) {
 			if(err) {
 				logger.error(err.stack);

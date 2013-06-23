@@ -182,7 +182,7 @@ __resources__["/chat.js"] = {meta: {mimetype: "application/javascript"}, data: f
 			return;
 		}
 		toName = $('.m-chat .u-txt2').val() || '';
-		if (defaultScope ===SCOPE.PRI && toName === pomelo.player.name) {
+		if (defaultScope === SCOPE.PRI && toName === pomelo.player.name) {
 			alert('are you crazy');
 			return ;
 		}
