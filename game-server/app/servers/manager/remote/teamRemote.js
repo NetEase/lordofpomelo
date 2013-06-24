@@ -46,8 +46,7 @@ TeamRemote.prototype.disbandTeamById = function(args, cb){
 	var playerId = args.playerId;
 	var teamId = args.teamId;
 	var ret = teamManager.disbandTeamById(playerId, teamId);
-
-	utils.myPrint('TeamRemote ~ disbandTeamById is running ... dataArray = ', ret.dataArray);
+	utils.myPrint('TeamRemote ~ disbandTeamById is running ~ ret = ', ret);
 	utils.invokeCallback(cb, null, ret);
 };
 
@@ -98,6 +97,6 @@ TeamRemote.prototype.acceptInviteJoinTeam = function(args, cb){
 TeamRemote.prototype.updateMemberInfo = function(args, cb){
 	utils.myPrint('UpdateMemberInfo is running ... args = ', JSON.stringify(args));
 	var ret = teamManager.updateMemberInfo(args);
-	utils.myPrint('UpdateMemberInfo ~ ret = ', ret);
+	utils.myPrint('UpdateMemberInfo ~ ret = ', JSON.stringify(ret));
 	utils.invokeCallback(cb, null, ret);
 };

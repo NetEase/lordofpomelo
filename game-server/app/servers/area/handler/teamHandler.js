@@ -43,10 +43,11 @@ Handler.prototype.createTeam = function(msg, session, next) {
 		return;
 	}
 
+	var backendServerId = this.app.getServerId();
 	var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
 	var playerInfo = player.toJSON4Team();
-	var args = {playerId: playerId, areaId: area.areaId,
-		userId: player.userId, serverId: player.serverId, playerInfo: playerInfo};
+	var args = {playerId: playerId, areaId: area.areaId, userId: player.userId,
+		serverId: player.serverId, backendServerId: backendServerId, playerInfo: playerInfo};
 		this.app.rpc.manager.teamRemote.createTeam(session, args,
 		function(err, ret) {
 			utils.myPrint("ret.result = ", ret.result);
@@ -91,8 +92,6 @@ Handler.prototype.disbandTeam = function(msg, session, next) {
 	var playerId = session.get('playerId');
 	var player = area.getPlayer(playerId);
 
-	var result = consts.TEAM.FAILED;
-
 	if(!player) {
 		logger.warn('The request(disbandTeam) is illegal, the player is null : msg = %j.', msg);
 		next();
@@ -117,20 +116,15 @@ Handler.prototype.disbandTeam = function(msg, session, next) {
 		return;
 	}
 
+	var result = consts.TEAM.FAILED;
+
 	var args = {playerId: playerId, teamId: player.teamId};
 	this.app.rpc.manager.teamRemote.disbandTeamById(session, args,
 		function(err, ret) {
 			result = ret.result;
 			utils.myPrint("1 ~ result = ", result);
-			utils.myPrint("playerIdArray = ", ret.playerIdArray);
+			// utils.myPrint("playerIdArray = ", ret.playerIdArray);
 			if(result === consts.TEAM.OK) {
-				for (var i in ret.playerIdArray) {
-					var tmpPlayerId = ret.playerIdArray[i];
-					var tmpPlayer = area.getPlayer(tmpPlayerId);
-					if (!tmpPlayer || !tmpPlayer.leaveTeam()) {
-						result = consts.TEAM.FAILED;
-					}
-				}
 				if (player.isCaptain) {
 					player.isCaptain = consts.TEAM.NO;
 					var ignoreList = {};
@@ -222,11 +216,13 @@ Handler.prototype.inviteJoinTeamReply = function(msg, session, next) {
 	}
 
 	var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
+	var backendServerId = this.app.getServerId();
 	if(msg.reply === consts.TEAM.JOIN_TEAM_REPLY.ACCEPT) {
 		var inviteeInfo = inviteeObj.toJSON4Team();
 		var args = {captainId: msg.captainId, teamId: msg.teamId,
-			playerId: inviteeId, areaId: area.areaId,
-			userId: inviteeObj.userId, serverId: inviteeObj.serverId, playerInfo: inviteeInfo};
+			playerId: inviteeId, areaId: area.areaId, userId: inviteeObj.userId,
+			serverId: inviteeObj.serverId, backendServerId: backendServerId,
+			playerInfo: inviteeInfo};
 		this.app.rpc.manager.teamRemote.acceptInviteJoinTeam(session, args, function(err, ret) {
 			utils.myPrint('AcceptInviteJoinTeam ~ ret = ', JSON.stringify(ret));
 			result = ret.result;
@@ -340,9 +336,11 @@ Handler.prototype.applyJoinTeamReply = function(msg, session, next) {
 	if(msg.reply === consts.TEAM.JOIN_TEAM_REPLY.ACCEPT) {
 		var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
 		var applicantInfo = applicant.toJSON4Team();
+		var backendServerId = this.app.getServerId();
 		var args = {captainId: playerId, teamId: msg.teamId,
-			playerId: msg.applicantId, areaId: area.areaId,
-			userId: applicant.userId, serverId: applicant.serverId, playerInfo: applicantInfo};
+			playerId: msg.applicantId, areaId: area.areaId, userId: applicant.userId,
+			serverId: applicant.serverId, backendServerId: backendServerId,
+			playerInfo: applicantInfo};
 		this.app.rpc.manager.teamRemote.acceptApplicantJoinTeam(session, args, function(err, ret) {
 			utils.myPrint('ApplyJoinTeamReply ~ ret = ', JSON.stringify(ret));
 			result = ret.result;
@@ -471,7 +469,7 @@ Handler.prototype.leaveTeam = function(msg, session, next) {
 			if(result === consts.TEAM.OK && !player.leaveTeam()) {
 				result = consts.TEAM.FAILED;
 			}
-			if (player.isCaptain) {
+			if (result === consts.TEAM.OK && player.isCaptain) {
 				player.isCaptain = consts.TEAM.NO;
 				var ignoreList = {};
 				messageService.pushMessageByAOI(area,
@@ -484,18 +482,6 @@ Handler.prototype.leaveTeam = function(msg, session, next) {
 					{x: player.x, y: player.y}, ignoreList);
 			}
 			utils.myPrint("teamId = ", player.teamId);
-			// for disbanding the team
-			if(result === consts.TEAM.OK && !!ret.playerIdArray && ret.playerIdArray.length > 0) {
-				for (var i in ret.playerIdArray) {
-					var tmpPlayerId = ret.playerIdArray[i];
-					var tmpPlayer = area.getPlayer(tmpPlayerId);
-					if (!tmpPlayer || !tmpPlayer.leaveTeam()) {
-						result = consts.TEAM.FAILED;
-					}
-					utils.myPrint("tmpPlayerId = ", tmpPlayerId);
-					utils.myPrint("tmpPlayer.teamId = ", tmpPlayer.teamId);
-				}
-			}
 		});
 
 	next();
@@ -612,8 +598,10 @@ Handler.prototype.joinFirstTeam = function(msg, session, next) {
 
 	var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
 	var playerInfo = player.toJSON4Team();
-	var args = {playerId: playerId, areaId: area.areaId,
-		userId: player.userId, serverId: player.serverId, playerInfo: playerInfo};
+	var backendServerId = this.app.getServerId();
+	var args = {playerId: playerId, areaId: area.areaId, userId: player.userId,
+		serverId: player.serverId, backendServerId: backendServerId,
+		playerInfo: playerInfo};
 	this.app.rpc.manager.teamRemote.joinFirstTeam(session, args,
 		function(err, ret) {
 			result = ret.result;

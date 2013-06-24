@@ -547,8 +547,9 @@ Player.prototype.joinTeam = function(teamId) {
 
 // player leaves the team
 Player.prototype.leaveTeam = function() {
-	if(this.teamId === consts.TEAM.TEAM_ID_NONE)
+	if(this.teamId === consts.TEAM.TEAM_ID_NONE) {
 		return false;
+	}
 	this.teamId = consts.TEAM.TEAM_ID_NONE;
 	return true;
 };

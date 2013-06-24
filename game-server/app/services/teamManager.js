@@ -30,15 +30,15 @@ exp.getTeamById = function(teamId) {
 
 exp.disbandTeamById = function(playerId, teamId) {
 	var teamObj = gTeamObjDict[teamId];
-		if(!teamObj || !teamObj.isCaptainById(playerId)) {
+	if(!teamObj || !teamObj.isCaptainById(playerId)) {
 		return {result: consts.TEAM.FAILED};
-		}
+	}
 
 	var ret = teamObj.disbandTeam();
 	if(ret.result) {
 		delete gTeamObjDict[teamId];
 	}
-		return ret;
+	return ret;
 };
 
 // check member num when a member leaves the team,
@@ -73,10 +73,6 @@ exp.leaveTeamById = function(playerId, teamId, cb) {
 
 	var _this = this;
 	teamObj.removePlayer(playerId, function(err, ret) {
-		if (ret.toDisband) {
-			_this.disbandTeamById(playerId, teamId);
-			delete ret.toDisband;
-		}
 		utils.invokeCallback(cb, null, ret);
 	});
 };
@@ -95,11 +91,11 @@ exp.dragMember2gameCopy = function(args, cb) {
 };
 
 exp.applyJoinTeam = function(args) {
+	var result = consts.TEAM.FAILED;
 	if (!args || !args.teamId) {
-		return;
+		return {result: result};
 	}
 	var teamId = args.teamId;
-	var result = consts.TEAM.FAILED;
 	var teamObj = gTeamObjDict[teamId];
 	if (teamObj) {
 		if (teamObj.isTeamHasPosition() && !teamObj.isPlayerInTeam(args.applicantId)) {
@@ -111,12 +107,12 @@ exp.applyJoinTeam = function(args) {
 };
 
 exp.acceptApplicantJoinTeam = function(args) {
+	var result = consts.TEAM.FAILED;
 	if (!args || !args.teamId) {
-		return;
+		return {result: result};
 	}
 	var teamId = args.teamId;
 	var teamObj = gTeamObjDict[teamId];
-	var result = consts.TEAM.FAILED;
 	if (teamObj) {
 		if(!teamObj.isCaptainById(args.captainId)) {
 			return {result: result};
@@ -127,11 +123,11 @@ exp.acceptApplicantJoinTeam = function(args) {
 };
 
 exp.inviteJoinTeam = function(args) {
+	var result = consts.TEAM.FAILED;
 	if (!args || !args.teamId) {
-		return;
+		return {result: result};
 	}
 	var teamId = args.teamId;
-	var result = consts.TEAM.FAILED;
 	var teamObj = gTeamObjDict[teamId];
 	if (teamObj) {
 		if (teamObj.isTeamHasPosition() && teamObj.isCaptainById(args.captainId)) {
@@ -143,12 +139,12 @@ exp.inviteJoinTeam = function(args) {
 };
 
 exp.acceptInviteJoinTeam = function(args) {
+	var result = consts.TEAM.FAILED;
 	if (!args || !args.teamId) {
-		return;
+		return {result: result};
 	}
 	var teamId = args.teamId;
 	var teamObj = gTeamObjDict[teamId];
-	var result = consts.TEAM.FAILED;
 	if (teamObj) {
 		if(!teamObj.isCaptainById(args.captainId)) {
 			return {result: result};
@@ -159,11 +155,11 @@ exp.acceptInviteJoinTeam = function(args) {
 };
 
 exp.updateMemberInfo = function(args) {
+	var result = consts.TEAM.FAILED;
 	if (!args || !args.teamId) {
-		return;
+		return {result: result};
 	}
 	var teamId = args.teamId;
-	var result = consts.TEAM.FAILED;
 	var teamObj = gTeamObjDict[teamId];
 	if (teamObj) {
 		if (teamObj.updateMemberInfo(args)) {

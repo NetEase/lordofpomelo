@@ -44,20 +44,6 @@ exp.playerLeave = function(args, cb){
 	var params = {playerId: playerId, teamId: player.teamId};
 	pomelo.app.rpc.manager.teamRemote.leaveTeamById(null, params,
 		function(err, ret) {
-			var result = ret.result;
-			utils.myPrint("1 ~ result = ", result);
-			// for disbanding the team
-			if(result === consts.TEAM.OK && !!ret.playerIdArray && ret.playerIdArray.length > 0) {
-				for (var i in ret.playerIdArray) {
-					var tmpPlayerId = ret.playerIdArray[i];
-					var tmpPlayer = area.getPlayer(tmpPlayerId);
-					if (tmpPlayer) {
-						tmpPlayer.leaveTeam();
-					}
-					utils.myPrint("tmpPlayerId = ", tmpPlayerId);
-					utils.myPrint("tmpPlayer.teamId = ", tmpPlayer.teamId);
-				}
-			}
 		});
 
 	if(player.hp === 0){
@@ -77,6 +63,32 @@ exp.playerLeave = function(args, cb){
 	tasksUpdate(player.curTasks);
 	area.removePlayer(playerId);
 	area.channel.pushMessage({route: 'onUserLeave', code: consts.MESSAGE.RES, playerId: playerId});
+	utils.invokeCallback(cb);
+};
+
+exp.leaveTeam = function(args, cb){
+	var playerId = args.playerId;
+	var area = pomelo.app.areaManager.getArea(args.instanceId);
+	var player = area.getPlayer(playerId);
+
+	utils.myPrint('1 ~ LeaveTeam ~ playerId, player.teamId = ', playerId, player.teamId);
+	utils.myPrint('LeaveTeam ~ areaId = ', area.areaId);
+	utils.myPrint('LeaveTeam ~ instanceId = ', args.instanceId);
+	utils.myPrint('LeaveTeam ~ args = ', JSON.stringify(args));
+	var err = null;
+	if(!player){
+		err = 'Player leave team error(no player in area)!';
+		utils.invokeCallback(cb, err);
+		return;
+	}
+
+	if (!player.leaveTeam()) {
+		err = 'Player leave team error!';
+		utils.invokeCallback(cb, err);
+		return;
+	}
+
+	utils.myPrint('2 ~ LeaveTeam ~ playerId, player.teamId = ', playerId, player.teamId);
 	utils.invokeCallback(cb);
 };
 

@@ -24,7 +24,7 @@ function Team(teamId){
 		for(var i = 0; i < arr.length; ++i) {
 			arr[i] = {playerId: consts.TEAM.PLAYER_ID_NONE, areaId: consts.TEAM.AREA_ID_NONE,
 				userId: consts.TEAM.USER_ID_NONE, serverId: consts.TEAM.SERVER_ID_NONE,
-				playerInfo: consts.TEAM.PLAYER_INFO_NONE};
+				backendServerId: consts.TEAM.SERVER_ID_NONE, playerInfo: consts.TEAM.PLAYER_INFO_NONE};
 		}
 		_this.createChannel();
 	};
@@ -72,8 +72,8 @@ function doAddPlayer(teamObj, data) {
 	for(var i in arr) {
 		if(arr[i].playerId === consts.TEAM.PLAYER_ID_NONE && arr[i].areaId === consts.TEAM.AREA_ID_NONE) {
 			data.playerInfo.teamId = teamObj.teamId;
-			arr[i] = {playerId: data.playerId, areaId: data.areaId,
-				userId: data.userId, serverId: data.serverId, playerInfo: data.playerInfo};
+			arr[i] = {playerId: data.playerId, areaId: data.areaId, userId: data.userId,
+				serverId: data.serverId, backendServerId: data.backendServerId, playerInfo: data.playerInfo};
 			utils.myPrint('arr[i] = ', JSON.stringify(arr[i]));
 			return true;
 		}
@@ -205,17 +205,39 @@ Team.prototype.pushLeaveMsg2All = function(leavePlayerId, cb) {
 Team.prototype.disbandTeam = function() {
 	var playerIdArray = [];
 	var arr = this.playerDataArray;
+	utils.myPrint('DisbandTeam ~ arr = ', JSON.stringify(arr));
 	for(var i in arr) {
-		if(arr[i].playerId === consts.TEAM.PLAYER_ID_NONE || arr[i].areaId === consts.TEAM.AREA_ID_NONE) {
+		var playerId = arr[i].playerId;
+		if (playerId === consts.TEAM.PLAYER_ID_NONE || arr[i].areaId === consts.TEAM.AREA_ID_NONE) {
 			continue;
 		}
-		playerIdArray.push(arr[i].playerId);
+		playerIdArray.push(playerId);
+		//rpc invoke
+		var instanceId = null;
+		var params = {
+			namespace : 'user',
+			service: 'playerRemote',
+			method: 'leaveTeam',
+			args: [{
+				playerId: playerId, instanceId: instanceId
+			}]
+		};
+
+		utils.myPrint('playerId = ', playerId);
+		utils.myPrint('arr[i].backendServerId = ', arr[i].backendServerId);
+		utils.myPrint('params = ', JSON.stringify(params));
+		pomelo.app.rpcInvoke(arr[i].backendServerId, params, function(err, _){
+			if(!!err) {
+				console.error(err);
+				return {result: consts.TEAM.FAILED};
+			}
+		});
 	}
 	if (playerIdArray.length > 0) {
 		this.channel.pushMessage('onDisbandTeam', playerIdArray, null);
 	}
 
-	return {result: consts.TEAM.OK, playerIdArray: playerIdArray};
+	return {result: consts.TEAM.OK};
 };
 
 // remove a player from the team
@@ -227,7 +249,7 @@ Team.prototype.removePlayer = function(playerId, cb) {
 			tmpData = utils.clone(arr[i]);
 			arr[i] = {playerId: consts.TEAM.PLAYER_ID_NONE, areaId: consts.TEAM.AREA_ID_NONE,
 				userId: consts.TEAM.USER_ID_NONE, serverId: consts.TEAM.SERVER_ID_NONE,
-				playerInfo: consts.TEAM.PLAYER_INFO_NONE};
+				backendServerId: consts.TEAM.SERVER_ID_NONE, playerInfo: consts.TEAM.PLAYER_INFO_NONE};
 			break;
 		}
 	}
@@ -244,7 +266,6 @@ Team.prototype.removePlayer = function(playerId, cb) {
 	  // if the captain leaves the team, disband the team
 	  if (_this.isCaptainById(playerId)) {
 			ret = _this.disbandTeam();
-			ret.toDisband = true;
 	  } else {
 			_this.removePlayerFromChannel(tmpData);
 	  }
@@ -289,6 +310,7 @@ Team.prototype.updateMemberInfo = function(data) {
 	var arr = this.playerDataArray;
 	for(var i in arr) {
 		if(arr[i].playerId === data.playerId) {
+			arr[i].backendServerId = data.backendServerId;
 			arr[i].areaId = data.areaId;
 			arr[i].playerInfo = data.playerInfo;
 			utils.myPrint('arr[i] = ', JSON.stringify(arr[i]));
