@@ -25,7 +25,9 @@ __resources__["/applyJoinTeamPanelView.js"] = {
 			if (data) {
 				var tmpStr = '';
 				for (var k in data) {
-					tmpStr += k + ':' + data[k] + '  $  ';
+					if (k !== 'teamId') {
+						tmpStr += k + ':' + data[k] + '  $  ';
+					}
 				}
 				tmpStr += 'Wanna join our team ...';
 				$p.html('<b>' + tmpStr + '</b>');

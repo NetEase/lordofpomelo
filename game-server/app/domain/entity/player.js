@@ -498,8 +498,7 @@ Player.prototype.toJSON = function() {
 };
 
 /**
- * Parse String to json for team member.
- * It covers object's method
+ * Parse String to json for joining a team.
  *
  * @return {Object}
  * @api public
@@ -510,6 +509,30 @@ Player.prototype.toJSON4Team = function() {
 		name: this.name,
 		level: this.level,
 		teamId: this.teamId
+	};
+};
+
+/**
+ * Parse String to json for team member.
+ *
+ * @return {Object}
+ * @api public
+ */
+Player.prototype.toJSON4TeamMember = function() {
+	return {
+		playerId: this.id,
+		areaId: this.areaId,
+		playerInfo: {
+			name: this.name,
+			kindId: this.kindId,
+			type: this.type,
+			hp: this.hp,
+			mp: this.mp,
+			maxHp: this.maxHp,
+			maxMp: this.maxMp,
+			level: this.level,
+			teamId: this.teamId
+		}
 	};
 };
 

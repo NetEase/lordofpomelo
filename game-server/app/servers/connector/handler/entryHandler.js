@@ -2,6 +2,7 @@ var Code = require('../../../../../shared/code');
 var userDao = require('../../../dao/userDao');
 var async = require('async');
 var channelUtil = require('../../../util/channelUtil');
+var utils = require('../../../util/utils');
 var logger = require('pomelo-logger').getLogger(__filename);
 
 module.exports = function(app) {
@@ -90,6 +91,7 @@ var onUserLeave = function (app, session, reason) {
 		return;
 	}
 
+	utils.myPrint('1 ~ OnUserLeave is running ...');
 	app.rpc.area.playerRemote.playerLeave(session, {playerId: session.get('playerId'), instanceId: session.get('instanceId')}, function(err){
 		if(!!err){
 			logger.error('user leave error! %j', err);

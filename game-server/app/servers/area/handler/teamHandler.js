@@ -38,6 +38,7 @@ Handler.prototype.createTeam = function(msg, session, next) {
 
 	// if the player is already in a team, can't create team
 	if(player.teamId !== consts.TEAM.TEAM_ID_NONE) {
+		logger.warn('The request(createTeam) is illegal, the player is already in a team : msg = %j.', msg);
 		next();
 		return;
 	}
@@ -128,9 +129,6 @@ Handler.prototype.disbandTeam = function(msg, session, next) {
 					var tmpPlayer = area.getPlayer(tmpPlayerId);
 					if (!tmpPlayer || !tmpPlayer.leaveTeam()) {
 						result = consts.TEAM.FAILED;
-					}
-					if (tmpPlayer) {
-						utils.myPrint("tmpPlayer.teamId = ", tmpPlayer.teamId);
 					}
 				}
 				if (player.isCaptain) {

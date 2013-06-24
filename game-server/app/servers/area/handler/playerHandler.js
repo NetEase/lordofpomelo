@@ -51,7 +51,7 @@ handler.enterScene = function(msg, session, next) {
 		player.isCaptain = isCaptain;
 		player.isInTeamInstance = isInTeamInstance;
 		areaId = player.areaId;
-		utils.myPrint("2 ~ GetPlayerAllInfo: areaId = ", areaId);
+		utils.myPrint("2 ~ GetPlayerAllInfo: serverId, areaId = ", player.serverId, areaId);
 
     pomelo.app.rpc.chat.chatRemote.add(session, session.uid,
 			player.name, channelUtil.getAreaChannelName(areaId), null);
@@ -89,6 +89,14 @@ handler.enterScene = function(msg, session, next) {
       });
       return;
     }
+
+		if (player.teamId > consts.TEAM.TEAM_ID_NONE) {
+			// send player's new info to the manager server(team manager)
+			var memberInfo = player.toJSON4TeamMember();
+			this.app.rpc.manager.teamRemote.updateMemberInfo(session, memberInfo,
+				function(err, ret) {
+				});
+		}
 
   });
 };

@@ -1,7 +1,7 @@
 var ChannelUtil = module.exports;
 
 var GLOBAL_CHANNEL_NAME = 'pomelo';
-var AREA_CHANNEL_PREFIX = 'instance_';
+var AREA_CHANNEL_PREFIX = 'area_';
 
 ChannelUtil.getGlobalChannelName = function() {
 	return GLOBAL_CHANNEL_NAME;

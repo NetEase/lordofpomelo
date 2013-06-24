@@ -171,7 +171,7 @@ Team.prototype.isPlayerInTeam = function(playerId) {
 Team.prototype.updateTeamInfo = function() {
 	var infoObjDict = {};
 	var arr = this.playerDataArray;
-	for(var i in arr) {
+	for (var i in arr) {
 		var playerId = arr[i].playerId;
 		if(playerId === consts.TEAM.PLAYER_ID_NONE) {
 			continue;
@@ -269,7 +269,6 @@ Team.prototype.pushChatMsg2All = function(content) {
 	return true;
 };
 
-
 Team.prototype.dragMember2gameCopy = function(args, cb) {
 	if(!this.channel) {
 		return;
@@ -280,6 +279,28 @@ Team.prototype.dragMember2gameCopy = function(args, cb) {
 
 	return;
 };
+
+Team.prototype.updateMemberInfo = function(data) {
+	utils.myPrint('data = ', data);
+	utils.myPrint('playerInfo= ', data.playerInfo);
+	if (this.teamId !== data.playerInfo.teamId) {
+		return false;
+	}
+	var arr = this.playerDataArray;
+	for(var i in arr) {
+		if(arr[i].playerId === data.playerId) {
+			arr[i].areaId = data.areaId;
+			arr[i].playerInfo = data.playerInfo;
+			utils.myPrint('arr[i] = ', JSON.stringify(arr[i]));
+			if (data.needNotifyElse) {
+				this.updateTeamInfo();
+			}
+			return true;
+		}
+	}
+	return false;
+};
+
 ///////////////////////////////////////////////////////
 /**
  * Expose 'Team' constructor.

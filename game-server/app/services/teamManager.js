@@ -157,3 +157,19 @@ exp.acceptInviteJoinTeam = function(args) {
 	}
 	return {result: result};
 };
+
+exp.updateMemberInfo = function(args) {
+	if (!args || !args.teamId) {
+		return;
+	}
+	var teamId = args.teamId;
+	var result = consts.TEAM.FAILED;
+	var teamObj = gTeamObjDict[teamId];
+	if (teamObj) {
+		if (teamObj.updateMemberInfo(args)) {
+			result = consts.TEAM.OK;
+		}
+	}
+
+	return {result: result};
+};

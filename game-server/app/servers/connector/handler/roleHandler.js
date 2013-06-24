@@ -86,6 +86,7 @@ var onUserLeave = function (session, reason) {
 		return;
 	}
 
+	utils.myPrint('2 ~ OnUserLeave is running ...');
 	var rpc= pomelo.app.rpc;
 	rpc.area.playerRemote.playerLeave(session, {playerId: session.get('playerId'), areaId: session.get('areaId')}, null);
 	rpc.chat.chatRemote.kick(session, session.uid, null);

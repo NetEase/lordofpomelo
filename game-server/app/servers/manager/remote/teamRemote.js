@@ -93,3 +93,11 @@ TeamRemote.prototype.acceptInviteJoinTeam = function(args, cb){
 	utils.myPrint('AcceptInviteJoinTeam ~ ret = ', ret);
 	utils.invokeCallback(cb, null, ret);
 };
+
+// update team member's new info
+TeamRemote.prototype.updateMemberInfo = function(args, cb){
+	utils.myPrint('UpdateMemberInfo is running ... args = ', JSON.stringify(args));
+	var ret = teamManager.updateMemberInfo(args);
+	utils.myPrint('UpdateMemberInfo ~ ret = ', ret);
+	utils.invokeCallback(cb, null, ret);
+};
