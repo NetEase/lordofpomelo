@@ -1,8 +1,10 @@
 var Code = require('../../../../../shared/code');
-var SCOPE = {PRI:'279106', AREA:'F7A900', ALL:'D41313'};
+var SCOPE = {PRI:'279106', AREA:'F7A900', ALL:'D41313', TEAM:'0897f7'};
 var channelUtil = require('../../../util/channelUtil');
 var logger = require('pomelo-logger').getLogger(__filename);
 var utils = require('../../../util/utils');
+var consts = require('../../../consts/consts');
+var pomelo = require('pomelo');
 
 module.exports = function(app) {
 	return new ChannelHandler(app, app.get('chatService'));
@@ -31,18 +33,28 @@ ChannelHandler.prototype.send = function(msg, session, next) {
 		utils.myPrint('ByChannel ~ msg = ', JSON.stringify(msg));
 		utils.myPrint('ByChannel ~ scope = ', scope);
 		utils.myPrint('ByChannel ~ content = ', JSON.stringify(content));
-		this.chatService.pushByChannel(channelName, content, function(err, res) {
-			if(err) {
-				logger.error(err.stack);
-				code = Code.FAIL;
-			} else if(res){
-				code = res;
-			} else {
-				code = Code.OK;
-			}
+		utils.myPrint('ByChannel ~ msg.teamId = ', msg.teamId);
+		if (scope === SCOPE.TEAM && msg.teamId > consts.TEAM.AREA_ID_NONE) {
+			var args = {teamId: msg.teamId, content: content};
+			utils.myPrint('ByChannel ~ args = ', JSON.stringify(args));
+			pomelo.app.rpc.manager.teamRemote.chatInTeam(null, args, function(_, res) {
+				code = res.results ? Code.OK : Code.FAIL;
+				next(null, {code: code});
+			});
+		} else {
+			this.chatService.pushByChannel(channelName, content, function(err, res) {
+				if(err) {
+					logger.error(err.stack);
+					code = Code.FAIL;
+				} else if(res){
+					code = res;
+				} else {
+					code = Code.OK;
+				}
 
-			next(null, {code: code});
-		});
+				next(null, {code: code});
+			});
+		}
 	} else {
 		utils.myPrint('Private ~ scope = ', scope);
 		utils.myPrint('Private ~ content = ', JSON.stringify(content));

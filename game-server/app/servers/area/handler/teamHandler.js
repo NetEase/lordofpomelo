@@ -531,44 +531,6 @@ Handler.prototype.depute2Member = function(msg, session, next) {
 };
 
 /**
- * members chat in the team, and push content to other members
- *
- * @param {Object} msg
- * @param {Object} session
- * @param {Function} next
- * @api public
- */
-Handler.prototype.chatInTeam = function(msg, session, next) {
-	var area = session.area;
-	var playerId = session.get('playerId');
-	var player = area.getPlayer(playerId);
-
-	if(!player) {
-		logger.warn('The request(chatInTeam) is illegal, the player is null : msg = %j.', msg);
-		next();
-		return;
-	}
-
-	// var teamObj = this.app.rpc.manager.teamRemote.getTeamById(msg.teamId);
-	var teamObj = null;
-	if(!teamObj) {
-		logger.warn('The request(chatInTeam) is illegal, the team is null : msg = %j.', msg);
-		next();
-		return;
-	}
-
-	if(!teamObj.isPlayerInTeam(playerId)) {
-		logger.warn('The request(chatInTeam) is illegal, the player is not int team : msg = %j.', msg);
-		next();
-		return;
-	}
-
-	teamObj.pushChatMsg2All(msg.content);
-
-	next();
-};
-
-/**
  * Player join the first team, and response the result information : success(1)/failed(0)
  *
  * @param {Object} msg

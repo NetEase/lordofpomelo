@@ -4,6 +4,8 @@
 var consts = require('../../consts/consts');
 var pomelo = require('pomelo');
 var utils = require('../../util/utils');
+var channelUtil = require('../../util/channelUtil');
+var Event = require('../../consts/consts').Event;
 
 // max member num in a team
 var MAX_MEMBER_NUM = 3;
@@ -36,7 +38,8 @@ Team.prototype.createChannel = function() {
 	if(this.channel) {
 		return this.channel;
 	}
-	this.channel = pomelo.app.get('channelService').getChannel('team_' + this.teamId, true);
+	var channelName = channelUtil.getTeamChannelName(this.teamId);
+	this.channel = pomelo.app.get('channelService').getChannel(channelName, true);
 	if(this.channel) {
 		return this.channel;
 	}
@@ -59,6 +62,7 @@ Team.prototype.removePlayerFromChannel = function(data) {
 		return false;
 	}
 	if(data) {
+		utils.myPrint('data.userId, data.serverId = ', data.userId, data.serverId);
 		this.channel.leave(data.userId, data.serverId);
 		return true;
 	}
@@ -283,10 +287,11 @@ Team.prototype.pushChatMsg2All = function(content) {
 	if(!this.channel) {
 		return false;
 	}
-	var msg = {
-		content : content
-	};
-	this.channel.pushMessage('onChatInTeam', msg, null);
+	var playerId = content.uid;
+	if(!this.isPlayerInTeam(playerId)) {
+		return false;
+	}
+	this.channel.pushMessage(Event.chat, content, null);
 	return true;
 };
 

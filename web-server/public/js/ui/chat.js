@@ -4,13 +4,14 @@ __resources__["/chat.js"] = {meta: {mimetype: "application/javascript"}, data: f
 	var isInit = false;
 	var msgArray = [];
 	var msgBox = null;
-	var SCOPE = {PRI:'279106',AREA:'F7A900',ALL:'D41313'};
+	var SCOPE = {PRI:'279106',AREA:'F7A900',ALL:'D41313',TEAM:'0897f7'};
 	var typeTarget = null;
 	var defaultScope = SCOPE.AREA;
   var ALL = 'all';
 	var SYSTEM = 'system';
 	var PRIV = 'priv';
 	var AREA = 'area';
+	var TEAM = 'team';
 
 	var Chat = function(opts) {
 	};
@@ -25,9 +26,8 @@ __resources__["/chat.js"] = {meta: {mimetype: "application/javascript"}, data: f
 		msgBox = $('.m-chat .body');
 		$('.m-chat').height('0px');
 		typeTarget = $('.m-chat .type');
-		typeTarget.height('56px').hide();
+		typeTarget.height('75px').hide();
 		$('.m-chat .s-fc7').hide();
-		$('.m-chat .s-fc9').hide();
 		$('.m-chat .u-face').addClass('disabled');
 		$('.m-chat .u-area').click(function() {
 			typeTarget.show();
@@ -61,6 +61,11 @@ __resources__["/chat.js"] = {meta: {mimetype: "application/javascript"}, data: f
 			$('.u-txt').width('200px');
 		});
 		$('.m-chat .s-fc8').attr('scope',SCOPE.AREA).click(function(event) {
+			self.scopeClick(event);
+			$('.u-txt2').hide();
+			$('.u-txt').width('200px');
+		});
+		$('.m-chat .s-fc9').attr('scope',SCOPE.TEAM).click(function(event) {
 			self.scopeClick(event);
 			$('.u-txt2').hide();
 			$('.u-txt').width('200px');
@@ -99,7 +104,7 @@ __resources__["/chat.js"] = {meta: {mimetype: "application/javascript"}, data: f
 			if (data.code === 3004) {
 				alert(' user is offline ');
 			} else {
-        // may be some thing error in channel push
+        // may be something wrong in channel push
 			}
 			return;
 		} else {
@@ -163,7 +168,7 @@ __resources__["/chat.js"] = {meta: {mimetype: "application/javascript"}, data: f
 				return  '<font color=#'+ msg.scope +'><span class="nick">'+ msg.from + '</span>:' + msg.content + '</font><br/>';
 			}
 		} else {
-			if (msg.from===pomelo.player.name) {
+			if (msg.from === pomelo.player.name) {
 				return '<font color=#'+ msg.scope +'>  you say to '+ msg.toName + ':' + msg.content + '</font><br/>';
 			} else {
 				return '<font color=#'+ msg.scope +'><span class="nick">'+ msg.from + '</span> says to you:' + msg.content + '</font><br/>';
@@ -186,7 +191,8 @@ __resources__["/chat.js"] = {meta: {mimetype: "application/javascript"}, data: f
 			alert('are you crazy');
 			return ;
 		}
-		msg = {from: pomelo.player.name, scope: defaultScope, content: content, areaId: pomelo.areaId, toName: toName};
+		msg = {from: pomelo.player.name, scope: defaultScope, content: content,
+			areaId: pomelo.areaId, toName: toName, teamId: pomelo.teamId};
 		pomelo.request(route, msg, function(data) {
 			self.response(data,msg);
 		});

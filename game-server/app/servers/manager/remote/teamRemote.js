@@ -100,3 +100,10 @@ TeamRemote.prototype.updateMemberInfo = function(args, cb){
 	utils.myPrint('UpdateMemberInfo ~ ret = ', JSON.stringify(ret));
 	utils.invokeCallback(cb, null, ret);
 };
+
+// chat in team
+TeamRemote.prototype.chatInTeam = function(args, cb){
+	utils.myPrint('ChatInTeam is running ... args = ', JSON.stringify(args));
+	var ret = teamManager.chatInTeam(args);
+	utils.invokeCallback(cb, null, ret);
+};

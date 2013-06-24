@@ -169,3 +169,19 @@ exp.updateMemberInfo = function(args) {
 
 	return {result: result};
 };
+
+exp.chatInTeam = function(args) {
+	var result = consts.TEAM.FAILED;
+	if (!args || !args.teamId) {
+		return {result: result};
+	}
+	var teamId = args.teamId;
+	var teamObj = gTeamObjDict[teamId];
+	if (teamObj) {
+		if (teamObj.pushChatMsg2All(args.content)) {
+			result = consts.TEAM.OK;
+		}
+	}
+
+	return {result: result};
+};
