@@ -34,13 +34,17 @@ ChannelHandler.prototype.send = function(msg, session, next) {
 		utils.myPrint('ByChannel ~ scope = ', scope);
 		utils.myPrint('ByChannel ~ content = ', JSON.stringify(content));
 		utils.myPrint('ByChannel ~ msg.teamId = ', msg.teamId);
-		if (scope === SCOPE.TEAM && msg.teamId > consts.TEAM.AREA_ID_NONE) {
-			var args = {teamId: msg.teamId, content: content};
-			utils.myPrint('ByChannel ~ args = ', JSON.stringify(args));
-			pomelo.app.rpc.manager.teamRemote.chatInTeam(null, args, function(_, res) {
-				code = res.results ? Code.OK : Code.FAIL;
-				next(null, {code: code});
-			});
+		if (scope === SCOPE.TEAM) {
+			if (msg.teamId > consts.TEAM.AREA_ID_NONE) {
+				var args = {teamId: msg.teamId, content: content};
+				utils.myPrint('ByChannel ~ args = ', JSON.stringify(args));
+				pomelo.app.rpc.manager.teamRemote.chatInTeam(null, args, function(_, res) {
+					code = res.results ? Code.OK : Code.FAIL;
+					next(null, {code: code});
+				});
+			} else {
+				next(null, {code: Code.FAIL});
+			}
 		} else {
 			this.chatService.pushByChannel(channelName, content, function(err, res) {
 				if(err) {
