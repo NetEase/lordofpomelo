@@ -522,10 +522,9 @@ Player.prototype.toJSON4TeamMember = function() {
 	return {
 		playerId: this.id,
 		areaId: this.areaId,
-		playerInfo: {
+		playerData: {
 			name: this.name,
 			kindId: this.kindId,
-			type: this.type,
 			hp: this.hp,
 			mp: this.mp,
 			maxHp: this.maxHp,

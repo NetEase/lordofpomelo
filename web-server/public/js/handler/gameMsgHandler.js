@@ -241,9 +241,14 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 		 * @param data {Object}
 		 */
 		pomelo.on('onUpdateTeam', function(data) {
+			if (Object.keys(data).length <= 1) {
+				mainPanel.hideTeamMate1();
+			} else {
+				mainPanel.showTeamMate1();
+			}
 			for (var playerId in data) {
-				var playerInfo = data[playerId];
-				console.log("1 ~ OnUpdateTeam ~ playerInfo = ", JSON.stringify(playerInfo));
+				var playerData = data[playerId];
+				console.log("1 ~ OnUpdateTeam ~ playerData = ", JSON.stringify(playerData));
 
 				playerId = parseInt(playerId, null);
 				var area = app.getCurArea();
@@ -252,7 +257,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 					continue;
 				}
 
-				player.teamId = playerInfo.teamId;
+				player.teamId = playerData.teamId;
 				if (playerId === pomelo.playerId) {
 					pomelo.teamId = player.teamId;
 					console.log("2 ~ OnUpdateTeam ~ teamId = ", pomelo.teamId);
@@ -264,6 +269,19 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 				}
 				player.getSprite().showTeamMemberFlag(isShow);
 				console.log("3 ~ OnUpdateTeam ~ playerId, teamId = ", playerId, player.teamId);
+
+				if (playerId !== pomelo.playerId) {
+					mainPanel.setName4TM1(playerData.name);
+					mainPanel.setLevel4TM1(playerData.level);
+					mainPanel.setHpBar4TM1(playerData.hp, playerData.maxHp);
+					mainPanel.setMpBar4TM1(playerData.mp, playerData.maxMp);
+					console.log('OnUpdateTeam ~ kindId = ', playerData.kindId);
+					var characterData = dataApi.character.findById(playerData.kindId);
+					console.log('characterData = ', JSON.stringify(characterData));
+					console.log('characterData.id = ', characterData.id);
+					mainPanel.setAvatar4TM1(characterData.id);
+				}
+
 			}
 		});
 

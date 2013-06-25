@@ -20,6 +20,7 @@ __resources__["/curPlayer.js"] = {meta: {mimetype: "application/javascript"}, da
 	var CurPlayer = function(opts){
 		Player.call(this, opts);
 
+		console.log('curPlayer ~ this.kindId = ', this.kindId);
 		this.characterData = dataApi.character.findById(this.kindId);
 		this.bag = new Bag(opts.bag);
 		this.skillPoint = opts.skillPoint || 0;

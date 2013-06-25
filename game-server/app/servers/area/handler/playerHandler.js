@@ -93,7 +93,6 @@ handler.enterScene = function(msg, session, next) {
 		if (player.teamId > consts.TEAM.TEAM_ID_NONE) {
 			// send player's new info to the manager server(team manager)
 			var memberInfo = player.toJSON4TeamMember();
-			memberInfo.teamId = player.teamId;
 			memberInfo.backendServerId = pomelo.app.getServerId();
 			pomelo.app.rpc.manager.teamRemote.updateMemberInfo(session, memberInfo,
 				function(err, ret) {

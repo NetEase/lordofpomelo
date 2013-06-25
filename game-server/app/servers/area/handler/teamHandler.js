@@ -45,7 +45,7 @@ Handler.prototype.createTeam = function(msg, session, next) {
 
 	var backendServerId = this.app.getServerId();
 	var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
-	var playerInfo = player.toJSON4Team();
+	var playerInfo = player.toJSON4TeamMember();
 	var args = {playerId: playerId, areaId: area.areaId, userId: player.userId,
 		serverId: player.serverId, backendServerId: backendServerId, playerInfo: playerInfo};
 		this.app.rpc.manager.teamRemote.createTeam(session, args,
@@ -218,7 +218,7 @@ Handler.prototype.inviteJoinTeamReply = function(msg, session, next) {
 	var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
 	var backendServerId = this.app.getServerId();
 	if(msg.reply === consts.TEAM.JOIN_TEAM_REPLY.ACCEPT) {
-		var inviteeInfo = inviteeObj.toJSON4Team();
+		var inviteeInfo = inviteeObj.toJSON4TeamMember();
 		var args = {captainId: msg.captainId, teamId: msg.teamId,
 			playerId: inviteeId, areaId: area.areaId, userId: inviteeObj.userId,
 			serverId: inviteeObj.serverId, backendServerId: backendServerId,
@@ -290,7 +290,8 @@ Handler.prototype.applyJoinTeam = function(msg, session, next) {
 			utils.myPrint("result = ", result);
 			if(result === consts.TEAM.OK) {
 				var applicantInfo = applicantObj.toJSON4Team();
-				messageService.pushMessageToPlayer({uid: captainObj.userId, sid: captainObj.serverId}, 'onApplyJoinTeam', applicantInfo);
+				messageService.pushMessageToPlayer({uid: captainObj.userId, sid: captainObj.serverId},
+					'onApplyJoinTeam', applicantInfo);
 			}
 		});
 	next();
@@ -335,7 +336,7 @@ Handler.prototype.applyJoinTeamReply = function(msg, session, next) {
 
 	if(msg.reply === consts.TEAM.JOIN_TEAM_REPLY.ACCEPT) {
 		var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
-		var applicantInfo = applicant.toJSON4Team();
+		var applicantInfo = applicant.toJSON4TeamMember();
 		var backendServerId = this.app.getServerId();
 		var args = {captainId: playerId, teamId: msg.teamId,
 			playerId: msg.applicantId, areaId: area.areaId, userId: applicant.userId,
@@ -559,7 +560,7 @@ Handler.prototype.joinFirstTeam = function(msg, session, next) {
 	}
 
 	var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
-	var playerInfo = player.toJSON4Team();
+	var playerInfo = player.toJSON4TeamMember();
 	var backendServerId = this.app.getServerId();
 	var args = {playerId: playerId, areaId: area.areaId, userId: player.userId,
 		serverId: player.serverId, backendServerId: backendServerId,

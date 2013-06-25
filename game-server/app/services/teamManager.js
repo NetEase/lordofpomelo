@@ -159,7 +159,7 @@ exp.updateMemberInfo = function(args) {
 	if (!args || !args.teamId) {
 		return {result: result};
 	}
-	var teamId = args.teamId;
+	var teamId = args.playerData.teamId;
 	var teamObj = gTeamObjDict[teamId];
 	if (teamObj) {
 		if (teamObj.updateMemberInfo(args)) {

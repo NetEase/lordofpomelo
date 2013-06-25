@@ -26,7 +26,7 @@ function Team(teamId){
 		for(var i = 0; i < arr.length; ++i) {
 			arr[i] = {playerId: consts.TEAM.PLAYER_ID_NONE, areaId: consts.TEAM.AREA_ID_NONE,
 				userId: consts.TEAM.USER_ID_NONE, serverId: consts.TEAM.SERVER_ID_NONE,
-				backendServerId: consts.TEAM.SERVER_ID_NONE, playerInfo: consts.TEAM.PLAYER_INFO_NONE};
+				backendServerId: consts.TEAM.SERVER_ID_NONE, playerData: consts.TEAM.PLAYER_INFO_NONE};
 		}
 		_this.createChannel();
 	};
@@ -70,14 +70,14 @@ Team.prototype.removePlayerFromChannel = function(data) {
 };
 
 function doAddPlayer(teamObj, data) {
-	utils.myPrint('data = ', data);
-	utils.myPrint('playerInfo= ', data.playerInfo);
 	var arr = teamObj.playerDataArray;
 	for(var i in arr) {
 		if(arr[i].playerId === consts.TEAM.PLAYER_ID_NONE && arr[i].areaId === consts.TEAM.AREA_ID_NONE) {
-			data.playerInfo.teamId = teamObj.teamId;
+			data.playerInfo.playerData.teamId = teamObj.teamId;
+			utils.myPrint('data.playerInfo = ', JSON.stringify(data.playerInfo));
 			arr[i] = {playerId: data.playerId, areaId: data.areaId, userId: data.userId,
-				serverId: data.serverId, backendServerId: data.backendServerId, playerInfo: data.playerInfo};
+				serverId: data.serverId, backendServerId: data.backendServerId,
+				playerData: data.playerInfo.playerData};
 			utils.myPrint('arr[i] = ', JSON.stringify(arr[i]));
 			return true;
 		}
@@ -180,9 +180,9 @@ Team.prototype.updateTeamInfo = function() {
 		if(playerId === consts.TEAM.PLAYER_ID_NONE) {
 			continue;
 		}
-		infoObjDict[playerId] = arr[i].playerInfo;
-
-		utils.myPrint("typeof playerId = ", typeof playerId);
+		infoObjDict[playerId] = arr[i].playerData;
+		utils.myPrint('infoObjDict[playerId] = ', JSON.stringify(infoObjDict[playerId]));
+		utils.myPrint('playerId, kindId = ', playerId, infoObjDict[playerId].kindId);
 	}
 
 	if(Object.keys(infoObjDict).length > 0) {
@@ -253,7 +253,7 @@ Team.prototype.removePlayer = function(playerId, cb) {
 			tmpData = utils.clone(arr[i]);
 			arr[i] = {playerId: consts.TEAM.PLAYER_ID_NONE, areaId: consts.TEAM.AREA_ID_NONE,
 				userId: consts.TEAM.USER_ID_NONE, serverId: consts.TEAM.SERVER_ID_NONE,
-				backendServerId: consts.TEAM.SERVER_ID_NONE, playerInfo: consts.TEAM.PLAYER_INFO_NONE};
+				backendServerId: consts.TEAM.SERVER_ID_NONE, playerData: consts.TEAM.PLAYER_INFO_NONE};
 			break;
 		}
 	}
@@ -308,8 +308,8 @@ Team.prototype.dragMember2gameCopy = function(args, cb) {
 
 Team.prototype.updateMemberInfo = function(data) {
 	utils.myPrint('data = ', data);
-	utils.myPrint('playerInfo= ', data.playerInfo);
-	if (this.teamId !== data.playerInfo.teamId) {
+	utils.myPrint('playerData = ', data.playerData);
+	if (this.teamId !== data.playerData.teamId) {
 		return false;
 	}
 	var arr = this.playerDataArray;
@@ -317,7 +317,7 @@ Team.prototype.updateMemberInfo = function(data) {
 		if(arr[i].playerId === data.playerId) {
 			arr[i].backendServerId = data.backendServerId;
 			arr[i].areaId = data.areaId;
-			arr[i].playerInfo = data.playerInfo;
+			arr[i].playerData = data.playerData;
 			utils.myPrint('arr[i] = ', JSON.stringify(arr[i]));
 			if (data.needNotifyElse) {
 				this.updateTeamInfo();

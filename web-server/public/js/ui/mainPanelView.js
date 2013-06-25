@@ -26,9 +26,19 @@ __resources__["/mainPanelView.js"] = {
 		var $level;
 		// experience value
 		var $exp, $expBar;
-		// team menu
 		var $avatarImg;
-		var $teamMenu, $createTeam, $joinFirstTeam, $leaveTeam, $disbandTeam;
+		// team menu
+		var $teamMenu, $createTeam, $leaveTeam, $disbandTeam, $teamMenu4TM1, $kickOut;
+
+		// TeamMate-1 ~ Begin
+		var $teamMate1;
+		var $name4TM1;
+		var $hpBar4TM1;
+		var $mpBar4TM1;
+		var $level4TM1;
+		var $avatarImg4TM1;
+		// TeamMate-1 ~ End
+
 		var inited = false;
 
 		var init = function() {
@@ -42,18 +52,30 @@ __resources__["/mainPanelView.js"] = {
 			$level = $('#mainPanel .m-player .name span').eq(1);
 			$exp = $('#mainPanel .m-asset .pos6 span');
 			$expBar = $('#mainPanel .m-asset .icon-ll');
-			$avatarImg = $('#mainPanel .avatar img');
+			$avatarImg = $('#mainPanel .m-player .avatar img');
 			$teamMenu = $('#mainPanel .m-player .teamMenu');
 			$createTeam = $('#mainPanel .m-player .teamMenu .menuItem #createTeam');
-			$joinFirstTeam = $('#mainPanel .m-player .teamMenu .menuItem #joinFirstTeam');
 			$disbandTeam = $('#mainPanel .m-player .teamMenu .menuItem #disbandTeam');
 			$leaveTeam = $('#mainPanel .m-player .teamMenu .menuItem #leaveTeam');
+
+			// TeamMate-1 ~ Begin
+			$teamMate1 = $('#mainPanel .m-team-mate-1');
+			$name4TM1 = $('#mainPanel .m-team-mate-1 .name span').eq(0);
+			$level4TM1 = $('#mainPanel .m-team-mate-1 .name span').eq(1);
+			$hpBar4TM1 = $('#mainPanel .m-team-mate-1 .u-levbar span.outer');
+			$mpBar4TM1 = $('#mainPanel .m-team-mate-1 .u-levbar-1 span.outer');
+			$avatarImg4TM1 = $('#mainPanel .m-team-mate-1 .avatar img');
+			$teamMate1.hide();
+			$teamMenu4TM1 = $('#mainPanel .m-team-mate-1 .teamMenu');
+			$kickOut = $('#mainPanel .m-team-mate-1 .teamMenu .menuItem #kickOut');
+			// TeamMate-1 ~ End
 
 			$li = $('.m-nav li');
 
 			initNav();
 
 			var player = app.getCurPlayer();
+			console.log('player.characterData.id = ', player.characterData.id);
 			$('#mainPanel .avatar img').attr('src', config.IMAGE_URL + 'character/' + player.characterData.id + '.png');
 			$('#mainPanel .m-player .name span').eq(0).text(player.name);
 			setLevel(player.level);
@@ -150,22 +172,55 @@ __resources__["/mainPanelView.js"] = {
 			}
 		};
 
+		// TeamMate-1 ~ Begin
+		var showTeamMate1 = function() {
+			console.log('ShowTeamMate1 is running ...');
+			$teamMate1.show();
+		};
+
+		var hideTeamMate1 = function() {
+			console.log('HideTeamMate1 is running ...');
+			$teamMate1.hide();
+		};
+
+		var setName4TM1 = function(name) {
+			$name4TM1.text(name);
+		};
+
+		var setLevel4TM1 = function(level) {
+			$level4TM1.html(level);
+		};
+		var setHpBar4TM1 = function(hp, maxHp) {
+			$hpBar4TM1.css('width', (hp * 100 / maxHp) + '%');
+		};
+
+		var setMpBar4TM1 = function(mp, maxMp) {
+			$mpBar4TM1.css('width', (mp * 100 / maxMp) + '%');
+		};
+
+		var setAvatar4TM1 = function(kindId) {
+			$avatarImg4TM1.attr('src', config.IMAGE_URL + 'character/' + kindId + '.png');
+		};
+		// TeamMate-1 ~ End
+
 		// init team menu
 		var initTeamMenu = function() {
 			$teamMenu.hide();
+			$teamMenu4TM1.hide();
+
 			$avatarImg.on('click', function() {
+				console.log('$teamMenu.toggle() is running ...');
 				$teamMenu.toggle();
+			});
+
+			$avatarImg4TM1.on('click', function() {
+				console.log('$teamMenu4TM1.toggle() is running ...');
+				$teamMenu4TM1.toggle();
 			});
 
 			$createTeam.on('click', function() {
 				console.log('click createTeam ...');
 				pomelo.notify("area.teamHandler.createTeam");
-				$teamMenu.hide();
-			});
-
-			$joinFirstTeam.on('click', function() {
-				console.log('click joinFirstTeam ...');
-				pomelo.notify("area.teamHandler.joinFirstTeam");
 				$teamMenu.hide();
 			});
 
@@ -187,6 +242,17 @@ __resources__["/mainPanelView.js"] = {
 				});
 				console.log('leaveTeam ~ pomelo.teamId = ', pomelo.teamId);
 				$teamMenu.hide();
+			});
+
+			$kickOut.on('click', function() {
+				console.log('click kickOut ...');
+				pomelo.notify("area.teamHandler.kickOut", {
+					captainId: pomelo.playerId,
+					teamId: pomelo.teamId,
+					playerId: null
+				});
+				console.log('kickOut ~ pomelo.teamId = ', pomelo.teamId);
+				$teamMenu4TM1.hide();
 			});
 
 		};
@@ -384,7 +450,6 @@ __resources__["/mainPanelView.js"] = {
 			});
 		};
 
-
 		exports.init = init;
 		exports.removeNavSelect = removeNavSelect;
 		exports.closeAllPanel = closeAllPanel;
@@ -395,5 +460,14 @@ __resources__["/mainPanelView.js"] = {
 		exports.initSkillPanel = initSkillPanel;
 		exports.skillBox = skillBox;
 
+		// TeamMate-1 ~ Begin
+		exports.showTeamMate1 = showTeamMate1;
+		exports.hideTeamMate1 = hideTeamMate1;
+		exports.setName4TM1 = setName4TM1;
+		exports.setLevel4TM1 = setLevel4TM1;
+		exports.setHpBar4TM1 = setHpBar4TM1;
+		exports.setMpBar4TM1 = setMpBar4TM1;
+		exports.setAvatar4TM1 = setAvatar4TM1;
+		// TeamMate-1 ~ End
 	}
 };
