@@ -109,6 +109,7 @@ var KuroujiBuff = (function() {
 				used = true;
 				player.hp -= hp;
 				player.attackParam *= increaseParam;
+				player.updateTeamMemberInfo();
 			},
 			unuseCallback: function(player){
 				if (used) {

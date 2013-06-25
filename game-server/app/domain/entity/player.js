@@ -13,6 +13,8 @@ var fightskillDao = require('../../dao/fightskillDao');
 var taskDao = require('../../dao/taskDao');
 var fightskill = require('./../fightskill');
 var logger = require('pomelo-logger').getLogger(__filename);
+var pomelo = require('pomelo');
+var utils = require('../../util/utils');
 
 /**
  * Initialize a new 'Player' with the given 'opts'.
@@ -96,6 +98,18 @@ Player.prototype.upgrade = function() {
 	this.emit('upgrade');
 };
 
+// update team member info
+Player.prototype.updateTeamMemberInfo = function() {
+	if (this.teamId > consts.TEAM.TEAM_ID_NONE) {
+		utils.myPrint('UpdateTeamMemberInfo is running ...');
+		var memberInfo = this.toJSON4TeamMember();
+		memberInfo.needNotifyElse = true;
+		pomelo.app.rpc.manager.teamRemote.updateMemberInfo(null, memberInfo,
+			function(err, ret) {
+			});
+	}
+};
+
 //Upgrade, update player's state
 Player.prototype._upgrade = function() {
 	this.level += 1;
@@ -109,6 +123,7 @@ Player.prototype._upgrade = function() {
 	this.skillPoint += 1;
 	this.nextLevelExp = dataApi.experience.findById(this.level+1).exp;
 	this.setTotalAttackAndDefence();
+	this.updateTeamMemberInfo();
 };
 
 Player.prototype.setTotalAttackAndDefence = function() {
@@ -174,6 +189,7 @@ Player.prototype.useItem = function(index) {
   if (itm) {
     this.recoverHp(itm.hp);
     this.recoverMp(itm.mp);
+		this.updateTeamMemberInfo();
   }
   this.bag.removeItem(index);
 	return true;
@@ -314,6 +330,7 @@ Player.prototype.recover = function(lastTick){
 		this.hp = this.maxHp;
 		this.isRecover = false;
 	}
+	this.updateTeamMemberInfo();
 };
 
 //Complete task and tasks' state.

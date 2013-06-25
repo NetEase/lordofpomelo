@@ -56,6 +56,7 @@ Revive.prototype.update = function(){
 			},
 			{x : this.entity.x, y : this.entity.y});
 		this.finished = true;
+		this.entity.updateTeamMemberInfo();
 	}
 	this.now = time;
 };

@@ -315,7 +315,9 @@ Team.prototype.updateMemberInfo = function(data) {
 	var arr = this.playerDataArray;
 	for(var i in arr) {
 		if(arr[i].playerId === data.playerId) {
-			arr[i].backendServerId = data.backendServerId;
+			if (!!data.backendServerId) {
+				arr[i].backendServerId = data.backendServerId;
+			}
 			arr[i].areaId = data.areaId;
 			arr[i].playerData = data.playerData;
 			utils.myPrint('arr[i] = ', JSON.stringify(arr[i]));

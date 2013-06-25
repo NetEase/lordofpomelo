@@ -50,21 +50,6 @@ exp.try2DisbandTeam = function(teamObj) {
 	}
 };
 
-exp.joinFirstTeam = function(data) {
-	var teamId = consts.TEAM.TEAM_ID_NONE;
-	var keys = Object.keys(gTeamObjDict);
-	if (keys.length > 0) {
-		teamId = parseInt(keys[0], null);
-	}
-	var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
-	var teamObj = gTeamObjDict[teamId];
-	if (teamObj) {
-		result = teamObj.addPlayer(data);
-	}
-
-	return {result: result, teamId: teamId};
-};
-
 exp.leaveTeamById = function(playerId, teamId, cb) {
 	var teamObj = gTeamObjDict[teamId];
 	if(!teamObj) {
@@ -156,7 +141,7 @@ exp.acceptInviteJoinTeam = function(args) {
 
 exp.updateMemberInfo = function(args) {
 	var result = consts.TEAM.FAILED;
-	if (!args || !args.teamId) {
+	if (!args || !args.playerData.teamId) {
 		return {result: result};
 	}
 	var teamId = args.playerData.teamId;

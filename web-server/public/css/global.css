@@ -85,7 +85,7 @@ html,body{width:100%;height:100%;overflow:hidden;-webkit-user-select:none;-moz-u
 .m-asset li{float:left;padding-left:20px;height:16px;} 
 
 /* 游戏玩家 */
-.m-player{position:absolute;top:0;left:0;width:256px;height:74px;background-position:0 0;}
+.m-player{position:absolute;top:0;left:0;width:256px;height:74px;background-position:0 0;z-index:3;}
 .m-player .avatar{float:left;padding:5px 0 0 5px;width:60px;}
 .m-player .info{margin-left:74px;height:70px;} 
 .m-player .info p{height:16px;padding-left:5px;}
@@ -93,7 +93,7 @@ html,body{width:100%;height:100%;overflow:hidden;-webkit-user-select:none;-moz-u
 .m-player .info .level{height:28px;width:133px;} 
 
 /* m-team-mate-1 */
-.m-team-mate-1{position:absolute;margin:74px 0px;width:256px;height:74px;background-position:0 0;}
+.m-team-mate-1{position:absolute;margin:74px 0px;width:256px;height:74px;background-position:0 0;z-index:2;}
 .m-team-mate-1 .avatar{float:left;padding:5px 0 0 5px;width:60px;}
 .m-team-mate-1 .info{margin-left:74px;height:70px;}
 .m-team-mate-1 .info p{height:16px;padding-left:5px;}

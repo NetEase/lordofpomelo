@@ -128,6 +128,9 @@ Character.prototype.clearTarget = function() {
 Character.prototype.resetHp = function(maxHp) {
 	this.maxHp = maxHp;
 	this.hp = this.maxHp;
+	if (!!this.updateTeamMemberInfo) {
+		this.updateTeamMemberInfo();
+	}
 };
 
 /**
@@ -273,6 +276,9 @@ Character.prototype.reduceHp = function(damageValue) {
 	if (this.hp <= 0) {
 		this.died = true;
 		this.afterDied();
+	}
+	if (!!this.updateTeamMemberInfo) {
+		this.updateTeamMemberInfo();
 	}
 };
 
