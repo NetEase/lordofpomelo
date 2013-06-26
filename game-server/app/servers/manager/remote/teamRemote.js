@@ -98,3 +98,8 @@ TeamRemote.prototype.chatInTeam = function(args, cb){
 	var ret = teamManager.chatInTeam(args);
 	utils.invokeCallback(cb, null, ret);
 };
+
+// leave a team
+TeamRemote.prototype.kickOut = function(args, cb){
+	teamManager.kickOut(args, cb);
+};

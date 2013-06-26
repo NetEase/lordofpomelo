@@ -373,53 +373,33 @@ Handler.prototype.applyJoinTeamReply = function(msg, session, next) {
  * @param {Function} next
  * @api public
  */
-Handler.prototype.kickOutOfTeam = function(msg, session, next) {
+Handler.prototype.kickOut = function(msg, session, next) {
 	var area = session.area;
-	var playerId = session.get('playerId');
-	var player = area.getPlayer(playerId);
+	var captainId = session.get('playerId');
+	var captainObj = area.getPlayer(captainId);
 
-	if(!player) {
-		logger.warn('The request(kickOutOfTeam) is illegal, the player is null : msg = %j.', msg);
+	if(!captainObj) {
+		logger.warn('The request(kickOut) is illegal, the captainObj is null : msg = %j.', msg);
 		next();
 		return;
 	}
 
-	if(playerId === msg.kickedPlayerId) {
+	if(captainId === msg.kickedPlayerId) {
+		logger.warn('The request(kickOut) is illegal, the kickedPlayerId is captainId : msg = %j.', msg);
 		next();
 		return;
 	}
 
-	// var teamObj = this.app.rpc.manager.teamRemote.getTeamById(msg.teamId);
-	var teamObj = null;
-	if(!teamObj) {
-		logger.warn('The request(kickOutOfTeam) is illegal, the team is null : msg = %j.', msg);
+	if(captainObj.teamId <= consts.TEAM.TEAM_ID_NONE || msg.teamId !== captainObj.teamId) {
+		logger.warn('The request(kickOut) is illegal, the teamId is wrong : msg = %j.', msg);
 		next();
 		return;
 	}
 
-	if(!teamObj.isCaptainById(playerId)) {
-		logger.warn('The request(kickOutOfTeam) is illegal, the player is not the captain : msg = %j.', msg);
-		next();
-		return;
-	}
-
-	var kickedPlayer = area.getPlayer(msg.kickedPlayerId);
-	if(!kickedPlayer) {
-		logger.warn('The request(kickOutOfTeam) is illegal, the kicked player is null : msg = %j.', msg);
-		next();
-		return;
-	}
-
-	if(!teamObj.isPlayerInTeam(msg.kickedPlayerId)) {
-		next();
-		return;
-	}
-
-	kickedPlayer.leaveTeam();
-
-	teamObj.removePlayer(kickedPlayer);
-	// this.app.rpc.manager.teamRemote.try2DisbandTeam(teamObj);
-
+	var args = {captainId: captainId, teamId: msg.teamId, kickedPlayerId: msg.kickedPlayerId};
+	this.app.rpc.manager.teamRemote.kickOut(session, args,
+		function(err, ret) {
+		});
 	next();
 };
 

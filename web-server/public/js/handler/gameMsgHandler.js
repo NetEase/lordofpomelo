@@ -257,6 +257,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 				if (playerId !== pomelo.playerId) {
 					mainPanel.setName4TM1(playerData.name);
 					mainPanel.setLevel4TM1(playerData.level);
+					mainPanel.setPlayerId4TM1(playerId);
 					mainPanel.setHpBar4TM1(playerData.hp, playerData.maxHp);
 					mainPanel.setMpBar4TM1(playerData.mp, playerData.maxMp);
 					console.log('playerId, pomelo.playerId = ', playerId, pomelo.playerId);

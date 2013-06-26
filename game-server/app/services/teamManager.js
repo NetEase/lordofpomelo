@@ -4,6 +4,7 @@
 var Team = require('../domain/entity/team');
 var consts = require('../consts/consts');
 var utils = require('../util/utils');
+var logger = require('pomelo-logger').getLogger(__filename);
 
 var exp = module.exports;
 
@@ -172,4 +173,22 @@ exp.chatInTeam = function(args) {
 	}
 
 	return {result: result};
+};
+
+
+exp.kickOut = function(args, cb) {
+	if (!args || !args.teamId) {
+		return;
+	}
+	var teamId = args.teamId;
+	var teamObj = gTeamObjDict[teamId];
+	if (teamObj) {
+		if(!teamObj.isCaptainById(args.captainId)) {
+			logger.warn('The request(kickOut) is illegal, the captainId is wrong : args = %j.', args);
+			return;
+		}
+		teamObj.removePlayer(args.kickedPlayerId, function(err, ret) {
+			utils.invokeCallback(cb, null, ret);
+		});
+	}
 };

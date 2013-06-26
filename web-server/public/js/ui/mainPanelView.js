@@ -36,6 +36,7 @@ __resources__["/mainPanelView.js"] = {
 		var $hpBar4TM1;
 		var $mpBar4TM1;
 		var $level4TM1;
+		var $playerId4TM1;
 		var $avatarImg4TM1;
 		// TeamMate-1 ~ End
 
@@ -62,9 +63,11 @@ __resources__["/mainPanelView.js"] = {
 			$teamMate1 = $('#mainPanel .m-team-mate-1');
 			$name4TM1 = $('#mainPanel .m-team-mate-1 .name span').eq(0);
 			$level4TM1 = $('#mainPanel .m-team-mate-1 .name span').eq(1);
+			$playerId4TM1 = $('#mainPanel .m-team-mate-1 .name span').eq(2);
 			$hpBar4TM1 = $('#mainPanel .m-team-mate-1 .u-levbar span.outer');
 			$mpBar4TM1 = $('#mainPanel .m-team-mate-1 .u-levbar-1 span.outer');
 			$avatarImg4TM1 = $('#mainPanel .m-team-mate-1 .avatar img');
+			$playerId4TM1.hide();
 			$teamMate1.hide();
 			$teamMenu4TM1 = $('#mainPanel .m-team-mate-1 .teamMenu');
 			$kickOut = $('#mainPanel .m-team-mate-1 .teamMenu .menuItem #kickOut');
@@ -195,6 +198,10 @@ __resources__["/mainPanelView.js"] = {
 			$level4TM1.html(level);
 		};
 
+		var setPlayerId4TM1 = function(playerId) {
+			$playerId4TM1.html(playerId);
+		};
+
 		var setHpBar4TM1 = function(hp, maxHp) {
 			hp = Math.max(hp, 0);
 			$hpBar4TM1.css('width', (hp * 100 / maxHp) + '%');
@@ -252,9 +259,8 @@ __resources__["/mainPanelView.js"] = {
 			$kickOut.on('click', function() {
 				console.log('click kickOut ...');
 				pomelo.notify("area.teamHandler.kickOut", {
-					captainId: pomelo.playerId,
 					teamId: pomelo.teamId,
-					playerId: null
+					kickedPlayerId: parseInt($playerId4TM1.text(), null)
 				});
 				console.log('kickOut ~ pomelo.teamId = ', pomelo.teamId);
 				$teamMenu4TM1.hide();
@@ -470,6 +476,7 @@ __resources__["/mainPanelView.js"] = {
 		exports.hideTeamMate1 = hideTeamMate1;
 		exports.setName4TM1 = setName4TM1;
 		exports.setLevel4TM1 = setLevel4TM1;
+		exports.setPlayerId4TM1 = setPlayerId4TM1;
 		exports.setHpBar4TM1 = setHpBar4TM1;
 		exports.setMpBar4TM1 = setMpBar4TM1;
 		exports.setAvatar4TM1 = setAvatar4TM1;
