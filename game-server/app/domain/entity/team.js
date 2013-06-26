@@ -241,6 +241,7 @@ Team.prototype.disbandTeam = function() {
 		this.channel.pushMessage('onDisbandTeam', playerIdArray, null);
 	}
 
+	this.playerNum = 0;
 	return {result: consts.TEAM.OK};
 };
 
@@ -261,7 +262,7 @@ Team.prototype.removePlayer = function(playerId, cb) {
   if(this.isPlayerInTeam(playerId)) {
 		var ret = {result: consts.TEAM.FAILED};
 	  utils.invokeCallback(cb, null, ret);
-		return;
+		return false;
   }
 
   var _this = this;
@@ -278,8 +279,18 @@ Team.prototype.removePlayer = function(playerId, cb) {
 			_this.playerNum--;
 		}
 
+		utils.myPrint('_this.playerNum = ', _this.playerNum);
+		if(_this.playerNum > 0) {
+			_this.updateTeamInfo();
+		}
 	  utils.invokeCallback(cb, null, ret);
 	});
+
+	if (_this.isCaptainById(playerId)) {
+		return true;
+	} else {
+		return false;
+	}
 };
 
 // push msg to all of the team members 

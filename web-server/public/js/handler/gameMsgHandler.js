@@ -205,6 +205,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			if (data.playerId === pomelo.playerId) {
 				pomelo.teamId = player.teamId;
 				pomelo.isCaptain = player.isCaptain;
+				mainPanel.hideTeamMate1();
 			}
 			console.log("OnTeammateLeaveTeam ~ 2 ~ playerId = ", player.id);
 			console.log("OnTeammateLeaveTeam ~ entityId = ", player.entityId);
@@ -230,6 +231,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 				if (playerId === pomelo.playerId) {
 					pomelo.teamId = player.teamId;
 					pomelo.isCaptain = player.isCaptain;
+					mainPanel.hideTeamMate1();
 				}
 				console.log("OnDisbandTeam ~ playerId = ", player.id);
 				console.log("OnDisbandTeam ~ entityId = ", player.entityId);
@@ -241,6 +243,7 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 		 * @param data {Object}
 		 */
 		pomelo.on('onUpdateTeam', function(data) {
+			console.log('OnUpdateTeam is running ...');
 			if (Object.keys(data).length <= 1) {
 				mainPanel.hideTeamMate1();
 			} else {

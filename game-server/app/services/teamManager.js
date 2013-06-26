@@ -56,10 +56,13 @@ exp.leaveTeamById = function(playerId, teamId, cb) {
 		return {result: consts.TEAM.FAILED};
 	}
 
-	var _this = this;
-	teamObj.removePlayer(playerId, function(err, ret) {
+	var needDisband = teamObj.removePlayer(playerId, function(err, ret) {
 		utils.invokeCallback(cb, null, ret);
 	});
+	if (needDisband) {
+		utils.myPrint('delete gTeamObjDict[teamId] ...');
+		delete gTeamObjDict[teamId];
+	}
 };
 
 exp.dragMember2gameCopy = function(args, cb) {
