@@ -174,13 +174,17 @@ __resources__["/mainPanelView.js"] = {
 
 		// TeamMate-1 ~ Begin
 		var showTeamMate1 = function() {
-			console.log('ShowTeamMate1 is running ...');
-			$teamMate1.show();
+			if (!$teamMate1.is(':visible')) {
+				console.log('2 ~ ShowTeamMate1 is running ...');
+				$teamMate1.show();
+			}
 		};
 
 		var hideTeamMate1 = function() {
-			console.log('HideTeamMate1 is running ...');
-			$teamMate1.hide();
+			if ($teamMate1.is(':visible')) {
+				console.log('2 ~ HideTeamMate1 is running ...');
+				$teamMate1.hide();
+			}
 		};
 
 		var setName4TM1 = function(name) {
@@ -190,11 +194,14 @@ __resources__["/mainPanelView.js"] = {
 		var setLevel4TM1 = function(level) {
 			$level4TM1.html(level);
 		};
+
 		var setHpBar4TM1 = function(hp, maxHp) {
+			hp = Math.max(hp, 0);
 			$hpBar4TM1.css('width', (hp * 100 / maxHp) + '%');
 		};
 
 		var setMpBar4TM1 = function(mp, maxMp) {
+			mp = Math.max(mp, 0);
 			$mpBar4TM1.css('width', (mp * 100 / maxMp) + '%');
 		};
 
@@ -209,12 +216,10 @@ __resources__["/mainPanelView.js"] = {
 			$teamMenu4TM1.hide();
 
 			$avatarImg.on('click', function() {
-				console.log('$teamMenu.toggle() is running ...');
 				$teamMenu.toggle();
 			});
 
 			$avatarImg4TM1.on('click', function() {
-				console.log('$teamMenu4TM1.toggle() is running ...');
 				$teamMenu4TM1.toggle();
 			});
 

@@ -249,11 +249,25 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 			for (var playerId in data) {
 				var playerData = data[playerId];
 				console.log("1 ~ OnUpdateTeam ~ playerData = ", JSON.stringify(playerData));
-
 				playerId = parseInt(playerId, null);
+
+				if (playerId !== pomelo.playerId) {
+					mainPanel.setName4TM1(playerData.name);
+					mainPanel.setLevel4TM1(playerData.level);
+					mainPanel.setHpBar4TM1(playerData.hp, playerData.maxHp);
+					mainPanel.setMpBar4TM1(playerData.mp, playerData.maxMp);
+					console.log('playerId, pomelo.playerId = ', playerId, pomelo.playerId);
+					console.log('OnUpdateTeam ~ kindId = ', playerData.kindId);
+					var characterData = dataApi.character.findById(playerData.kindId);
+					console.log('characterData = ', JSON.stringify(characterData));
+					console.log('characterData.id = ', characterData.id);
+					mainPanel.setAvatar4TM1(characterData.id);
+				}
+
 				var area = app.getCurArea();
 				var player = area.getPlayer(playerId);
 				if (!player) {
+					console.warn('player is null, playerId = ', playerId);
 					continue;
 				}
 
@@ -267,21 +281,8 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 				if (player.teamId > TeamConsts.TEAM_ID_NONE && !player.isCaptain) {
 					isShow = true;
 				}
+				console.log("3 ~ OnUpdateTeam ~ playerId, teamId, isShow = ", playerId, player.teamId, isShow);
 				player.getSprite().showTeamMemberFlag(isShow);
-				console.log("3 ~ OnUpdateTeam ~ playerId, teamId = ", playerId, player.teamId);
-
-				if (playerId !== pomelo.playerId) {
-					mainPanel.setName4TM1(playerData.name);
-					mainPanel.setLevel4TM1(playerData.level);
-					mainPanel.setHpBar4TM1(playerData.hp, playerData.maxHp);
-					mainPanel.setMpBar4TM1(playerData.mp, playerData.maxMp);
-					console.log('OnUpdateTeam ~ kindId = ', playerData.kindId);
-					var characterData = dataApi.character.findById(playerData.kindId);
-					console.log('characterData = ', JSON.stringify(characterData));
-					console.log('characterData.id = ', characterData.id);
-					mainPanel.setAvatar4TM1(characterData.id);
-				}
-
 			}
 		});
 

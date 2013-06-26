@@ -84,7 +84,7 @@ exp.addEventForCharacter = function(character) {
 				//Abort the move action of the player
 				timer.abortAllAction(target.entityId);
 
-				//Add revice action
+				//Add revive action
 				timer.addAction(new Revive({
 					entity : target,
 					reviveTime : consts.PLAYER.reviveTime,
