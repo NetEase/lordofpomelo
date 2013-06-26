@@ -75,7 +75,7 @@ Handler.prototype.createTeam = function(msg, session, next) {
 					{x: player.x, y: player.y}, ignoreList);
 			}
 
-		 next();
+			next();
 		});
 };
 
@@ -123,7 +123,6 @@ Handler.prototype.disbandTeam = function(msg, session, next) {
 		function(err, ret) {
 			result = ret.result;
 			utils.myPrint("1 ~ result = ", result);
-			// utils.myPrint("playerIdArray = ", ret.playerIdArray);
 			if(result === consts.TEAM.OK) {
 				if (player.isCaptain) {
 					player.isCaptain = consts.TEAM.NO;
@@ -231,6 +230,17 @@ Handler.prototype.inviteJoinTeamReply = function(msg, session, next) {
 					result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
 					messageService.pushMessageToPlayer({uid: captainObj.userId, sid: captainObj.serverId},
 						'onInviteJoinTeamReply', {reply: result});
+				} else {
+					inviteeObj.isCaptain = consts.TEAM.NO;
+					var ignoreList = {};
+					messageService.pushMessageByAOI(area,
+						{
+							route: 'onTeamMemberStatusChange',
+							playerId: inviteeId,
+							teamId: inviteeObj.teamId,
+							isCaptain: inviteeObj.isCaptain
+						},
+						{x: inviteeObj.x, y: inviteeObj.y}, ignoreList);
 				}
 				utils.myPrint('invitee teamId = ', inviteeObj.teamId);
 			} else {
@@ -322,44 +332,55 @@ Handler.prototype.applyJoinTeamReply = function(msg, session, next) {
 		return;
 	}
 
-	var applicant = area.getPlayer(msg.applicantId);
-	if(!applicant) {
-		logger.warn('The request(applyJoinTeamReply) is illegal, the applicant is null : msg = %j.', msg);
+	var applicantObj = area.getPlayer(msg.applicantId);
+	if(!applicantObj) {
+		logger.warn('The request(applyJoinTeamReply) is illegal, the applicantObj is null : msg = %j.', msg);
 		next();
 		return;
 	}
 
-	if(applicant.isInTeam()) {
+	if(applicantObj.isInTeam()) {
 		next();
 		return;
 	}
 
 	if(msg.reply === consts.TEAM.JOIN_TEAM_REPLY.ACCEPT) {
 		var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
-		var applicantInfo = applicant.toJSON4TeamMember();
+		var applicantInfo = applicantObj.toJSON4TeamMember();
 		var backendServerId = this.app.getServerId();
 		var args = {captainId: playerId, teamId: msg.teamId,
-			playerId: msg.applicantId, areaId: area.areaId, userId: applicant.userId,
-			serverId: applicant.serverId, backendServerId: backendServerId,
+			playerId: msg.applicantId, areaId: area.areaId, userId: applicantObj.userId,
+			serverId: applicantObj.serverId, backendServerId: backendServerId,
 			playerInfo: applicantInfo};
 		this.app.rpc.manager.teamRemote.acceptApplicantJoinTeam(session, args, function(err, ret) {
 			utils.myPrint('ApplyJoinTeamReply ~ ret = ', JSON.stringify(ret));
 			result = ret.result;
 			if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK) {
-				if(!applicant.joinTeam(msg.teamId)) {
+				if(!applicantObj.joinTeam(msg.teamId)) {
 					result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
-					messageService.pushMessageToPlayer({uid: applicant.userId, sid: applicant.serverId},
+					messageService.pushMessageToPlayer({uid: applicantObj.userId, sid: applicantObj.serverId},
 						'onApplyJoinTeamReply', {reply: result});
+				} else {
+					applicantObj.isCaptain = consts.TEAM.NO;
+					var ignoreList = {};
+					messageService.pushMessageByAOI(area,
+						{
+							route: 'onTeamMemberStatusChange',
+							playerId: msg.applicantId,
+							teamId: applicantObj.teamId,
+							isCaptain: applicantObj.isCaptain
+						},
+						{x: applicantObj.x, y: applicantObj.y}, ignoreList);
 				}
-				utils.myPrint('applicant teamId = ', applicant.teamId);
+				utils.myPrint('applicantObj teamId = ', applicantObj.teamId);
 			} else {
-				messageService.pushMessageToPlayer({uid: applicant.userId, sid: applicant.serverId},
+				messageService.pushMessageToPlayer({uid: applicantObj.userId, sid: applicantObj.serverId},
 					'onApplyJoinTeamReply', {reply: ret.result});
 			}
 		});
 	} else {
 		// push tmpMsg to the applicant that the captain rejected
-		messageService.pushMessageToPlayer({uid: applicant.userId, sid: applicant.serverId},
+		messageService.pushMessageToPlayer({uid: applicantObj.userId, sid: applicantObj.serverId},
 			'onApplyJoinTeamReply', {reply: consts.TEAM.JOIN_TEAM_REPLY.REJECT});
 	}
 	next();
@@ -450,18 +471,23 @@ Handler.prototype.leaveTeam = function(msg, session, next) {
 			if(result === consts.TEAM.OK && !player.leaveTeam()) {
 				result = consts.TEAM.FAILED;
 			}
-			if (result === consts.TEAM.OK && player.isCaptain) {
-				player.isCaptain = consts.TEAM.NO;
+			if (result === consts.TEAM.OK) {
+				var route = 'onTeamMemberStatusChange';
+				if(player.isCaptain) {
+					route = 'onTeamCaptainStatusChange';
+					player.isCaptain = consts.TEAM.NO;
+				}
 				var ignoreList = {};
 				messageService.pushMessageByAOI(area,
 					{
-						route: 'onTeamCaptainStatusChange',
+						route: route,
 						playerId: playerId,
 						teamId: player.teamId,
 						isCaptain: player.isCaptain
 					},
 					{x: player.x, y: player.y}, ignoreList);
 			}
+
 			utils.myPrint("teamId = ", player.teamId);
 		});
 

@@ -152,7 +152,7 @@ __resources__["/area.js"] = {meta: {mimetype: "application/javascript"}, data: f
 					e = new CurPlayer(player);
 				} else {
 					e = new Player(entity);
-					console.log('AddEntity ~ teamId = ', entity.teamId);
+					console.log('AddEntity ~ playerId, teamId = ', entity.id, entity.teamId);
 					console.log('AddEntity ~ isCaptain = ', entity.isCaptain);
 					if (entity.teamId > TeamConsts.TEAM_ID_NONE) {
 						if (entity.isCaptain) {

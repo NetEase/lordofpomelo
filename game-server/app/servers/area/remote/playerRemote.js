@@ -12,6 +12,7 @@ var areaService = require('../../../services/areaService');
 var consts = require('../../../consts/consts');
 var pomelo = require('pomelo');
 var logger = require('pomelo-logger').getLogger(__filename);
+var messageService = require('../../../domain/messageService');
 
 var exp = module.exports;
 
@@ -89,6 +90,16 @@ exp.leaveTeam = function(args, cb){
 	}
 
 	utils.myPrint('2 ~ LeaveTeam ~ playerId, player.teamId = ', playerId, player.teamId);
+
+	messageService.pushMessageByAOI(area,
+		{
+			route: 'onTeamMemberStatusChange',
+			playerId: playerId,
+			teamId: player.teamId,
+			isCaptain: player.isCaptain
+		},
+		{x: player.x, y: player.y}, {});
+
 	utils.invokeCallback(cb);
 };
 

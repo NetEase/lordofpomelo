@@ -547,7 +547,8 @@ Player.prototype.toJSON4TeamMember = function() {
 			maxHp: this.maxHp,
 			maxMp: this.maxMp,
 			level: this.level,
-			teamId: this.teamId
+			teamId: this.teamId,
+			isCaptain: this.isCaptain
 		}
 	};
 };

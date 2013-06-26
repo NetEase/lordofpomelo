@@ -69,11 +69,15 @@ Team.prototype.removePlayerFromChannel = function(data) {
 	return false;
 };
 
-function doAddPlayer(teamObj, data) {
+function doAddPlayer(teamObj, data, isCaptain) {
+	isCaptain = isCaptain || false;
 	var arr = teamObj.playerDataArray;
 	for(var i in arr) {
 		if(arr[i].playerId === consts.TEAM.PLAYER_ID_NONE && arr[i].areaId === consts.TEAM.AREA_ID_NONE) {
 			data.playerInfo.playerData.teamId = teamObj.teamId;
+			if (isCaptain) {
+				data.playerInfo.playerData.isCaptain = consts.TEAM.YES;
+			}
 			utils.myPrint('data.playerInfo = ', JSON.stringify(data.playerInfo));
 			arr[i] = {playerId: data.playerId, areaId: data.areaId, userId: data.userId,
 				serverId: data.serverId, backendServerId: data.backendServerId,
@@ -85,7 +89,8 @@ function doAddPlayer(teamObj, data) {
 	return false;
 }
 
-Team.prototype.addPlayer = function(data) {
+Team.prototype.addPlayer = function(data, isCaptain) {
+	isCaptain = isCaptain || false;
 	if (!data || typeof data !== 'object') {
 		return consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
 	}
@@ -103,7 +108,7 @@ Team.prototype.addPlayer = function(data) {
 		return consts.TEAM.JOIN_TEAM_RET_CODE.ALREADY_IN_TEAM;
 	}
 
-	if(!doAddPlayer(this, data)) {
+	if(!doAddPlayer(this, data, isCaptain)) {
 		return consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
 	}
 
@@ -258,7 +263,7 @@ Team.prototype.removePlayer = function(playerId, cb) {
 			break;
 		}
 	}
-	
+
   if(this.isPlayerInTeam(playerId)) {
 		var ret = {result: consts.TEAM.FAILED};
 	  utils.invokeCallback(cb, null, ret);
@@ -284,6 +289,23 @@ Team.prototype.removePlayer = function(playerId, cb) {
 			_this.updateTeamInfo();
 		}
 	  utils.invokeCallback(cb, null, ret);
+	});
+
+	//rpc invoke
+	var instanceId = null;
+	var params = {
+		namespace : 'user',
+		service: 'playerRemote',
+		method: 'leaveTeam',
+		args: [{
+			playerId: tmpData.playerId, instanceId: instanceId
+		}]
+	};
+	utils.myPrint('params = ', JSON.stringify(params));
+	pomelo.app.rpcInvoke(tmpData.backendServerId, params, function(err, _){
+		if(!!err) {
+			console.error(err);
+		}
 	});
 
 	if (_this.isCaptainById(playerId)) {

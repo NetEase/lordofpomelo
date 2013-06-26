@@ -16,7 +16,7 @@ var gTeamId = 0;
 // create new team, add the player(captain) to the team
 exp.createTeam = function(data) {
 	var teamObj = new Team(++gTeamId);
-	var result = teamObj.addPlayer(data);
+	var result = teamObj.addPlayer(data, true);
 	if(result === consts.TEAM.JOIN_TEAM_RET_CODE.OK) {
 		teamObj.setCaptainId(data.playerId);
 		gTeamObjDict[teamObj.teamId] = teamObj;

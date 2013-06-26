@@ -28,7 +28,8 @@ __resources__["/mainPanelView.js"] = {
 		var $exp, $expBar;
 		var $avatarImg;
 		// team menu
-		var $teamMenu, $createTeam, $leaveTeam, $disbandTeam, $teamMenu4TM1, $kickOut;
+		var $teamMenu, $createTeam, $leaveTeam, $disbandTeam;
+		var $teamMenu4TM1, $kickOut4TM1, $teamMenu4TM2, $kickOut4TM2;
 
 		// TeamMate-1 ~ Begin
 		var $teamMate1;
@@ -40,6 +41,16 @@ __resources__["/mainPanelView.js"] = {
 		var $avatarImg4TM1;
 		// TeamMate-1 ~ End
 
+		// TeamMate-2 ~ Begin
+		var $teamMate2;
+		var $name4TM2;
+		var $hpBar4TM2;
+		var $mpBar4TM2;
+		var $level4TM2;
+		var $playerId4TM2;
+		var $avatarImg4TM2;
+		// TeamMate-2 ~ End
+		
 		var inited = false;
 
 		var init = function() {
@@ -70,9 +81,23 @@ __resources__["/mainPanelView.js"] = {
 			$playerId4TM1.hide();
 			$teamMate1.hide();
 			$teamMenu4TM1 = $('#mainPanel .m-team-mate-1 .teamMenu');
-			$kickOut = $('#mainPanel .m-team-mate-1 .teamMenu .menuItem #kickOut');
+			$kickOut4TM1 = $('#mainPanel .m-team-mate-1 .teamMenu .menuItem #kickOut');
 			// TeamMate-1 ~ End
 
+			// TeamMate-2 ~ Begin
+			$teamMate2 = $('#mainPanel .m-team-mate-2');
+			$name4TM2 = $('#mainPanel .m-team-mate-2 .name span').eq(0);
+			$level4TM2 = $('#mainPanel .m-team-mate-2 .name span').eq(1);
+			$playerId4TM2 = $('#mainPanel .m-team-mate-2 .name span').eq(2);
+			$hpBar4TM2 = $('#mainPanel .m-team-mate-2 .u-levbar span.outer');
+			$mpBar4TM2 = $('#mainPanel .m-team-mate-2 .u-levbar-1 span.outer');
+			$avatarImg4TM2 = $('#mainPanel .m-team-mate-2 .avatar img');
+			$playerId4TM2.hide();
+			$teamMate2.hide();
+			$teamMenu4TM2 = $('#mainPanel .m-team-mate-2 .teamMenu');
+			$kickOut4TM2 = $('#mainPanel .m-team-mate-2 .teamMenu .menuItem #kickOut');
+			// TeamMate-2 ~ End
+			
 			$li = $('.m-nav li');
 
 			initNav();
@@ -178,14 +203,14 @@ __resources__["/mainPanelView.js"] = {
 		// TeamMate-1 ~ Begin
 		var showTeamMate1 = function() {
 			if (!$teamMate1.is(':visible')) {
-				console.log('2 ~ ShowTeamMate1 is running ...');
+				console.log('1 ~ ShowTeamMate1 is running ...');
 				$teamMate1.show();
 			}
 		};
 
 		var hideTeamMate1 = function() {
 			if ($teamMate1.is(':visible')) {
-				console.log('2 ~ HideTeamMate1 is running ...');
+				console.log('1 ~ HideTeamMate1 is running ...');
 				$teamMate1.hide();
 			}
 		};
@@ -217,10 +242,53 @@ __resources__["/mainPanelView.js"] = {
 		};
 		// TeamMate-1 ~ End
 
+		// TeamMate-2 ~ Begin
+		var showTeamMate2 = function() {
+			if (!$teamMate2.is(':visible')) {
+				console.log('2 ~ ShowTeamMate1 is running ...');
+				$teamMate2.show();
+			}
+		};
+
+		var hideTeamMate2 = function() {
+			if ($teamMate2.is(':visible')) {
+				console.log('2 ~ HideTeamMate1 is running ...');
+				$teamMate2.hide();
+			}
+		};
+
+		var setName4TM2 = function(name) {
+			$name4TM2.text(name);
+		};
+
+		var setLevel4TM2 = function(level) {
+			$level4TM2.html(level);
+		};
+
+		var setPlayerId4TM2 = function(playerId) {
+			$playerId4TM2.html(playerId);
+		};
+
+		var setHpBar4TM2 = function(hp, maxHp) {
+			hp = Math.max(hp, 0);
+			$hpBar4TM2.css('width', (hp * 100 / maxHp) + '%');
+		};
+
+		var setMpBar4TM2 = function(mp, maxMp) {
+			mp = Math.max(mp, 0);
+			$mpBar4TM2.css('width', (mp * 100 / maxMp) + '%');
+		};
+
+		var setAvatar4TM2 = function(kindId) {
+			$avatarImg4TM2.attr('src', config.IMAGE_URL + 'character/' + kindId + '.png');
+		};
+		// TeamMate-2 ~ End
+
 		// init team menu
 		var initTeamMenu = function() {
 			$teamMenu.hide();
 			$teamMenu4TM1.hide();
+			$teamMenu4TM2.hide();
 
 			$avatarImg.on('click', function() {
 				$teamMenu.toggle();
@@ -228,6 +296,10 @@ __resources__["/mainPanelView.js"] = {
 
 			$avatarImg4TM1.on('click', function() {
 				$teamMenu4TM1.toggle();
+			});
+
+			$avatarImg4TM2.on('click', function() {
+				$teamMenu4TM2.toggle();
 			});
 
 			$createTeam.on('click', function() {
@@ -256,13 +328,23 @@ __resources__["/mainPanelView.js"] = {
 				$teamMenu.hide();
 			});
 
-			$kickOut.on('click', function() {
-				console.log('click kickOut ...');
+			$kickOut4TM1.on('click', function() {
+				console.log('1 ~ click kickOut ...');
 				pomelo.notify("area.teamHandler.kickOut", {
 					teamId: pomelo.teamId,
 					kickedPlayerId: parseInt($playerId4TM1.text(), null)
 				});
-				console.log('kickOut ~ pomelo.teamId = ', pomelo.teamId);
+				console.log('1 ~ kickOut ~ pomelo.teamId = ', pomelo.teamId);
+				$teamMenu4TM1.hide();
+			});
+
+			$kickOut4TM2.on('click', function() {
+				console.log('2 ~ click kickOut ...');
+				pomelo.notify("area.teamHandler.kickOut", {
+					teamId: pomelo.teamId,
+					kickedPlayerId: parseInt($playerId4TM2.text(), null)
+				});
+				console.log('2 ~ kickOut ~ pomelo.teamId = ', pomelo.teamId);
 				$teamMenu4TM1.hide();
 			});
 
@@ -481,5 +563,16 @@ __resources__["/mainPanelView.js"] = {
 		exports.setMpBar4TM1 = setMpBar4TM1;
 		exports.setAvatar4TM1 = setAvatar4TM1;
 		// TeamMate-1 ~ End
+
+		// TeamMate-2 ~ Begin
+		exports.showTeamMate2 = showTeamMate2;
+		exports.hideTeamMate2 = hideTeamMate2;
+		exports.setName4TM2 = setName4TM2;
+		exports.setLevel4TM2 = setLevel4TM2;
+		exports.setPlayerId4TM2 = setPlayerId4TM2;
+		exports.setHpBar4TM2 = setHpBar4TM2;
+		exports.setMpBar4TM2 = setMpBar4TM2;
+		exports.setAvatar4TM2 = setAvatar4TM2;
+		// TeamMate-2 ~ End
 	}
 };
