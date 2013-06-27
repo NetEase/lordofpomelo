@@ -47,6 +47,7 @@ var Player = function(opts) {
 	this.isCaptain = consts.TEAM.NO;
 	// game copy flag
 	this.isInTeamInstance = false;
+	this.instanceId = 0;
 
 	this.setTotalAttackAndDefence();
 };
@@ -548,7 +549,8 @@ Player.prototype.toJSON4TeamMember = function() {
 			maxMp: this.maxMp,
 			level: this.level,
 			teamId: this.teamId,
-			isCaptain: this.isCaptain
+			isCaptain: this.isCaptain,
+			instanceId: this.instanceId // game copy id
 		}
 	};
 };

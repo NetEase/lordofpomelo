@@ -417,6 +417,12 @@ Handler.prototype.kickOut = function(msg, session, next) {
 		return;
 	}
 
+	utils.myPrint('captainId, IsInTeamInstance = ', captainId, captainObj.isInTeamInstance);
+	if (captainObj.isInTeamInstance) {
+		next();
+		return;
+	}
+
 	var args = {captainId: captainId, teamId: msg.teamId, kickedPlayerId: msg.kickedPlayerId};
 	this.app.rpc.manager.teamRemote.kickOut(session, args,
 		function(err, ret) {

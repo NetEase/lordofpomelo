@@ -222,13 +222,12 @@ Team.prototype.disbandTeam = function() {
 		}
 		playerIdArray.push(playerId);
 		//rpc invoke
-		var instanceId = null;
 		var params = {
 			namespace : 'user',
 			service: 'playerRemote',
 			method: 'leaveTeam',
 			args: [{
-				playerId: playerId, instanceId: instanceId
+				playerId: playerId, instanceId: arr[i].playerData.instanceId
 			}]
 		};
 
@@ -292,13 +291,12 @@ Team.prototype.removePlayer = function(playerId, cb) {
 	});
 
 	//rpc invoke
-	var instanceId = null;
 	var params = {
 		namespace : 'user',
 		service: 'playerRemote',
 		method: 'leaveTeam',
 		args: [{
-			playerId: tmpData.playerId, instanceId: instanceId
+			playerId: tmpData.playerId, instanceId: tmpData.playerData.instanceId
 		}]
 	};
 	utils.myPrint('params = ', JSON.stringify(params));

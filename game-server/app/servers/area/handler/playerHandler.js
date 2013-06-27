@@ -31,6 +31,7 @@ handler.enterScene = function(msg, session, next) {
 	var teamId = session.get('teamId') || consts.TEAM.TEAM_ID_NONE;
 	var isCaptain = session.get('isCaptain');
 	var isInTeamInstance = session.get('isInTeamInstance');
+	var instanceId = session.get('instanceId');
 	utils.myPrint("1 ~ EnterScene: areaId = ", areaId);
 	utils.myPrint("1 ~ EnterScene: playerId = ", playerId);
 	utils.myPrint("1 ~ EnterScene: teamId = ", teamId);
@@ -50,8 +51,9 @@ handler.enterScene = function(msg, session, next) {
 		player.teamId = teamId;
 		player.isCaptain = isCaptain;
 		player.isInTeamInstance = isInTeamInstance;
+		player.instanceId = instanceId;
 		areaId = player.areaId;
-		utils.myPrint("2 ~ GetPlayerAllInfo: serverId, areaId = ", player.serverId, areaId);
+		utils.myPrint("2 ~ GetPlayerAllInfo: player.instanceId = ", player.instanceId);
 
     pomelo.app.rpc.chat.chatRemote.add(session, session.uid,
 			player.name, channelUtil.getAreaChannelName(areaId), null);

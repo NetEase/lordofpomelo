@@ -66,6 +66,7 @@ exp.changeArea = function(args, session, cb) {
 
     player.areaId = target;
 		player.isInTeamInstance = false;
+		player.instanceId = 0;
     player.x = pos.x;
     player.y = pos.y;
 		utils.myPrint("1 ~ player.teamId = ", player.teamId);
@@ -79,6 +80,7 @@ exp.changeArea = function(args, session, cb) {
 				session.set('teamId', player.teamId);
 				session.set('isCaptain', player.isCaptain);
 				session.set('isInTeamInstance', player.isInTeamInstance);
+				session.set('instanceId', player.instanceId);
         session.pushAll(function(err) {
           if(err){
             logger.error('Change area for session service failed! error is : %j', err.stack);
@@ -100,8 +102,8 @@ exp.changeArea = function(args, session, cb) {
 						params.id = player.teamId;
 					}
 
-					utils.myPrint('targetInfo.type, AreaType.TEAM_INSTANCE = ', targetInfo.type, AreaType.TEAM_INSTANCE);
-					utils.myPrint('params.id = ', params.id);
+					utils.myPrint('params.id, player.teamId = ', params.id, player.teamId);
+					utils.myPrint('playerId = ', player.id);
 					player.isInTeamInstance = true;
           //Get target instance
           app.rpc.manager.instanceRemote.create(session, params, function(err, result){
@@ -115,6 +117,8 @@ exp.changeArea = function(args, session, cb) {
 							session.set('isCaptain', player.isCaptain);
 							session.set('isInTeamInstance', player.isInTeamInstance);
               session.pushAll();
+							player.instanceId = result.instanceId;
+							utils.myPrint('player.instanceId = ', player.instanceId);
               callback(null);
             }
           });
