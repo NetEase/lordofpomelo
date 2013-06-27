@@ -5,6 +5,7 @@ __resources__["/noEntityNode.js"] = {meta: {mimetype: "application/javascript"},
 	var model = require('model');
 	var EntityType = require('consts').EntityType;
 	var animate = require('animate');
+	var app = require('app');
 	var	NoEntityNode = module.exports;
 	/**
 	* Create nameNode with a text model.
@@ -96,15 +97,11 @@ __resources__["/noEntityNode.js"] = {meta: {mimetype: "application/javascript"},
 	 * @api public
 	 */
 	NoEntityNode.createTeamMemberFlagNode = function(data) {
-		var flagModel = new model.RectModel({
-			x: 0,
-			y: 0,
-			width: 30,
-			height: 30,
-			fill: 'rgb(0,0,255)',
-			stroke:'rgb(0,0,255)'
+		var resMgr = app.getResMgr();
+		var flagImg = resMgr.loadImage('../image/memberFlag.png');
+		var flagModel = new model.ImageModel({
+			image: flagImg
 		});
-
 		var flagNode = data.scene.createNode({
 			model: flagModel
 		});
@@ -120,15 +117,11 @@ __resources__["/noEntityNode.js"] = {meta: {mimetype: "application/javascript"},
 	 * @api public
 	 */
 	NoEntityNode.createCaptainFlagNode = function(data) {
-		var flagModel = new model.RectModel({
-			x: 0,
-			y: 0,
-			width: 30,
-			height: 30,
-			fill: 'rgb(255,0,0)',
-			stroke:'rgb(255,0,0)'
+		var resMgr = app.getResMgr();
+		var flagImg = resMgr.loadImage('../image/captainFlag.png');
+		var flagModel = new model.ImageModel({
+			image: flagImg
 		});
-
 		var flagNode = data.scene.createNode({
 			model: flagModel
 		});
