@@ -151,8 +151,8 @@ __resources__["/sprite.js"] = {meta: {mimetype: "application/javascript"}, data:
 			this.bloodbarNode.exec('translate', -26, -height, NodeCoordinate.RED_BLOOD_NODE);
 			darkBloodBarNode.exec('translate', -26, -height, NodeCoordinate.BLACK_BLOOD_NODE);
 			this.nameNode.exec('translate',0 ,-(height + 10), NodeCoordinate.NAME_NODE);
-			this.captainFlagNode.exec('translate', -30, -height+10, NodeCoordinate.CAPTAIN_FLAG_NODE);
-			this.teamMemberFlagNode.exec('translate', -30, -height+10, NodeCoordinate.TEAM_MEMBER_FLAG_NODE);
+			this.captainFlagNode.exec('translate', -26, -height+10, NodeCoordinate.CAPTAIN_FLAG_NODE);
+			this.teamMemberFlagNode.exec('translate', -26, -height+10, NodeCoordinate.TEAM_MEMBER_FLAG_NODE);
 			this.showCaptainFlag(false);
 			this.showTeamMemberFlag(false);
 			this.reduceBlood();

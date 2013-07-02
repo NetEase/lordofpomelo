@@ -236,7 +236,7 @@ Team.prototype.disbandTeam = function() {
 		utils.myPrint('params = ', JSON.stringify(params));
 		pomelo.app.rpcInvoke(arr[i].backendServerId, params, function(err, _){
 			if(!!err) {
-				console.error(err);
+				console.warn(err);
 				return {result: consts.TEAM.FAILED};
 			}
 		});
@@ -302,7 +302,7 @@ Team.prototype.removePlayer = function(playerId, cb) {
 	utils.myPrint('params = ', JSON.stringify(params));
 	pomelo.app.rpcInvoke(tmpData.backendServerId, params, function(err, _){
 		if(!!err) {
-			console.error(err);
+			console.warn(err);
 		}
 	});
 

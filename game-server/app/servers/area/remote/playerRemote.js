@@ -72,7 +72,6 @@ exp.leaveTeam = function(args, cb){
 	var area = pomelo.app.areaManager.getArea(args.instanceId);
 	var player = area.getPlayer(playerId);
 
-	utils.myPrint('1 ~ LeaveTeam ~ playerId, player.teamId = ', playerId, player.teamId);
 	utils.myPrint('LeaveTeam ~ areaId = ', area.areaId);
 	utils.myPrint('LeaveTeam ~ instanceId = ', args.instanceId);
 	utils.myPrint('LeaveTeam ~ args = ', JSON.stringify(args));
@@ -82,6 +81,7 @@ exp.leaveTeam = function(args, cb){
 		utils.invokeCallback(cb, err);
 		return;
 	}
+	utils.myPrint('1 ~ LeaveTeam ~ playerId, player.teamId = ', playerId, player.teamId);
 
 	if (!player.leaveTeam()) {
 		err = 'Player leave team error!';
