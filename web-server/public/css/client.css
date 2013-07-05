@@ -231,6 +231,12 @@ body .skill-box {
     margin: 76px auto;
 }
 
+/* teamDialog */
+#teamDialog .opt4team {
+    width: 243px;
+    margin: 76px auto;
+}
+
 .player .zj .wtype li {
   position: relative;
 }

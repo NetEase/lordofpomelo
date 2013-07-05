@@ -94,6 +94,9 @@ __resources__["/consts.js"] = {
       },
 
 			BtnAction4Player: {
+				CREATE_TEAM: 'CreateTeam',
+				LEAVE_TEAM: 'LeaveTeam',
+				DISBAND_TEAM: 'DisbandTeam',
 				ATTACK_PLAYER: 'AttackPlayer',
 				APPLY_JOIN_TEAM: 'ApplyJoinTeam',
 				INVITE_JOIN_TEAM: 'InviteJoinTeam',

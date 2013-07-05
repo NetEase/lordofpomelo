@@ -8,6 +8,7 @@ __resources__["/mainPanelView.js"] = {
 		var bagPanel = require('bagPanelView');
 		var equipmentsPanel = require('equipmentsPanelView');
 		var taskPanel = require('taskPanelView');
+		var teamPanel = require('teamPanelView');
 		var dialogPanel = require('dialogPanelView');
 		var playerDialogPanel = require('playerDialogPanelView');
 		var applyJoinTeamPanel = require('applyJoinTeamPanelView');
@@ -118,6 +119,7 @@ __resources__["/mainPanelView.js"] = {
 			equipmentsPanel.init();
 			bagPanel.init();
 			taskPanel.init();
+			teamPanel.init();
 			dialogPanel.init();
 			playerDialogPanel.init();
 			applyJoinTeamPanel.init();
@@ -149,10 +151,12 @@ __resources__["/mainPanelView.js"] = {
 					panel = bagPanel;
 				} else if ($this.hasClass('itm03')) {
 					panel = taskPanel;
+				} else if ($this.hasClass('itm04')) {
+					panel = teamPanel;
 				}
 
-				if (panel) {
-					//!!selected ? panel.show() : panel.hide();
+			if (panel) {
+					// !!selected ? panel.show() : panel.hide();
 					panel[ !! selected ? 'show' : 'hide'].call(panel);
 				}
 			});
@@ -162,6 +166,7 @@ __resources__["/mainPanelView.js"] = {
 			playerPanel.hide();
 			bagPanel.hide();
 			taskPanel.hide();
+			teamPanel.hide();
 			removeNavSelect();
 		};
 
