@@ -296,15 +296,15 @@ __resources__["/mainPanelView.js"] = {
 			$teamMenu4TM2.hide();
 
 			$avatarImg.on('click', function() {
-				$teamMenu.toggle();
+				// $teamMenu.toggle();
 			});
 
 			$avatarImg4TM1.on('click', function() {
-				$teamMenu4TM1.toggle();
+				// $teamMenu4TM1.toggle();
 			});
 
 			$avatarImg4TM2.on('click', function() {
-				$teamMenu4TM2.toggle();
+				// $teamMenu4TM2.toggle();
 			});
 
 			$createTeam.on('click', function() {

@@ -31,11 +31,28 @@ __resources__["/teamPanelView.js"] = {
 			var $btnM = $opt.find('.f-fm').unbind();
       var $btnR = $opt.find('.f-fr').unbind();
 
+			console.log('teamId, isCaptain = ', pomelo.teamId, pomelo.isCaptain);
+			if (pomelo.teamId > TeamC.TEAM_ID_NONE) {
+				$btnL.addClass('disabled');
+				$btnM.removeClass('disabled');
+				if (pomelo.isCaptain) {
+					$btnR.removeClass('disabled');
+				} else {
+					$btnR.addClass('disabled');
+				}
+			} else {
+				$btnL.removeClass('disabled');
+				$btnM.addClass('disabled');
+				$btnR.addClass('disabled');
+			}
+
 			var self = this;
 			$btnL.one('click', function() {
 				console.log('click createTeam ...');
-				actionHandler.exec(btns.CREATE_TEAM);
-				self.hide();
+				if (!pomelo.teamId || pomelo.teamId === TeamC.TEAM_ID_NONE) {
+					actionHandler.exec(btns.CREATE_TEAM);
+					self.hide();
+				}
 			});
 
 			$btnM.one('click', function() {
@@ -46,9 +63,9 @@ __resources__["/teamPanelView.js"] = {
 						teamId: pomelo.teamId
 					};
 					actionHandler.exec(btns.LEAVE_TEAM, params);
+					self.hide();
 				}
 				console.log('leaveTeam ~ pomelo.teamId = ', pomelo.teamId);
-				self.hide();
 			});
 
 			$btnR.one('click', function() {
@@ -59,9 +76,9 @@ __resources__["/teamPanelView.js"] = {
 						teamId: pomelo.teamId
 					};
 					actionHandler.exec(btns.DISBAND_TEAM, params);
+					self.hide();
 				}
 				console.log('disbandTeam ~ pomelo.teamId = ', pomelo.teamId);
-				self.hide();
 			});
 
       $panel.show();
