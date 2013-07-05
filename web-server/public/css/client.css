@@ -237,6 +237,13 @@ body .skill-box {
     margin: 76px auto;
 }
 
+/* kickOutDialog */
+#kickOutDialog .wincnt .opt4kickOut {
+  width: 175px;
+  height: 30px;
+  margin: 75px auto;
+}
+
 .player .zj .wtype li {
   position: relative;
 }

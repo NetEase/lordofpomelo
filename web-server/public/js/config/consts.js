@@ -101,7 +101,8 @@ __resources__["/consts.js"] = {
 				APPLY_JOIN_TEAM: 'ApplyJoinTeam',
 				INVITE_JOIN_TEAM: 'InviteJoinTeam',
 				ACCEPT_APPLICANT_JOIN_TEAM: 'AcceptApplicantJoinTeam',
-				ACCEPT_JOIN_INVITER_TEAM: 'AcceptJoinInviterTeam'
+				ACCEPT_JOIN_INVITER_TEAM: 'AcceptJoinInviterTeam',
+				KICK_OUT: 'KickOut'
 			}
     };
   }};

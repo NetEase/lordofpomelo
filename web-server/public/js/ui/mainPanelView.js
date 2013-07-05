@@ -9,6 +9,7 @@ __resources__["/mainPanelView.js"] = {
 		var equipmentsPanel = require('equipmentsPanelView');
 		var taskPanel = require('taskPanelView');
 		var teamPanel = require('teamPanelView');
+		var kickOutPanel = require('kickOutPanelView');
 		var dialogPanel = require('dialogPanelView');
 		var playerDialogPanel = require('playerDialogPanelView');
 		var applyJoinTeamPanel = require('applyJoinTeamPanelView');
@@ -120,6 +121,7 @@ __resources__["/mainPanelView.js"] = {
 			bagPanel.init();
 			taskPanel.init();
 			teamPanel.init();
+			kickOutPanel.init();
 			dialogPanel.init();
 			playerDialogPanel.init();
 			applyJoinTeamPanel.init();
@@ -301,10 +303,14 @@ __resources__["/mainPanelView.js"] = {
 
 			$avatarImg4TM1.on('click', function() {
 				// $teamMenu4TM1.toggle();
+				var kickedPlayerId = parseInt($playerId4TM1.text(), null);
+				kickOutPanel.open(kickedPlayerId);
 			});
 
 			$avatarImg4TM2.on('click', function() {
 				// $teamMenu4TM2.toggle();
+				var kickedPlayerId = parseInt($playerId4TM2.text(), null);
+				kickOutPanel.open(kickedPlayerId);
 			});
 
 			$createTeam.on('click', function() {
