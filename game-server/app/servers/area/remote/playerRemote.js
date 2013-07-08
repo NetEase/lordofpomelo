@@ -9,7 +9,6 @@ var taskDao = require('../../../dao/taskDao');
 var equipmentsDao = require('../../../dao/equipmentsDao');
 var consts = require('../../../consts/consts');
 var areaService = require('../../../services/areaService');
-var consts = require('../../../consts/consts');
 var pomelo = require('pomelo');
 var logger = require('pomelo-logger').getLogger(__filename);
 var messageService = require('../../../domain/messageService');
@@ -96,7 +95,8 @@ exp.leaveTeam = function(args, cb){
 			route: 'onTeamMemberStatusChange',
 			playerId: playerId,
 			teamId: player.teamId,
-			isCaptain: player.isCaptain
+			isCaptain: player.isCaptain,
+			teamName: consts.TEAM.DEFAULT_NAME
 		},
 		{x: player.x, y: player.y}, {});
 

@@ -145,7 +145,9 @@ module.exports = {
 
 		// yes / no
 		YES: 1,
-		NO: 0
+		NO: 0,
+
+		DEFAULT_NAME: ''
 	},
 	
 	/**

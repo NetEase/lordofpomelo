@@ -12,6 +12,7 @@ var MAX_MEMBER_NUM = 3;
 ///////////////////////////////////////////////////////
 function Team(teamId){
 	this.teamId = 0;
+	this.teamName = consts.TEAM.DEFAULT_NAME;
 	this.playerNum = 0;
 	this.captainId = 0;
 	this.playerDataArray = new Array(MAX_MEMBER_NUM);
@@ -76,6 +77,7 @@ function doAddPlayer(teamObj, data, isCaptain) {
 		if(arr[i].playerId === consts.TEAM.PLAYER_ID_NONE && arr[i].areaId === consts.TEAM.AREA_ID_NONE) {
 			data.playerInfo.playerData.teamId = teamObj.teamId;
 			if (isCaptain) {
+				teamObj.teamName = data.teamName;
 				data.playerInfo.playerData.isCaptain = consts.TEAM.YES;
 			}
 			utils.myPrint('data.playerInfo = ', JSON.stringify(data.playerInfo));

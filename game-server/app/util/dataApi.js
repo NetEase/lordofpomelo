@@ -9,6 +9,7 @@ var talk = require('../../config/data/talk');
 var item = require('../../config/data/item');
 var fightskill = require('../../config/data/fightskill');
 var task = require('../../config/data/task');
+var team = require('../../config/data/team');
 
 /**
  * Data model `new Data()`
@@ -125,5 +126,6 @@ module.exports = {
   talk: new Data(talk),
   item: new Data(item),
   fightskill: new Data(fightskill),
-	task: new Data(task)
+	task: new Data(task),
+	team: new Data(team)
 };

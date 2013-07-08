@@ -14,6 +14,9 @@ module.exports = function(app) {
 
 var Handler = function(app) {
 	this.app = app;
+	this.teamNameArr = dataApi.team.all();
+	this.teamNameArr.length = Object.keys(this.teamNameArr).length;
+	utils.myPrint('teamNameArr = ', JSON.stringify(this.teamNameArr));
 };
 
 /**
@@ -43,10 +46,12 @@ Handler.prototype.createTeam = function(msg, session, next) {
 		return;
 	}
 
+	var tmpIdx = Math.floor((Math.random() * this.teamNameArr.length) + 1);
+	var teamName = this.teamNameArr[tmpIdx] ? this.teamNameArr[tmpIdx].teamName : consts.TEAM.DEFAULT_NAME;
 	var backendServerId = this.app.getServerId();
 	var result = consts.TEAM.JOIN_TEAM_RET_CODE.SYS_ERROR;
 	var playerInfo = player.toJSON4TeamMember();
-	var args = {playerId: playerId, areaId: area.areaId, userId: player.userId,
+	var args = {teamName: teamName, playerId: playerId, areaId: area.areaId, userId: player.userId,
 		serverId: player.serverId, backendServerId: backendServerId, playerInfo: playerInfo};
 		this.app.rpc.manager.teamRemote.createTeam(session, args,
 		function(err, ret) {
@@ -70,7 +75,8 @@ Handler.prototype.createTeam = function(msg, session, next) {
 						route: 'onTeamCaptainStatusChange',
 						playerId: playerId,
 						teamId: player.teamId,
-						isCaptain: player.isCaptain
+						isCaptain: player.isCaptain,
+						teamName: teamName
 					},
 					{x: player.x, y: player.y}, ignoreList);
 			}
@@ -132,7 +138,8 @@ Handler.prototype.disbandTeam = function(msg, session, next) {
 							route: 'onTeamCaptainStatusChange',
 							playerId: playerId,
 							teamId: player.teamId,
-							isCaptain: player.isCaptain
+							isCaptain: player.isCaptain,
+							teamName: consts.TEAM.DEFAULT_NAME
 						},
 						{x: player.x, y: player.y}, ignoreList);
 				}
@@ -238,7 +245,8 @@ Handler.prototype.inviteJoinTeamReply = function(msg, session, next) {
 							route: 'onTeamMemberStatusChange',
 							playerId: inviteeId,
 							teamId: inviteeObj.teamId,
-							isCaptain: inviteeObj.isCaptain
+							isCaptain: inviteeObj.isCaptain,
+							teamName: ret.teamName
 						},
 						{x: inviteeObj.x, y: inviteeObj.y}, ignoreList);
 				}
@@ -368,7 +376,8 @@ Handler.prototype.applyJoinTeamReply = function(msg, session, next) {
 							route: 'onTeamMemberStatusChange',
 							playerId: msg.applicantId,
 							teamId: applicantObj.teamId,
-							isCaptain: applicantObj.isCaptain
+							isCaptain: applicantObj.isCaptain,
+							teamName: ret.teamName
 						},
 						{x: applicantObj.x, y: applicantObj.y}, ignoreList);
 				}
@@ -489,7 +498,8 @@ Handler.prototype.leaveTeam = function(msg, session, next) {
 						route: route,
 						playerId: playerId,
 						teamId: player.teamId,
-						isCaptain: player.isCaptain
+						isCaptain: player.isCaptain,
+						teamName: consts.TEAM.DEFAULT_NAME
 					},
 					{x: player.x, y: player.y}, ignoreList);
 			}

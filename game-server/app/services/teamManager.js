@@ -97,6 +97,7 @@ exp.applyJoinTeam = function(args) {
 
 exp.acceptApplicantJoinTeam = function(args) {
 	var result = consts.TEAM.FAILED;
+	var teamName = consts.TEAM.DEFAULT_NAME;
 	if (!args || !args.teamId) {
 		return {result: result};
 	}
@@ -107,8 +108,9 @@ exp.acceptApplicantJoinTeam = function(args) {
 			return {result: result};
 		}
 		result = teamObj.addPlayer(args);
+		teamName = teamObj.teamName;
 	}
-	return {result: result};
+	return {result: result, teamName: teamName};
 };
 
 exp.inviteJoinTeam = function(args) {
@@ -129,6 +131,7 @@ exp.inviteJoinTeam = function(args) {
 
 exp.acceptInviteJoinTeam = function(args) {
 	var result = consts.TEAM.FAILED;
+	var teamName = consts.TEAM.DEFAULT_NAME;
 	if (!args || !args.teamId) {
 		return {result: result};
 	}
@@ -139,8 +142,9 @@ exp.acceptInviteJoinTeam = function(args) {
 			return {result: result};
 		}
 		result = teamObj.addPlayer(args);
+		teamName = teamObj.teamName;
 	}
-	return {result: result};
+	return {result: result, teamName: teamName};
 };
 
 exp.updateMemberInfo = function(args) {

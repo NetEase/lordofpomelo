@@ -72,12 +72,16 @@ __resources__["/consts.js"] = {
 
       Team: {
         TEAM_ID_NONE: 0, // player without team(not in any team)
+
 				YES: 1,
 				NO: 0,
+
 				JOIN_TEAM_REPLY: {
 					REJECT: 0,
 					ACCEPT: 1
-				} // player's replying code
+				}, // player's replying code
+
+				DEFAULT_NAME: ''
       },
     
       CacheType: {

@@ -26,10 +26,14 @@ __resources__["/teamPanelView.js"] = {
 		};
 
     exports.show = function() {
+			var $teamName = $panel.find('.wincnt .teamName');
       var $opt = $panel.find('.wincnt .opt4team');
 			var $btnL = $opt.find('.f-fl').unbind();
 			var $btnM = $opt.find('.f-fm').unbind();
       var $btnR = $opt.find('.f-fr').unbind();
+
+			var tmpName = (pomelo.teamName && pomelo.teamName !== TeamC.DEFAULT_NAME) ? pomelo.teamName : 'None';
+			$teamName.text('TeamName: ' + tmpName);
 
 			console.log('teamId, isCaptain = ', pomelo.teamId, pomelo.isCaptain);
 			if (pomelo.teamId > TeamC.TEAM_ID_NONE) {
