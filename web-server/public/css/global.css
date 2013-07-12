@@ -83,15 +83,15 @@ html,body{width:100%;height:100%;overflow:hidden;-webkit-user-select:none;-moz-u
 .m-asset{position:absolute;top:0;height:32px;left:50%;width:586px;margin-left:-293px;;background-position:center 0;}
 .m-asset .wrap{padding:0 68px;}
 .m-asset ul{width:446px;height:32px;}
-.m-asset li{float:left;padding-left:20px;height:16px;} 
+.m-asset li{float:left;padding-left:20px;height:16px;}
 
 /* 游戏玩家 */
 .m-player{position:absolute;top:0;left:0;width:256px;height:74px;background-position:0 0;z-index:3;}
 .m-player .avatar{float:left;padding:5px 0 0 5px;width:60px;}
-.m-player .info{margin-left:74px;height:70px;} 
+.m-player .info{margin-left:74px;height:70px;}
 .m-player .info p{height:16px;padding-left:5px;}
 .m-player .name span{float:left;width:75px;height:16px;}
-.m-player .info .level{height:28px;width:133px;} 
+.m-player .info .level{height:28px;width:133px;}
 
 /* m-team-mate-1 */
 .m-team-mate-1{position:absolute;margin:74px 0px;width:256px;height:74px;background-position:0 0;z-index:2;}
@@ -130,11 +130,11 @@ html,body{width:100%;height:100%;overflow:hidden;-webkit-user-select:none;-moz-u
 .m-chat .btmbar .arr{background-position:-150px 1px;}
 .m-chat .btmbar .arr:hover{background-position:-150px -15px;}
 
-/* skill列表 */ 
+/* skill列表 */
 .m-skill{position:absolute;bottom:0;left:50%;height:45px;width:444px;margin-left:-222px;}
 .m-skill li{position:relative;float:left;width:41px;margin-right:3px;height:41px;cursor:pointer;background-position:0 0;}
 .m-skill li .num{position:absolute;top:3px;left:5px;color:#fff;text-shadow: 0 0 2px #000;}
-.m-skill li img{position:absolute;width:38px;height:38px;top:1px;left:1px;}  
+.m-skill li img{position:absolute;width:38px;height:38px;top:1px;left:1px;}
 
 /* -----------------------弹出层--------------------------- */
 /* base */
@@ -187,7 +187,7 @@ html,body{width:100%;height:100%;overflow:hidden;-webkit-user-select:none;-moz-u
 .player .zj .weapon{width:410px;}
 .player .zj .wtype{padding:15px 20px;}
 .player .zj .type1,.player .zj .type2{width:56px;float:left;}
-.player .zj .type1{padding:85px 0;} 
+.player .zj .type1{padding:85px 0;}
 .player .zj .wtype li,.player .zj .wtype li > span{display:block;width:56px;height:56px;cursor:pointer;}
 .player .zj .wtype li > span > img{background-color: rgba(11, 11, 11, .2)}
 .player .zj .wtype li{background-position:-50px 0;}
@@ -203,7 +203,7 @@ html,body{width:100%;height:100%;overflow:hidden;-webkit-user-select:none;-moz-u
 .player .wxdetl .name,.shop .wxdetl .name,.gang .wxdetl .name{margin-left:80px;line-height:30px;color:#180900;font-size:14px;font-weight:bolder;}
 .player .wxdetl .detl,.shop .wxdetl .detl,.gang .wxdetl .detl{padding:12px 0 0 4px;clear:both;}
 .player .wxdetl .detl p{margin:0 0 4px;}
-.player .wxdetl .detl span{color:#180900;}  
+.player .wxdetl .detl span{color:#180900;}
 .player .wxdetl .opt,.shop .wxdetl .opt,.gang .wxdetl .opt{margin-top:20px;text-align:center;}
 /* 装备类型 名称  position*/
 .player .wtype .name1{background-position:-60px 5px;}
@@ -360,7 +360,7 @@ html,body{width:100%;height:100%;overflow:hidden;-webkit-user-select:none;-moz-u
 .gang .foot .tlt{height:25px;}
 .gang .foot .m-post{margin:10px 0 0 20px;height:140px;width:580px;}
 
-/* -----------------------弹出层--------------------------- */ 
+/* -----------------------弹出层--------------------------- */
 /* 装备列表 */
 .m-wlst{}
 .m-wlst li{position:relative;float:left;width:50px;height:52px;padding:2px;margin:3px 5px 0 0;cursor:pointer;background-position:-113px 0;}
@@ -385,7 +385,7 @@ html,body{width:100%;height:100%;overflow:hidden;-webkit-user-select:none;-moz-u
 .m-pager .next.disabled{background-position:-157px -257px;cursor:default;}
 
 /* m-table 好友表格 */
-.m-table{line-height:26px;} 
+.m-table{line-height:26px;}
 .m-table .caption .th{float:left;text-indent:-9999px;overflow:hidden;height:26px;}
 .m-table .col1{width:19%;}
 .m-table .col2{width:19%;}
@@ -419,8 +419,8 @@ html,body{width:100%;height:100%;overflow:hidden;-webkit-user-select:none;-moz-u
 .m-post .post4{background-position:0 -520px;}
 .m-post .post5{background-position:0 -550px;}
 .m-post .val{width:475px;height:20px;padding-top:5px;line-height:21px;font-weight:bolder;}
-.m-post .val-1{height:38px;line-height:16px;} 
- 
+.m-post .val-1{height:38px;line-height:16px;}
+
 /* 装备详细浮层  鼠标悬浮时 */
 .m-detllay{display:none;position:absolute;right:-185px;top:-30px;width:185px;height:146px;background-position:0 -200px;z-index:10;}
 .m-detllay .wrap{padding:10px 18px 10px 20px;}
@@ -437,7 +437,7 @@ html,body{width:100%;height:100%;overflow:hidden;-webkit-user-select:none;-moz-u
 .m-window{position:absolute;top:50%;left:50%;width:533px;height:230px;margin:-115px 0 0 -266px;background-position:0 0;}
 .m-window .u-close{top:7px;}
 .m-window .wincnt{padding-top:60px;text-align:center;}
-.m-window .opt{width:175px;margin:75px auto 0;height:30px;}  
+.m-window .opt{width:175px;margin:75px auto 0;height:30px;}
 .m-window-1{width:356px;height:222px;margin:-111px 0 0 -178px;}/* 消耗元宝确认对话框 */
 .m-window-1 .wincnt{padding-top:35px;}
 .m-window-1 .tlt{height:18px;line-height:20px;margin-bottom:30px;font-size:14px;color:#190300;font-weight:bolder;}
@@ -534,7 +534,7 @@ html,body{width:100%;height:100%;overflow:hidden;-webkit-user-select:none;-moz-u
 .s-fc10,.s-fc10:hover{color:#ff6600;/* deep橘色 */}
 .s-fc11,.s-fc11:hover{color:#f7df9b;/* 亮粉色 */}
 .s-fc12,.s-fc12:hover{color:#b50603;/* 深红色 */}
-.s-fc13,.s-fc13:hover{color:#800909;/* 酒红色 */} 
+.s-fc13,.s-fc13:hover{color:#800909;/* 酒红色 */}
 /* 自定义滚动条 only for webkit  */
 
 

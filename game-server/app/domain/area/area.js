@@ -93,12 +93,12 @@ Instance.prototype.initNPCs = function() {
 
 Instance.prototype.getChannel = function() {
   if(!this.channel){
-		var channelName = channelUtil.getAreaChannelName(this.areaId);
-		utils.myPrint('channelName = ', channelName);
+    var channelName = channelUtil.getAreaChannelName(this.areaId);
+    utils.myPrint('channelName = ', channelName);
     this.channel = pomelo.app.get('channelService').getChannel(channelName, true);
   }
 
-	utils.myPrint('this.channel = ', this.channel);
+  utils.myPrint('this.channel = ', this.channel);
   return this.channel;
 };
 
@@ -148,9 +148,9 @@ Instance.prototype.addEntity = function(e) {
     users[e.userId] = e.id;
 
     this.playerNum++;
-	  utils.myPrint('e = ', JSON.stringify(e));
-	  utils.myPrint('e.teamId = ', JSON.stringify(e.teamId));
-	  utils.myPrint('e.isCaptain = ', JSON.stringify(e.isCaptain));
+    utils.myPrint('e = ', JSON.stringify(e));
+    utils.myPrint('e.teamId = ', JSON.stringify(e.teamId));
+    utils.myPrint('e.isCaptain = ', JSON.stringify(e.isCaptain));
   }else if(e.type === EntityType.MOB) {
     this.aiManager.addCharacters([e]);
 

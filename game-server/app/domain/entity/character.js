@@ -12,43 +12,43 @@ var fightskill = require('./../fightskill');
 var logger = require('pomelo-logger').getLogger(__filename);
 
 var Character = function(opts) {
-	Entity.call(this, opts);
-	this.orientation = opts.orientation;
-	this.target = null;
-	this.attackers = {};
+  Entity.call(this, opts);
+  this.orientation = opts.orientation;
+  this.target = null;
+  this.attackers = {};
 
-	// the entity who hate me
-	// I would notify my enemies to forget me when I disapear or die
-	this.enemies = {};
+  // the entity who hate me
+  // I would notify my enemies to forget me when I disapear or die
+  this.enemies = {};
 
-	// the entity I hate
-	// I would set my target as the entity that I hate most
-	this.haters = {};
+  // the entity I hate
+  // I would set my target as the entity that I hate most
+  this.haters = {};
 
-	this.died = false;
-	this.hp = opts.hp;
-	this.mp = opts.mp;
-	this.maxHp = opts.maxHp;
-	this.maxMp = opts.maxMp;
-	this.level = opts.level;
-	this.experience = opts.experience;
-	this.attackValue = opts.attackValue;
-	this.defenceValue = opts.defenceValue;
-	this.totalAttackValue = opts.totalAttackValue || 0;
-	this.totalDefenceValue = opts.totalDefenceValue || 0;
-	this.hitRate = opts.hitRate;
-	this.dodgeRate = opts.dodgeRate;
-	this.walkSpeed = opts.walkSpeed;
-	this.attackSpeed = opts.attackSpeed;
-	this.isMoving = false;
+  this.died = false;
+  this.hp = opts.hp;
+  this.mp = opts.mp;
+  this.maxHp = opts.maxHp;
+  this.maxMp = opts.maxMp;
+  this.level = opts.level;
+  this.experience = opts.experience;
+  this.attackValue = opts.attackValue;
+  this.defenceValue = opts.defenceValue;
+  this.totalAttackValue = opts.totalAttackValue || 0;
+  this.totalDefenceValue = opts.totalDefenceValue || 0;
+  this.hitRate = opts.hitRate;
+  this.dodgeRate = opts.dodgeRate;
+  this.walkSpeed = opts.walkSpeed;
+  this.attackSpeed = opts.attackSpeed;
+  this.isMoving = false;
 
-	this.attackParam = 1;
-	this.defenceParam = 1;
-	this.equipmentParam = 1;
-	this.buffs = [];
-	this.curSkill = 1;  //default normal attack
-	this.characterData = dataApi.character.findById(this.kindId);
-	this.fightSkills = {};
+  this.attackParam = 1;
+  this.defenceParam = 1;
+  this.equipmentParam = 1;
+  this.buffs = [];
+  this.curSkill = 1;  //default normal attack
+  this.characterData = dataApi.character.findById(this.kindId);
+  this.fightSkills = {};
 };
 
 util.inherits(Character, Entity);
@@ -66,10 +66,10 @@ module.exports = Character;
  * @api public
  */
 Character.prototype.addFightSkills = function(fightSkills) {
-	for (var i = 0; i < fightSkills.length; i++) {
-		var skill = fightskill.create(fightSkills[i]);
-		this.fightSkills[skill.skillId] = skill;
-	}
+  for (var i = 0; i < fightSkills.length; i++) {
+    var skill = fightskill.create(fightSkills[i]);
+    this.fightSkills[skill.skillId] = skill;
+  }
 };
 
 /**
@@ -78,17 +78,17 @@ Character.prototype.addFightSkills = function(fightSkills) {
  * @api public
  */
 Character.prototype.getFightSkillData = function(){
-	var data = [];
-	for(var key in this.fightSkills){
-		var fs = {
-			id : Number(key),
-			level : this.fightSkills[key].level
-		};
+  var data = [];
+  for(var key in this.fightSkills){
+    var fs = {
+      id : Number(key),
+      level : this.fightSkills[key].level
+    };
 
-		data.push(fs);
-	}
+    data.push(fs);
+  }
 
-	return data;
+  return data;
 };
 
 /**
@@ -98,7 +98,7 @@ Character.prototype.getFightSkillData = function(){
  * @api public
  */
 Character.prototype.setTarget = function(targetId) {
-	this.target = targetId;
+  this.target = targetId;
 };
 
 /**
@@ -107,7 +107,7 @@ Character.prototype.setTarget = function(targetId) {
  * @api public
  */
 Character.prototype.hasTarget = function() {
-	return !!this.target;
+  return !!this.target;
 };
 
 /**
@@ -116,7 +116,7 @@ Character.prototype.hasTarget = function() {
  * @api public
  */
 Character.prototype.clearTarget = function() {
-	this.target = null;
+  this.target = null;
 };
 
 /**
@@ -126,11 +126,11 @@ Character.prototype.clearTarget = function() {
  * @api public
  */
 Character.prototype.resetHp = function(maxHp) {
-	this.maxHp = maxHp;
-	this.hp = this.maxHp;
-	if (!!this.updateTeamMemberInfo) {
-		this.updateTeamMemberInfo();
-	}
+  this.maxHp = maxHp;
+  this.hp = this.maxHp;
+  if (!!this.updateTeamMemberInfo) {
+    this.updateTeamMemberInfo();
+  }
 };
 
 /**
@@ -140,16 +140,16 @@ Character.prototype.resetHp = function(maxHp) {
  * @api public
  */
 Character.prototype.recoverHp = function(hpValue) {
-	if(this.hp >= this.maxHp) {
-		return;
-	}
+  if(this.hp >= this.maxHp) {
+    return;
+  }
 
-	var hp = this.hp + hpValue;
-	if(hp > this.maxHp) {
-		this.hp = this.maxHp;
-	} else {
-		this.hp = hp;
-	}
+  var hp = this.hp + hpValue;
+  if(hp > this.maxHp) {
+    this.hp = this.maxHp;
+  } else {
+    this.hp = hp;
+  }
 };
 
 /**
@@ -159,8 +159,8 @@ Character.prototype.recoverHp = function(hpValue) {
  * @api public
  */
 Character.prototype.resetMp = function(maxMp) {
-	this.maxMp = maxMp;
-	this.mp = this.maxMp;
+  this.maxMp = maxMp;
+  this.mp = this.maxMp;
 };
 
 /**
@@ -170,16 +170,16 @@ Character.prototype.resetMp = function(maxMp) {
  * @api public
  */
 Character.prototype.recoverMp = function(mpValue) {
-	if(this.mp >= this.maxMp) {
-		return;
-	}
+  if(this.mp >= this.maxMp) {
+    return;
+  }
 
-	var mp = this.mp + mpValue;
-	if(mp > this.maxMp) {
-		this.mp = this.maxMp;
-	} else {
-		this.mp = mp;
-	}
+  var mp = this.mp + mpValue;
+  if(mp > this.maxMp) {
+    this.mp = this.maxMp;
+  } else {
+    this.mp = mp;
+  }
 };
 
 /**
@@ -193,30 +193,30 @@ Character.prototype.recoverMp = function(mpValue) {
  * @api public
  */
 Character.prototype.move = function(targetX, targetY, useCache, cb) {
-	useCache = useCache || false;
+  useCache = useCache || false;
 
-	if(useCache){
-		var paths = this.area.map.findPath(this.x, this.y, targetX, targetY, useCache);
+  if(useCache){
+    var paths = this.area.map.findPath(this.x, this.y, targetX, targetY, useCache);
 
-		if(!!paths){
-			this.emit('move', {character: this, paths: paths});
-			utils.invokeCallback(cb, null, true);
-		}else{
-			logger.warn('No path exist! {x: %j, y: %j} , target: {x: %j, y: %j} ', this.x, this.y, targetX, targetY);
-			utils.invokeCallback(cb, 'find path error', false);
-		}
-	}else{
-		var closure = this;
-		pomelo.app.rpc.path.pathFindingRemote.findPath(null, {areaId: this.areaId, start:{x:this.x, y:this.y}, end:{x:targetX, y: targetY}}, function(err, paths){
-			if(!!paths){
-				closure.emit('move', {character: closure, paths: paths});
-				utils.invokeCallback(cb, null, true);
-			}else{
-				logger.warn('Remote find path failed! No path exist! {x: %j, y: %j} , target: {x: %j, y: %j} ', closure.x, closure.y, targetX, targetY);
-				utils.invokeCallback(cb, 'find path error', false);
-			}
-		});
-	}
+    if(!!paths){
+      this.emit('move', {character: this, paths: paths});
+      utils.invokeCallback(cb, null, true);
+    }else{
+      logger.warn('No path exist! {x: %j, y: %j} , target: {x: %j, y: %j} ', this.x, this.y, targetX, targetY);
+      utils.invokeCallback(cb, 'find path error', false);
+    }
+  }else{
+    var closure = this;
+    pomelo.app.rpc.path.pathFindingRemote.findPath(null, {areaId: this.areaId, start:{x:this.x, y:this.y}, end:{x:targetX, y: targetY}}, function(err, paths){
+      if(!!paths){
+        closure.emit('move', {character: closure, paths: paths});
+        utils.invokeCallback(cb, null, true);
+      }else{
+        logger.warn('Remote find path failed! No path exist! {x: %j, y: %j} , target: {x: %j, y: %j} ', closure.x, closure.y, targetX, targetY);
+        utils.invokeCallback(cb, 'find path error', false);
+      }
+    });
+  }
 };
 
 /**
@@ -227,30 +227,30 @@ Character.prototype.move = function(targetX, targetY, useCache, cb) {
  * @return {Object}
  */
 Character.prototype.attack = function(target, skillId) {
-	if (this.confused) {
-		return {result: consts.AttackResult.ATTACKER_CONFUSED};
-	}
+  if (this.confused) {
+    return {result: consts.AttackResult.ATTACKER_CONFUSED};
+  }
 
-	//You cann't attack a died character!
-	if (target.died){
-		return {result: consts.AttackResult.KILLED};
-	}
+  //You cann't attack a died character!
+  if (target.died){
+    return {result: consts.AttackResult.KILLED};
+  }
 
-	var skill = this.fightSkills[skillId];
-	this.setTarget(target.entityId);
+  var skill = this.fightSkills[skillId];
+  this.setTarget(target.entityId);
 
-	// set up the relationship between attacker and attackee
-	this.addEnemy(target.entityId);
+  // set up the relationship between attacker and attackee
+  this.addEnemy(target.entityId);
 
-	var result = skill.use(this, target);
-	this.emit('attack', {
-		attacker : this,
-		target: target,
-		skillId: skillId,
-		result: result
-	});
+  var result = skill.use(this, target);
+  this.emit('attack', {
+    attacker : this,
+    target: target,
+    skillId: skillId,
+    result: result
+  });
 
-	return result;
+  return result;
 };
 
 /**
@@ -261,8 +261,8 @@ Character.prototype.attack = function(target, skillId) {
  * @api public
  */
 Character.prototype.hit = function(attacker, damage) {
-	this.increaseHateFor(attacker.entityId);
-	this.reduceHp(damage);
+  this.increaseHateFor(attacker.entityId);
+  this.reduceHp(damage);
 };
 
 /**
@@ -272,14 +272,14 @@ Character.prototype.hit = function(attacker, damage) {
  * @api public
  */
 Character.prototype.reduceHp = function(damageValue) {
-	this.hp -= damageValue;
-	if (this.hp <= 0) {
-		this.died = true;
-		this.afterDied();
-	}
-	if (!!this.updateTeamMemberInfo) {
-		this.updateTeamMemberInfo();
-	}
+  this.hp -= damageValue;
+  if (this.hp <= 0) {
+    this.died = true;
+    this.afterDied();
+  }
+  if (!!this.updateTeamMemberInfo) {
+    this.updateTeamMemberInfo();
+  }
 };
 
 /**
@@ -289,10 +289,10 @@ Character.prototype.reduceHp = function(damageValue) {
  * @api public
  */
 Character.prototype.reduceMp = function(mp) {
-	this.mp -= mp;
-	if (this.mp <= 0) {
-		this.mp = 0;
-	}
+  this.mp -= mp;
+  if (this.mp <= 0) {
+    this.mp = 0;
+  }
 };
 
 /**
@@ -302,7 +302,7 @@ Character.prototype.reduceMp = function(mp) {
  * @api private
  */
 Character.prototype.getAttackValue = function() {
-	return this.attackValue * this.attackParam;
+  return this.attackValue * this.attackParam;
 };
 
 /**
@@ -312,7 +312,7 @@ Character.prototype.getAttackValue = function() {
  * @api private
  */
 Character.prototype.getDefenceValue = function() {
-	return this.defenceValue * this.defenceParam;
+  return this.defenceValue * this.defenceParam;
 };
 
 /**
@@ -322,7 +322,7 @@ Character.prototype.getDefenceValue = function() {
  * @api public
  */
 Character.prototype.getTotalAttack = function() {
-	return this.totalAttackValue;
+  return this.totalAttackValue;
 };
 
 /**
@@ -332,7 +332,7 @@ Character.prototype.getTotalAttack = function() {
  * @api public
  */
 Character.prototype.getTotalDefence = function() {
-	return this.totalDefenceValue;
+  return this.totalDefenceValue;
 };
 
 /**
@@ -342,7 +342,7 @@ Character.prototype.getTotalDefence = function() {
  * @api public
  */
 Character.prototype.addBuff = function(buff) {
-	this.buffs[buff.type] = buff;
+  this.buffs[buff.type] = buff;
 };
 
 /**
@@ -352,7 +352,7 @@ Character.prototype.addBuff = function(buff) {
  * @api public
  */
 Character.prototype.removeBuff = function(buff) {
-	delete this.buffs[buff.type];
+  delete this.buffs[buff.type];
 };
 
 /**
@@ -362,15 +362,15 @@ Character.prototype.removeBuff = function(buff) {
  * @api public
  */
 Character.prototype.forEachEnemy = function(callback) {
-	var enemy;
-	for(var enemyId in this.enemies) {
-		enemy = this.area.getEntity(enemyId);
-		if(!enemy) {
-			delete this.enemies[enemyId];
-			continue;
-		}
-		callback(enemy);
-	}
+  var enemy;
+  for(var enemyId in this.enemies) {
+    enemy = this.area.getEntity(enemyId);
+    if(!enemy) {
+      delete this.enemies[enemyId];
+      continue;
+    }
+    callback(enemy);
+  }
 };
 
 /**
@@ -380,7 +380,7 @@ Character.prototype.forEachEnemy = function(callback) {
  * @api public
  */
 Character.prototype.addEnemy = function(enemyId) {
-	this.enemies[enemyId] = 1;
+  this.enemies[enemyId] = 1;
 };
 
 /**
@@ -390,7 +390,7 @@ Character.prototype.addEnemy = function(enemyId) {
  * @api public
  */
 Character.prototype.forgetEnemy = function(entityId) {
-	delete this.enemies[entityId];
+  delete this.enemies[entityId];
 };
 
 Character.prototype.forgetHater = function(){};
@@ -402,5 +402,5 @@ Character.prototype.increaseHateFor = function(){};
 Character.prototype.getMostHater = function(){};
 
 Character.prototype.clearHaters = function() {
-	this.haters = {};
+  this.haters = {};
 };

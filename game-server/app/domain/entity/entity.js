@@ -16,17 +16,17 @@ var id = 1;
  */
 
 var Entity = function(opts) {
-	EventEmitter.call(this);
-	this.entityId = id++;
-	this.kindId = Number(opts.kindId);
-	this.kindName = opts.kindName;
-	this.englishName = opts.englishName;
-	this.type = opts.type;
-	this.x = opts.x;
-	this.y = opts.y;
+  EventEmitter.call(this);
+  this.entityId = id++;
+  this.kindId = Number(opts.kindId);
+  this.kindName = opts.kindName;
+  this.englishName = opts.englishName;
+  this.type = opts.type;
+  this.x = opts.x;
+  this.y = opts.y;
 
-	this.areaId = Number(opts.areaId || 1);
-	this.area = opts.area;
+  this.areaId = Number(opts.areaId || 1);
+  this.area = opts.area;
 };
 
 util.inherits(Entity, EventEmitter);
@@ -45,7 +45,7 @@ module.exports = Entity;
  */
 
 Entity.prototype.getEntityId = function() {
-	return this.entityId;
+  return this.entityId;
 };
 
 /**
@@ -56,7 +56,7 @@ Entity.prototype.getEntityId = function() {
  */
 
 Entity.prototype.getState = function() {
-	return {x: this.x, y: this.y};
+  return {x: this.x, y: this.y};
 };
 
 /**
@@ -68,8 +68,8 @@ Entity.prototype.getState = function() {
  */
 
 Entity.prototype.setPosition = function(x, y) {
-	this.x = x;
-	this.y = y;
+  this.x = x;
+  this.y = y;
 };
 
 

@@ -65,11 +65,11 @@ exp.changeArea = function(args, session, cb) {
     var pos = this.getBornPoint(target);
 
     player.areaId = target;
-		player.isInTeamInstance = false;
-		player.instanceId = 0;
+    player.isInTeamInstance = false;
+    player.instanceId = 0;
     player.x = pos.x;
     player.y = pos.y;
-		utils.myPrint("1 ~ player.teamId = ", player.teamId);
+    utils.myPrint("1 ~ player.teamId = ", player.teamId);
     userDao.updatePlayer(player, function(err, success) {
       if(err || !success) {
         err = err || 'update player failed!';
@@ -77,69 +77,69 @@ exp.changeArea = function(args, session, cb) {
       } else {
         session.set('areaId', target);
         session.set('serverId', app.get('areaIdMap')[target]);
-				session.set('teamId', player.teamId);
-				session.set('isCaptain', player.isCaptain);
-				session.set('isInTeamInstance', player.isInTeamInstance);
-				session.set('instanceId', player.instanceId);
+        session.set('teamId', player.teamId);
+        session.set('isCaptain', player.isCaptain);
+        session.set('isInTeamInstance', player.isInTeamInstance);
+        session.set('instanceId', player.instanceId);
         session.pushAll(function(err) {
           if(err){
             logger.error('Change area for session service failed! error is : %j', err.stack);
           }
           utils.invokeCallback(cb, null);
-					utils.myPrint("2 ~ player.teamId = ", player.teamId);
+          utils.myPrint("2 ~ player.teamId = ", player.teamId);
         });
       }
     });
   }else{
     var closure = this;
     async.series([
-        function(callback){
-          //Construct params
-          var params = {areaId : args.target};
-					params.id = playerId;
+      function(callback){
+        //Construct params
+        var params = {areaId : args.target};
+        params.id = playerId;
 
-					if(targetInfo.type === AreaType.TEAM_INSTANCE && player.teamId){
-						params.id = player.teamId;
-					}
-
-					utils.myPrint('params.id, player.teamId = ', params.id, player.teamId);
-					utils.myPrint('playerId = ', player.id);
-					player.isInTeamInstance = true;
-          //Get target instance
-          app.rpc.manager.instanceRemote.create(session, params, function(err, result){
-            if(err){
-              logger.error('get Instance error!');
-              callback(err, 'getInstance');
-            }else{
-              session.set('instanceId', result.instanceId);
-							session.set('serverId', result.serverId);
-							session.set('teamId', player.teamId);
-							session.set('isCaptain', player.isCaptain);
-							session.set('isInTeamInstance', player.isInTeamInstance);
-              session.pushAll();
-							player.instanceId = result.instanceId;
-							utils.myPrint('player.instanceId = ', player.instanceId);
-              callback(null);
-            }
-          });
-        },
-        function(callback){
-          area.removePlayer(playerId);
-
-          var pos = closure.getBornPoint(target);
-          player.x = pos.x;
-          player.y = pos.y;
-
-          userDao.updatePlayer(player, function(err, success) {
-            if(err || !success) {
-              err = err || 'update player failed!';
-              cb(err, 'update');
-            }else {
-              cb(null);
-            }
-          });
+        if(targetInfo.type === AreaType.TEAM_INSTANCE && player.teamId){
+          params.id = player.teamId;
         }
-      ],
+
+        utils.myPrint('params.id, player.teamId = ', params.id, player.teamId);
+        utils.myPrint('playerId = ', player.id);
+        player.isInTeamInstance = true;
+        //Get target instance
+        app.rpc.manager.instanceRemote.create(session, params, function(err, result){
+          if(err){
+            logger.error('get Instance error!');
+            callback(err, 'getInstance');
+          }else{
+            session.set('instanceId', result.instanceId);
+            session.set('serverId', result.serverId);
+            session.set('teamId', player.teamId);
+            session.set('isCaptain', player.isCaptain);
+            session.set('isInTeamInstance', player.isInTeamInstance);
+            session.pushAll();
+            player.instanceId = result.instanceId;
+            utils.myPrint('player.instanceId = ', player.instanceId);
+            callback(null);
+          }
+        });
+      },
+      function(callback){
+        area.removePlayer(playerId);
+
+        var pos = closure.getBornPoint(target);
+        player.x = pos.x;
+        player.y = pos.y;
+
+        userDao.updatePlayer(player, function(err, success) {
+          if(err || !success) {
+            err = err || 'update player failed!';
+            cb(err, 'update');
+          }else {
+            cb(null);
+          }
+        });
+      }
+    ],
       function(err, result){
         if(!!err){
           utils.invokeCallback(cb, err);
