@@ -251,6 +251,9 @@ handler.changeArea = function(msg, session, next) {
 		utils.myPrint('DragMember2gameCopy is running ...');
 		pomelo.app.rpc.manager.teamRemote.dragMember2gameCopy(null, {teamId: teamId, target: target},
 			function(err, ret) {
+        if (!!err) {
+          logger.error(err, ret);
+        }
 				next(null, {success: false});
 			});
 	} else {

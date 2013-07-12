@@ -239,7 +239,6 @@ Team.prototype.disbandTeam = function() {
     pomelo.app.rpcInvoke(arr[i].backendServerId, params, function(err, _){
       if(!!err) {
         console.warn(err);
-        return {result: consts.TEAM.FAILED};
       }
     });
   }
@@ -305,6 +304,7 @@ Team.prototype.removePlayer = function(playerId, cb) {
   pomelo.app.rpcInvoke(tmpData.backendServerId, params, function(err, _){
     if(!!err) {
       console.warn(err);
+      return false;
     }
   });
 
@@ -330,13 +330,12 @@ Team.prototype.pushChatMsg2All = function(content) {
 
 Team.prototype.dragMember2gameCopy = function(args, cb) {
   if(!this.channel) {
+    utils.invokeCallback(cb, 'Team without channel! %j', {teamId: this.teamId, captainId: this.captainId});
     return;
   }
   utils.myPrint('3 ~ DragMember2gameCopy ~ args = ', JSON.stringify(args));
   this.channel.pushMessage('onDragMember2gameCopy', args, null);
   utils.invokeCallback(cb);
-
-  return;
 };
 
 Team.prototype.updateMemberInfo = function(data) {

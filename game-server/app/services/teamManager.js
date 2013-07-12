@@ -54,7 +54,8 @@ exp.try2DisbandTeam = function(teamObj) {
 exp.leaveTeamById = function(playerId, teamId, cb) {
   var teamObj = gTeamObjDict[teamId];
   if(!teamObj) {
-    return {result: consts.TEAM.FAILED};
+    utils.invokeCallback(cb, null, {result: consts.TEAM.FAILED});
+    return;
   }
 
   var needDisband = teamObj.removePlayer(playerId, function(err, ret) {
@@ -70,10 +71,12 @@ exp.dragMember2gameCopy = function(args, cb) {
   utils.myPrint('2 ~ DragMember2gameCopy ~ args = ', JSON.stringify(args));
   var teamId = args.teamId;
   if (!teamId) {
+    utils.invokeCallback(cb, 'No teamId! %j', args);
     return;
   }
   var teamObj = gTeamObjDict[teamId];
   if(!teamObj) {
+    utils.invokeCallback(cb, 'No teamObj! %j', args);
     return;
   }
   teamObj.dragMember2gameCopy(args, cb);
@@ -154,10 +157,8 @@ exp.updateMemberInfo = function(args) {
   }
   var teamId = args.playerData.teamId;
   var teamObj = gTeamObjDict[teamId];
-  if (teamObj) {
-    if (teamObj.updateMemberInfo(args)) {
-      result = consts.TEAM.OK;
-    }
+  if (teamObj && teamObj.updateMemberInfo(args)) {
+    result = consts.TEAM.OK;
   }
 
   return {result: result};
@@ -170,10 +171,8 @@ exp.chatInTeam = function(args) {
   }
   var teamId = args.teamId;
   var teamObj = gTeamObjDict[teamId];
-  if (teamObj) {
-    if (teamObj.pushChatMsg2All(args.content)) {
-      result = consts.TEAM.OK;
-    }
+  if (teamObj && teamObj.pushChatMsg2All(args.content)) {
+    result = consts.TEAM.OK;
   }
 
   return {result: result};
@@ -182,6 +181,7 @@ exp.chatInTeam = function(args) {
 
 exp.kickOut = function(args, cb) {
   if (!args || !args.teamId) {
+    utils.invokeCallback(cb, null, {result: consts.TEAM.FAILED});
     return;
   }
   var teamId = args.teamId;
@@ -189,6 +189,7 @@ exp.kickOut = function(args, cb) {
   if (teamObj) {
     if(!teamObj.isCaptainById(args.captainId)) {
       logger.warn('The request(kickOut) is illegal, the captainId is wrong : args = %j.', args);
+      utils.invokeCallback(cb, null, {result: consts.TEAM.FAILED});
       return;
     }
     teamObj.removePlayer(args.kickedPlayerId, function(err, ret) {
