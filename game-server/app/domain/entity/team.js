@@ -170,6 +170,8 @@ Team.prototype.getFirstPlayerId = function() {
 // check if a player in the team
 Team.prototype.isPlayerInTeam = function(playerId) {
   var arr = this.playerDataArray;
+  utils.myPrint('arr = ', JSON.stringify(arr));
+  utils.myPrint('playerId = ', playerId);
   for(var i in arr) {
     if(arr[i].playerId !== consts.TEAM.PLAYER_ID_NONE && arr[i].playerId === playerId) {
       return true;
@@ -320,10 +322,12 @@ Team.prototype.pushChatMsg2All = function(content) {
   if(!this.channel) {
     return false;
   }
-  var playerId = content.uid;
+  var playerId = content.playerId;
+  utils.myPrint('1 ~ content = ', JSON.stringify(content));
   if(!this.isPlayerInTeam(playerId)) {
     return false;
   }
+  utils.myPrint('2 ~ content = ', JSON.stringify(content));
   this.channel.pushMessage(Event.chat, content, null);
   return true;
 };

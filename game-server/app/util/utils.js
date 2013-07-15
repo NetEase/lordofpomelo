@@ -1,5 +1,8 @@
 var utils = module.exports;
 
+// control variable of func "myPrint"
+var isPrintFlag = false;
+
 /**
  * Check and invoke callback function
  */
@@ -63,16 +66,18 @@ function getLineNumber(stack){
 }
 
 utils.myPrint = function() {
-  var len = arguments.length;
-  if(len <= 0) {
-    return;
+  if (isPrintFlag) {
+    var len = arguments.length;
+    if(len <= 0) {
+      return;
+    }
+    var stack = getStack();
+    var aimStr = '\'' + getFileName(stack) + '\' @' + getLineNumber(stack) + ' :\n';
+    for(var i = 0; i < len; ++i) {
+      aimStr += arguments[i] + ' ';
+    }
+    console.log('\n' + aimStr);
   }
-  var stack = getStack();
-  var aimStr = '\'' + getFileName(stack) + '\' @' + getLineNumber(stack) + ' :\n';
-  for(var i = 0; i < len; ++i) {
-    aimStr += arguments[i] + ' ';
-  }
-  console.log('\n' + aimStr);
 };
 // print the file name and the line number ~ end
 

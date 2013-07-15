@@ -171,6 +171,8 @@ exp.chatInTeam = function(args) {
   }
   var teamId = args.teamId;
   var teamObj = gTeamObjDict[teamId];
+  utils.myPrint('args = ', JSON.stringify(args));
+  utils.myPrint('teamObj = ', teamObj);
   if (teamObj && teamObj.pushChatMsg2All(args.content)) {
     result = consts.TEAM.OK;
   }

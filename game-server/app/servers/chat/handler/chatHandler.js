@@ -23,12 +23,13 @@ function setContent(str) {
 
 ChannelHandler.prototype.send = function(msg, session, next) {
   var scope, content, message, channelName, uid, code;
+  var playerId = session.get('playerId');
   uid = session.uid;
   scope = msg.scope;
   channelName = getChannelName(msg);
   utils.myPrint('channelName = ', channelName);
   msg.content = setContent(msg.content);
-  content = {uid: uid, content: msg.content, scope: scope, kind: msg.kind || 0, from: msg.from};
+  content = {playerId: playerId, uid: uid, content: msg.content, scope: scope, kind: msg.kind || 0, from: msg.from};
   if (scope !== SCOPE.PRI) {
     utils.myPrint('ByChannel ~ msg = ', JSON.stringify(msg));
     utils.myPrint('ByChannel ~ scope = ', scope);
