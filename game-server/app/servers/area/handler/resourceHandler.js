@@ -4,7 +4,6 @@
 
 var app = require('pomelo').app;
 var dataApi = require('../../../util/dataApi');
-var area = require('../../../domain/area/area');
 var EntityType = require('../../../consts/consts').EntityType;
 var fs = require("fs");
 
@@ -109,7 +108,7 @@ handler.loadResource = function(msg, session, next) {
  * @api public
  */
 handler.loadAreaResource = function(msg, session, next) {
-  var entities = area.getAllEntities();
+  var entities = session.area.getAllEntities();
   var players = {}, mobs = {}, npcs = {}, items = {}, equips = {};
   var i, e;
   for (i in entities) {
@@ -143,7 +142,7 @@ handler.loadAreaResource = function(msg, session, next) {
     npcs: Object.keys(npcs),
     items: Object.keys(items),
     equipments: Object.keys(equips),
-    mapName: area.map().name
+    mapName: session.area.map.name
   });
 
 };

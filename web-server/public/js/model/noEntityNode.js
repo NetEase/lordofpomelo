@@ -2,10 +2,11 @@ __resources__["/noEntityNode.js"] = {meta: {mimetype: "application/javascript"},
 	/**
 	* Module dependencies.
 	*/
-	var model = require('model')
-		,	EntityType = require('consts').EntityType
-		,	animate = require('animate')
-		,	NoEntityNode = module.exports;
+	var model = require('model');
+	var EntityType = require('consts').EntityType;
+	var animate = require('animate');
+	var app = require('app');
+	var	NoEntityNode = module.exports;
 	/**
 	* Create nameNode with a text model.
 	*
@@ -88,6 +89,45 @@ __resources__["/noEntityNode.js"] = {meta: {mimetype: "application/javascript"},
 		return {redBloodBarNode: redBloodBarNode, darkBloodBarNode: darkBloodBarNode};
 	};
 
+	/**
+	 * Create team member flag node
+	 *
+	 * @param {Object} data
+	 * @return {Object}
+	 * @api public
+	 */
+	NoEntityNode.createTeamMemberFlagNode = function(data) {
+		var resMgr = app.getResMgr();
+		var flagImg = resMgr.loadImage('../image/memberFlag.png');
+		var flagModel = new model.ImageModel({
+			image: flagImg
+		});
+		var flagNode = data.scene.createNode({
+			model: flagModel
+		});
+
+		return flagNode;
+	};
+
+	/**
+	 * Create captain flag node
+	 *
+	 * @param {Object} data
+	 * @return {Object}
+	 * @api public
+	 */
+	NoEntityNode.createCaptainFlagNode = function(data) {
+		var resMgr = app.getResMgr();
+		var flagImg = resMgr.loadImage('../image/captainFlag.png');
+		var flagModel = new model.ImageModel({
+			image: flagImg
+		});
+		var flagNode = data.scene.createNode({
+			model: flagModel
+		});
+
+		return flagNode;
+	};
 
 	/**
 	 * Give the hint if the bag is full.
@@ -122,5 +162,5 @@ __resources__["/noEntityNode.js"] = {meta: {mimetype: "application/javascript"},
 		});
 		hintNode.exec('addAnimation', scaleAni);
 		return hintNode;
-	}
+	};
 }};

@@ -1,11 +1,10 @@
 var exp = module.exports;
 
 exp.area = function(session, msg, app, cb) {
-	var areas = app.get('areaIdMap');
-	var serverId = areas[session.get('areaId')];
+	var serverId = session.get('serverId');
 
 	if(!serverId) {
-		cb(new Error('can not find server info for type:' + msg.serverType));
+		cb(new Error('can not find server info for type: ' + msg.serverType));
 		return;
 	}
 

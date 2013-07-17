@@ -118,7 +118,9 @@
       "required uInt32 mp" : 9,
       "required uInt32 maxMp" : 10,
       "required uInt32 id" : 11,
-      "required string name" : 12
+      "required string name" : 12,
+	    "optional uInt32 teamId" : 13,
+	    "optional uInt32 isCaptain" : 14
     },
     "repeated NPC npc" : 1,
     "repeated Mob mob" : 2,
@@ -181,7 +183,9 @@
         "required uInt32 mp" : 9,
         "required uInt32 maxMp" : 10,
         "required uInt32 id" : 11,
-        "required string name" : 12
+        "required string name" : 12,
+	      "optional uInt32 teamId" : 13,
+	      "optional uInt32 isCaptain" : 14
       },
       "repeated NPC npc" : 1,
       "repeated Mob mob" : 2,
@@ -238,7 +242,9 @@
       "required string type" : 22,
       "required Bag bag" : 23,
       "required Equipments equipments" : 24,
-      "repeated FightSkill fightSkills" : 25
+      "repeated FightSkill fightSkills" : 25,
+	    "optional uInt32 teamId" : 26,
+	    "optional uInt32 isCaptain" : 27
     },
     "optional Entities entities" : 1,
     "optional Player curPlayer" : 2,

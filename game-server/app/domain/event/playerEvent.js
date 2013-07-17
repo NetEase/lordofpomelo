@@ -1,4 +1,3 @@
-var area = require('./../area/area');
 var consts = require('../../consts/consts');
 var messageService = require('./../messageService');
 var logger = require('pomelo-logger').getLogger(__filename);
@@ -30,7 +29,7 @@ exp.addEventForPlayer = function (player){
 		var item = args.item;
 		var player = args.player;
 
-		area.removeEntity(item.entityId);
-		messageService.pushMessageByAOI({route: 'onPickItem', player: player.entityId, item: item.entityId, index: args.index}, {x: item.x, y: item.y});
+		player.area.removeEntity(item.entityId);
+		messageService.pushMessageByAOI(player.area, {route: 'onPickItem', player: player.entityId, item: item.entityId, index: args.index}, {x: item.x, y: item.y});
 	});
 };

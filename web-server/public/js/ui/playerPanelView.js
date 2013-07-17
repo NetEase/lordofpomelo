@@ -232,7 +232,7 @@ __resources__["/playerPanelView.js"] = {
               mainPanel.initSkillPanel();
             }
           });
-        } 
+        }
       });
 
     };

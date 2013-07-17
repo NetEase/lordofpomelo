@@ -2,6 +2,7 @@ var Code = require('../../../../../shared/code');
 var userDao = require('../../../dao/userDao');
 var async = require('async');
 var channelUtil = require('../../../util/channelUtil');
+var utils = require('../../../util/utils');
 var logger = require('pomelo-logger').getLogger(__filename);
 
 module.exports = function(app) {
@@ -65,7 +66,8 @@ pro.entry = function(msg, session, next) {
 			}
 
 			player = players[0];
-			session.set('areaId', player.areaId);
+
+			session.set('serverId', self.app.get('areaIdMap')[player.areaId]);
 			session.set('playername', player.name);
 			session.set('playerId', player.id);
 			session.on('closed', onUserLeave.bind(null, self.app));
@@ -89,9 +91,10 @@ var onUserLeave = function (app, session, reason) {
 		return;
 	}
 
-	app.rpc.area.playerRemote.playerLeave(session, {playerId: session.get('playerId'), areaId: session.get('areaId')}, function(err){
+	utils.myPrint('1 ~ OnUserLeave is running ...');
+	app.rpc.area.playerRemote.playerLeave(session, {playerId: session.get('playerId'), instanceId: session.get('instanceId')}, function(err){
 		if(!!err){
-			logger.error('user leave error! %j', error);
+			logger.error('user leave error! %j', err);
 		}
 	});
 	app.rpc.chat.chatRemote.kick(session, session.uid, null);

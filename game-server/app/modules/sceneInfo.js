@@ -21,9 +21,9 @@ var Module = function(opts) {
 Module.prototype.monitorHandler = function(agent, msg, cb) {
 	//collect data
 	var serverId = agent.id;
-	var area = require('../domain/area/area');
-	var data = area.getAllPlayers();
-	agent.notify(module.exports.moduleId, {serverId: serverId, body: data});
+	// var area = require('../domain/area/area');
+	// var data = area.getAllPlayers();
+	// agent.notify(module.exports.moduleId, {serverId: serverId, body: data});
 };
 
 Module.prototype.masterHandler = function(agent, msg, cb) {

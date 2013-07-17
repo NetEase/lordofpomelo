@@ -1,34 +1,34 @@
 __resources__["/clientManager.js"] = {
-	meta: {
-		mimetype: "application/javascript"
-	},
-	data: function(exports, require, module, __filename, __dirname) {
-		var heroSelectView = require('heroSelectView');  // role manager
+  meta: {
+    mimetype: "application/javascript"
+  },
+  data: function(exports, require, module, __filename, __dirname) {
+    var heroSelectView = require('heroSelectView');  // role manager
 
-		var pomelo = window.pomelo;
-		var app = require('app');
-		var EntityType = require('consts').EntityType;
-		var Message = require('consts').MESSAGE;
-		var loginMsgHandler = require('loginMsgHandler');
-		var gameMsgHandler = require('gameMsgHandler');
+    var pomelo = window.pomelo;
+    var app = require('app');
+    var EntityType = require('consts').EntityType;
+    var Message = require('consts').MESSAGE;
+    var loginMsgHandler = require('loginMsgHandler');
+    var gameMsgHandler = require('gameMsgHandler');
     var switchManager = require('switchManager');
     var clientManager = require('clientManager');
     var dataApi = require('dataApi');
     var ResourceLoader = require('resourceLoader');
-		var utils = require('utils');
+    var utils = require('utils');
     var config = require('config');
 
     var alert = window.alert;
-		var self = this;
+    var self = this;
 
-		var loading = false;
+    var loading = false;
     var httpHost = location.href.replace(location.hash, '');
 
-		pomelo.on('websocket-error', function(){
-			lodading = false;
-		});
+    pomelo.on('websocket-error', function(){
+      lodading = false;
+    });
 
-		function init() {
+    function init() {
       //bind events
       $('#loginBtn').on('click', login);
       $('#registerBtn').on('click', register);
@@ -56,7 +56,7 @@ __resources__["/clientManager.js"] = {
         $('#id_registerFrame').addClass('f-dn');
         return false;
       });
-		}
+    }
 
     /**
      * login
@@ -321,14 +321,14 @@ __resources__["/clientManager.js"] = {
 
       var area = app.getCurArea();
       var sprite = curPlayer.getSprite();
-			var totalDistance = utils.totalDistance(paths.path);
-			var needTime = Math.floor(totalDistance / sprite.getSpeed() * 1000 + app.getDelayTime());
-			var speed = totalDistance/needTime * 1000;
+      var totalDistance = utils.totalDistance(paths.path);
+      var needTime = Math.floor(totalDistance / sprite.getSpeed() * 1000 + app.getDelayTime());
+      var speed = totalDistance/needTime * 1000;
       sprite.movePath(paths.path, speed);
       pomelo.request('area.playerHandler.move', {path: paths.path}, function(result) {
         if(result.code === Message.ERR){
           console.warn('curPlayer move error!');
-					sprite.translateTo(paths.path[0].x, paths.path[0].y);
+          sprite.translateTo(paths.path[0].x, paths.path[0].y);
         }
       });
       sprite.movePath(paths.path);
@@ -348,16 +348,23 @@ __resources__["/clientManager.js"] = {
         if (entity.died) {
           return;
         }
-        pomelo.notify('area.fightHandler.attack',{targetId: targetId});
+        if (entity.type === EntityType.PLAYER) {
+          var curPlayer = app.getCurPlayer();
+          pomelo.emit('onPlayerDialog', {targetId: targetId, targetPlayerId: entity.id,
+            targetTeamId: entity.teamId, targetIsCaptain: entity.isCaptain,
+            myTeamId: curPlayer.teamId, myIsCaptain: curPlayer.isCaptain});
+        } else if (entity.type === EntityType.MOB) {
+          pomelo.notify('area.fightHandler.attack',{targetId: targetId});
+        }
       } else if (entity.type === EntityType.NPC) {
         pomelo.notify('area.playerHandler.npcTalk',{areaId :areaId, playerId: playerId, targetId: targetId});
       } else if (entity.type === EntityType.ITEM || entity.type === EntityType.EQUIPMENT) {
-				var curPlayer = app.getCurPlayer();
-				var bag = curPlayer.bag;
-				if (bag.isFull()) {
-					curPlayer.getSprite().hintOfBag();
-					return;
-				}
+        var curPlayer = app.getCurPlayer();
+        var bag = curPlayer.bag;
+        if (bag.isFull()) {
+          curPlayer.getSprite().hintOfBag();
+          return;
+        }
         pomelo.notify('area.playerHandler.pickItem',{areaId :areaId, playerId: playerId, targetId: targetId});
       }
     }

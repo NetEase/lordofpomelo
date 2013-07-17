@@ -1,4 +1,3 @@
-var area = require('./../area/area');
 var api = require('../../util/dataApi');
 var consts = require('../../consts/consts');
 var messageService = require('./../messageService');
@@ -13,8 +12,8 @@ exp.addEventForNPC = function (npc){
 	 * Hanlde npc talk event
 	 */
 	npc.on('onNPCTalk', function(data){
-		var npc = area.getEntity(data.npc);
-		var player = area.getEntity(data.player);
+		var npc = data.npc;
+		var player = data.player;
 		var talk = api.talk;
 		var npcTalks = talk.findBy('npc', npc.kindId);
 		var npcword = 'Welcome to see you!';
@@ -26,14 +25,14 @@ exp.addEventForNPC = function (npc){
 		}
 
 		var msg = {
-			npc : data.npc,
+			npc : npc.entityId,
 			npcword : npcword,
 			myword: myword,
-			player : data.player,
+			player : player.entityId,
 			kindId : npc.kindId
 		};
 
-		if (npc.kindType === consts.NpcType.TRAVERSE_NPC) {
+		if (consts.TraverseNpc[npc.kindId]) {
 			npc.traverse('onNPCTalk', msg);
 			return;
 		}

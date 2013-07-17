@@ -21,7 +21,7 @@ pro.doAction = function() {
 	var character = this.blackboard.curCharacter;
 	var area = this.blackboard.area;
 
-	area.timer().patrol(character.entityId);
+	area.timer.patrol(character.entityId);
 	return bt.RES_SUCCESS;
 };
 
