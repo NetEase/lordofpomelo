@@ -6,6 +6,7 @@ __resources__["/noEntityNode.js"] = {meta: {mimetype: "application/javascript"},
 	var EntityType = require('consts').EntityType;
 	var animate = require('animate');
 	var app = require('app');
+  var imageUrl = require('config').IMAGE_URL;
 	var	NoEntityNode = module.exports;
 	/**
 	* Create nameNode with a text model.
@@ -98,7 +99,7 @@ __resources__["/noEntityNode.js"] = {meta: {mimetype: "application/javascript"},
 	 */
 	NoEntityNode.createTeamMemberFlagNode = function(data) {
 		var resMgr = app.getResMgr();
-		var flagImg = resMgr.loadImage('../image/memberFlag.png');
+		var flagImg = resMgr.loadImage(imageUrl + 'team/memberFlag.png');
 		var flagModel = new model.ImageModel({
 			image: flagImg
 		});
@@ -118,7 +119,7 @@ __resources__["/noEntityNode.js"] = {meta: {mimetype: "application/javascript"},
 	 */
 	NoEntityNode.createCaptainFlagNode = function(data) {
 		var resMgr = app.getResMgr();
-		var flagImg = resMgr.loadImage('../image/captainFlag.png');
+		var flagImg = resMgr.loadImage(imageUrl + 'team/captainFlag.png');
 		var flagModel = new model.ImageModel({
 			image: flagImg
 		});

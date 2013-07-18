@@ -32,7 +32,7 @@ __resources__["/teamPanelView.js"] = {
       var $btnM = $opt.find('.f-fm').unbind();
       var $btnR = $opt.find('.f-fr').unbind();
 
-      var tmpName = (pomelo.teamName && pomelo.teamName !== TeamC.DEFAULT_NAME) ? pomelo.teamName : 'None';
+      var tmpName = (pomelo.teamName && pomelo.teamName !== TeamC.DEFAULT_NAME) ? pomelo.teamName : '';
       $teamName.text('TeamName: ' + tmpName);
 
       console.log('teamId, isCaptain = ', pomelo.teamId, pomelo.isCaptain);
