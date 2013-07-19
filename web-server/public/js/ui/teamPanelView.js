@@ -31,9 +31,15 @@ __resources__["/teamPanelView.js"] = {
       var $btnL = $opt.find('.f-fl').unbind();
       var $btnM = $opt.find('.f-fm').unbind();
       var $btnR = $opt.find('.f-fr').unbind();
+      var noneName = 'None';
 
-      var tmpName = (pomelo.teamName && pomelo.teamName !== TeamC.DEFAULT_NAME) ? pomelo.teamName : '';
+      var tmpName = (pomelo.teamName && pomelo.teamName !== TeamC.DEFAULT_NAME) ? pomelo.teamName : noneName;
       $teamName.text('TeamName: ' + tmpName);
+      if (tmpName === noneName) {
+        $teamName.hide();
+      } else {
+        $teamName.show();
+      }
 
       console.log('teamId, isCaptain = ', pomelo.teamId, pomelo.isCaptain);
       if (pomelo.teamId > TeamC.TEAM_ID_NONE) {
