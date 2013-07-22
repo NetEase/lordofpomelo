@@ -97,6 +97,9 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
       if (!data.target) {
         return;
       }
+      if (pomelo.teamId > TeamConsts.TEAM_ID_NONE && pomelo.isCaptain) {
+        return;
+      }
       pomelo.request("area.playerHandler.changeArea", {
         uid: pomelo.uid,
         playerId: pomelo.playerId,

@@ -246,6 +246,12 @@ handler.changeArea = function(msg, session, next) {
 
 	utils.myPrint('teamId, isCaptain = ', teamId, isCaptain);
 	utils.myPrint('msg.triggerByPlayer = ', msg.triggerByPlayer);
+  utils.myPrint('changeArea is running ...');
+  areaService.changeArea(req, session, function(err) {
+    var args = {areaId: areaId, target: target, success: true};
+    next(null, args);
+  });
+  /*
 	var targetInfo = dataApi.area.findById(target);
 	if ((targetInfo.type === consts.AreaType.TEAM_INSTANCE) && teamId && isCaptain && msg.triggerByPlayer) {
 		utils.myPrint('DragMember2gameCopy is running ...');
@@ -263,6 +269,7 @@ handler.changeArea = function(msg, session, next) {
 			next(null, args);
 		});
 	}
+  */
 };
 
 //Use item
