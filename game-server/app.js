@@ -22,6 +22,7 @@ app.configure('production', function() {
 
 // configure for global
 app.configure('production|development', function() {
+	app.enable('systemMonitor');
 	//var sceneInfo = require('./app/modules/sceneInfo');
 	var onlineUser = require('./app/modules/onlineUser');
 	if(typeof app.registerAdmin === 'function'){
