@@ -62,6 +62,7 @@ Equipment.prototype.toJSON = function() {
     kindId: this.kindId,
     x: this.x,
     y: this.y,
-    playerId: this.playerId
+    playerId: this.playerId,
+    type: this.type
   };
 };
