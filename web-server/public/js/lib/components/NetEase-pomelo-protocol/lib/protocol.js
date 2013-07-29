@@ -181,7 +181,7 @@
 
     // add message id
     if(msgHasId(type)) {
-      offset = encodeMsgId(id, idBytes, buffer, offset);
+      offset = encodeMsgId(id, buffer, offset);
     }
 
     // add route
@@ -217,13 +217,14 @@
 
     // parse id
     if(msgHasId(type)) {
-      var byte = bytes[offset++];
-      id = byte & 0x7f;
-      while(byte & 0x80) {
-        id <<= 7;
-        byte = bytes[offset++];
-        id |= byte & 0x7f;
-      }
+      var m = parseInt(bytes[offset]);
+      var i = 0;
+      do{
+        var m = parseInt(bytes[offset]);
+        id = id + ((m & 0x7f) * Math.pow(2,(7*i)));
+        offset++;
+        i++;
+      }while(m >= 128);
     }
 
     // parse route
@@ -294,14 +295,20 @@
     return offset + MSG_FLAG_BYTES;
   };
 
-  var encodeMsgId = function(id, idBytes, buffer, offset) {
-    var index = offset + idBytes - 1;
-    buffer[index--] = id & 0x7f;
-    while(index >= offset) {
-      id >>= 7;
-      buffer[index--] = id & 0x7f | 0x80;
-    }
-    return offset + idBytes;
+  var encodeMsgId = function(id, buffer, offset) {
+    do{
+      var tmp = id % 128;
+      var next = Math.floor(id/128);
+
+      if(next !== 0){
+        tmp = tmp + 128;
+      }
+      buffer[offset++] = tmp;
+
+      id = next;
+    } while(id !== 0);
+
+    return offset;
   };
 
   var encodeMsgRoute = function(compressRoute, route, buffer, offset) {
