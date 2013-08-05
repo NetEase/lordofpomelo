@@ -63,6 +63,7 @@ var afterLogin = function (app, msg, session, user, player, next) {
 		function(cb) {
 			session.set('username', user.name);
 			session.set('areaId', player.areaId);
+      session.set('serverId', app.get('areaIdMap')[player.areaId]);
 			session.set('playername', player.name);
 			session.set('playerId', player.id);
 			session.on('closed', onUserLeave);

@@ -119,6 +119,17 @@ exp.changeArea = function(args, session, cb) {
             session.pushAll();
             player.instanceId = result.instanceId;
             utils.myPrint('player.instanceId = ', player.instanceId);
+
+            if (player.isCaptain && player.teamId && targetInfo.type === AreaType.TEAM_INSTANCE) {
+              utils.myPrint('DragMember2gameCopy is running ...');
+              app.rpc.manager.teamRemote.dragMember2gameCopy(null, {teamId: player.teamId, target: target},
+                function(err, ret) {
+                  if (!!err) {
+                    logger.error(err, ret);
+                  }
+                });
+            }
+
             callback(null);
           }
         });

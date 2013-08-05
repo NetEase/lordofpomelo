@@ -22,6 +22,7 @@ app.configure('production', function() {
 
 // configure for global
 app.configure('production|development', function() {
+	app.enable('systemMonitor');
 	//var sceneInfo = require('./app/modules/sceneInfo');
 	var onlineUser = require('./app/modules/onlineUser');
 	if(typeof app.registerAdmin === 'function'){
@@ -109,7 +110,7 @@ app.configure('production|development', 'connector', function(){
 	app.set('connectorConfig',
 		{
 			connector : pomelo.connectors.hybridconnector,
-			heartbeat : 3,
+			heartbeat : 30,
 			useDict : true,
 			useProtobuf : true,
 			handshake : function(msg, cb){
