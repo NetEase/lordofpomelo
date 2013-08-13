@@ -59,12 +59,15 @@ handler.enterScene = function(msg, session, next) {
 			player.name, channelUtil.getAreaChannelName(areaId), null);
 		var map = area.map;
 
+    // temporary code
     //Reset the player's position if current pos is unreachable
-		if(!map.isReachable(player.x, player.y)){
+		// if(!map.isReachable(player.x, player.y)){
+    {
 			var pos = map.getBornPoint();
 			player.x = pos.x;
 			player.y = pos.y;
 		}
+    // temporary code
 
 		var data = {
         entities: area.getAreaInfo({x: player.x, y: player.y}, player.range),

@@ -1,6 +1,7 @@
 var buildFinder = require('pomelo-pathfinding').buildFinder;
 var geometry = require('../../util/geometry');
 var PathCache = require('../../util/pathCache');
+var utils = require('../../util/utils');
 var logger = require('pomelo-logger').getLogger(__filename);
 var formula = require('../../consts/formula');
 var fs = require('fs');
@@ -286,6 +287,8 @@ Map.prototype.getCollision = function() {
  * @return {Object} Born place for this map
  * @api public
  */
+// temporary code
+/*
 Map.prototype.getBornPlace = function() {
 	var bornPlace = this.map.birth[0];
 	if(!bornPlace) {
@@ -298,6 +301,19 @@ Map.prototype.getBornPlace = function() {
 
 	return bornPlace;
 };
+*/
+Map.prototype.getBornPlace = function() {
+  var bornPlaces = this.getMobZones();
+  var randomV = Math.floor(Math.random() * bornPlaces.length);
+	var bornPlace = bornPlaces[randomV];
+
+	if(!bornPlace) {
+		return null;
+  }
+
+	return bornPlace;
+};
+// temporary code
 
 /**
  * Get born point for this map, the point is random generate in born place
