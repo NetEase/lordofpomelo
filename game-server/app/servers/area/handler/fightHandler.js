@@ -27,7 +27,8 @@ handler.attack = function(msg, session, next) {
 	session.area.timer.abortAction('move', player.entityId);
 	player.target = target.entityId;
 
-	next();
+	// next();
+  next(null, {});
 };
 
 /**
