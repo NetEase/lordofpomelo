@@ -313,7 +313,9 @@ handler.pickItem = function(msg, session, next) {
   }
 
   player.target = target.entityId;
-  next();
+
+  // next();
+  next(null, {});
 };
 
 //Player  learn skill
