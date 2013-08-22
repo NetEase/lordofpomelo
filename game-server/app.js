@@ -23,7 +23,7 @@ app.configure('production', function() {
 
 // configure for global
 app.configure('production|development', function() {
-  app.before(pomelo.filters.toobusy(10));
+  app.before(pomelo.filters.toobusy());
 	app.enable('systemMonitor');
 	//var sceneInfo = require('./app/modules/sceneInfo');
 	var onlineUser = require('./app/modules/onlineUser');
@@ -70,6 +70,7 @@ app.configure('production|development', 'auth', function() {
 
 // Configure for area server
 app.configure('production|development', 'area', function(){
+  app.before(pomelo.filters.toobusy(10));
 	app.filter(pomelo.filters.serial());
 	app.before(playerFilter());
 
