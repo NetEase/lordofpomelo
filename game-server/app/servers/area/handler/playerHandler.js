@@ -196,8 +196,10 @@ handler.move = function(msg, session, next) {
       route: msg.route,
       code: consts.MESSAGE.RES
     });
-    next();
+
+    // next();
   }
+  next(null, {});
 };
 
 //drop equipment or item
