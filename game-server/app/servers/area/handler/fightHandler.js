@@ -20,7 +20,8 @@ handler.attack = function(msg, session, next) {
 	var target = session.area.getEntity(msg.targetId);
 
 	if(!target || !player || (player.target === target.entityId) || (player.entityId === target.entityId) || target.died){
-		next();
+		// next();
+    next(null, {});
 		return;
 	}
 
