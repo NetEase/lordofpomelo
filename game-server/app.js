@@ -25,6 +25,7 @@ app.configure('production', function() {
 app.configure('production|development', function() {
   app.before(pomelo.filters.toobusy());
 	app.enable('systemMonitor');
+  require('./app/util/httpServer');
 	//var sceneInfo = require('./app/modules/sceneInfo');
 	var onlineUser = require('./app/modules/onlineUser');
 	if(typeof app.registerAdmin === 'function'){
@@ -126,6 +127,7 @@ app.configure('production|development', 'gate', function(){
 	app.set('connectorConfig',
 		{
 			connector : pomelo.connectors.hybridconnector,
+			useProtobuf : true
 		});
 });
 // Configure for chat server
