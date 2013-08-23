@@ -1,7 +1,7 @@
 var http = require('http');
 var port = 3006;
-var timeout = 10000;
-var epasswd = 'pushpomelo';
+var timeout = 100000;
+var epasswd = 'mylord';
 var qs = require('querystring');
 var fs = require('fs');
 var path = require('path');
@@ -17,21 +17,20 @@ module.exports = function(app, opts) {
   return new HttpDebug(app, opts);
 };
 
-var HttpDebug = function(app, opts){
+var HttpDebug = function(app, opts) {
   this.app = app;
   this.name = '__httpdebug__';
   this.userDicPath = null;
   this.opts = opts;
 };
 
-var STATUS = false;
 var server = null;
 
-HttpDebug.prototype.start = function(cb){
+HttpDebug.prototype.start = function(cb) {
 };
 
 var httpStop = function() {
-    server.close(function(){
+    server.close(function() {
       console.log(' http server stop port '  + port);
       server = null;
     });
@@ -49,9 +48,9 @@ var httpStart = function() {
       req.on('data', function (data) {
         body +=data;
       });
-      req.on('end',function(){
+      req.on('end',function() {
         var params =  qs.parse(body);
-        if (params.passwd!==epasswd){
+        if (params.passwd !== epasswd) {
           res.writeHead(403, "forbid", {'Content-Type': 'text/html'});
           return res.end('wrong passwd');
         }
@@ -70,12 +69,12 @@ var httpStart = function() {
   server.addListener("connection",function(socket) {
       socket.setTimeout(timeout);
   });
-  console.log(' http server start at port '  + port);
+  console.log('Http server start at port '  + port);
 }
 
 process.on('SIGUSR2', function() {
-   if (server==null) {
-    httpStart();
+   if (server === null) {
+     httpStart();
    } else {
      httpStop();
    }
