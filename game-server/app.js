@@ -31,12 +31,14 @@ app.configure('production|development', function() {
    kill -SIGUSR2 <pid>
    http://localhost:8080/inspector.html?host=localhost:9999&page=0
   */
+  /*
   require('webkit-devtools-agent');
   var express = require('express');
   var expressSvr = express();
   expressSvr.use(express.static(__dirname + '/26.0.1410.65'));
   expressSvr.listen(8080);
   console.log('[%s] Server running at http://127.0.0.1:8080/', process.pid);
+  */
 
 	//var sceneInfo = require('./app/modules/sceneInfo');
 	var onlineUser = require('./app/modules/onlineUser');

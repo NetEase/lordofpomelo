@@ -354,7 +354,7 @@ __resources__["/clientManager.js"] = {
             targetTeamId: entity.teamId, targetIsCaptain: entity.isCaptain,
             myTeamId: curPlayer.teamId, myIsCaptain: curPlayer.isCaptain});
         } else if (entity.type === EntityType.MOB) {
-          pomelo.notify('area.fightHandler.attack',{targetId: targetId});
+          pomelo.request('area.fightHandler.attack',{targetId: targetId}, function() {});
         }
       } else if (entity.type === EntityType.NPC) {
         pomelo.notify('area.playerHandler.npcTalk',{areaId :areaId, playerId: playerId, targetId: targetId});
