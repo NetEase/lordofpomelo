@@ -365,7 +365,8 @@ __resources__["/clientManager.js"] = {
           curPlayer.getSprite().hintOfBag();
           return;
         }
-        pomelo.notify('area.playerHandler.pickItem',{areaId :areaId, playerId: playerId, targetId: targetId});
+        pomelo.request('area.playerHandler.pickItem',
+          {areaId :areaId, playerId: playerId, targetId: targetId}, function() {});
       }
     }
 
