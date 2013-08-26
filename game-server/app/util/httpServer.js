@@ -72,7 +72,7 @@ var httpStart = function() {
   console.log('Http server start at port '  + port);
 }
 
-process.on('SIGUSR2', function() {
+process.on('SIGUSR1', function() {
    if (server === null) {
      httpStart();
    } else {
