@@ -1,7 +1,8 @@
 var utils = module.exports;
 
 // control variable of func "myPrint"
-var isPrintFlag = false;
+// var isPrintFlag = false;
+var isPrintFlag = true;
 
 /**
  * Check and invoke callback function

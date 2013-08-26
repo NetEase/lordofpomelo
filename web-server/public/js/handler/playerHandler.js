@@ -29,7 +29,7 @@ __resources__["/playerHandler.js"] = {meta: {mimetype: "application/javascript"}
    * Attack player action.
    */
   function attackPlayer(params) {
-    pomelo.notify('area.fightHandler.attack', {targetId: params.targetId});
+    pomelo.request('area.fightHandler.attack', {targetId: params.targetId}, function() {});
   }
 
   /**

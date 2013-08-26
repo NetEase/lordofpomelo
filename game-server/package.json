@@ -8,7 +8,7 @@
   , "socket.io": ">=0.9.6"
   , "generic-pool": ">=1.0.9"
   , "mysql": ">=2.0"
-  , "pomelo": "0.5.4"
+  , "pomelo": "0.6.x"
   , "async": ">=0.0.1"
   , "socket.io-client" : ">=0.9.6"
   , "pomelo-aoi" : ">=0.3.4"
@@ -18,6 +18,8 @@
   , "pomelo-collection": ">=0.1.0"
   , "pomelo-logger": "0.0.3"
   , "pomelo-monitor": ">=0.3.3"
+  , "pomelo-sync-plugin": "0.0.1"
+  , "node-webkit-agent" : "0.1.2"
   },
   "devDependencies": {
       "should": ">=0.0.1"

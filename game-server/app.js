@@ -7,6 +7,7 @@ var dataApi = require('./app/util/dataApi');
 var routeUtil = require('./app/util/routeUtil');
 var playerFilter = require('./app/servers/area/filter/playerFilter');
 var ChatService = require('./app/services/chatService');
+var sync = require('pomelo-sync-plugin');
 
 /**
  * Init app for client
@@ -22,7 +23,10 @@ app.configure('production', function() {
 
 // configure for global
 app.configure('production|development', function() {
+  app.before(pomelo.filters.toobusy());
 	app.enable('systemMonitor');
+  require('./app/util/httpServer');
+
 	//var sceneInfo = require('./app/modules/sceneInfo');
 	var onlineUser = require('./app/modules/onlineUser');
 	if(typeof app.registerAdmin === 'function'){
@@ -79,6 +83,16 @@ app.configure('production|development', 'area', function(){
 	}else{
 		scene.init(dataApi.area.findById(server.area));
 		app.areaManager = scene;
+    /*
+     kill -SIGUSR2 <pid>
+     http://localhost:8080/inspector.html?host=localhost:9999&page=0
+    */
+    require('webkit-devtools-agent');
+    var express = require('express');
+    var expressSvr = express.createServer();
+    expressSvr.use(express.static(__dirname + '/26.0.1410.65'));
+    var tmpPort = 3270 + parseInt(server.area);
+    expressSvr.listen(tmpPort);
 	}
 
 	//Init areaService
@@ -97,7 +111,8 @@ app.configure('production|development', 'manager', function(){
 app.configure('production|development', 'area|auth|connector|master', function() {
 	var dbclient = require('./app/dao/mysql/mysql').init(app);
 	app.set('dbclient', dbclient);
-	app.load(pomelo.sync, {path:__dirname + '/app/dao/mapping', dbclient: dbclient});
+	// app.load(pomelo.sync, {path:__dirname + '/app/dao/mapping', dbclient: dbclient});
+  app.use(sync, {sync: {path:__dirname + '/app/dao/mapping', dbclient: dbclient}});
 });
 
 app.configure('production|development', 'connector', function(){
@@ -123,6 +138,7 @@ app.configure('production|development', 'gate', function(){
 	app.set('connectorConfig',
 		{
 			connector : pomelo.connectors.hybridconnector,
+			useProtobuf : true
 		});
 });
 // Configure for chat server

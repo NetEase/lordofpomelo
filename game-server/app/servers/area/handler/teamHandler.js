@@ -16,7 +16,7 @@ var Handler = function(app) {
   this.app = app;
   this.teamNameArr = dataApi.team.all();
   this.teamNameArr.length = Object.keys(this.teamNameArr).length;
-  utils.myPrint('teamNameArr = ', JSON.stringify(this.teamNameArr));
+  // utils.myPrint('teamNameArr = ', JSON.stringify(this.teamNameArr));
 };
 
 /**
