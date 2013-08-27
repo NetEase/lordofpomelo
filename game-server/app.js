@@ -46,8 +46,8 @@ app.configure('production|development', function() {
 	app.set('proxyConfig', {
 		cacheMsg: true,
 		interval: 30,
-		lazyConnection: true,
-		enableRpcLog: true
+		lazyConnection: true
+		// enableRpcLog: true
 	});
 
 	// remote configures
