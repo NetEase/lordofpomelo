@@ -19,7 +19,7 @@
   , "pomelo-logger": "0.0.3"
   , "pomelo-monitor": ">=0.3.3"
   , "pomelo-sync-plugin": "0.0.1"
-  , "node-webkit-agent" : "0.1.2"
+  , "webkit-devtools-agent" : "0.1.2"
   },
   "devDependencies": {
       "should": ">=0.0.1"
