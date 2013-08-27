@@ -85,14 +85,17 @@ app.configure('production|development', 'area', function(){
 		app.areaManager = scene;
     /*
      kill -SIGUSR2 <pid>
-     http://localhost:8080/inspector.html?host=localhost:9999&page=0
+     http://localhost:3272/inspector.html?host=localhost:9999&page=0
     */
-    require('webkit-devtools-agent');
-    var express = require('express');
-    var expressSvr = express.createServer();
-    expressSvr.use(express.static(__dirname + '/devtools_agent_page'));
-    var tmpPort = 3270 + parseInt(server.area);
-    expressSvr.listen(tmpPort);
+    var areaId = parseInt(server.area);
+    if(areaId === 3) { // area-server-3
+      require('webkit-devtools-agent');
+      var express = require('express');
+      var expressSvr = express.createServer();
+      expressSvr.use(express.static(__dirname + '/devtools_agent_page'));
+      var tmpPort = 3270 + areaId - 1;
+      expressSvr.listen(tmpPort);
+    }
 	}
 
 	//Init areaService
