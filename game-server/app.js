@@ -90,7 +90,7 @@ app.configure('production|development', 'area', function(){
     require('webkit-devtools-agent');
     var express = require('express');
     var expressSvr = express.createServer();
-    expressSvr.use(express.static(__dirname + '/26.0.1410.65'));
+    expressSvr.use(express.static(__dirname + '/devtools_agent_page'));
     var tmpPort = 3270 + parseInt(server.area);
     expressSvr.listen(tmpPort);
 	}
