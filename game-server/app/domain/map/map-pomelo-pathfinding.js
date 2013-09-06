@@ -1,4 +1,4 @@
-var PF = require('pathfinding');
+var buildFinder = require('pomelo-pathfinding').buildFinder;
 var geometry = require('../../util/geometry');
 var PathCache = require('../../util/pathCache');
 var utils = require('../../util/utils');
@@ -33,12 +33,7 @@ Map.prototype.init = function(opts) {
 	} else {
 		this.configMap(map);
 		this.id = opts.id;
-
-    if(parseInt(this.id) !== 1) {
-      return;
-    }
-
-    this.width = opts.width;
+		this.width = opts.width;
 		this.height = opts.height;
 		this.tileW = 20;
 		this.tileH = 20;
@@ -51,6 +46,7 @@ Map.prototype.init = function(opts) {
     // testing code
 
 		this.pathCache = new PathCache({limit:1000});
+		this.pfinder = buildFinder(this);
 
 
     utils.myPrint('name, weightMap  = ', this.name, weightMap);
@@ -63,20 +59,13 @@ Map.prototype.init = function(opts) {
 				this.collisions = maps[this.id].collisions;
 				this.weightMap = this.getWeightMap(this.collisions);
         // testing code
-        /*
-        console.error('this.id = ', this.id);
-        console.error('weightMap.length = ', JSON.stringify(this.weightMap.length));
-        console.error('weightMap[0].length = ', JSON.stringify(this.weightMap[0].length));
-        console.error('weightMap[0]    = ', JSON.stringify(this.weightMap[0]));
-        console.error('weightMap[last] = ', JSON.stringify(this.weightMap[this.weightMap.length-1]));
-        */
-        // console.error('weightMap = ', JSON.stringify(this.weightMap));
+        if(parseInt(this.id) === 1) {
+          utils.myPrint('weightMap[first] = ', JSON.stringify(this.weightMap[0]));
+          utils.myPrint('weightMap[last] = ', JSON.stringify(this.weightMap[this.weightMap.length-1]));
+          utils.myPrint('weightMap[first].length = ', JSON.stringify(this.weightMap[0].length));
+          utils.myPrint('weightMap.length = ', JSON.stringify(this.weightMap.length));
+        }
         // testing code
-        this.grid = new PF.Grid(this.weightMap[0].length, this.weightMap.length, this.weightMap);
-        this.pfinder = new PF.AStarFinder({
-          allowDiagonal: true,
-          dontCrossCorners: true
-        });
 			}else{
 				this.initWeightMap();
 				this.initCollisons();
@@ -254,10 +243,10 @@ Map.prototype.initCollisons = function(){
 Map.prototype.getWeightMap = function(collisions){
 	var map = [];
 	var x, y;
-	for(y = 0; y < this.rectH; y++) {
+	for(x = 0; x < this.rectW; x++) {
 		var row = [];
-		for(x = 0; x < this.rectW; x++) {
-			row.push(0);
+		for(y = 0; y < this.rectH; y++) {
+			row.push(1);
 		}
 		map.push(row);
 	}
@@ -270,7 +259,7 @@ Map.prototype.getWeightMap = function(collisions){
 		for(var j = 0; j < array.length; j++){
 			var c = array[j];
 			for(var k = 0; k < c.length; k++){
-				map[c.start+k][x] = 1;
+				map[x][c.start+k] = Infinity;
 			}
 		}
 	}
@@ -424,23 +413,22 @@ Map.prototype.getWeight = function(x, y) {
  * Return is reachable for given pos
  */
 Map.prototype.isReachable = function(x, y) {
-  return true;
-  if(x < 0 || y < 0 || x >= this.width || y >= this.height) {
-    return false;
+	if(x < 0 || y < 0 || x >= this.width || y >= this.height) {
+		return false;
+	}
+
+	try{
+	var x1 = Math.floor(x/this.tileW);
+	var y1 = Math.floor(y/this.tileH);
+
+	if(!this.weightMap[x1] || !this.weightMap[x1][y1]) {
+		return false;
   }
+}catch(e){
+	console.error('reachable error : %j', e);
+}
 
-  try{
-    var x1 = Math.floor(x/this.tileW);
-    var y1 = Math.floor(y/this.tileH);
-
-    if(!this.weightMap[x1] || this.weightMap[x1][y1]) {
-      return false;
-    }
-  }catch(e){
-    console.error('reachable error : %j', e);
-  }
-
-  return this.weightMap[x1][y1] === 0;
+	return this.weightMap[x1][y1] === 1;
 };
 
 /**
@@ -467,11 +455,9 @@ Map.prototype.findPath = function(x, y, x1, y1, useCache) {
 		return null;
 	}
 
-  utils.myPrint('1 ~ findPath is running ...');
   if(this._checkLinePath(x, y, x1, y1)) {
-    // return {path: [{x: x, y: y}, {x: x1, y: y1}], cost: formula.distance(x, y, x1, y1)};
+    return {path: [{x: x, y: y}, {x: x1, y: y1}], cost: formula.distance(x, y, x1, y1)};
   }
-  utils.myPrint('2 ~ findPath is running ...');
 
 	var tx1 = Math.floor(x/this.tileW);
 	var ty1 = Math.floor(y/this.tileH);
@@ -481,32 +467,31 @@ Map.prototype.findPath = function(x, y, x1, y1, useCache) {
 	//Use cache to get path
   // testing code
 	// var path = this.pathCache.getPath(tx1, ty1, tx2, ty2);
-  var path = null, newPath = null;
+  var path = null;
   // testing code
 
-	if(!path) {
-    /*
-    utils.myPrint('weightMap.length = ', JSON.stringify(this.weightMap.length));
-    utils.myPrint('weightMap[0].length = ', JSON.stringify(this.weightMap[0].length));
-    utils.myPrint('weightMap[0] = ', JSON.stringify(this.weightMap[0]));
-    utils.myPrint('weightMap[last] = ', JSON.stringify(this.weightMap[this.weightMap.length-1]));
-    */
-    // utils.myPrint('tx1, ty1 = ', tx1, ty1);
-    // utils.myPrint('tx2, ty2 = ', tx2, ty2);
-    var tmpGrid = this.grid.clone();
-		path = this.pfinder.findPath(tx1, ty1, tx2, ty2, tmpGrid);
-    // console.warn('path = ', path);
-    newPath = PF.Util.smoothenPath(tmpGrid, path);
-    // console.warn('newPath = ', newPath);
-    path = newPath;
+	if(!path || !path.paths) {
+		path = this.pfinder(tx1, ty1, tx2, ty2);
+		if(!path || !path.paths) {
+			logger.warn('can not find the path, path: %j', path);
+			return null;
+		}
+
+		if(useCache) {
+			this.pathCache.addPath(tx1, ty1, tx2, ty2, path);
+		}
 	}
 
-  var result = {};
+	var result = {};
 	var paths = [];
 
-  // console.warn('path = ', path);
-	for(var i = 0; i < path.length; i++) {
-		paths.push(transPos(path[i], this.tileW, this.tileH));
+	for(var i = 0; i < path.paths.length; i++) {
+		paths.push(transPos(path.paths[i], this.tileW, this.tileH));
+	}
+	paths = this.compressPath2(paths);
+	if(paths.length > 2) {
+		paths = this.compressPath1(paths, 3);
+		paths = this.compressPath2(paths);
 	}
 
 	result.path = paths;
@@ -735,8 +720,8 @@ Map.prototype._testLine = function(x, y, x1, y1) {
  */
 function transPos(pos, tileW, tileH) {
 	var newPos = {};
-	newPos.x = pos[0]*tileW + tileW/2;
-	newPos.y = pos[1]*tileH + tileH/2;
+	newPos.x = pos.x*tileW + tileW/2;
+	newPos.y = pos.y*tileH + tileH/2;
 
 	return newPos;
 }

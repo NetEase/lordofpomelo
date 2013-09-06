@@ -41,6 +41,7 @@ Remote.prototype.findPath = function(args, cb){
 };
 
 Remote.prototype.findPathByBatch = function(args, cb){
+  utils.myPrint('findPathByBatch is running ...');
   var cnt = parseInt(args.cnt);
 
   var start = new Date().getTime();

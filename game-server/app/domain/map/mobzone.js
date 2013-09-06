@@ -73,7 +73,7 @@ MobZone.prototype.generateMobs = function() {
 	} while(!this.map.isReachable(mobData.x, mobData.y) && count++ < limit);
 
 	if(count > limit){
-		logger.error('generate mob failed! mob data : %j, area : %j, retry %j times', mobData, this.area.id, count);
+		// logger.error('generate mob failed! mob data : %j, area : %j, retry %j times', mobData, this.area.id, count);
 		return;
 	}
 
@@ -179,6 +179,7 @@ var genPoint = function(map, originX, originY, count) {
  * @param dx, dy {Number} End point
  */
 var checkPoint = function(map, ox, oy, dx, dy) {
+  return true;
 	if(!map.isReachable(dx, dy)) {
 		return false;
 	}
