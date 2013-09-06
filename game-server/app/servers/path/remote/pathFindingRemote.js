@@ -51,5 +51,5 @@ Remote.prototype.findPathByBatch = function(args, cb){
 
   console.log('start = ', start);
   console.log('end   = ', end);
-  console.error((end - start) / 1000 + " sec \n\n");
+  console.error('FindPathByBatch running time : ' + (end - start) / 1000 + " sec \n\n");
 };
