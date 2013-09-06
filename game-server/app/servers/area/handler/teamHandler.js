@@ -6,6 +6,7 @@ var logger = require('pomelo-logger').getLogger(__filename);
 var consts = require('../../../consts/consts');
 var utils = require('../../../util/utils');
 var dataApi = require('../../../util/dataApi');
+var pomelo = require('pomelo');
 
 
 module.exports = function(app) {
@@ -28,14 +29,6 @@ var Handler = function(app) {
  * @api public
  */
 Handler.prototype.createTeam = function(msg, session, next) {
-  // testing code
-  this.app.rpc.path.pathFindingRemote.findPathByBatch(null,
-    {cnt: 3, areaId: '1', start: {x: 1769, y: 816}, end: {x: 2863, y: 1253}},
-    function(err, paths){});
-  next();
-  return;
-  // testing code
-
   var area = session.area;
   var playerId = session.get('playerId');
   utils.myPrint('Handler ~ createTeam is running ... ~ playerId = ', playerId);
@@ -517,3 +510,14 @@ Handler.prototype.leaveTeam = function(msg, session, next) {
 
   next();
 };
+
+
+
+// testing code
+process.on('SIGUSR2', function() {
+  pomelo.app.rpc.path.pathFindingRemote.findPathByBatch(null,
+    {cnt: 3, areaId: '1', start: {x: 1769, y: 816}, end: {x: 2863, y: 1253}},
+    function(err, paths){});
+});
+// testing code
+
