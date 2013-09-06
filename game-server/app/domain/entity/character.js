@@ -195,7 +195,19 @@ Character.prototype.recoverMp = function(mpValue) {
 Character.prototype.move = function(targetX, targetY, useCache, cb) {
   useCache = useCache || false;
 
+  // testing code
+  if(this.type !== 'player') {
+    return;
+  } else {
+    utils.myPrint('useCache = ', useCache);
+    utils.myPrint('userId = ', this.userId);
+    utils.myPrint('name = ', this.name);
+  }
+
+  // testing code
+
   if(useCache){
+    utils.myPrint('1 ~ useCache is running...');
     var paths = this.area.map.findPath(this.x, this.y, targetX, targetY, useCache);
 
     if(!!paths){
@@ -206,6 +218,7 @@ Character.prototype.move = function(targetX, targetY, useCache, cb) {
       utils.invokeCallback(cb, 'find path error', false);
     }
   }else{
+    utils.myPrint('2 ~ !useCache is running...');
     var closure = this;
     pomelo.app.rpc.path.pathFindingRemote.findPath(null, {areaId: this.areaId, start:{x:this.x, y:this.y}, end:{x:targetX, y: targetY}}, function(err, paths){
       if(!!paths){

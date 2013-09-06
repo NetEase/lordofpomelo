@@ -39,10 +39,17 @@ Map.prototype.init = function(opts) {
 		this.tileH = 20;
 		this.rectW = Math.ceil(this.width/this.tileW);
 		this.rectH = Math.ceil(this.height/this.tileH);
+    // testing code
+    if(parseInt(this.id) === 1) {
+      utils.myPrint('this.rectW, this.rectH = ', this.rectW, this.rectH);
+    }
+    // testing code
 
 		this.pathCache = new PathCache({limit:1000});
 		this.pfinder = buildFinder(this);
 
+
+    utils.myPrint('name, weightMap  = ', this.name, weightMap);
 		if(weightMap) {
 			//Use cache map first
 			var path = process.cwd() + '/tmp/map.json';
@@ -51,6 +58,14 @@ Map.prototype.init = function(opts) {
 			if(!!maps[this.id]){
 				this.collisions = maps[this.id].collisions;
 				this.weightMap = this.getWeightMap(this.collisions);
+        // testing code
+        if(parseInt(this.id) === 1) {
+          utils.myPrint('weightMap[first] = ', JSON.stringify(this.weightMap[0]));
+          utils.myPrint('weightMap[last] = ', JSON.stringify(this.weightMap[this.weightMap.length-1]));
+          utils.myPrint('weightMap[first].length = ', JSON.stringify(this.weightMap[0].length));
+          utils.myPrint('weightMap.length = ', JSON.stringify(this.weightMap.length));
+        }
+        // testing code
 			}else{
 				this.initWeightMap();
 				this.initCollisons();
@@ -450,7 +465,10 @@ Map.prototype.findPath = function(x, y, x1, y1, useCache) {
 	var ty2 = Math.floor(y1/this.tileH);
 
 	//Use cache to get path
-	var path = this.pathCache.getPath(tx1, ty1, tx2, ty2);
+  // testing code
+	// var path = this.pathCache.getPath(tx1, ty1, tx2, ty2);
+  var path = null;
+  // testing code
 
 	if(!path || !path.paths) {
 		path = this.pfinder(tx1, ty1, tx2, ty2);
@@ -478,6 +496,11 @@ Map.prototype.findPath = function(x, y, x1, y1, useCache) {
 
 	result.path = paths;
 	result.cost = computeCost(paths);
+
+  // testing code
+  var util = require('util');
+  utils.myPrint('findPath ~ result = ', util.inspect(result));
+  // testing code
 
 	return result;
 };

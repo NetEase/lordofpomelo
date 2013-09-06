@@ -40,3 +40,16 @@ Remote.prototype.findPath = function(args, cb){
 	}
 };
 
+Remote.prototype.findPathByBatch = function(args, cb){
+  var cnt = parseInt(args.cnt);
+
+  var start = new Date().getTime();
+  for(var i = 0; i < cnt; i++) {
+    this.findPath(args, cb);
+  }
+  var end = new Date().getTime();
+
+  console.log('start = ', start);
+  console.log('end   = ', end);
+  utils.myPrint((end - start) / 1000 + " sec \n\n");
+};
