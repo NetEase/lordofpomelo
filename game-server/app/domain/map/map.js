@@ -288,7 +288,6 @@ Map.prototype.getCollision = function() {
  * @api public
  */
 // temporary code
-/*
 Map.prototype.getBornPlace = function() {
 	var bornPlace = this.map.birth[0];
 	if(!bornPlace) {
@@ -301,7 +300,7 @@ Map.prototype.getBornPlace = function() {
 
 	return bornPlace;
 };
-*/
+/*
 Map.prototype.getBornPlace = function() {
   var bornPlaces = this.getMobZones();
   var randomV = Math.floor(Math.random() * bornPlaces.length);
@@ -313,6 +312,7 @@ Map.prototype.getBornPlace = function() {
 
 	return bornPlace;
 };
+*/
 // temporary code
 
 /**
