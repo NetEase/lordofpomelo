@@ -27,6 +27,9 @@ var Npc = function(opts) {
 	this.width = opts.width;
 	this.height = opts.height;
 	this.kindType = opts.kindType;
+  this.x = opts.x;
+  this.y = opts.y;
+  // console.error('NPC ~ x, y = ', this.x, this.y);
 };
 
 util.inherits(Npc, Entity);

@@ -59,7 +59,7 @@ Instance.prototype.start = function() {
 
   //Init mob zones
   this.initMobZones(this.map.getMobZones());
-  this.initNPCs(this);
+  this.initNPCs();
 
   this.aiManager.start();
   this.timer.run();
