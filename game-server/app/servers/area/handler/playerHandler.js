@@ -277,6 +277,49 @@ handler.changeArea = function(msg, session, next) {
   */
 };
 
+// create instance testing (aim: 1w) ~ Begin
+handler.createInstance = function(msg, session, next) {
+  var playerId = session.get('playerId');
+	var areaId = 1;
+	var target = 5;
+
+	if (areaId === target) {
+		next(null, {success: false});
+		return;
+	}
+	utils.myPrint('playerId = ', playerId);
+	var player = session.area.getPlayer(playerId);
+	if (!player) {
+		next(null, {success: false});
+		return;
+	}
+
+  player.isCaptain = consts.TEAM.YES;
+  var bashNum = 10000 * 10000;
+  var cnt = parseInt(msg.cnt);
+  for(var i = 0; i < cnt; i++) {
+    player.teamId = bashNum + i;
+
+    var req = {
+      areaId: areaId,
+      target: target,
+      uid: session.uid,
+      playerId: playerId,
+      frontendId: session.frontendId
+    };
+
+    areaService.changeArea(req, session, function(err) {
+      var args = {areaId: areaId, target: target, success: true, cnt: i};
+      if(!!err) {
+        console.error('Create instance error !!!');
+        args.success = false;
+      }
+      next(null, args);
+    });
+  }
+};
+// create instance testing (aim: 1w) ~ End
+
 //Use item
 handler.useItem = function(msg, session, next) {
   var player = session.area.getPlayer(session.get('playerId'));
