@@ -3,7 +3,7 @@ var Area = require('./area');
 var Instance = function(opts){
   this.id = opts.instanceId;
   this.area = new Area(opts);
-  this.lifeTime = opts.lifeTime || 1800000;
+  this.lifeTime = opts.lifeTime || 180000;
 };
 
 module.exports = Instance;
