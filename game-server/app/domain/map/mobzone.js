@@ -28,16 +28,17 @@ var MobZone = function(opts) {
 	this.mobData.armorLevel = opts.armorLevel || 1;
 
 	this.limit = opts.mobNum||defaultLimit;
+  this.genCount = 3;
 
   if(pomelo.app.getServerId() === 'area-server-3') {
-    this.limit = 100;
+    this.limit = 1000;
+    this.genCount = 1000;
   }
 
 	this.count = 0;
 	this.mobs = {};
 
 	this.lastGenTime = 0;
-	this.genCount = 3;
 	this.interval = 5000;
 };
 
