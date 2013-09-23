@@ -31,8 +31,8 @@ var MobZone = function(opts) {
   this.genCount = 3;
 
   if(pomelo.app.getServerId() === 'area-server-3') {
-    this.limit = 1000;
-    this.genCount = 1000;
+    this.limit = 500;
+    this.genCount = 100;
   }
 
 	this.count = 0;
