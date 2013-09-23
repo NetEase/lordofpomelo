@@ -4,6 +4,7 @@ var Mob = require('./../entity/mob');
 var utils = require('../../util/utils');
 var dataApi = require('../../util/dataApi');
 var logger = require('pomelo-logger').getLogger(__filename);
+var pomelo = require('pomelo');
 
 var defaultLimit = 10;
 
@@ -27,6 +28,11 @@ var MobZone = function(opts) {
 	this.mobData.armorLevel = opts.armorLevel || 1;
 
 	this.limit = opts.mobNum||defaultLimit;
+
+  if(pomelo.app.getServerId() === 'area-server-3') {
+    this.limit = 100;
+  }
+
 	this.count = 0;
 	this.mobs = {};
 
