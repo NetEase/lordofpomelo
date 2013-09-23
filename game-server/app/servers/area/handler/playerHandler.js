@@ -61,8 +61,8 @@ handler.enterScene = function(msg, session, next) {
 
     // temporary code
     //Reset the player's position if current pos is unreachable
-		// if(!map.isReachable(player.x, player.y)){
-    {
+		if(!map.isReachable(player.x, player.y)) {
+    // {
 			var pos = map.getBornPoint();
 			player.x = pos.x;
 			player.y = pos.y;
