@@ -87,6 +87,8 @@ app.configure('production|development', 'area', function(){
      kill -SIGUSR2 <pid>
      http://localhost:3272/inspector.html?host=localhost:9999&page=0
     */
+    /*
+    // disable webkit-devtools-agent
     var areaId = parseInt(server.area);
     if(areaId === 3) { // area-server-3
       require('webkit-devtools-agent');
@@ -96,6 +98,7 @@ app.configure('production|development', 'area', function(){
       var tmpPort = 3270 + areaId - 1;
       expressSvr.listen(tmpPort);
     }
+    */
 	}
 
 	//Init areaService
