@@ -131,6 +131,9 @@ Player.prototype.setTotalAttackAndDefence = function() {
   var attack = 0, defence = 0;
 
   for (var key in this.equipments) {
+    if(!this.equipments.isEquipment(key)) {
+      continue;
+    }
     var equip = dataApi.equipment.findById(this.equipments[key]);
     if (!!equip) {
       attack += Number(equip.attackValue);

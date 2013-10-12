@@ -6,6 +6,7 @@ var util = require('util');
 var Entity = require('./entity/entity');
 var EntityType = require('../consts/consts').EntityType;
 var Persistent = require('./persistent');
+var Underscore = require('underscore');
 
 /**
  * Initialize a new 'Equipments' with the given 'opts'.
@@ -67,6 +68,11 @@ Equipments.prototype.equip = function(type, id) {
 Equipments.prototype.unEquip = function(type) {
   this[convertType(type)] = 0;
   this.save();
+};
+
+var EquipList = Underscore.values(dict);
+Equipments.prototype.isEquipment = function(strEquip) {
+  return Underscore.contains(EquipList, strEquip);
 };
 
 /**
