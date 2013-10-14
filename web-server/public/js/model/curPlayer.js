@@ -70,7 +70,13 @@ __resources__["/curPlayer.js"] = {meta: {mimetype: "application/javascript"}, da
 
   CurPlayer.prototype.getTasks = function(cb) {
     var self = this;
+    /*
     for(var key in self.curTasks) {
+      cb(self.curTasks);
+      return;
+    }
+    */
+    if(Object.keys(self.curTasks).length > 0) {
       cb(self.curTasks);
       return;
     }

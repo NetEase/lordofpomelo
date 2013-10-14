@@ -8,6 +8,7 @@ var taskDao = require('../../../dao/taskDao');
 var logger = require('pomelo-logger').getLogger(__filename);
 var taskReward = require('../../../domain/taskReward');
 var pomelo = require('pomelo');
+var underscore = require('underscore');
 
 /**
  * Expose 'Entity' constructor
@@ -141,7 +142,22 @@ handler.getHistoryTasks = function(msg, session, next) {
 handler.getNewTask = function(msg, session, next) {
   var player = session.area.getPlayer(msg.playerId);
   var tasks = player.curTasks;
-	var length = tasks.length;
+
+  if(!underscore.isEmpty(tasks)) {
+    var tmpId = underscore.max(underscore.keys(tasks));
+    var task = dataApi.task.findById(tasks[tmpId].kindId);
+    if(!task) {
+      logger.error('getNewTask failed!');
+      next(new Error('fail to getNewTask!'));
+    } else {
+      next(null, {
+        code: consts.MESSAGE.RES,
+        task: task
+      });
+    }
+    return;
+  }
+
 	var id = 0;
 	taskDao.getTaskByPlayId(msg.playerId, function(err, tasks) {
 		if (!!err) {
@@ -156,8 +172,10 @@ handler.getNewTask = function(msg, session, next) {
 						id = parseInt(tasks[i].kindId);
 					}
 				}
-			}
-			var task = dataApi.task.findById(++id);
+			} else {
+        id = 1;
+      }
+			var task = dataApi.task.findById(id);
 			next(null, {
 				code: consts.MESSAGE.RES,
 				task: task
