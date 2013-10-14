@@ -34,7 +34,7 @@ executeTask.updateTaskData = function(player, killed) {
 		var taskDesc = task.desc.split(';');
 		var taskType = task.type;
 		var killedNum = task.completeCondition[taskDesc[1]];
-		if (taskType === consts.TaskType.KILL_MOB && killed.type === consts.EntityType.MOB &&	killed.kindId === taskDesc[1]) {
+		if (taskType === consts.TaskType.KILL_MOB && killed.type === consts.EntityType.MOB && killed.kindId === parseInt(taskDesc[1])) {
 			task.taskData.mobKilled += 1;
 			reData = reData || {};
 			reData[id] = task.taskData;
