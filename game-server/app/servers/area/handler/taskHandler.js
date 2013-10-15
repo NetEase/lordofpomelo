@@ -172,10 +172,8 @@ handler.getNewTask = function(msg, session, next) {
 						id = parseInt(tasks[i].kindId);
 					}
 				}
-			} else {
-        id = 1;
-      }
-			var task = dataApi.task.findById(id);
+			}
+			var task = dataApi.task.findById(++id);
 			next(null, {
 				code: consts.MESSAGE.RES,
 				task: task
