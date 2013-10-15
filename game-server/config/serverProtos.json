@@ -218,6 +218,26 @@
         "required uInt32 id" : 1,
         "required uInt32 level" : 2
       },
+      "message CurTask": {
+        "message TaskData": {
+          "required uInt32 mobKilled": 1,
+          "required uInt32 playerKilled": 2
+        },
+        "message CompleteCondition": {
+          "required uInt32 id": 1,
+          "required uInt32 cnt": 2
+        },
+        "required string acceptTalk": 1,
+        "required string workTalk": 2,
+        "required string finishTalk": 3,
+        "required string item": 4,
+        "required string name": 5,
+        "required uInt32 id": 6,
+        "required uInt32 exp": 7,
+        "required uInt32 taskState": 8,
+        "required TaskData taskData": 9,
+        "required CompleteCondition completeCondition": 10
+      },
       "required uInt32 entityId" : 1,
       "required uInt32 kindId" : 2,
       "required uInt32 x" : 3,
@@ -243,8 +263,9 @@
       "required Bag bag" : 23,
       "required Equipments equipments" : 24,
       "repeated FightSkill fightSkills" : 25,
-	    "optional uInt32 teamId" : 26,
-	    "optional uInt32 isCaptain" : 27
+      "repeated CurTask curTasks" : 26,
+	    "optional uInt32 teamId" : 27,
+	    "optional uInt32 isCaptain" : 28
     },
     "optional Entities entities" : 1,
     "optional Player curPlayer" : 2,

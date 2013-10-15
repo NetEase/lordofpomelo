@@ -15,6 +15,7 @@ var fightskill = require('./../fightskill');
 var logger = require('pomelo-logger').getLogger(__filename);
 var pomelo = require('pomelo');
 var utils = require('../../util/utils');
+var underscore = require('underscore');
 
 /**
  * Initialize a new 'Player' with the given 'opts'.
@@ -470,6 +471,7 @@ Player.prototype._getCurTasksInfo = function() {
   if (this.curTasks) {
     for(var id in this.curTasks) {
       var task = this.curTasks[id];
+      var cc = underscore.pairs(task.completeCondition)[0];
       reTasks.push({
         acceptTalk: task.acceptTalk,
         workTalk: task.workTalk,
@@ -480,7 +482,7 @@ Player.prototype._getCurTasksInfo = function() {
         exp: task.exp,
         taskData:task.taskData,
         taskState: task.taskState,
-        completeCondition: task.completeCondition
+        completeCondition: {id: cc[0], cnt: cc[1]}
       });
     }
   }

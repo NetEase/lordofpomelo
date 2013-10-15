@@ -62,6 +62,11 @@ __resources__["/curPlayer.js"] = {meta: {mimetype: "application/javascript"}, da
   var getCurTasksInfo = function(data) {
     var curTasks = {}, length = data.length;
     for (var i = 0; i < length; i ++) {
+      var cc = data[i].completeCondition;
+      var tmpStr = '{\"' + cc.id + '\":' + cc.cnt + '}';
+      data[i].completeCondition = JSON.parse(tmpStr);
+      var ct = data[i].taskData;
+      data[i].taskData = {'mobKilled': ct.mobKilled, 'playerKilled': ct.playerKilled};
       var task = new Task(data[i]);
       curTasks[task.id] = task;
     }
