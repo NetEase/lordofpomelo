@@ -25,7 +25,7 @@ __resources__["/clientManager.js"] = {
     var httpHost = location.href.replace(location.hash, '');
 
     pomelo.on('websocket-error', function(){
-      lodading = false;
+      loading = false;
     });
 
     function init() {
