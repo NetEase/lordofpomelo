@@ -4,6 +4,9 @@
 var messageService = require('../../../domain/messageService');
 var areaService = require('../../../services/areaService');
 var userDao = require('../../../dao/userDao');
+var bagDao = require('../../../dao/bagDao');
+var equipmentsDao = require('../../../dao/equipmentsDao');
+var taskDao = require('../../../dao/taskDao');
 var Move = require('../../../domain/action/move');
 var actionManager = require('../../../domain/action/actionManager');
 var logger = require('pomelo-logger').getLogger(__filename);
@@ -238,6 +241,12 @@ handler.changeArea = function(msg, session, next) {
 		return;
 	}
 
+  // save player's data immediately
+  userDao.updatePlayer(player);
+  bagDao.update(player.bag);
+  equipmentsDao.update(player.equipments);
+  taskDao.tasksUpdate(player.curTasks);
+
 	var teamId = player.teamId;
 	var isCaptain = player.isCaptain;
 
@@ -256,25 +265,6 @@ handler.changeArea = function(msg, session, next) {
     var args = {areaId: areaId, target: target, success: true};
     next(null, args);
   });
-  /*
-	var targetInfo = dataApi.area.findById(target);
-	if ((targetInfo.type === consts.AreaType.TEAM_INSTANCE) && teamId && isCaptain && msg.triggerByPlayer) {
-		utils.myPrint('DragMember2gameCopy is running ...');
-		pomelo.app.rpc.manager.teamRemote.dragMember2gameCopy(null, {teamId: teamId, target: target},
-			function(err, ret) {
-        if (!!err) {
-          logger.error(err, ret);
-        }
-				next(null, {success: false});
-			});
-	} else {
-		utils.myPrint('changeArea is running ...');
-		areaService.changeArea(req, session, function(err) {
-			var args = {areaId: areaId, target: target, success: true};
-			next(null, args);
-		});
-	}
-  */
 };
 
 //Use item

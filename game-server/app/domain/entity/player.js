@@ -315,7 +315,7 @@ Player.prototype.handOverTask = function(taskIds) {
     var task = this.curTasks[id];
     task.taskState = TaskState.COMPLETED;
     task.save();
-    delete this.curTasks[id];
+    // delete this.curTasks[id];
   }
 };
 

@@ -60,7 +60,7 @@ exp.playerLeave = function(args, cb){
   userDao.updatePlayer(player);
   bagDao.update(player.bag);
   equipmentsDao.update(player.equipments);
-  tasksUpdate(player.curTasks);
+  taskDao.tasksUpdate(player.curTasks);
   area.removePlayer(playerId);
   area.channel.pushMessage({route: 'onUserLeave', code: consts.MESSAGE.RES, playerId: playerId});
   utils.invokeCallback(cb);
@@ -103,10 +103,3 @@ exp.leaveTeam = function(args, cb){
   utils.invokeCallback(cb);
 };
 
-// Persistent tasks' data in the database.
-var tasksUpdate = function(tasks) {
-  for (var id in tasks) {
-    var task = tasks[id];
-    taskDao.update(task);
-  }
-};

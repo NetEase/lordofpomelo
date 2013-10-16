@@ -142,20 +142,30 @@ handler.getHistoryTasks = function(msg, session, next) {
 handler.getNewTask = function(msg, session, next) {
   var player = session.area.getPlayer(msg.playerId);
   var tasks = player.curTasks;
-
   if(!underscore.isEmpty(tasks)) {
-    var tmpId = underscore.max(underscore.keys(tasks));
-    var task = dataApi.task.findById(tasks[tmpId].kindId);
-    if(!task) {
-      logger.error('getNewTask failed!');
-      next(new Error('fail to getNewTask!'));
-    } else {
-      next(null, {
-        code: consts.MESSAGE.RES,
-        task: task
-      });
+    var keysList = underscore.keys(tasks);
+    keysList = underscore.filter(keysList, function(tmpId) {
+      var tmpTask = tasks[tmpId];
+      if(tmpTask.taskState <= consts.TaskState.COMPLETED_NOT_DELIVERY) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    if(keysList.length > 0) {
+      var maxId = underscore.max(keysList);
+      var task = dataApi.task.findById(tasks[maxId].kindId);
+      if(!task) {
+        logger.error('getNewTask failed!');
+        next(new Error('fail to getNewTask!'));
+      } else {
+        next(null, {
+          code: consts.MESSAGE.RES,
+          task: task
+        });
+      }
+      return;
     }
-    return;
   }
 
 	var id = 0;

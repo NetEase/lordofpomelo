@@ -28,7 +28,7 @@ executeTask.updateTaskData = function(player, killed) {
 	var reData = null;
 	for (var id in tasks) {
 		var task = tasks[id];
-		if (typeof task === 'undefined' || task.taskState === consts.TaskState.COMPLETED_NOT_DELIVERY)	{
+		if (typeof task === 'undefined' || task.taskState >= consts.TaskState.COMPLETED_NOT_DELIVERY)	{
 			continue;
 		}
 		var taskDesc = task.desc.split(';');
