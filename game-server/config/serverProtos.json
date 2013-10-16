@@ -219,14 +219,6 @@
         "required uInt32 level" : 2
       },
       "message CurTask": {
-        "message TaskData": {
-          "optional uInt32 mobKilled": 1,
-          "optional uInt32 playerKilled": 2
-        },
-        "message CompleteCondition": {
-          "required uInt32 id": 1,
-          "required uInt32 cnt": 2
-        },
         "required string acceptTalk": 1,
         "required string workTalk": 2,
         "required string finishTalk": 3,
@@ -235,8 +227,8 @@
         "required uInt32 id": 6,
         "required uInt32 exp": 7,
         "required uInt32 taskState": 8,
-        "required TaskData taskData": 9,
-        "required CompleteCondition completeCondition": 10
+        "required string taskData": 9,
+        "required string completeCondition": 10
       },
       "required uInt32 entityId" : 1,
       "required uInt32 kindId" : 2,

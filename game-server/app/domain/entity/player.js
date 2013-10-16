@@ -480,9 +480,9 @@ Player.prototype._getCurTasksInfo = function() {
         name: task.name,
         id: task.id,
         exp: task.exp,
-        taskData:task.taskData,
+        taskData: JSON.stringify(task.taskData),
         taskState: task.taskState,
-        completeCondition: {id: cc[0], cnt: cc[1]}
+        completeCondition: JSON.stringify(task.completeCondition)
       });
     }
   }
