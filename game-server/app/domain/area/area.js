@@ -210,6 +210,7 @@ Instance.prototype.removeEntity = function(entityId) {
     if(this.playerNum === 0){
       this.emptyTime = Date.now();
     }
+    delete entities[entityId];
   }else if(e.type === 'mob') {
     this.aiManager.removeCharacter(e.entityId);
     this.patrolManager.removeCharacter(e.entityId);
@@ -225,14 +226,15 @@ Instance.prototype.removeEntity = function(entityId) {
     });
 
     this.aoi.removeWatcher(e, {x : e.x, y: e.y}, e.range);
-  }else if(e.type === EntityType.ITEM) {
+    delete entities[entityId];
+  }else if(e.type === EntityType.ITEM || e.type === EntityType.EQUIPMENT) {
     delete items[entityId];
-  }else if(e.type === EntityType.EQUIPMENT) {
-    delete items[entityId];
+    this.aoi.removeObject({id: e.entityId, type: e.type}, {x: e.x, y: e.y});
+    delete entities[entityId];
   }
 
-  this.aoi.removeObject(e, {x: e.x, y: e.y});
-  delete entities[entityId];
+  // this.aoi.removeObject(e, {x: e.x, y: e.y});
+  // delete entities[entityId];
   return true;
 };
 
