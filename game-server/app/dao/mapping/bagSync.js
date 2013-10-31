@@ -11,7 +11,9 @@ module.exports = {
       if (err) {
         console.error('write mysql failed!　' + sql + ' ' + JSON.stringify(val));
       }
-      cb(!!err);
+      if(!!cb && typeof cb == 'function') {
+        cb(!!err);
+      }
     });
   }
 };
