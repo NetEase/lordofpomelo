@@ -1,6 +1,6 @@
 {
 	"development": {
-	 "host" : "pomelo13.server.163.org",
+	 "host" : "pomelo3.server.163.org",
 		"port" : "3306",
 		"database" : "Pomelo",
 		"user" : "xy",
