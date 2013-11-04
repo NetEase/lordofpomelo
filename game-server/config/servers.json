@@ -5,7 +5,7 @@
 			{"id": "connector-server-2", "host": "127.0.0.1", "port": 3151, "clientPort":3011, "frontend": true}
 		],
 		"area": [
-			{"id": "area-server-1", "host": "127.0.0.1", "port": 3250, "area": 1},
+			{"id": "area-server-1", "host": "pomelo16.server.163.org", "port": 3250, "area": 1},
 			{"id": "area-server-2", "host": "127.0.0.1", "port": 3251, "area": 2},
 			{"id": "area-server-3", "host": "127.0.0.1", "port": 3252, "area": 3},
 			{"id": "instance-server-1", "host": "127.0.0.1", "port": 3260, "instance": true},

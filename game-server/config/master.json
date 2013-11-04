@@ -1,11 +1,11 @@
   {
   	"development":{
-  		"id": "master-server-1", "host": "127.0.0.1", "port": 3005
+        "id": "master-server-1", "host": "pomelo16.server.163.org", "port": 3005
       },
 
   	"production":
       {
-        "id": "master-server-1", "host": "pomelo3.server.163.org", "port": 3005
+        "id": "master-server-1", "host": "127.0.0.1", "port": 3005
       }
   	
   }
