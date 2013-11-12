@@ -67,7 +67,7 @@ app.configure('production|development', function() {
   // master high availability
   app.use(masterhaPlugin, {
     zookeeper: {
-      server: '127.0.0.1:2181',
+      server: 'pomelo17.server.163.org:2181',
       path: '/pomelo/master'
     }
   });
