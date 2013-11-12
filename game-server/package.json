@@ -19,6 +19,7 @@
   , "pomelo-logger": "0.0.3"
   , "pomelo-monitor": ">=0.3.3"
   , "pomelo-sync-plugin": "0.0.1"
+  , "pomelo-masterha-plugin": "0.0.1"
   , "underscore": "1.5.2"
   , "webkit-devtools-agent" : "0.1.2"
   },
