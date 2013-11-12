@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 var zookeeper = require('node-zookeeper-client');
 var path = require('path')
 
