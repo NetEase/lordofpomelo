@@ -8,7 +8,7 @@
   , "socket.io": ">=0.9.6"
   , "generic-pool": ">=1.0.9"
   , "mysql": ">=2.0"
-  , "pomelo": "0.7.0"
+  , "pomelo": "0.7.1"
   , "async": ">=0.0.1"
   , "socket.io-client" : ">=0.9.6"
   , "pomelo-aoi" : ">=0.3.4"
@@ -19,8 +19,9 @@
   , "pomelo-logger": "0.0.3"
   , "pomelo-monitor": ">=0.3.3"
   , "pomelo-sync-plugin": "0.0.1"
-  , "pomelo-masterha-plugin": "0.0.1"
+  , "pomelo-masterha-plugin": "0.0.3"
   , "underscore": "1.5.2"
+  , "node-zookeeper-client": "0.2.0"
   , "webkit-devtools-agent" : "0.1.2"
   },
   "devDependencies": {
