@@ -13,7 +13,7 @@
 			{"id": "instance-server-3", "host": "127.0.0.1", "port": 3262, "instance": true}
 		],
 		"chat": [
-			{"id":"chat-server-1","host":"127.0.0.1","port":3450, "auto-restart": true}
+			{"id":"chat-server-1","host":"127.0.0.1","port":3450}
 		],
 		"path": [
 			{"id": "path-server-1", "host": "127.0.0.1", "port": 3550, "auto-restart": true}
