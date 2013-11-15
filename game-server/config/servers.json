@@ -13,10 +13,10 @@
 			{"id": "instance-server-3", "host": "pomelo16.server.163.org", "port": 3262, "instance": true}
 		],
 		"chat": [
-			{"id":"chat-server-1","host":"pomelo16.server.163.org","port":3450}
+			{"id":"chat-server-1","host":"pomelo18.server.163.org","port":3450, "auto-restart": true}
 		],
 		"path": [
-			{"id": "path-server-1", "host": "pomelo16.server.163.org", "port": 3550}
+			{"id": "path-server-1", "host": "pomelo18.server.163.org", "port": 3550, "auto-restart": true}
 		],
 		"auth": [
 			{"id": "auth-server-1", "host": "pomelo16.server.163.org", "port": 3650}
