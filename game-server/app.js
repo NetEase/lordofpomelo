@@ -8,7 +8,7 @@ var routeUtil = require('./app/util/routeUtil');
 var playerFilter = require('./app/servers/area/filter/playerFilter');
 var ChatService = require('./app/services/chatService');
 var sync = require('pomelo-sync-plugin');
-var masterhaPlugin = require('pomelo-masterha-plugin');
+// var masterhaPlugin = require('pomelo-masterha-plugin');
 
 /**
  * Init app for client
@@ -64,6 +64,7 @@ app.configure('production|development', function() {
 	app.loadConfig('mysql', app.getBase() + '/../shared/config/mysql.json');
 	app.filter(pomelo.filters.timeout());
 
+  /*
   // master high availability
   app.use(masterhaPlugin, {
     zookeeper: {
@@ -71,6 +72,7 @@ app.configure('production|development', function() {
       path: '/pomelo/master'
     }
   });
+  */
 });
 
 // Configure for auth server
