@@ -16,12 +16,6 @@ var sync = require('pomelo-sync-plugin');
 var app = pomelo.createApp();
 app.set('name', 'lord of pomelo');
 
-// Configure for production enviroment
-app.configure('production', function() {
-	// enable the system monitor modules
-	app.enable('systemMonitor');
-});
-
 // configure for global
 app.configure('production|development', function() {
   app.before(pomelo.filters.toobusy());
