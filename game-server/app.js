@@ -47,8 +47,9 @@ app.configure('production|development', function() {
 
 	// remote configures
 	app.set('remoteConfig', {
-		cacheMsg: true,
-		interval: 30
+    cacheMsg: true
+    , interval: 30
+    , whitelistPath: __dirname + '/config/whitelist.json'
 	});
 
 	// route configures

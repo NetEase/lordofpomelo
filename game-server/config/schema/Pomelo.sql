@@ -1,9 +1,7 @@
 # Dump of table Bag
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `Bag`;
-
-CREATE TABLE `Bag` (
+CREATE TABLE IF NOT EXISTS `Bag` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `playerId` bigint(20) unsigned NOT NULL DEFAULT '0',
   `items` varchar(5000) COLLATE utf8_unicode_ci NOT NULL DEFAULT '{}',
@@ -17,9 +15,7 @@ CREATE TABLE `Bag` (
 # Dump of table Equipments
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `Equipments`;
-
-CREATE TABLE `Equipments` (
+CREATE TABLE IF NOT EXISTS `Equipments` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `playerId` bigint(20) unsigned NOT NULL DEFAULT '0',
   `weapon` smallint(6) unsigned DEFAULT '0',
@@ -40,9 +36,7 @@ CREATE TABLE `Equipments` (
 # Dump of table FightSkill
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `FightSkill`;
-
-CREATE TABLE `FightSkill` (
+CREATE TABLE IF NOT EXISTS `FightSkill` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `playerId` bigint(20) unsigned NOT NULL DEFAULT '0',
   `skillId` smallint(6) unsigned DEFAULT '0',
@@ -57,9 +51,7 @@ CREATE TABLE `FightSkill` (
 # Dump of table Player
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `Player`;
-
-CREATE TABLE `Player` (
+CREATE TABLE IF NOT EXISTS `Player` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `userId` bigint(20) unsigned NOT NULL DEFAULT '0',
   `kindId` varchar(10) COLLATE utf8_unicode_ci DEFAULT '0002',
@@ -93,9 +85,7 @@ CREATE TABLE `Player` (
 # Dump of table Task
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `Task`;
-
-CREATE TABLE `Task` (
+CREATE TABLE IF NOT EXISTS `Task` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `playerId` bigint(20) unsigned NOT NULL DEFAULT '0',
   `kindId` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -111,9 +101,7 @@ CREATE TABLE `Task` (
 # Dump of table User
 # ------------------------------------------------------------
 
-DROP TABLE IF EXISTS `User`;
-
-CREATE TABLE `User` (
+CREATE TABLE IF NOT EXISTS `User` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(50) COLLATE utf8_unicode_ci DEFAULT '',
