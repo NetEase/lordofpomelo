@@ -1,6 +1,6 @@
 var fs = require('fs');
 
-var whitelistPath = '../../config/whitelist.json';
+var whitelistPath = __dirname + '/../../config/whitelist.json';
 var whitelistInterval = 3000;
 
 var self = this;
