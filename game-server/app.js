@@ -50,6 +50,7 @@ app.configure('production|development', function() {
     cacheMsg: true
     , interval: 30
     , whitelistPath: __dirname + '/config/whitelist.json'
+    , whitelistInterval: 3000
 	});
 
 	// route configures
