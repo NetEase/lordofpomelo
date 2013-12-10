@@ -8,6 +8,7 @@ var routeUtil = require('./app/util/routeUtil');
 var playerFilter = require('./app/servers/area/filter/playerFilter');
 var ChatService = require('./app/services/chatService');
 var sync = require('pomelo-sync-plugin');
+var rpcWhitelist = require('./app/util/whitelist');
 // var masterhaPlugin = require('pomelo-masterha-plugin');
 
 /**
@@ -49,8 +50,7 @@ app.configure('production|development', function() {
 	app.set('remoteConfig', {
     cacheMsg: true
     , interval: 30
-    , whitelistPath: __dirname + '/config/whitelist.json'
-    , whitelistInterval: 3000
+    , whitelist: rpcWhitelist.whitelist
 	});
 
 	// route configures
