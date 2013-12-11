@@ -53,6 +53,12 @@ app.configure('production|development', function() {
     , whitelist: rpcWhitelist.whitelist
 	});
 
+  app.set('masterConfig', {
+    authUser: app.get('adminAuthUser') // auth client function
+    , authServer: app.get('adminAuthServerMaster') // auth server function
+    , whitelist: rpcWhitelist.whitelist
+  });
+
 	// route configures
 	app.route('area', routeUtil.area);
 	app.route('connector', routeUtil.connector);
