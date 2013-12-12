@@ -6,8 +6,8 @@ var whitelistInterval = 3000;
 var self = this;
 self.gWhitelist = [];
 
-module.exports.whitelist = function() {
-  return self.gWhitelist;
+module.exports.whitelist = function(cb) {
+  cb(null, self.gWhitelist);
 };
 
 var loadWhitelist = function(filename) {
