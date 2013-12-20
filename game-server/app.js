@@ -9,6 +9,8 @@ var playerFilter = require('./app/servers/area/filter/playerFilter');
 var ChatService = require('./app/services/chatService');
 var sync = require('pomelo-sync-plugin');
 var rpcWhitelist = require('./app/util/whitelist');
+var path = require('path');
+var log = require('./app/util/log');
 // var masterhaPlugin = require('pomelo-masterha-plugin');
 
 /**
@@ -130,7 +132,6 @@ app.configure('production|development', 'manager', function(){
 app.configure('production|development', 'area|auth|connector|master', function() {
 	var dbclient = require('./app/dao/mysql/mysql').init(app);
 	app.set('dbclient', dbclient);
-	// app.load(pomelo.sync, {path:__dirname + '/app/dao/mapping', dbclient: dbclient});
   app.use(sync, {sync: {path:__dirname + '/app/dao/mapping', dbclient: dbclient}});
 });
 
@@ -164,6 +165,13 @@ app.configure('production|development', 'gate', function(){
 app.configure('production|development', 'chat', function() {
 	app.set('chatService', new ChatService(app));
 });
+
+// configure pomelo-logger with log4js.json
+(function() {
+  if (process.env.POMELO_LOGGER !== 'off') {
+    log.configure(app, path.join(app.getBase(), './config/log4js.json'));
+  }
+})();
 
 //start
 app.start();
