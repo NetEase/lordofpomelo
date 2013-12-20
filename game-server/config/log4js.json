@@ -14,6 +14,17 @@
     },
     {
       "type": "file",
+      "filename": "./logs/pomelo-log-${opts:serverId}.log",
+      "pattern": "connector",
+      "fileSize": 1048576,
+      "layout": {
+          "type": "basic"
+        }
+      ,"backups": 5,
+      "category":"pomelo"
+    },
+    {
+      "type": "file",
       "filename": "./logs/con-log-${opts:serverId}.log", 
       "pattern": "connector", 
       "fileSize": 1048576,
@@ -66,9 +77,10 @@
   ],
 
   "levels": {
+    "pomelo" : "ERROR",
   	"rpc-log" : "ERROR", 
     "forward-log": "ERROR"
   }, 
-
+  "reloadSecs": 5,
   "replaceConsole": true
 }
