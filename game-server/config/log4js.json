@@ -86,7 +86,7 @@
   ],
 
   "levels": {
-    "lord" : "ERROR",
+    "lord" : "DEBUG",
     "pomelo" : "ERROR",
   	"rpc-log" : "ERROR", 
     "forward-log": "ERROR"
