@@ -9,6 +9,7 @@ var playerFilter = require('./app/servers/area/filter/playerFilter');
 var ChatService = require('./app/services/chatService');
 var sync = require('pomelo-sync-plugin');
 var rpcWhitelist = require('./app/util/whitelist');
+var adminWhitelist = require('./app/util/whitelist');
 var path = require('path');
 var log = require('./app/util/log');
 // var masterhaPlugin = require('pomelo-masterha-plugin');
@@ -52,13 +53,13 @@ app.configure('production|development', function() {
 	app.set('remoteConfig', {
     cacheMsg: true
     , interval: 30
-    , whitelist: rpcWhitelist.whitelist
+    , whitelist: rpcWhitelist.whitelistFunc
 	});
 
   app.set('masterConfig', {
     authUser: app.get('adminAuthUser') // auth client function
     , authServer: app.get('adminAuthServerMaster') // auth server function
-    , whitelist: rpcWhitelist.whitelist
+    , whitelist: adminWhitelist.whitelistFunc
   });
 
 	// route configures
