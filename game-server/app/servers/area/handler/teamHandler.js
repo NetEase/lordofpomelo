@@ -2,7 +2,7 @@
  * Module dependencies
  */
 var messageService = require('../../../domain/messageService');
-var logger = require('pomelo-logger').getLogger(__filename);
+var logger = require('pomelo-logger').getLogger('lord', __filename);
 var consts = require('../../../consts/consts');
 var utils = require('../../../util/utils');
 var dataApi = require('../../../util/dataApi');
