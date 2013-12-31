@@ -16,7 +16,7 @@ var loadWhitelist = function(filename) {
   if(!(self.gWhitelist instanceof Array)) {
     throw new Error(filename + ' should be an array.');
   } else {
-    var localIPList = ['127.0.0.1'];
+    var localIPList = ['127\\.0\\.0\\.1'];
     Array.prototype.push.apply(self.gWhitelist, localIPList);
   }
 };
