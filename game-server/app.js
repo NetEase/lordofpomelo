@@ -8,6 +8,7 @@ var routeUtil = require('./app/util/routeUtil');
 var playerFilter = require('./app/servers/area/filter/playerFilter');
 var ChatService = require('./app/services/chatService');
 var sync = require('pomelo-sync-plugin');
+var protobuf = require('pomelo-protobuf-plugin');
 // var masterhaPlugin = require('pomelo-masterha-plugin');
 
 /**
@@ -18,6 +19,10 @@ app.set('name', 'lord of pomelo');
 
 // configure for global
 app.configure('production|development', function() {
+	app.use(protobuf, {
+		protobuf: {
+		}
+	});
   app.before(pomelo.filters.toobusy());
 	app.enable('systemMonitor');
   require('./app/util/httpServer');
@@ -138,7 +143,7 @@ app.configure('production|development', 'connector', function(){
 			connector : pomelo.connectors.hybridconnector,
 			heartbeat : 30,
 			useDict : true,
-			useProtobuf : true,
+			//useProtobuf : true,
 			handshake : function(msg, cb){
 				cb(null, {});
 			}
@@ -148,8 +153,8 @@ app.configure('production|development', 'connector', function(){
 app.configure('production|development', 'gate', function(){
 	app.set('connectorConfig',
 		{
-			connector : pomelo.connectors.hybridconnector,
-			useProtobuf : true
+			connector : pomelo.connectors.hybridconnector
+			//useProtobuf : true
 		});
 });
 // Configure for chat server

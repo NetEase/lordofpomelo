@@ -1,5 +1,1 @@
-{
-  "area.fightHandler.attack" : {
-    "required uInt32 targetId" : 1
-  }
-}
+{}

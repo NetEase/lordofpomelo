@@ -127,13 +127,19 @@
    * @return {Object}           {type: package type, buffer: body byte array}
    */
   Package.decode = function(buffer){
-    var bytes =  new ByteArray(buffer);
-    var type = bytes[0];
-    var index = 1;
-    var length = ((bytes[index++]) << 16 | (bytes[index++]) << 8 | bytes[index++]) >>> 0;
-    var body = length ? new ByteArray(length) : null;
-    copyArray(body, 0, bytes, PKG_HEAD_BYTES, length);
-    return {'type': type, 'body': body};
+    var offset = 0;
+    var bytes = new ByteArray(buffer);
+    var length = 0;
+    var rs = [];
+    while(offset < bytes.length) {
+      var type = bytes[offset++];
+      length = ((bytes[offset++]) << 16 | (bytes[offset++]) << 8 | bytes[offset++]) >>> 0;
+      var body = length ? new ByteArray(length) : null;
+      copyArray(body, 0, bytes, offset, length);
+      offset += length;
+      rs.push({'type': type, 'body': body});
+    }
+    return rs.length === 1 ? rs[0]: rs;
   };
 
   /**
@@ -338,4 +344,7 @@
   };
 
   module.exports = Protocol;
-})('object' === typeof module ? module.exports : (this.Protocol = {}),'object' === typeof module ? Buffer : Uint8Array, this);
+  if(typeof(window) != "undefined") {
+    window.Protocol = Protocol;
+  }
+})(typeof(window)=="undefined" ? module.exports : (this.Protocol = {}),typeof(window)=="undefined"  ? Buffer : Uint8Array, this);

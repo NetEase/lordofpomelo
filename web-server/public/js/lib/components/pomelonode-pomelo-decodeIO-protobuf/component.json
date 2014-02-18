@@ -1,0 +1,17 @@
+{
+  "name": "pomelo-decodeIO-protobuf",
+  "description": "protobuf in decodeIO used for pomelo",
+  "keywords": [
+    "pomelo",
+    "decodeIO",
+    "protobuf"
+  ],
+  "version": "0.0.1",
+  "main": "lib/ProtoBuf.js",
+  "scripts": [
+    "lib/ProtoBuf.js",
+    "lib/ByteBuffer.js",
+    "lib/Long.js"
+  ],
+  "repo": "https://github.com/pomelonode/pomelo-decodeIO-protobuf"
+}

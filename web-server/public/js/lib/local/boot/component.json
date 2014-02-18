@@ -4,7 +4,7 @@
   "dependencies": {
     "component/emitter":"master",
     "NetEase/pomelo-protocol": "master",
-    "pomelonode/pomelo-protobuf": "*",
+    "pomelonode/pomelo-decodeIO-protobuf": "master",
     "pomelonode/pomelo-jsclient-websocket": "master",
     "component/jquery": "*"
   },

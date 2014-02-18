@@ -23,6 +23,7 @@
   , "underscore": "1.5.2"
   , "node-zookeeper-client": "0.2.0"
   , "webkit-devtools-agent" : "0.1.2"
+  , "pomelo-protobuf-plugin": "0.0.2"
   },
   "devDependencies": {
       "should": ">=0.0.1"
