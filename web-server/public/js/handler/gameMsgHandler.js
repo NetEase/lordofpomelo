@@ -125,12 +125,17 @@ __resources__["/gameMsgHandler.js"] = {meta: {mimetype: "application/javascript"
 
       for(var key in entities){
         var array = entities[key];
-
+        if(!array) {
+          return;
+        }
         for(var i = 0; i < array.length; i++){
           if (key === EntityType.PLAYER) {
             console.log('onAddEntities ~ array[i] = ', JSON.stringify(array[i]));
             console.log('onAddEntities ~ teamId = ', JSON.stringify(array[i].teamId));
             console.log('onAddEntities ~ isCaptain = ', JSON.stringify(array[i].isCaptain));
+          }
+          if(!array[i]) {
+            return;
           }
           if(!area.getEntity(array[i].entityId)){
             var entity = utils.buildEntity(key, array[i]);
