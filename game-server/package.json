@@ -8,7 +8,7 @@
   , "socket.io": ">=0.9.6"
   , "generic-pool": ">=1.0.9"
   , "mysql": ">=2.0"
-  , "pomelo": "~0.8.0"
+  , "pomelo": "~0.9.0"
   , "async": ">=0.0.1"
   , "socket.io-client" : ">=0.9.6"
   , "pomelo-aoi" : ">=0.3.4"
