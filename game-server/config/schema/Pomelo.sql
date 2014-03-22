@@ -1,16 +1,6 @@
-/*
-MySQL Data Transfer
-Source Host: app56v1.photo.163.org
-Source Database: Pomelo
-Target Host: app56v1.photo.163.org
-Target Database: Pomelo
-Date: 2012-8-16 15:54:13
-*/
+# Dump of table Bag
+# ------------------------------------------------------------
 
-SET FOREIGN_KEY_CHECKS=0;
--- ----------------------------
--- Table structure for Bag
--- ----------------------------
 CREATE TABLE IF NOT EXISTS `Bag` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `playerId` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -18,11 +8,13 @@ CREATE TABLE IF NOT EXISTS `Bag` (
   `itemCount` smallint(6) unsigned DEFAULT '8',
   PRIMARY KEY (`id`),
   KEY `INDEX_PLAYER_ID` (`playerId`)
-) ENGINE=InnoDB AUTO_INCREMENT=20224 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- ----------------------------
--- Table structure for Equipments
--- ----------------------------
+
+
+# Dump of table Equipments
+# ------------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `Equipments` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `playerId` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -33,13 +25,17 @@ CREATE TABLE IF NOT EXISTS `Equipments` (
   `ring` smallint(6) unsigned DEFAULT '0',
   `belt` smallint(6) unsigned DEFAULT '0',
   `shoes` smallint(6) unsigned DEFAULT '0',
+  `amulet` smallint(6) DEFAULT NULL,
+  `legguard` smallint(6) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `INDEX_PLAYER_ID` (`playerId`)
-) ENGINE=InnoDB AUTO_INCREMENT=20217 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- ----------------------------
--- Table structure for FightSkill
--- ----------------------------
+
+
+# Dump of table FightSkill
+# ------------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `FightSkill` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `playerId` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -48,11 +44,13 @@ CREATE TABLE IF NOT EXISTS `FightSkill` (
   `type` varchar(20) COLLATE utf8_unicode_ci DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `INDEX_PLAYER_ID` (`playerId`)
-) ENGINE=InnoDB AUTO_INCREMENT=20249 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- ----------------------------
--- Table structure for Player
--- ----------------------------
+
+
+# Dump of table Player
+# ------------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `Player` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `userId` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -80,11 +78,13 @@ CREATE TABLE IF NOT EXISTS `Player` (
   PRIMARY KEY (`id`),
   UNIQUE KEY `INDEX_GAME_NAME` (`name`),
   KEY `INDEX_PALYER_USER_ID` (`userId`)
-) ENGINE=InnoDB AUTO_INCREMENT=32351 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- ----------------------------
--- Table structure for Task
--- ----------------------------
+
+
+# Dump of table Task
+# ------------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `Task` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `playerId` bigint(20) unsigned NOT NULL DEFAULT '0',
@@ -94,27 +94,21 @@ CREATE TABLE IF NOT EXISTS `Task` (
   `taskData` varchar(1000) COLLATE utf8_unicode_ci DEFAULT '{}',
   PRIMARY KEY (`id`),
   KEY `INDEX_TASK_ID` (`playerId`)
-) ENGINE=InnoDB AUTO_INCREMENT=10162 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
--- ----------------------------
--- Table structure for test
--- ----------------------------
-CREATE TABLE IF NOT EXISTS `test` (
-  `id` int(11) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
--- ----------------------------
--- Table structure for User
--- ----------------------------
+
+# Dump of table User
+# ------------------------------------------------------------
+
 CREATE TABLE IF NOT EXISTS `User` (
   `id` bigint(20) unsigned NOT NULL AUTO_INCREMENT,
   `name` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
-  `from` varchar(50) COLLATE utf8_unicode_ci DEFAULT	'',
   `password` varchar(50) COLLATE utf8_unicode_ci DEFAULT '',
   `loginCount` smallint(6) unsigned DEFAULT '0',
+  `from` varchar(25) COLLATE utf8_unicode_ci DEFAULT NULL,
   `lastLoginTime` bigint(20) unsigned DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `INDEX_ACCOUNT_NAME` (`name`)
-) ENGINE=InnoDB AUTO_INCREMENT=32209 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
- 

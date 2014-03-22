@@ -1,35 +1,34 @@
 __resources__["/clientManager.js"] = {
-	meta: {
-		mimetype: "application/javascript"
-	},
-	data: function(exports, require, module, __filename, __dirname) {
-		//var clientManager = require('Manager');
-		var heroSelectView = require('heroSelectView');//选角色管理
+  meta: {
+    mimetype: "application/javascript"
+  },
+  data: function(exports, require, module, __filename, __dirname) {
+    var heroSelectView = require('heroSelectView');  // role manager
 
-		var pomelo = window.pomelo;
-		var app = require('app');
-		var EntityType = require('consts').EntityType;
-		var Message = require('consts').MESSAGE;
-		var loginMsgHandler = require('loginMsgHandler');
-		var gameMsgHandler = require('gameMsgHandler');
+    var pomelo = window.pomelo;
+    var app = require('app');
+    var EntityType = require('consts').EntityType;
+    var Message = require('consts').MESSAGE;
+    var loginMsgHandler = require('loginMsgHandler');
+    var gameMsgHandler = require('gameMsgHandler');
     var switchManager = require('switchManager');
     var clientManager = require('clientManager');
     var dataApi = require('dataApi');
     var ResourceLoader = require('resourceLoader');
-		var utils = require('utils');
+    var utils = require('utils');
     var config = require('config');
 
     var alert = window.alert;
-		var self = this;
-		
-		var loading = false;
+    var self = this;
+
+    var loading = false;
     var httpHost = location.href.replace(location.hash, '');
 
-		pomelo.on('websocket-error', function(){
-			lodading = false;
-		});
+    pomelo.on('websocket-error', function(){
+      loading = false;
+    });
 
-		function init() {
+    function init() {
       //bind events
       $('#loginBtn').on('click', login);
       $('#registerBtn').on('click', register);
@@ -57,7 +56,7 @@ __resources__["/clientManager.js"] = {
         $('#id_registerFrame').addClass('f-dn');
         return false;
       });
-		}
+    }
 
     /**
      * login
@@ -87,7 +86,7 @@ __resources__["/clientManager.js"] = {
           alert('Username or password is invalid!');
           loading = false;
           return;
-        } 
+        }
         if (data.code !== 200) {
           alert('Username is not exists!');
           loading = false;
@@ -121,19 +120,18 @@ __resources__["/clientManager.js"] = {
      * route: connector.entryHandler.entry
      * response：
      * {
-     *   code: [Number], 
+     *   code: [Number],
      *   player: [Object]
      * }
      */
     function entry(host, port, token, callback) {
-      //初始化socketClient
-      //TODO for development
+      // init socketClient
+      // TODO for development
       if(host === '127.0.0.1') {
         host = config.GATE_HOST;
       }
       pomelo.init({host: host, port: port, log: true}, function() {
-        //token = 'd72357c4c7f9b6a8e0b6a93c4d8652b1903114819c36749e53b97d1a78372387';
-        pomelo.request('connector.entryHandler.entry', { token: token}, function(data) {
+        pomelo.request('connector.entryHandler.entry', {token: token}, function(data) {
           var player = data.player;
 
           if (callback) {
@@ -275,7 +273,7 @@ __resources__["/clientManager.js"] = {
           enterScene();
         }
       });
-      setTimeout(function(){ 
+      setTimeout(function(){
         if (!entered) {
           entered = true;
           enterScene();
@@ -306,8 +304,8 @@ __resources__["/clientManager.js"] = {
     }
 
     function enterScene(){
-      pomelo.request("area.playerHandler.enterScene",{ uid:pomelo.uid, playerId: pomelo.playerId, areaId: pomelo.areaId},function(data){
-        app.init(data.data);
+      pomelo.request("area.playerHandler.enterScene", null, function(data){
+        app.init(data);
       });
     }
 
@@ -319,18 +317,18 @@ __resources__["/clientManager.js"] = {
       if(!paths || !paths.path){
         return;
       }
-      var curPlayer = app.getCurArea().getCurPlayer();	
+      var curPlayer = app.getCurArea().getCurPlayer();
 
       var area = app.getCurArea();
       var sprite = curPlayer.getSprite();
-			var totalDistance = utils.totalDistance(paths.path);
-			var needTime = Math.floor(totalDistance / sprite.getSpeed() * 1000 + app.getDelayTime());
-			var speed = totalDistance/needTime * 1000;
+      var totalDistance = utils.totalDistance(paths.path);
+      var needTime = Math.floor(totalDistance / sprite.getSpeed() * 1000 + app.getDelayTime());
+      var speed = totalDistance/needTime * 1000;
       sprite.movePath(paths.path, speed);
-      pomelo.request('area.playerHandler.move',{ path: paths.path}, function(result) {
+      pomelo.request('area.playerHandler.move', {path: paths.path}, function(result) {
         if(result.code === Message.ERR){
           console.warn('curPlayer move error!');
-					sprite.translateTo(paths.path[0].x, paths.path[0].y);
+          sprite.translateTo(paths.path[0].x, paths.path[0].y);
         }
       });
       sprite.movePath(paths.path);
@@ -350,17 +348,25 @@ __resources__["/clientManager.js"] = {
         if (entity.died) {
           return;
         }
-        pomelo.notify('area.fightHandler.attack',{areaId :areaId, playerId: playerId, targetId: targetId, skillId: skillId });
+        if (entity.type === EntityType.PLAYER) {
+          var curPlayer = app.getCurPlayer();
+          pomelo.emit('onPlayerDialog', {targetId: targetId, targetPlayerId: entity.id,
+            targetTeamId: entity.teamId, targetIsCaptain: entity.isCaptain,
+            myTeamId: curPlayer.teamId, myIsCaptain: curPlayer.isCaptain});
+        } else if (entity.type === EntityType.MOB) {
+          pomelo.request('area.fightHandler.attack',{targetId: targetId}, function() {});
+        }
       } else if (entity.type === EntityType.NPC) {
         pomelo.notify('area.playerHandler.npcTalk',{areaId :areaId, playerId: playerId, targetId: targetId});
       } else if (entity.type === EntityType.ITEM || entity.type === EntityType.EQUIPMENT) {
-				var curPlayer = app.getCurPlayer();
-				var bag = curPlayer.bag;
-				if (bag.isFull()) {
-					curPlayer.getSprite().hintOfBag();	
-					return;
-				}
-        pomelo.notify('area.playerHandler.pickItem',{areaId :areaId, playerId: playerId, targetId: targetId});
+        var curPlayer = app.getCurPlayer();
+        var bag = curPlayer.bag;
+        if (bag.isFull()) {
+          curPlayer.getSprite().hintOfBag();
+          return;
+        }
+        pomelo.request('area.playerHandler.pickItem',
+          {areaId :areaId, playerId: playerId, targetId: targetId}, function() {});
       }
     }
 
@@ -396,10 +402,9 @@ __resources__["/clientManager.js"] = {
     }
 
 
-    //暴露的接口和对象
+    // export object and interfaces
     exports.init = init;
     exports.entry = entry;
-    //exports.register = register;
     exports.enterScene = enterScene;
     exports.move = move;
     exports.loadResource = loadResource;

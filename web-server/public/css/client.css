@@ -12,7 +12,7 @@
    
    详见前端页面框架平台之CSS规范。
  */
- 
+
 /* 重置&默认(reset&base)(tags) */
 body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,code,form,fieldset,legend,input,button,textarea,p,blockquote,th,td{margin:0;padding:0;}
 table{border-collapse:collapse;border-spacing:0;}
@@ -47,7 +47,7 @@ body {
 }
 
 html body{
-  overflow: auto;
+    overflow: auto;
 }
 
 .g-doc{width:100%;height:100%;}
@@ -108,211 +108,231 @@ span.rank-player-score {
 }
 
 .hide {
-  display: none;
+    display: none;
 }
 
 .nick {
-   cursor:pointer;
+    cursor:pointer;
 }
 
 /**** skill cool down ***/
 body .skill-box {
-  position: relative;
-  overflow: hidden;
+    position: relative;
+    overflow: hidden;
 }
 .skill-box img:active {
-  width: 36px;
-  height: 36px;
-  top: 2px;
-  left: 2px;
+    width: 36px;
+    height: 36px;
+    top: 2px;
+    left: 2px;
 }
 .skill-box .cover
 {
-  display: none;
-  position: absolute;
-  overflow: hidden;
-  border: 20px solid #000001;
+    display: none;
+    position: absolute;
+    overflow: hidden;
+    border: 20px solid #000001;
 
-  -moz-opacity: 0.6;
-  -khtml-opacity: 0.6;
-  opacity: 0.6;
+    -moz-opacity: 0.6;
+    -khtml-opacity: 0.6;
+    opacity: 0.6;
 
 }
 
 .skill-box .layer0
 {
-  height: 0px;
-  left: 20px;
-  top: -20px;
+    height: 0px;
+    left: 20px;
+    top: -20px;
 
-  border-top: 20px solid transparent;
-  border-left: 0px solid transparent;
+    border-top: 20px solid transparent;
+    border-left: 0px solid transparent;
 }
 
 .skill-box .layer1
 {
-  width: 0px;
-  left: 20px;
-  top: 20px;
+    width: 0px;
+    left: 20px;
+    top: 20px;
 
-  border-top: 0px solid transparent;
-  border-right: 20px solid transparent;
+    border-top: 0px solid transparent;
+    border-right: 20px solid transparent;
 }
 
 .skill-box .layer2
 {
-  left: -20px;
-  top: 20px;
+    left: -20px;
+    top: 20px;
 
-  border-bottom: 20px solid transparent;
-  border-right: 0px solid transparent;
+    border-bottom: 20px solid transparent;
+    border-right: 0px solid transparent;
 }
 
 .skill-box .layer3
 {
-  left: -20px;
-  top: -20px;
+    left: -20px;
+    top: -20px;
 
-  border-bottom: 0px solid transparent;
-  border-left: 20px solid transparent;
+    border-bottom: 0px solid transparent;
+    border-left: 20px solid transparent;
 }
 
 .m-detllay p.s-fc6 a {
-  color: #D41313;
-  margin-right: 10px;
-  text-decoration: underline;
-  padding: 1px;
+    color: #D41313;
+    margin-right: 10px;
+    text-decoration: underline;
+    padding: 1px;
 }
 .m-detllay p.s-fc6 a:hover {
-  font-weight: bold;
+    font-weight: bold;
 }
 
 #game-mask {
-  opacity: 0.65;
-  background-color: #000;
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  display: none;
+    opacity: 0.65;
+    background-color: #000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    display: none;
 }
 #game-mask div {
-  width:200px;
-  margin: auto;
-  margin-top: 260px;
-  font-size: 25px;
-  color: #fff;
-  text-shadow: 0 0 2px #000;
+    width:200px;
+    margin: auto;
+    margin-top: 260px;
+    font-size: 25px;
+    color: #fff;
+    text-shadow: 0 0 2px #000;
 }
 
 /*npc talk*/
 #dialog .opt.one-btn {
-  width: 70px;
+    width: 70px;
 }
 #dialog .opt.one-btn .f-fl {
-  display: none;
+    display: none;
 }
 #dialog .wincnt p {
-  width: 380px;
-  margin-left: 96px;
-  height: 90px;
-  text-align: left;
-  overflow-x: hidden;
-  overflow-y: auto;
+    width: 380px;
+    margin-left: 96px;
+    height: 90px;
+    text-align: left;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 #dialog .wincnt .opt {
-  margin: 0 auto 0;
+    margin: 0 auto 0;
 }
+
+/* playerDialog */
+#playerDialog .opt4player {
+    width: 243px;
+    margin: 76px auto;
+}
+
+/* teamDialog */
+#teamDialog .opt4team {
+    width: 243px;
+    margin: 62px auto;
+}
+
+/* kickOutDialog */
+#kickOutDialog .wincnt .opt4kickOut {
+    width: 175px;
+    height: 30px;
+    margin: 75px auto;
+}
+
 .player .zj .wtype li {
-  position: relative;
+    position: relative;
 }
 .player .zj .wtype li:hover .m-detllay {
-  display: block;
+    display: block;
 }
 .player .zj .m-detllay p {
-  height: 17px;
-  line-height: 17px;
+    height: 17px;
+    line-height: 17px;
 }
 
 #frame-rate {
-  position: absolute;
-  top: 10px;
-  right: 17px;
-  color: red;
-  font-size: 18px;
-  font-weight: bold;
+    position: absolute;
+    top: 10px;
+    right: 17px;
+    color: red;
+    font-size: 18px;
+    font-weight: bold;
 }
 
 #taskPanel .task-list li {
-  cursor:pointer;
-  padding-left: 5px;
+    cursor:pointer;
+    padding-left: 5px;
 }
 #taskPanel .task-list li:hover, #taskPanel .task-list li.selected {
-  background-color: #111;
+    background-color: #111;
 }
 
 #taskPanel .intro p.u-tlt, #taskPanel .zx > p.u-tlt{
-  text-indent: 0;
+    text-indent: 0;
 }
 #taskPanel .intro p.u-tlt span, #taskPanel .zx > p.u-tlt span {
-  color: #F7DF9B;
-  margin-left: 5px;
-  line-height: 27px;
+    color: #F7DF9B;
+    margin-left: 5px;
+    line-height: 27px;
 }
 #taskPanel .zx > p.u-tlt span{
-  margin-left: 12px;
+    margin-left: 12px;
 }
 #taskPanel .intro p.u-tlt span a{
-  color: #D41313;
-  text-decoration: underline;
+    color: #D41313;
+    text-decoration: underline;
 }
 #taskPanel .opt{
-  margin-right: 18px;
+    margin-right: 18px;
 }
 #notice{
-  position: absolute;
-  width: 200px;
-  opacity: 0.75;
-  background-color: #333;
-  color: #eee;
-  padding:12px;
-  border: 1px solid #000;
-  top: -52px;
-  right: 32px;
-  border-radius: 8px;
-  -webkit-box-shadow: 0 0 6px #000;
-  overflow: hidden;
+    position: absolute;
+    width: 200px;
+    opacity: 0.75;
+    background-color: #333;
+    color: #eee;
+    padding:12px;
+    border: 1px solid #000;
+    top: -52px;
+    right: 32px;
+    border-radius: 8px;
+    -webkit-box-shadow: 0 0 6px #000;
+    overflow: hidden;
 }
 #notice p{
-  font-size: 13px;
-  text-align: center;
-  margin:3px 0; 
-  padding:0; 
-  line-height:18px;
+    font-size: 13px;
+    text-align: center;
+    margin:3px 0;
+    padding:0;
+    line-height:18px;
 }
 .clear{clear:both}
 /*menu*/
 .m-nav .itm03{
-  position: relative;
+    position: relative;
 }
 .m-nav .itm03 .flag{
-  position: absolute;
-  background: url(../image/icon.png) no-repeat 9999px 9999px;
-  top: -29px;
-  height: 0;
+    position: absolute;
+    background: url(../image/icon.png) no-repeat 9999px 9999px;
+    top: -29px;
+    height: 0;
 }
 
 .m-nav .itm03.f1 .flag{
-  height: 27px;
-  background-position: 2px -423px;
+    height: 27px;
+    background-position: 2px -423px;
 }
 .m-nav .itm03.f2 .flag{
-  height: 27px;
-  background-position: -1px -391px;
+    height: 27px;
+    background-position: -1px -391px;
 }
 #id_loadRate {
-  -webkit-transition: width 0.6s ease;
+    -webkit-transition: width 0.6s ease;
 }
 
 /*--- clinet css --------*/
@@ -461,25 +481,25 @@ body .skill-box {
 .a-fadeinB{-webkit-animation:10s ease-out backwards;-moz-animation:10s ease-out backwards;-ms-animation:10s ease-out backwards;animation:10s ease-out backwards;}
 .a-fadeinB{-webkit-animation-name:fadeinB;-moz-animation-name:fadeinB;-ms-animation-name:fadeinB;animation-name:fadeinB;}
 @-webkit-keyframes fadeinB{
-  0%{opacity:0.3;-webkit-transform:translateY(300px);}
-  100%{opacity:1;-webkit-transform:translateY(0);}
+    0%{opacity:0.3;-webkit-transform:translateY(300px);}
+    100%{opacity:1;-webkit-transform:translateY(0);}
 }
 @-moz-keyframes fadeinB{
-  0%{opacity:0.3;-moz-transform:translateY(300px);}
-  100%{opacity:1;-moz-transform:translateY(0);}
+    0%{opacity:0.3;-moz-transform:translateY(300px);}
+    100%{opacity:1;-moz-transform:translateY(0);}
 }
 @-ms-keyframes fadeinB{
-  0%{opacity:0.3;-ms-transform:translateY(300px);}
-  100%{opacity:1;-ms-transform:translateY(0);}
+    0%{opacity:0.3;-ms-transform:translateY(300px);}
+    100%{opacity:1;-ms-transform:translateY(0);}
 }
 @keyframes fadeinB{
-  0%{opacity:0.3;transform:translateY(300px);}
-  100%{opacity:1;transform:translateY(0);}
+    0%{opacity:0.3;transform:translateY(300px);}
+    100%{opacity:1;transform:translateY(0);}
 }
 
 @media screen and (max-height:800px){
-  .m-admissionanima .showimg{height:400px;}
-  .m-admissionanima .showimg .text{top:-75px;}
+    .m-admissionanima .showimg{height:400px;}
+    .m-admissionanima .showimg .text{top:-75px;}
 }
 
 #authBtn li {display: none;}

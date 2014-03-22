@@ -4,7 +4,7 @@ __resources__["/entity.js"] = {meta: {mimetype: "application/javascript"}, data:
 	 */
 	var Sprite = require('sprite');
   var EventEmitter = window.EventEmitter;
-			
+
   /**
    * Initialize a new 'Entity' with the given 'opts'.
    * Entity inherits EventEmitter
@@ -16,7 +16,6 @@ __resources__["/entity.js"] = {meta: {mimetype: "application/javascript"}, data:
     EventEmitter.call(this);
     this.entityId = opts.entityId;
     this.kindId = opts.kindId;
-    this.kindName = opts.kindName;
     this.englishName = opts.englishName;
     this.type = opts.type;
 
@@ -24,7 +23,7 @@ __resources__["/entity.js"] = {meta: {mimetype: "application/javascript"}, data:
     this.x = opts.x;
     this.y = opts.y;
 
-    //global object 
+    //global object
     this.scene = opts.scene;
     this.map = opts.map;
 
@@ -61,8 +60,8 @@ __resources__["/entity.js"] = {meta: {mimetype: "application/javascript"}, data:
   };
 
 	/**
-	 * Destory entity. when the entity is killed or removed, it is invoke. 
-	 * 
+	 * Destory entity. when the entity is killed or removed, it is invoke.
+	 *
 	 * @api public
 	 */
   Entity.prototype.destory = function() {
@@ -72,10 +71,10 @@ __resources__["/entity.js"] = {meta: {mimetype: "application/javascript"}, data:
 
   /**
    * set value of property
-   * 
+   *
    * @param {String} property
    * @param {Object} value
-   * @api public 
+   * @api public
    */
   Entity.prototype.set = function(property, value) {
     this[property] = value;

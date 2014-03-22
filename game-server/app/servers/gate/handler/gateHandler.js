@@ -21,10 +21,11 @@ Handler.prototype.queryEntry = function(msg, session, next) {
 
 	var connectors = this.app.getServersByType('connector');
 	if(!connectors || connectors.length === 0) {
-		next(null, {code: Code.GATE.NO_SERVER_AVAILABLE});
+		next(null, {code: Code.GATE.FA_NO_SERVER_AVAILABLE});
 		return;
 	}
 
 	var res = dispatcher.dispatch(uid, connectors);
-	next(null, {code: Code.OK, host: res.host, port: res.wsPort});
+	next(null, {code: Code.OK, host: res.host, port: res.clientPort});
+  // next(null, {code: Code.OK, host: res.pubHost, port: res.clientPort});
 };

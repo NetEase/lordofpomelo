@@ -51,9 +51,12 @@
     <script src='./js/lib/colorbox/level.js'></script>
     <script src='./js/lib/colorbox/leveltransition.js'></script>
     <script src='./js/lib/colorbox/colorbox_module.js'></script>
-    <script src="js/lib/pomelo-client.js" type="text/javascript"></script>
-    <script src="js/lib/jquery-1.8.0.min.js" type="text/javascript"></script>
-    <script src="js/lib/socket.io.js" type="text/javascript"></script>
+
+    <script src="js/lib/build/build.js" type="text/javascript"></script>
+    <script type="text/javascript">
+      require('boot');
+    </script>
+
     <script src="js/ui/clientManager.js" type="text/javascript"></script>
     <script src="js/ui/switchManager.js" type="text/javascript"></script>
     <script src="js/ui/heroSelectView.js" type="text/javascript"></script>
@@ -62,11 +65,21 @@
     <script src="js/ui/equipmentsPanelView.js" type="text/javascript"></script>
     <script src="js/ui/bagPanelView.js" type="text/javascript"></script>
     <script src="js/ui/taskPanelView.js" type="text/javascript"></script>
+    <script src="js/ui/teamPanelView.js" type="text/javascript"></script>
+    <script src="js/ui/kickOutPanelView.js" type="text/javascript"></script>
     <script src="js/ui/dialogPanelView.js" type="text/javascript"></script>
+    <script src="js/ui/playerDialogPanelView.js" type="text/javascript"></script>
+    <script src="js/ui/applyJoinTeamPanelView.js" type="text/javascript"></script>
+    <script src="js/ui/inviteJoinTeamPanelView.js" type="text/javascript"></script>
     <script src="js/main.js"></script>
     <script src="js/handler/loginMsgHandler.js" type="text/javascript"></script>
     <script src="js/handler/gameMsgHandler.js" type="text/javascript"></script>
     <script src="js/handler/npcHandler.js" type="text/javascript"></script>
+    <script src="js/handler/playerHandler.js" type="text/javascript"></script>
+    <script src="js/handler/teamHandler.js" type="text/javascript"></script>
+    <script src="js/handler/kickOutHandler.js" type="text/javascript"></script>
+    <script src="js/handler/applyJoinTeamHandler.js" type="text/javascript"></script>
+    <script src="js/handler/inviteJoinTeamHandler.js" type="text/javascript"></script>
     <script src="js/handler/taskHandler.js" type="text/javascript"></script>
     <script src="js/utils/dataApi.js" type="text/javascript"></script>
     <script src="js/utils/resourceLoader.js" type="text/javascript"></script>
@@ -126,7 +139,7 @@
               <div class="bd">
                 <!-- 登陆输入 -->
                 <div class="m-input" title="username"><div class="caption">Username</div><div class="input fiximg"><input id="loginUser" type="text" /></div></div>
-                <div class="m-input" title="password"><div class="caption">Password</div><div class="input fiximg"><input id="loginPwd" type="password"/></div></div>
+                <div class="m-input" title="password"><div class="caption">Password</div><div class="input fiximg"><input id="loginPwd" type="password" value=""/></div></div>
                 <div class="m-3col"><div class="col1" style="display:none;">Remember password：</div><div style="display:none;" class="col2 fiximg"><div class="checkbox" checked="checked"></div></div><div class="col3" title="login"><button id="loginBtn"></button></div></div>
               </div>
               <div class="ft">
@@ -150,7 +163,7 @@
             <div class="m-login">
               <div class="hd">
                 <div class="tt">
-                  <img class="fiximg" src="image/registerTT.png" />    
+                  <img class="fiximg" src="image/registerTT.png" />
                 </div>
               </div>
               <div class="bd">
@@ -165,15 +178,15 @@
             </div>
           </div>
         </div>
-      </div> 
+      </div>
     </div>
-    
+
     <div id="gamePrelude" class="m-admissionanima f-dn">
       <div class="logo"><div class="m-logo fiximg"></div></div>
       <div class="showimg">
         <div class="img"><img src="image/admissionanimabg.jpg"></div>
         <div class="text a-fadeinB"><img src="image/admissionanimatext.png"></div>
-        <div class="mask"></div>                  
+        <div class="mask"></div>
       </div>
       <button class="skipbnt" id="id_skipbnt">SKIP</button>
     </div>
@@ -193,7 +206,7 @@
                 <div class="targetrolebg fiximg"></div>
                 <div class="targetrole fiximg"></div>
               </div>
-            </div> 
+            </div>
           </div>
         </div>
         <div class="order">
@@ -220,12 +233,12 @@
               <div class="bd">
                 <div class="m-loadrate">
                   <div class="loadbg fiximg"></div>
-                  <div class="loadcover fiximg" id="id_loadRate"></div>    
+                  <div class="loadcover fiximg" id="id_loadRate"></div>
                 </div>
               </div>
             </div>
           </div>
-          <div class="bg1 fiximg"></div>  
+          <div class="bg1 fiximg"></div>
         </div>
       </div>
     </div>
@@ -244,8 +257,10 @@
             <li class="itm01"><span>Role</span></li>
             <li class="itm02"><span>Equip</span></li>
             <li class="itm03"><span>Quest</span><span class="flag"></span></li>
+            <li class="itm04"><span>Team</span></li>
           </ul>
         </nav>
+
         <!-- 玩家 -->
         <section class="m-player">
           <div class="avatar"><img src="image/avatar.png" /></div>
@@ -259,6 +274,55 @@
                 <span class="outer" style="width:30%"><span class="inner"></span></span>
               </div>
             </div>
+          </div>
+          <div class="teamMenu">
+            <ol class="menuItem">
+              <li id="createTeam" style="height:20px;width:90px;border:2px solid blue;background-color:lightblue;">CreateTeam</li>
+              <li id="leaveTeam" style="height:20px;width:90px;border:2px solid blue;background-color:lightblue;">LeaveTeam</li>
+              <li id="disbandTeam" style="height:20px;width:90px;border:2px solid blue;background-color:lightblue;">DisbandTeam</li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- TeamMate-1 -->
+        <section class="m-team-mate-1">
+          <div class="avatar"><img src="image/avatar.png" /></div>
+          <div class="info">
+            <p class="name"><span>TeamMate1</span><span>1</span><span>1</span></p>
+            <div class="level">
+              <div class="u-levbar">
+                <span class="outer" style="width:80%"><span class="inner"></span></span>
+              </div>
+              <div class="u-levbar u-levbar-1">
+                <span class="outer" style="width:30%"><span class="inner"></span></span>
+              </div>
+            </div>
+          </div>
+          <div class="teamMenu">
+            <ol class="menuItem">
+              <li id="kickOut" style="height:20px;width:90px;border:2px solid blue;background-color:lightblue;">KickOut</li>
+            </ol>
+          </div>
+        </section>
+
+        <!-- TeamMate-2 -->
+        <section class="m-team-mate-2">
+          <div class="avatar"><img src="image/avatar.png" /></div>
+          <div class="info">
+            <p class="name"><span>TeamMate2</span><span>2</span><span>2</span></p>
+            <div class="level">
+              <div class="u-levbar">
+                <span class="outer" style="width:80%"><span class="inner"></span></span>
+              </div>
+              <div class="u-levbar u-levbar-1">
+                <span class="outer" style="width:30%"><span class="inner"></span></span>
+              </div>
+            </div>
+          </div>
+          <div class="teamMenu">
+            <ol class="menuItem">
+              <li id="kickOut" style="height:20px;width:90px;border:2px solid blue;background-color:lightblue;">KickOut</li>
+            </ol>
           </div>
         </section>
         <!-- ----------------------------top资产---------------------------- -->
@@ -281,6 +345,7 @@
                   <li class="itm selected">all</li>
                   <li class="itm">system</li>
                   <li class="itm">chat</li>
+                  <li class="itm">team</li>
                 </ul>
               </nav>
               <div class="chatport">
@@ -300,7 +365,7 @@
                   <span class="s-fc6">all</span>
                   <span class="s-fc7">race</span>
                   <span class="s-fc8">area</span>
-                  <span class="s-fc9">gang</span>
+                  <span class="s-fc9">team</span>
                 </div>
               </div>
               <input type="text" value="" class="u-txt u-content" />
@@ -337,6 +402,70 @@
           </section>
           <span class="u-close">close</span>
         </div>
+
+        <!-- 单击队伍按钮时弹出的对话框 -->
+        <div id="teamDialog" class="m-window" style="z-index:1000;display:none;">
+          <section class="wincnt">
+            <p>What do you wanna do?</p>
+            <p class="teamName"></p>
+            <div class="opt4team">
+              <span class="u-btn f-fl">Create</span>
+              <span class="u-btn f-fm">Leave</span>
+              <span class="u-btn f-fr">Disband</span>
+            </div>
+          </section>
+          <span class="u-close">Close</span>
+        </div>
+
+        <!-- 单击队员头像时弹出的对话框 -->
+        <div id="kickOutDialog" class="m-window" style="z-index:1000;display:none;">
+            <section class="wincnt">
+                <p>What do you wanna do?</p>
+                <div class="opt4kickOut">
+                    <span class="u-btn f-fl">Cancel</span>
+                    <span class="u-btn f-fr">KickOut</span>
+                </div>
+            </section>
+            <span class="u-close">Close</span>
+        </div>
+
+        <!-- 单击其他角色时弹出的对话框 -->
+        <div id="playerDialog" class="m-window" style="z-index:1000;display:none;">
+          <section class="wincnt">
+            <p>What do you wanna do?</p>
+            <div class="opt4player">
+              <span class="u-btn f-fl">Attack</span>
+              <span class="u-btn f-fm">Apply</span>
+              <span class="u-btn f-fr">Invite</span>
+            </div>
+          </section>
+          <span class="u-close">Close</span>
+        </div>
+
+        <!-- 是否同意申请者加入队伍对话框 -->
+        <div id="applyJoinTeamDialog" class="m-window" style="z-index:1000;display:none;">
+          <section class="wincnt">
+            <p>Applicant's info</p>
+            <div class="opt">
+              <span class="u-btn f-fl">Reject</span>
+              <span class="u-btn f-fr">Accept</span>
+            </div>
+          </section>
+          <span class="u-close">close</span>
+        </div>
+
+        <!-- 是否接受邀请加入队伍对话框 -->
+        <div id="inviteJoinTeamDialog" class="m-window" style="z-index:1000;display:none;">
+          <section class="wincnt">
+            <p>Inviter(Captain)'s info</p>
+            <div class="opt">
+              <span class="u-btn f-fl">Reject</span>
+              <span class="u-btn f-fr">Accept</span>
+            </div>
+          </section>
+          <span class="u-close">close</span>
+        </div>
+
         <!-- 弹出层  主角+技能 -->
         <div id="playerPanel" class="m-layer player" style="display:none;">
           <nav class="m-tab">
@@ -377,8 +506,8 @@
                   <li><span class="name3"></span></li>
                   <li><span class="name4"></span></li>
                   <li><span class="name5"><img src="" alt="" /></span></li>
-                  <li><span class="name6"></li>
-                    <li><span class="name7"></li>
+                  <li><span class="name6"></span></li>
+                    <li><span class="name7"></span></li>
                     </ul>
                     <ul class="type1">
                       <li><span class="name8"></span></li>
@@ -483,21 +612,21 @@
                   <p class="tlt f-hide">Quest</p>
                   <div class="drama">
                     <ul class="task-list"></ul>
-                  </div>				 
+                  </div>
                   <p class="tlt f-hide">Grow Quest</p>
                   <div class="grow"></div>
-                </div> 
+                </div>
                 <div class="intro f-fr">
                   <p class="u-tlt"></p>
                   <div class="introduce">
                     <p class="tlt f-hide">Intro</p>
                     <div class="introcnt"></div>
                   </div>
-                  <div class="adward">				 	
-                    <p class="tlt f-hide">Reward</p>					
+                  <div class="adward">
+                    <p class="tlt f-hide">Reward</p>
                     <div class="adwardcnt"></div>
                   </div>
-                </div> 
+                </div>
                 <div class="opt clear">
                   <span class="u-btn f-fr">Accept</span>
                 </div>

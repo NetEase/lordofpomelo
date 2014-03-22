@@ -60,7 +60,8 @@ __resources__["/taskPanelView.js"] = {meta: {mimetype: "application/javascript" 
 				$intro.html('');
 				$adward.html('');
 				$state.html('');
-				$notice.html('<span>There is not new task to be completed!</span>'); 
+				$notice.html('<span>There is not new task to be completed!</span>');
+        $btn.hide();
 			}
 		});
     $btn.off().on('click', function() {

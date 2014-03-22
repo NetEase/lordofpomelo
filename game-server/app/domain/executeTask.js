@@ -2,7 +2,6 @@
  * Module dependencies
  */
 var consts = require('../consts/consts');
-var area = require('./area/area');
 var messageService = require('./messageService');
 var taskData = require('../util/dataApi').task;
 var taskDao = require('../dao/taskDao');
@@ -29,13 +28,13 @@ executeTask.updateTaskData = function(player, killed) {
 	var reData = null;
 	for (var id in tasks) {
 		var task = tasks[id];
-		if (typeof task === 'undefined' || task.taskState === consts.TaskState.COMPLETED_NOT_DELIVERY)	{
+		if (typeof task === 'undefined' || task.taskState >= consts.TaskState.COMPLETED_NOT_DELIVERY)	{
 			continue;
 		}
 		var taskDesc = task.desc.split(';');
 		var taskType = task.type;
 		var killedNum = task.completeCondition[taskDesc[1]];
-		if (taskType == consts.TaskType.KILL_MOB && killed.type === consts.EntityType.MOB &&	killed.kindId == taskDesc[1]) {
+		if (taskType === consts.TaskType.KILL_MOB && killed.type === consts.EntityType.MOB && killed.kindId === parseInt(taskDesc[1])) {
 			task.taskData.mobKilled += 1;
 			reData = reData || {};
 			reData[id] = task.taskData;
@@ -44,7 +43,7 @@ executeTask.updateTaskData = function(player, killed) {
 			if (player.curTasks[id].taskData.mobKilled >= killedNum) {
 				isCompleted(player, id);
 			}
-		} else if (taskType == consts.TaskType.KILL_PLAYER && killed.type === consts.EntityType.PLAYER && killed.level >= player.level) {
+		} else if (taskType === consts.TaskType.KILL_PLAYER && killed.type === consts.EntityType.PLAYER && killed.level >= player.level) {
 			task.taskData.playerKilled += 1;
 			reData = reData || {};
 			reData[id] = task.taskData;
@@ -56,10 +55,7 @@ executeTask.updateTaskData = function(player, killed) {
 		}
 	}
 	if (!!reData) {
-	  messageService.pushMessageToPlayer({uid:player.userId, sid : player.serverId}, {
-		route: 'onUpdateTaskData',
-		taskData: reData
-		});
+	  messageService.pushMessageToPlayer({uid:player.userId, sid : player.serverId}, 'onUpdateTaskData', reData);
 	}
 };
 
@@ -72,9 +68,7 @@ executeTask.updateTaskData = function(player, killed) {
  */
 var isCompleted = function(player, taskId) {
 		player.completeTask(taskId);
-    messageService.pushMessageToPlayer({uid:player.userId, sid : player.serverId}, {
-		 route: 'onTaskCompleted',
-		 code: 200,
+    messageService.pushMessageToPlayer({uid:player.userId, sid : player.serverId}, 'onTaskCompleted', {
 		 taskId: taskId
 	 });
 };

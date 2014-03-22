@@ -127,6 +127,14 @@ taskDao.createTask = function(playerId, kindId, cb) {
 	});
 };
 
+// save the player's task data immediately
+taskDao.tasksUpdate = function(tasks) {
+  for (var id in tasks) {
+    var task = tasks[id];
+    this.update(task);
+  }
+};
+
 /**
  * update task for id
  * @param {Object} val The update parameters

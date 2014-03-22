@@ -3,12 +3,12 @@
  */
 
 var dataApi = require('../../../util/dataApi');
-var area = require('../../../domain/area/area');
 var consts = require('../../../consts/consts');
 var taskDao = require('../../../dao/taskDao');
 var logger = require('pomelo-logger').getLogger(__filename);
 var taskReward = require('../../../domain/taskReward');
 var pomelo = require('pomelo');
+var underscore = require('underscore');
 
 /**
  * Expose 'Entity' constructor
@@ -28,16 +28,16 @@ var handler = module.exports;
 
 handler.startTask = function(msg, session, next) {
 	var playerId = msg.playerId, taskId = msg.taskId;
-	var player = area.getPlayer(playerId);
+	var player = session.area.getPlayer(playerId);
 	var curTasks = player.curTasks;
-	//check out the curTasks, if curTasks exist, return. 
-	for (var task in curTasks) {
+	//check out the curTasks, if curTasks exist, return.
+	for (var _ in curTasks) {
 		if (!!curTasks[taskId])
 		return;
 	}
 	taskDao.createTask(playerId, taskId, function(err,task) {
 		if (!!err) {
-			logger.error('createTask failed');	
+			logger.error('createTask failed');
 		} else {
 		player.startTask(task);
 		var taskData = {
@@ -56,7 +56,7 @@ handler.startTask = function(msg, session, next) {
 		next(null, {
 			code: consts.MESSAGE.RES,
 			taskData: taskData
-		});	
+		});
 		}
 	});
 };
@@ -74,7 +74,7 @@ handler.startTask = function(msg, session, next) {
 
 handler.handoverTask = function(msg, session, next) {
 	var playerId = msg.playerId;
-	var player = area.getPlayer(playerId);
+	var player = session.area.getPlayer(playerId);
 	var tasks = player.curTasks;
 	var taskIds = [];
 	for (var id in tasks) {
@@ -83,7 +83,7 @@ handler.handoverTask = function(msg, session, next) {
 			taskIds.push(id);
 		}
 	}
-	taskReward.reward(player, taskIds);
+	taskReward.reward(session.area, player, taskIds);
 	player.handOverTask(taskIds);
 	next(null, {
 		code: consts.MESSAGE.RES,
@@ -140,9 +140,34 @@ handler.getHistoryTasks = function(msg, session, next) {
  */
 
 handler.getNewTask = function(msg, session, next) {
-  var player = area.getPlayer(msg.playerId);
+  var player = session.area.getPlayer(msg.playerId);
   var tasks = player.curTasks;
-	var length = tasks.length;
+  if(!underscore.isEmpty(tasks)) {
+    var keysList = underscore.keys(tasks);
+    keysList = underscore.filter(keysList, function(tmpId) {
+      var tmpTask = tasks[tmpId];
+      if(tmpTask.taskState <= consts.TaskState.COMPLETED_NOT_DELIVERY) {
+        return true;
+      } else {
+        return false;
+      }
+    });
+    if(keysList.length > 0) {
+      var maxId = underscore.max(keysList);
+      var task = dataApi.task.findById(tasks[maxId].kindId);
+      if(!task) {
+        logger.error('getNewTask failed!');
+        next(new Error('fail to getNewTask!'));
+      } else {
+        next(null, {
+          code: consts.MESSAGE.RES,
+          task: task
+        });
+      }
+      return;
+    }
+  }
+
 	var id = 0;
 	taskDao.getTaskByPlayId(msg.playerId, function(err, tasks) {
 		if (!!err) {

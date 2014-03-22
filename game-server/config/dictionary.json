@@ -1,0 +1,12 @@
+[
+	"onDropItem",
+	"onAttack",
+	"onDied",
+	"onMove",
+	"onUpgrage",
+	"onPickItem",
+	"onRevive",
+	"addEntities",
+	"onRemoveEntities",
+	"onPathCheckout"
+]

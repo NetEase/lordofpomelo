@@ -13,9 +13,9 @@
  * Action of attack, attacker consume mp while target reduce.
  *
  * @param {Character} attacker
- * @param {Character} target 
+ * @param {Character} target
  * @param {Object} skill
- * @return {Object}  
+ * @return {Object}
  * @api public
  */
 var attack = function(attacker, target, skill) {
@@ -27,7 +27,7 @@ var attack = function(attacker, target, skill) {
 //	if(Math.random() < missRate){
 //			return {result: consts.AttackResult.MISS, damage: 0, mpUse: skill.skillData.mp};
 //	}
-	
+
 	var damageValue = formula.calDamage(attacker, target, skill);
 	target.hit(attacker, damageValue);
 	attacker.reduceMp(skill.skillData.mp);
@@ -44,7 +44,7 @@ var attack = function(attacker, target, skill) {
 	}else{
 		skill.coolDownTime = Date.now() + Number(skill.skillData.cooltime)*1000;
 	}
-	
+
 	if (target.died) {
 		var items = attacker.afterKill(target);
 		return {result: consts.AttackResult.KILLED, damage: damageValue, mpUse: skill.skillData.mp, items: items};
@@ -67,7 +67,7 @@ var addBuff = function(attacker, target, buff) {
 
 /**
  * Initialize a new 'FightSkill' with the given 'opts'.
- * 
+ *
  * @param {Object} opts
  * @api public
  *
@@ -79,7 +79,6 @@ var FightSkill = function(opts) {
 	this.playerId = opts.playerId;
 	this.skillData = dataApi.fightskill.findById(this.skillId);
 	this.name = this.skillData.name;
-	this.buff = opts.buff;
 	this.coolDownTime = 0;
 };
 
@@ -89,7 +88,7 @@ util.inherits(FightSkill, Persistent);
 /**
  * Check out fightskill for attacker.
  *
- * @param {Character} attacker 
+ * @param {Character} attacker
  * @param {Character} target
  * @return {Object}  NOT_IN_RANGE, NOT_COOLDOWN, NO_ENOUGH_MP
  */

@@ -52,6 +52,16 @@
         }
       ,"backups": 5,
       "category":"crash-log"
+    },
+    {
+      "type": "file",
+      "filename": "./logs/admin.log",
+      "fileSize": 1048576,
+      "layout": {
+          "type": "basic"
+        }
+      ,"backups": 5,
+      "category":"admin-log"
     }
   ],
 

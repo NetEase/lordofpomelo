@@ -5,7 +5,7 @@ var consts = require('../../consts/consts');
 
 /**
  * Try attack action.
- * 
+ *
  * @param opts {Object} {blackboard: blackboard, getSkillId: get skill id cb}
  */
 var Action = function(opts) {
@@ -20,7 +20,7 @@ var pro = Action.prototype;
 
 /**
  * Try to invoke the attack skill that returned by getSkillId callback.
- * 
+ *
  * @return {Number} bt.RES_SUCCESS if success to invoke the skill;
  *					bt.RES_FAIL if any fails and set distanceLimit to blackboard stands for beyond the skill distance.
  */
@@ -38,7 +38,7 @@ pro.doAction = function() {
 		}
 		return bt.RES_FAIL;
 	}
-	
+
 	if(targetId !== character.target) {
 		//if target change abort current attack and try next action
 		this.blackboard.curTarget = null;
@@ -47,13 +47,12 @@ pro.doAction = function() {
 
 	if(target.type !== consts.EntityType.MOB &&
 		target.type !== consts.EntityType.PLAYER){
-		console.error('The target type error!' + target.type);
-		return bt.RES_FAIL;	
+		return bt.RES_FAIL;
 	}
-	
+
 	var res = character.attack(target, this.getSkillId(this.blackboard));
 
-	if(res.result === consts.AttackResult.SUCCESS || 
+	if(res.result === consts.AttackResult.SUCCESS ||
 		res.result === consts.AttackResult.KILLED ||
 		res.result === consts.AttackResult.MISS ||
 		res.result === consts.AttackResult.NOT_COOLDOWN) {
@@ -64,6 +63,6 @@ pro.doAction = function() {
 	if(res.result === consts.AttackResult.NOT_IN_RANGE) {
 		this.blackboard.distanceLimit = res.distance;
 	}
-	
+
 	return bt.RES_FAIL;
 };

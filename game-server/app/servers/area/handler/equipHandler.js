@@ -3,7 +3,6 @@
  */
 
 var handler = module.exports;
-var area = require('../../../domain/area/area');
 var dataApi = require('../../../util/dataApi');
 
 /**
@@ -15,7 +14,7 @@ var dataApi = require('../../../util/dataApi');
  */
 
 handler.equip = function(msg, session, next) {
-	var player = area.getPlayer(session.get('playerId'));
+	var player = session.area.getPlayer(session.get('playerId'));
   var status = false;
 
   var item = player.bag.items[msg.index];
@@ -26,7 +25,7 @@ handler.equip = function(msg, session, next) {
 			next(null, {status: false});
 			return;
 		}
-		
+
     bagIndex = player.equip(eq.kind, eq.id);
     player.bag.removeItem(msg.index);
 
@@ -43,7 +42,7 @@ handler.equip = function(msg, session, next) {
  * @api public
  */
 handler.unEquip = function(msg, session, next) {
-	var player = area.getPlayer(session.get('playerId'));
+	var player = session.area.getPlayer(session.get('playerId'));
   var status = false;
   var bagIndex = -1;
   if (msg.putInBag) {
@@ -56,7 +55,7 @@ handler.unEquip = function(msg, session, next) {
     player.unEquip(msg.type);
     status = true;
   }
-  
+
   next(null, {status: status, bagIndex: bagIndex});
 };
 

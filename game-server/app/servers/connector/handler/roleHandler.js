@@ -5,6 +5,7 @@ var equipDao = require('../../../dao/equipmentsDao');
 var bagDao = require('../../../dao/bagDao');
 var consts = require('../../../consts/consts');
 var channelUtil = require('../../../util/channelUtil');
+var utils = require('../../../util/utils');
 var async = require('async');
 
 module.exports = function(app) {
@@ -62,6 +63,7 @@ var afterLogin = function (app, msg, session, user, player, next) {
 		function(cb) {
 			session.set('username', user.name);
 			session.set('areaId', player.areaId);
+      session.set('serverId', app.get('areaIdMap')[player.areaId]);
 			session.set('playername', player.name);
 			session.set('playerId', player.id);
 			session.on('closed', onUserLeave);
@@ -86,6 +88,7 @@ var onUserLeave = function (session, reason) {
 		return;
 	}
 
+	utils.myPrint('2 ~ OnUserLeave is running ...');
 	var rpc= pomelo.app.rpc;
 	rpc.area.playerRemote.playerLeave(session, {playerId: session.get('playerId'), areaId: session.get('areaId')}, null);
 	rpc.chat.chatRemote.kick(session, session.uid, null);

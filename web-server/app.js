@@ -77,7 +77,7 @@ app.post('/register', function(req, res) {
     res.send({code: 500});
     return;
   }
-  
+
   userDao.createUser(msg.name, msg.password, '', function(err, user) {
     if (err || !user) {
       console.error(err);

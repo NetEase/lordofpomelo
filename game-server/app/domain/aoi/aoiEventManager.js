@@ -1,47 +1,51 @@
-var area = require('../area/area');
 var messageService = require('../messageService');
 var EntityType = require('../../consts/consts').EntityType;
 var logger = require('pomelo-logger').getLogger(__filename);
+var utils = require('../../util/utils');
 
 var exp = module.exports;
 
 //Add event for aoi
-exp.addEvent = function(aoi){
+exp.addEvent = function(area, aoi){
 	aoi.on('add', function(params){
+		params.area = area;
 		switch(params.type){
-			case EntityType.PLAYER: 
+			case EntityType.PLAYER:
 				onPlayerAdd(params);
 				break;
-			case EntityType.MOB: 
+			case EntityType.MOB:
 				onMobAdd(params);
 				break;
 		}
 	});
-	
+
 	aoi.on('remove', function(params){
+		params.area = area;
 		switch(params.type){
-			case EntityType.PLAYER: 
+			case EntityType.PLAYER:
 				onPlayerRemove(params);
 				break;
-			case EntityType.MOB: 
+			case EntityType.MOB:
 				break;
 		}
 	});
-	
+
 	aoi.on('update', function(params){
+		params.area = area;
 		switch(params.type){
-			case EntityType.PLAYER: 
+			case EntityType.PLAYER:
 				onObjectUpdate(params);
 				break;
-			case EntityType.MOB: 
+			case EntityType.MOB:
 				onObjectUpdate(params);
 				break;
 		}
 	});
-	
+
 	aoi.on('updateWatcher', function(params) {
+		params.area = area;
 		switch(params.type) {
-			case EntityType.PLAYER: 
+			case EntityType.PLAYER:
 				onPlayerUpdate(params);
 				break;
 		}
@@ -55,25 +59,28 @@ exp.addEvent = function(aoi){
  * @api private
  */
 function onPlayerAdd(params) {
+	var area = params.area;
 	var watchers = params.watchers;
 	var entityId = params.id;
 	var player = area.getEntity(entityId);
-	
+
 	if(!player) {
 		return;
 	}
-		
+
 	var uids = [], id;
 	for(var type in watchers) {
 		switch (type){
-			case EntityType.PLAYER: 
+			case EntityType.PLAYER:
 				for(id in watchers[type]) {
 					var watcher = area.getEntity(watchers[type][id]);
 					if(watcher && watcher.entityId !== entityId) {
 						uids.push({sid: watcher.serverId, uid: watcher.userId});
 					}
 				}
-				onAddEntity(uids, entityId);
+				if(uids.length > 0){
+					onAddEntity(uids, player);
+				}
 				break;
 			case EntityType.MOB:
 				for(id in watchers[type]) {
@@ -94,14 +101,15 @@ function onPlayerAdd(params) {
  * @api private
  */
 function onMobAdd(params){
+	var area = params.area;
 	var watchers = params.watchers;
 	var entityId = params.id;
 	var mob = area.getEntity(entityId);
-	
+
 	if(!mob) {
 		return;
 	}
-		
+
 	var uids = [];
 	for(var id in watchers[EntityType.PLAYER]) {
 		var watcher = area.getEntity(watchers[EntityType.PLAYER][id]);
@@ -109,14 +117,14 @@ function onMobAdd(params){
 			uids.push({sid: watcher.serverId, uid: watcher.userId});
 		}
 	}
-	
-	if(uids.length > 0) {
-		onAddEntity(uids, entityId);
-	};
 
-	var ids = area.aoi().getIdsByRange({x:mob.x, y:mob.y}, mob.range, [EntityType.PLAYER])[EntityType.PLAYER];
+	if(uids.length > 0) {
+		onAddEntity(uids, mob);
+	}
+
+	var ids = area.aoi.getIdsByRange({x:mob.x, y:mob.y}, mob.range, [EntityType.PLAYER])[EntityType.PLAYER];
 	if(!!ids && ids.length > 0 && !mob.target){
-		for(var key in ids){		
+		for(var key in ids){
 			mob.onPlayerCome(ids[key]);
 		}
 	}
@@ -129,11 +137,12 @@ function onMobAdd(params){
  * @api private
  */
 function onPlayerRemove(params) {
+	var area = params.area;
 	var watchers = params.watchers;
 	var entityId = params.id;
-			
+
 	var uids = [];
-	
+
 	for(var type in watchers) {
 		switch (type){
 			case EntityType.PLAYER:
@@ -144,6 +153,7 @@ function onPlayerRemove(params) {
 						uids.push({sid: watcher.serverId, uid: watcher.userId});
 					}
 				}
+
 				onRemoveEntity(uids, entityId);
 				break;
 		}
@@ -157,13 +167,14 @@ function onPlayerRemove(params) {
  * @api private
  */
 function onObjectUpdate(params) {
+	var area = params.area;
 	var entityId = params.id;
 	var entity = area.getEntity(entityId);
-	
+
 	if(!entity) {
 		return;
 	}
-	
+
 	var oldWatchers = params.oldWatchers;
 	var newWatchers = params.newWatchers;
 	var removeWatchers = {}, addWatchers = {}, type, w1, w2, id;
@@ -178,25 +189,16 @@ function onObjectUpdate(params) {
 		for(id in w1) {
 			if(!w2[id]) {
 				removeWatchers[type][id] = w1[id];
-				
-//				if(type === 'player'){
-//					var player = area.getEntity(id);
-//					var pos = {x: Math.floor(player.x/300), y:Math.floor(player.y/300)};
-//					if((Math.abs(params.newPos.x-pos.x) <=2) && (Math.abs(params.newPos.y-pos.y)<=2)){
-//						logger.warn('remove watcher player by move , oldPos : %j, newPos : %j, player pos : %j, range : %j', params.oldPos, params.newPos, pos, player.range);
-//						logger.warn('watchers : %j', area.aoi().getWatchers(params.newPos, ['player', 'mob']));
-//					}
-//				}
 			}
 		}
 	}
-	
+
 	for(type in newWatchers) {
 		if(!oldWatchers[type]) {
 			addWatchers[type] = newWatchers[type];
 			continue;
 		}
-		
+
 		w1 = oldWatchers[type];
 		w2 = newWatchers[type];
 		addWatchers[type] = {};
@@ -205,17 +207,17 @@ function onObjectUpdate(params) {
 				addWatchers[type][id] = w2[id];
 			}
 		}
-	} 
-	
-	
+	}
+
+
 	switch(params.type) {
-		case EntityType.PLAYER: 
-			onPlayerAdd({id:params.id, watchers:addWatchers});
-			onPlayerRemove({id:params.id, watchers:removeWatchers});
+		case EntityType.PLAYER:
+			onPlayerAdd({area:area, id:params.id, watchers:addWatchers});
+			onPlayerRemove({area:area, id:params.id, watchers:removeWatchers});
 			break;
-		case EntityType.MOB: 
-			onMobAdd({id:params.id, watchers:addWatchers});
-			onMobRemove({id:params.id, watchers:removeWatchers});
+		case EntityType.MOB:
+			onMobAdd({area:area, id:params.id, watchers:addWatchers});
+			onMobRemove({area:area, id:params.id, watchers:removeWatchers});
 			break;
 	}
 }
@@ -227,27 +229,22 @@ function onObjectUpdate(params) {
  * @api private
  */
 function onPlayerUpdate(params) {
+	var area = params.area;
 	var player = area.getEntity(params.id);
 	if(player.type !== EntityType.PLAYER) {
 		return;
 	}
-	
-	var route = {sid : player.serverId, uid : player.userId};
-	
+
+	var uid = {sid : player.serverId, uid : player.userId};
+
 	if(params.removeObjs.length > 0) {
-    messageService.pushMessageToPlayer(route, {
-			route : 'removeEntities',
-			entities : params.removeObjs
-		});
+    messageService.pushMessageToPlayer(uid, 'onRemoveEntities', {'entities' : params.removeObjs});
 	}
-	
+
 	if(params.addObjs.length > 0) {
 		var entities = area.getEntities(params.addObjs);
 		if(entities.length > 0) {
-      messageService.pushMessageToPlayer(route, {
-				route : 'addEntities',
-				entities : entities
-			});
+      messageService.pushMessageToPlayer(uid, 'onAddEntities', entities);
 		}
 	}
 }
@@ -259,10 +256,11 @@ function onPlayerUpdate(params) {
  * @api private
  */
 function onMobRemove(params) {
+	var area = params.area;
 	var watchers = params.watchers;
 	var entityId = params.id;
 	var uids = [];
-	
+
 	for(var type in watchers) {
 		switch (type){
 			case EntityType.PLAYER:
@@ -273,7 +271,7 @@ function onMobRemove(params) {
 					}
 				}
 				onRemoveEntity(uids, entityId);
-				break;
+			break;
 		}
 	}
 }
@@ -284,19 +282,17 @@ function onMobRemove(params) {
  * @param {Number} entityId The entityId to add
  * @api private
  */
-function onAddEntity(uids, entityId) {
-	var entity = area.getEntity(entityId);
-	
-	if(!entity || uids.length <= 0) {
-		return;
+function onAddEntity(uids, entity) {
+	var entities = {};
+	entities[entity.type] = [entity];
+
+  messageService.pushMessageByUids(uids, 'onAddEntities', entities);
+
+	if (entity.type === EntityType.PLAYER) {
+		utils.myPrint('entities = ', JSON.stringify(entities));
+		utils.myPrint('teamId = ', JSON.stringify(entities[entity.type][0].teamId));
+		utils.myPrint('isCaptain = ', JSON.stringify(entities[entity.type][0].isCaptain));
 	}
-		
-	var msg = {
-		route : 'addEntities',
-		entities : [entity]
-	};
-	
-  messageService.pushMessageByUids(msg, uids);
 }
 
 /**
@@ -309,11 +305,6 @@ function onRemoveEntity(uids, entityId) {
 	if(uids.length <= 0) {
 		return;
 	}
-		
-	var msg = {
-		route : 'removeEntities',
-		entities : [entityId]
-	};
 
-    messageService.pushMessageByUids(msg, uids);
+  messageService.pushMessageByUids(uids, 'onRemoveEntities',{entities : [entityId]}, uids);
 }

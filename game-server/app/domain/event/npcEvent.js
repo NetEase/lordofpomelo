@@ -1,4 +1,3 @@
-var area = require('./../area/area');
 var api = require('../../util/dataApi');
 var consts = require('../../consts/consts');
 var messageService = require('./../messageService');
@@ -10,11 +9,11 @@ var exp = module.exports;
  */
 exp.addEventForNPC = function (npc){
 	/**
-	 * Hanlde npc talk event 
+	 * Hanlde npc talk event
 	 */
 	npc.on('onNPCTalk', function(data){
-		var npc = area.getEntity(data.npc);
-		var player = area.getEntity(data.player);
+		var npc = data.npc;
+		var player = data.player;
 		var talk = api.talk;
 		var npcTalks = talk.findBy('npc', npc.kindId);
 		var npcword = 'Welcome to see you!';
@@ -26,20 +25,18 @@ exp.addEventForNPC = function (npc){
 		}
 
 		var msg = {
-			route : 'onNPCTalk',
-			npc : data.npc,
-			player : data.player,
+			npc : npc.entityId,
 			npcword : npcword,
 			myword: myword,
-			areaId: npc.areaId,
-			kindId: npc.kindId
+			player : player.entityId,
+			kindId : npc.kindId
 		};
 
-		if (npc.kindType === consts.NpcType.TRAVERSE_NPC) {
-			npc.traverse(msg);
+		if (consts.TraverseNpc[npc.kindId]) {
+			npc.traverse('onNPCTalk', msg);
 			return;
 		}
 
-		messageService.pushMessageToPlayer({uid:player.userId, sid: player.serverId}, msg);
+		messageService.pushMessageToPlayer({uid:player.userId, sid: player.serverId}, 'onNPCTalk', msg);
 	});
 };

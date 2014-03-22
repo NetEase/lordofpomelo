@@ -11,7 +11,6 @@ __resources__["/loginMsgHandler.js"] = {meta: {mimetype: "application/javascript
 		 * Handle kick out messge, occours when the current player is kicked out
 		 */
 		pomelo.on('onKick', function() {
-			console.log('You have been kicked offline for the same account logined in other place.');
 			location.reload();
 			//switchManager.selectView("loginPanel");
 		});
@@ -32,7 +31,6 @@ __resources__["/loginMsgHandler.js"] = {meta: {mimetype: "application/javascript
 		pomelo.on('onUserLeave', function(data){
 			var area = app.getCurArea();
 			var playerId = data.playerId;
-			//console.log('onUserLeave invoke!');
 			area.removePlayer(playerId);
 		});
 

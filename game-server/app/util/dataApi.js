@@ -9,6 +9,7 @@ var talk = require('../../config/data/talk');
 var item = require('../../config/data/item');
 var fightskill = require('../../config/data/fightskill');
 var task = require('../../config/data/task');
+var team = require('../../config/data/team');
 
 /**
  * Data model `new Data()`
@@ -58,7 +59,6 @@ var mapData = function(fields, item) {
  */
 Data.prototype.findBy = function(attr, value) {
   var result = [];
-  //console.log(' findBy ' + attr + '  value:' + value + '  index: ' + index);
   var i, item;
   for (i in this.data) {
     item = this.data[i];
@@ -126,5 +126,6 @@ module.exports = {
   talk: new Data(talk),
   item: new Data(item),
   fightskill: new Data(fightskill),
-	task: new Data(task)
+	task: new Data(task),
+	team: new Data(team)
 };

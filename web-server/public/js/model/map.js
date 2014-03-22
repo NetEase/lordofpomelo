@@ -9,15 +9,16 @@ __resources__["/map.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 	var buildFinder = require('pathfinding').buildFinder;
 
 	var Map = function(opts){
+		var map = opts.map;
 		this.data = null;
 		this.node = null;
-		this.name = opts.name;
+		this.name = map.name;
 		this.scene = opts.scene;
-		this.initPos = opts.pos;
-		this.width = opts.width;
-		this.height = opts.height;
+		this.initPos = opts.pos || {x: 0, y: 0};
+		this.width = map.width;
+		this.height = map.height;
 		this.moveAnimation = null;
-		this.weightMap = opts.mapData.weightMap;
+		this.weightMap = null;
 		this.initMapData(opts);
 		this.loadMap();
 		this.cache = {};
@@ -29,13 +30,13 @@ __resources__["/map.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 	* init mapData for pathfinding
 	* @param {Object} data
 	*/
-	pro.initMapData = function(data) {
-		this.weightMap = data.mapData.weightMap;
-		this.convertToInfitity(this.weightMap);
-		this.tileW = data.mapData.tileW||10;
-		this.tileH = data.mapData.tileH||10;
+	pro.initMapData = function(opts) {
+		this.tileW = opts.map.tileW||10;
+		this.tileH = opts.map.tileH||10;
 		this.rectW = Math.ceil(this.width/this.tileW);
 		this.rectH = Math.ceil(this.height/this.tileH);
+
+		this.weightMap = this.getWeightMap(opts.map.weightMap);
 		this.pfinder = buildFinder(this);
 	};
 
@@ -63,17 +64,30 @@ __resources__["/map.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 		return this.weightMap[x][y];
 	};
 
-	pro.convertToInfitity = function(array) {
-		var length = array.length;
-		for (var i = 0; i < length; i++) {
-			var newArray = array[i];
-			var newLength = newArray.length;
-			for (var j = 0; j < newLength; j++) {
-				if (newArray[j] !== 1) {
-					newArray[j] = Infinity;
+	pro.getWeightMap = function(weightMap){
+		var map = [];
+		var x, y;
+		for(x = 0; x < this.rectW; x++) {
+			map[x] = [];
+			for(y = 0; y < this.rectH; y++) {
+				map[x][y] = 1;
+			}
+		}
+
+		for(x = 0; x < weightMap.length; x++){
+			var array = weightMap[x].collisions;
+			if(!array){
+				continue;
+			}
+			for(var j = 0; j < array.length; j++){
+				var c = array[j];
+				for(var k = 0; k < c.length; k++){
+					map[x][c.start+k] = Infinity;
 				}
 			}
 		}
+
+		return map;
 	};
 
 	pro.isReachable = function(x, y) {
@@ -116,7 +130,7 @@ __resources__["/map.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 		var x0 = x1, y0 = y1;
 		x1 += dx;
   	y1 += dy;
-  	
+
 		while((dx > 0 && x1 < x2) || (dx < 0 && x1 > x2)) {
 			if(!this._testLine(x0, y0, x1, y1)) {
 				return false;
@@ -301,7 +315,7 @@ __resources__["/map.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 				if(j >= path.length){
 					if((i + 2) === path.length){
 						newPath.push(path[i + 1]);
-					}	
+					}
 				}
 			}
 			path = newPath;
@@ -336,7 +350,7 @@ __resources__["/map.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 		var newPos = {};
 		newPos.x = pos.x*tileW + tileW/2;
 		newPos.y = pos.y*tileH + tileH/2;
-		
+
 		return newPos;
 	}
 
@@ -345,26 +359,26 @@ __resources__["/map.js"] = {meta: {mimetype: "application/javascript"}, data: fu
 		if( x < 0 || x > this.width || y < 0 || y > this.height || x1 < 0 || x1 > this.width || y1 < 0 || y1 > this.height){
 			return null;
 		}
-		
+
 		if(!this.isReachable(x, y) || !this.isReachable(x1, y1)){
 			return null;
 		}
-		
+
 		if(this._checkLinePath(x, y, x1, y1)) {
 			return {path: [{x: x, y: y}, {x: x1, y: y1}], cost: utils.distance(x, y, x1, y1)};
 		}
-		
+
 		var tx1 = Math.floor(x/this.tileW);
 		var ty1 = Math.floor(y/this.tileH);
 		var tx2 = Math.floor(x1/this.tileW);
 		var ty2 = Math.floor(y1/this.tileH);
-		
+
 		var path = this.pfinder(tx1, ty1, tx2, ty2);
 		if(!path || !path.paths){
 			console.error('can not find path');
 			return null;
 		}
-		
+
 		var result = {};
 		var paths = [{x:x, y:y}];
 

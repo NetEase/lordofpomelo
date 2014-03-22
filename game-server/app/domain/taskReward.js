@@ -4,11 +4,10 @@
 var Item = require('./entity/item');
 var Equipment = require('./entity/equipment');
 var dataApi = require('../util/dataApi');
-var area = require('./area/area');
 var messageService = require('./messageService');
 
 /**
- * Expose 'taskReward' 
+ * Expose 'taskReward'
  */
 var taskReward = module.exports;
 
@@ -20,7 +19,7 @@ var taskReward = module.exports;
  * @param {Array} ids
  * @api public
  */
-taskReward.reward = function(player, ids) {
+taskReward.reward = function(area, player, ids) {
 	if (ids.length < 1) {
 		return;
 	}
@@ -47,10 +46,8 @@ taskReward.reward = function(player, ids) {
 	for (i = 0, l=equipments.length; i < l; i ++) {
 		area.addEntity(equipments[i]);
 	}
-	messageService.pushMessageToPlayer({uid:player.userId, sid : player.serverId}, {
-		route:'onDropItems',
-		dropItems: equipments
-	});
+
+	messageService.pushMessageToPlayer({uid:player.userId, sid : player.serverId}, 'onDropItems', equipments);
 };
 
 /**
@@ -58,7 +55,7 @@ taskReward.reward = function(player, ids) {
  *
  * @param {Array} items
  * @param {Object} pos
- * @return {Object} 
+ * @return {Object}
  * @api private
  */
 taskReward._rewardItem = function(items, pos) {
@@ -96,7 +93,7 @@ taskReward._rewardItem = function(items, pos) {
  * @param {Player} player
  * @param {Number} exprience
  * @api private
- */ 
+ */
 taskReward._rewardExp = function(player, exprience) {
 	player.addExperience(exprience);
 };

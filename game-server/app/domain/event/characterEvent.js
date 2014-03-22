@@ -1,6 +1,4 @@
-var area = require('./../area/area');
 var messageService = require('./../messageService');
-var timer = require('./../area/timer');
 var api = require('../../util/dataApi');
 var Move = require('./../action/move');
 var consts = require('../../consts/consts');
@@ -20,6 +18,7 @@ exp.addEventForCharacter = function(character) {
 	 */
 	character.on('move', function(args){
 		var character = args.character;
+		var area = character.area;
 		var speed = character.walkSpeed;
 		var paths = args.paths;
 		var action = new Move({
@@ -29,8 +28,8 @@ exp.addEventForCharacter = function(character) {
 		});
 
 		//Add move action to action manager
-		if(timer.addAction(action)){
-			messageService.pushMessageByAOI({
+		if(area.timer.addAction(action)){
+			messageService.pushMessageByAOI(area, {
 				route: 'onMove',
 				entityId: character.entityId,
 				path: paths.path,
@@ -44,8 +43,11 @@ exp.addEventForCharacter = function(character) {
 	 */
 	character.on('attack', function(args){
 		var result = args.result;
-		var attacker = area.getEntity(args.attackerId);
-		var target = area.getEntity(args.targetId);
+		var attacker = args.attacker;
+		var target = args.target;
+		var area = target.area;
+		var timer = area.timer;
+		var attackerPos = {x: attacker.x, y: attacker.y};
 
 		//Print an error when attacker or target not exist, this should not happened!
 		if(!target || !attacker){
@@ -54,13 +56,12 @@ exp.addEventForCharacter = function(character) {
 		}
 		var msg = {
 			route : 'onAttack',
-			attacker : args.attackerId,
-			target : args.targetId,
+			attacker : attacker.entityId,
+			target : target.entityId,
 			result: args.result,
-			skillId: args.skillId,
-			attackerPos: {x: attacker.x, y: attacker.y}
+			skillId: args.skillId
 		};
-		
+
 		//If the attack killed the target, then do the clean up work
 		if(result.result === consts.AttackResult.KILLED){
 			executeTask.updateTaskData(attacker, target);
@@ -79,32 +80,33 @@ exp.addEventForCharacter = function(character) {
 				target.clearHaters();
 
 				target.died = true;
-				
+
 				//Abort the move action of the player
 				timer.abortAllAction(target.entityId);
 
-				//Add revice action
+				//Add revive action
 				timer.addAction(new Revive({
-					entity: target,
-					reviveTime: consts.PLAYER.reviveTime
+					entity : target,
+					reviveTime : consts.PLAYER.reviveTime,
+					map : area.map
 				}));
 
 				msg.reviveTime = consts.PLAYER.reviveTime;
 
 				target.save();
 			}
-			
+
 			attacker.target = null;
-			messageService.pushMessageByAOI(msg, msg.attackerPos);
+			messageService.pushMessageByAOI(area, msg, attackerPos);
 		} else if(result.result === consts.AttackResult.SUCCESS) {
 			if (!target) {
-				logger.error('[onattack] attack result: target is null!	attackerId: ' + args.attackerId + '	targetId: ' + args.targetId +' result: ' + result);
+				logger.error('[onattack] attack result: target is null!	attackerId: ' + attacker.entityId + '	targetId: ' + target.entityId +' result: ' + result);
 				return;
 			}
 			if(target.type === EntityType.MOB) {
 				timer.enterAI(target.entityId);
 			}
-			messageService.pushMessageByAOI(msg, msg.attackerPos);
+			messageService.pushMessageByAOI(area, msg, attackerPos);
 		}
 	});
 };

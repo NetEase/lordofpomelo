@@ -1,6 +1,5 @@
 var Action = require('./action');
 var util = require('util');
-var timer = require('../area/timer');
 var messageService = require('../messageService');
 var consts = require('../../consts/consts');
 var logger = require('pomelo-logger').getLogger(__filename);
@@ -15,6 +14,7 @@ var Move = function(opts){
 
 	Action.call(this, opts);
 	this.entity = opts.entity;
+	this.area = this.entity.area;
 	this.path = opts.path;
 	this.speed = Number(opts.speed);
 	this.time = Date.now();
@@ -53,7 +53,7 @@ Move.prototype.update = function(){
 			//If the index exceed the last point, means the move is finished
 			if(index >= path.length){
 				this.finished = true;
-				this.entity.isMoving = true;
+				this.entity.isMoving = false;
 				break;
 			}
 
@@ -69,18 +69,17 @@ Move.prototype.update = function(){
 	this.pos = pos;
 	this.index = index;
 
-	this.entity.x = pos.x;
-	this.entity.y = pos.y;
-	
+	this.entity.x = Math.floor(pos.x);
+	this.entity.y = Math.floor(pos.y);
+
 	//Update the aoi module
 	var watcher = {id : this.entity.entityId, type : this.entity.type};
-  timer.updateObject(watcher, oldPos, pos);
-  timer.updateWatcher(watcher, oldPos, pos, this.entity.range, this.entity.range);
+  this.area.timer.updateObject(watcher, oldPos, pos);
+  this.area.timer.updateWatcher(watcher, oldPos, pos, this.entity.range, this.entity.range);
 	if(this.entity.type === consts.EntityType.PLAYER){
 		this.entity.save();
 		if (this.tickNumber % 10 === 0) {
-			messageService.pushMessageToPlayer({uid:this.entity.userId, sid : this.entity.serverId}, {
-				route: 'onPathCheckout',
+			messageService.pushMessageToPlayer({uid:this.entity.userId, sid : this.entity.serverId}, 'onPathCheckout', {
 				entityId: this.entity.entityId,
 				position: {
 					x: this.entity.x,
