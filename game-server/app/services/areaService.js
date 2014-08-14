@@ -134,7 +134,7 @@ exp.changeArea = function(args, session, cb) {
           }
         });
       },
-      function(callback){
+      function(cb){
         area.removePlayer(playerId);
 
         var pos = closure.getBornPoint(target);
