@@ -1,1 +1,1 @@
-cd public/js/lib && component install -f && component build -v
+cd public/js/lib && component install && component build
