@@ -41,7 +41,9 @@ NND.query = function(sql, args, callback){
  * Close connection pool.
  */
 NND.shutdown = function(){
-	_pool.destroyAllNow();
+	_pool.drain().then(function(){
+		_pool.clear();
+	});
 };
 
 /**
