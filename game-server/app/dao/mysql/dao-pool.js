@@ -4,7 +4,7 @@ var mysql = require('mysql');
 /*
  * Create mysql connection pool.
  */
-var createMysqlPool = function(){
+var createMysqlPool = function(app){
 	var mysqlConfig = app.get('mysql');
 	const factory = {
 		create: function(){
