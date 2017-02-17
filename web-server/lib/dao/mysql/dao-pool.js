@@ -7,26 +7,34 @@ if(mysqlConfig[env]) {
   mysqlConfig = mysqlConfig[env];
 }
 
+const factory = {
+  create: function(){
+      return new Promise(function(resolve, reject){
+          var client = mysql.createConnection({
+            host: mysqlConfig.host,
+            user: mysqlConfig.user,
+            password: mysqlConfig.password,
+            database: mysqlConfig.database
+          });
+          resolve(client);
+      });
+  },
+  destroy: function(client){
+      return new Promise(function(resolve){
+          client.on('end', function(){
+            resolve()
+          });
+          client.disconnect()
+      });
+  }
+}
+
+
 /*
  * Create mysql connection pool.
  */
 var createMysqlPool = function(){
-  return _poolModule.createPool({
-    name     : 'mysql',
-    create   : function(callback) {
-      var client = mysql.createConnection({
-        host: mysqlConfig.host,
-        user: mysqlConfig.user,
-        password: mysqlConfig.password,
-        database: mysqlConfig.database
-      });
-      callback(null, client);
-    },
-    destroy  : function(client) { client.end(); },
-    max      : 10,
-    idleTimeoutMillis : 30000,
-    log : false
-  });
+  return _poolModule.createPool(factory, {max:10, min:2});
 };
 
 exports.createMysqlPool = createMysqlPool;

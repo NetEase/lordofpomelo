@@ -9,7 +9,9 @@ var userDao = module.exports;
 userDao.getUserByName = function (username, cb){
   var sql = 'select * from  User where name = ?';
   var args = [username];
+  console.log('sql: ', sql);
   mysql.query(sql,args,function(err, res){
+    console.log('query: ', err,res);
     if(err !== null){
       cb(err.message, null);
     } else {
