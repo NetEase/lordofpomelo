@@ -7,8 +7,8 @@
     , "everyauth": "0.3.0"
     , "connect": ">=0.0.1"
     , "ejs": "0.8.3"
-    , "generic-pool": ">=1.0.9"
-    , "mysql": ">=2.0"
+    , "generic-pool": "*"
+    , "mysql": "*"
   }
 }
 

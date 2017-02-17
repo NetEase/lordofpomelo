@@ -1,5 +1,6 @@
 var _poolModule = require('generic-pool');
 var mysqlConfig = require('../../../../shared/config/mysql');
+var mysql = require('mysql');
 
 var env = process.env.NODE_ENV || 'development';
 if(mysqlConfig[env]) {
@@ -10,10 +11,9 @@ if(mysqlConfig[env]) {
  * Create mysql connection pool.
  */
 var createMysqlPool = function(){
-  return _poolModule.Pool({
+  return _poolModule.createPool({
     name     : 'mysql',
     create   : function(callback) {
-      var mysql = require('mysql');
       var client = mysql.createConnection({
         host: mysqlConfig.host,
         user: mysqlConfig.user,
