@@ -66,6 +66,27 @@ Colorbox is our team's another open source project. It is a client side game eng
  * Visit the [lordofpomelo](http://pomelo.netease.com/lordofpomelo)
  * or you can visit [github:lordofpomelo](http://github.com/NetEase/lordofpomelo)to download the source and install it on your local machine.
 
+## 注意事项
+在log4js.json中，将所有log都关掉 否则connector-server 内存会一直飙升
+
+```
+log4js.json配置
+
+"levels": {
+    "con-log": "OFF",
+    "rpc-log": "ERROR",
+    "forward-log": "ERROR",
+    "rpc-debug": "ERROR",
+    "crash-log": "ERROR",
+    "admin-log": "ERROR",
+    "pomelo": "ERROR",
+    "pomelo-admin": "ERROR",
+    "pomelo-rpc": "ERROR",
+}
+
+关闭con-log
+
+```
 
 
 ## License

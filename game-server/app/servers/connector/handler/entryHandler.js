@@ -27,6 +27,7 @@ var pro = Handler.prototype;
  * @return {Void}
  */
 pro.entry = function(msg, session, next) {
+    console.log('entry: ',msg);
 	var token = msg.token, self = this;
 
 	if(!token) {
@@ -39,7 +40,8 @@ pro.entry = function(msg, session, next) {
 		function(cb) {
 			// auth token
 			self.app.rpc.auth.authRemote.auth(session, token, cb);
-		}, function(code, user, cb) {
+		},
+        function(code, user, cb) {
 			// query player info by user id
 			if(code !== Code.OK) {
 				next(null, {code: code});
@@ -53,13 +55,16 @@ pro.entry = function(msg, session, next) {
 
 			uid = user.id;
 			userDao.getPlayersByUid(user.id, cb);
-		}, function(res, cb) {
+		},
+        function(res, cb) {
 			// generate session and register chat status
 			players = res;
 			self.app.get('sessionService').kick(uid, cb);
-		}, function(cb) {
+		},
+        function(cb) {
 			session.bind(uid, cb);
-		}, function(cb) {
+		},
+        function(cb) {
 			if(!players || players.length === 0) {
 				next(null, {code: Code.OK});
 				return;
@@ -72,21 +77,23 @@ pro.entry = function(msg, session, next) {
 			session.set('playerId', player.id);
 			session.on('closed', onUserLeave.bind(null, self.app));
 			session.pushAll(cb);
-		}, function(cb) {
-			self.app.rpc.chat.chatRemote.add(session, player.userId, player.name,
-				channelUtil.getGlobalChannelName(), cb);
+		},
+        function(cb) {
+			self.app.rpc.chat.chatRemote.add(session, player.userId, player.name, channelUtil.getGlobalChannelName(), cb);
 		}
 	], function(err) {
 		if(err) {
 			next(err, {code: Code.FAIL});
 			return;
 		}
+		console.log('entry success!!!!');
 
 		next(null, {code: Code.OK, player: players ? players[0] : null});
 	});
 };
 
 var onUserLeave = function (app, session, reason) {
+    console.log('onUserLeave-reason: ', reason);
 	if(!session || !session.uid) {
 		return;
 	}
