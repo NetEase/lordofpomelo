@@ -2,7 +2,9 @@
 	"development": {
 		"connector": [
 			{"id": "connector-server-1", "host": "127.0.0.1", "port": 3150, "clientPort": 3010, "frontend": true},
-			{"id": "connector-server-2", "host": "127.0.0.1", "port": 3151, "clientPort": 3011, "frontend": true}
+            {"id": "connector-server-2", "host": "127.0.0.1", "port": 3151, "clientPort": 3011, "frontend": true},
+            {"id": "connector-server-2", "host": "127.0.0.1", "port": 3151, "clientPort": 3012, "frontend": true},
+            {"id": "connector-server-2", "host": "127.0.0.1", "port": 3151, "clientPort": 3013, "frontend": true}
 		],
 		"area": [
 			{"id": "area-server-1", "host": "127.0.0.1", "port": 3250, "area": 1},

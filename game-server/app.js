@@ -16,18 +16,27 @@ var sync = require('pomelo-sync-plugin');
 var app = pomelo.createApp();
 app.set('name', 'lord of pomelo');
 
-// configure for global
 app.configure('production|development', function () {
     app.before(pomelo.filters.toobusy());
     app.enable('systemMonitor');
-    require('./app/util/httpServer');
 
-    //var sceneInfo = require('./app/modules/sceneInfo');
+    app.filter(pomelo.filters.time()); //开启conn日志，对应pomelo-admin模块下conn request
+    app.rpcFilter(pomelo.rpcFilters.rpcLog());//开启rpc日志，对应pomelo-admin模块下rpc request
+
+    // var sceneInfo = require('./app/modules/sceneInfo');
     var onlineUser = require('./app/modules/onlineUser');
     if (typeof app.registerAdmin === 'function') {
-        //app.registerAdmin(sceneInfo, {app: app});
+        // app.registerAdmin(sceneInfo, {app: app});
         app.registerAdmin(onlineUser, {app: app});
     }
+});
+
+// configure for global
+app.configure('production|development', function () {
+    app.before(pomelo.filters.toobusy());
+
+    require('./app/util/httpServer');
+
     //Set areasIdMap, a map from area id to serverId.
     if (app.serverType !== 'master') {
         var areas = app.get('servers').area;

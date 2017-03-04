@@ -3,30 +3,29 @@
   "version": "0.3.0",
   "private": false,
   "dependencies": {
-  "express": "2.5.2"
-  , "connect": ">=0.0.1"
-  , "socket.io": ">=0.9.6"
-  , "generic-pool": "*"
-  , "mysql": ">=2.0"
-  , "pomelo": "~2.2.5"
-  , "async": ">=0.0.1"
-  , "socket.io-client" : ">=0.9.6"
-  , "pomelo-aoi" : ">=0.3.4"
-  , "crc" : ">=0.0.1"
-  , "pomelo-bt": ">=0.0.1"
-  , "pomelo-pathfinding": ">=0.1.0"
-  , "pomelo-collection": ">=0.1.0"
-  , "pomelo-logger": "0.0.3"
-  , "pomelo-monitor": ">=0.3.3"
-  , "pomelo-sync-plugin": "0.0.1"
-  , "pomelo-masterha-plugin": "0.0.4"
-  , "underscore": "1.5.2"
-  , "node-zookeeper-client": "0.2.0"
-  , "webkit-devtools-agent" : "0.1.2"
+    "async": ">=0.0.1",
+    "connect": ">=0.0.1",
+    "crc": ">=0.0.1",
+    "express": "2.5.2",
+    "generic-pool": "*",
+    "mysql": ">=2.0",
+    "node-zookeeper-client": "0.2.0",
+    "pomelo": "~2.2.5",
+    "pomelo-aoi": ">=0.3.4",
+    "pomelo-bt": ">=0.0.1",
+    "pomelo-collection": ">=0.1.0",
+    "pomelo-logger": "0.0.3",
+    "pomelo-masterha-plugin": "0.0.4",
+    "pomelo-monitor": ">=0.3.3",
+    "pomelo-pathfinding": ">=0.1.0",
+    "pomelo-sync-plugin": "0.0.1",
+    "socket.io": ">=0.9.6",
+    "socket.io-client": ">=0.9.6",
+    "underscore": "1.5.2",
+    "webkit-devtools-agent": "0.1.2"
   },
   "devDependencies": {
-      "should": ">=0.0.1"
-    , "mocha": ">=0.0.1"
+    "should": ">=0.0.1",
+    "mocha": ">=0.0.1"
   }
 }
-

@@ -64,17 +64,16 @@
       "category":"admin-log"
     }
   ],
-
   "levels": {
-      "con-log": "OFF",
-      "rpc-log": "ERROR",
-      "forward-log": "ERROR",
-      "rpc-debug": "ERROR",
-      "crash-log": "ERROR",
-      "admin-log": "ERROR",
-      "pomelo": "ERROR",
-      "pomelo-admin": "ERROR",
-      "pomelo-rpc": "ERROR"
+    "con-log": "OFF",
+    "rpc-log": "ERROR",
+    "forward-log": "ERROR",
+    "rpc-debug": "ERROR",
+    "crash-log": "ERROR",
+    "admin-log": "ERROR",
+    "pomelo": "ERROR",
+    "pomelo-admin": "ERROR",
+    "pomelo-rpc": "ERROR"
   },
 
   "replaceConsole": true

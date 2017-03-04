@@ -1,0 +1,28 @@
+{
+  "name": "pomelo-cli2",
+  "version": "0.1.5",
+  "description": "Pomelo command line client for managing pomelo",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": "",
+  "keywords": [
+    "pomelo",
+    "command",
+    "line",
+    "maintening"
+  ],
+  "bin": {
+    "pomelo-cli": "./bin/pomelo-cli"
+  },
+  "dependencies": {
+    "optimist": "*",
+    "cliff": "*",
+    "pomelo-admin": "1.0.0",
+    "pomelo-logger": "*",
+    "async": "*"
+  },
+  "author": "fantasyni",
+  "license": "MIT"
+}

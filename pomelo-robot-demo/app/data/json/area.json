@@ -1,0 +1,7 @@
+[
+["区域id","名称","区域名","等级","宽","高","数据地址"],
+["id","name","areaName","level","width","height","path"],
+["1","jiangnanyewai","江南野外",0,3200,2400,"/config/map/jiangnanyewai.xml"],
+["2","jianye","建邺城",10,5760,2880,"/config/map/jianye.xml"],
+["3","donghaiwai","东海湾",20,2400,2400,"/config/map/donghaiwai.xml"]
+]
