@@ -11,7 +11,7 @@ var config = require('./config/admin');
 var app = express();
 
 //--------------------configure app----------------------
-var pub = __dirname + '/public';
+// var pub = __dirname + '/public';
 var view = __dirname + '/views';
 
 app.use(compression());

@@ -66,14 +66,14 @@
   ],
   "levels": {
     "con-log": "OFF",
-    "rpc-log": "ERROR",
-    "forward-log": "ERROR",
-    "rpc-debug": "ERROR",
-    "crash-log": "ERROR",
-    "admin-log": "ERROR",
-    "pomelo": "ERROR",
-    "pomelo-admin": "ERROR",
-    "pomelo-rpc": "ERROR"
+    "rpc-log": "INFO",
+    "forward-log": "INFO",
+    "rpc-debug": "INFO",
+    "crash-log": "INFO",
+    "admin-log": "INFO",
+    "pomelo": "INFO",
+    "pomelo-admin": "INFO",
+    "pomelo-rpc": "INFO"
   },
 
   "replaceConsole": true

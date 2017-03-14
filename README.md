@@ -89,6 +89,10 @@ log4js.json配置
 ```
 
 
+## 说明
+为了方便大家学习pomelo，我把几个常用的工具转移到了这个仓库，pomelo版本，都已经更新到2.2.5版本
+
+
 ## License
 
 (The MIT License)

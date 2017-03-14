@@ -33,8 +33,6 @@ app.configure('production|development', function () {
 
 // configure for global
 app.configure('production|development', function () {
-    app.before(pomelo.filters.toobusy());
-
     require('./app/util/httpServer');
 
     //Set areasIdMap, a map from area id to serverId.
@@ -50,8 +48,8 @@ app.configure('production|development', function () {
     app.set('proxyConfig', {
         cacheMsg: true,
         interval: 30,
-        lazyConnection: true
-        // enableRpcLog: true
+        lazyConnection: true,
+        enableRpcLog: true
     });
 
     // remote configures
@@ -67,7 +65,7 @@ app.configure('production|development', function () {
     app.loadConfig('mysql', app.getBase() + '/../shared/config/mysql.json');
     app.filter(pomelo.filters.timeout());
 
-    /*
+    /*高可用插件
      // master high availability
      app.use(masterhaPlugin, {
      zookeeper: {
@@ -97,22 +95,6 @@ app.configure('production|development', 'area', function () {
     } else {
         scene.init(dataApi.area.findById(server.area));
         app.areaManager = scene;
-        /*
-         kill -SIGUSR2 <pid>
-         http://localhost:3272/inspector.html?host=localhost:9999&page=0
-         */
-        /*
-         // disable webkit-devtools-agent
-         var areaId = parseInt(server.area);
-         if(areaId === 3) { // area-server-3
-         require('webkit-devtools-agent');
-         var express = require('express');
-         var expressSvr = express.createServer();
-         expressSvr.use(express.static(__dirname + '/devtools_agent_page'));
-         var tmpPort = 3270 + areaId - 1;
-         expressSvr.listen(tmpPort);
-         }
-         */
     }
 
     //Init areaService
