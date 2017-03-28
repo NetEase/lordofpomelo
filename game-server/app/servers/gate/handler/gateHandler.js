@@ -1,5 +1,6 @@
 var Code = require('../../../../../shared/code');
 var dispatcher = require('../../../util/dispatcher');
+var os = require('os');
 
 /**
  * Gate handler that dispatch user to connectors.
@@ -26,5 +27,26 @@ Handler.prototype.queryEntry = function(msg, session, next) {
 	}
 
 	var res = dispatcher.dispatch(uid, connectors);
-	next(null, {code: Code.OK, host: res.pubHost, port: res.clientPort});
+	var addr = getPubHost();
+	if (!addr) {
+		addr = res.pubHost;
+	}
+	next(null, {code: Code.OK, host: addr, port: res.clientPort});
+}
+ 
+function getPubHost() {
+	var ifs = os.getNetworkInterfaces();
+	for(var i in ifs) {
+		var iface = ifs[i];
+		for (var j = 0; j < iface.length; ++j) {
+			var addr = iface[j].address;
+			if ((addr.indexOf('10.') !== 0) &&
+				(addr.indexOf('127.') !== 0) &&
+				(addr.indexOf(':') === -1) &&  // ignore ipv6
+				(addr.indexOf('192.168.') !== 0)) {
+				return addr;
+			}
+		}
+	}
+	return null;
 };
