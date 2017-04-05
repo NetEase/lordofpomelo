@@ -13,7 +13,8 @@ var createMysqlPool = function(app) {
 				host: mysqlConfig.host,
 				user: mysqlConfig.user,
 				password: mysqlConfig.password,
-				database: mysqlConfig.database
+				database: mysqlConfig.database,
+                                port: mysqlConfig.port
 			});
 			callback(null, client);
 		},

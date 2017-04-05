@@ -52,8 +52,9 @@ app.post('/login', function(req, res) {
   }
 
   userDao.getUserByName(username, function(err, user) {
+
     if (err || !user) {
-      console.log('username not exist!');
+      console.log('username not exist!', err);
       res.send({code: 500});
       return;
     }

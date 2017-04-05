@@ -1,5 +1,6 @@
 var _poolModule = require('generic-pool');
 var mysqlConfig = require('../../../../shared/config/mysql');
+console.log(mysqlConfig);
 
 var env = process.env.NODE_ENV || 'development';
 if(mysqlConfig[env]) {
@@ -18,7 +19,8 @@ var createMysqlPool = function(){
         host: mysqlConfig.host,
         user: mysqlConfig.user,
         password: mysqlConfig.password,
-        database: mysqlConfig.database
+        database: mysqlConfig.database,
+        port: mysqlConfig.port
       });
       callback(null, client);
     },

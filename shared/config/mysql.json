@@ -1,7 +1,7 @@
 {
 	"development": {
 	  "host" : "127.0.0.1",
-		"port" : "3306",
+		"port" : 19999,
 		"database" : "Pomelo",
 		"user" : "xy",
 		"password" : "dev"
@@ -9,7 +9,7 @@
 
 	"production": {
 	  "host" : "127.0.0.1",
-		"port" : "3306",
+		"port" : 19999,
 		"database" : "Pomelo",
 		"user" : "xy",
 		"password" : "dev"
