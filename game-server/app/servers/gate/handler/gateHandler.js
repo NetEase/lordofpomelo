@@ -27,7 +27,12 @@ Handler.prototype.queryEntry = function(msg, session, next) {
 	}
 
 	var res = dispatcher.dispatch(uid, connectors);
-	var addr = getPubHost();
+	var addr = process.env.LORD_PUB_HOST;
+
+	if (!addr) {
+		addr = getPubHost();
+	}
+
 	if (!addr) {
 		addr = res.pubHost;
 	}
@@ -42,6 +47,7 @@ function getPubHost() {
 			var addr = iface[j].address;
 			if ((addr.indexOf('10.') !== 0) &&
 				(addr.indexOf('127.') !== 0) &&
+				(addr.indexOf('172.1') !== 0) &&
 				(addr.indexOf(':') === -1) &&  // ignore ipv6
 				(addr.indexOf('192.168.') !== 0)) {
 				return addr;
