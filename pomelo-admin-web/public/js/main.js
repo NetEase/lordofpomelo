@@ -42,22 +42,18 @@ Ext.onReady(function() {
 				text: 'Online User',
 				leaf: true
 			}, {
-				id: 'sceneInfo',
-				text: 'Scene Info',
+				id: 'roomManager',
+				text: 'room Info',
+				leaf: true
+			}, {
+				id: 'notice',
+				text: 'Notice',
 				leaf: true
 			}, {
 				id: 'scripts',
 				text: 'Scripts',
 				leaf: true
-			}, {
-				id: 'rpcDebug',
-				text: 'RPC Debug',
-				leaf: true
-			}/*, {
-				id: 'profiler',
-				text: 'Profiler',
-				leaf: true
-			}*/]
+			}]
 		}
 	});
 

@@ -8,7 +8,7 @@ var routeUtil = require('./app/util/routeUtil');
 var playerFilter = require('./app/servers/area/filter/playerFilter');
 var ChatService = require('./app/services/chatService');
 var sync = require('pomelo-sync-plugin');
-// var masterhaPlugin = require('pomelo-masterha-plugin');
+var masterhaPlugin = require('pomelo-masterha-plugin');
 
 /**
  * Init app for client
@@ -21,7 +21,7 @@ app.configure('production|development', function () {
     app.enable('systemMonitor');
 
     app.filter(pomelo.filters.time()); //开启conn日志，对应pomelo-admin模块下conn request
-    app.rpcFilter(pomelo.rpcFilters.rpcLog());//开启rpc日志，对应pomelo-admin模块下rpc request
+    // app.rpcFilter(pomelo.rpcFilters.rpcLog());//开启rpc日志，对应pomelo-admin模块下rpc request
 
     // var sceneInfo = require('./app/modules/sceneInfo');
     var onlineUser = require('./app/modules/onlineUser');
@@ -65,15 +65,17 @@ app.configure('production|development', function () {
     app.loadConfig('mysql', app.getBase() + '/../shared/config/mysql.json');
     app.filter(pomelo.filters.timeout());
 
-    /*高可用插件
+    /*高可用插件*/
      // master high availability
      app.use(masterhaPlugin, {
-     zookeeper: {
-     server: '127.0.0.1:2181',
-     path: '/pomelo/master'
-     }
+         zookeeper:
+         {
+             server: 'localhost:2181',
+             path: '/pomelo/master',
+             username:  "pomelo",
+             password:  "pomelo"
+         }
      });
-     */
 });
 
 // Configure for auth server
@@ -140,7 +142,11 @@ app.configure('production|development', 'gate', function () {
     app.set('connectorConfig',
         {
             connector: pomelo.connectors.hybridconnector,
-            useProtobuf: true
+            useProtobuf: true,
+            handshake:function(msg,cb){
+                console.warn("handshake: ", msg);
+			    cb(null,{status:200});
+            }
         });
 });
 // Configure for chat server

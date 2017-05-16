@@ -14,7 +14,7 @@
 			var port = '3005';
 			client.connect('xxx', host, port, function(err){
 				if(err) throw err;
-				client.request('helloPomelo',null,function(err,msg){
+				client.request('game-admin',null,function(err,msg){
 					var dom = document.getElementById('main');
 					for(var key in msg){
 						var elem = document.createElement('p');

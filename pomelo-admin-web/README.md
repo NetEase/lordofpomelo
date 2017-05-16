@@ -7,8 +7,10 @@ npm install pomelo-admin-web
 ```
 ##Usage
 just run  
+
 ```
 node app.js
+
 ```
 
 open browser in your computer,and enjoy it 

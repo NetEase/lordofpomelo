@@ -6,7 +6,7 @@ Ext.onReady(function(){
 		id:'userStoreId',
 		autoLoad:false,
 		pageSize:5,
-		fields:['serverId','username','loginTime','uid','address'],
+		fields:['roomId','jackPot','totalBet','usersNumber'],
 		proxy: {
 			type: 'memory',
 			reader: {
@@ -25,11 +25,10 @@ Ext.onReady(function(){
 	    store: userStore,
 	    columns:[
 			{xtype:'rownumberer',width:50,sortable:false},
-			{text:'serverId',width:150,dataIndex:'serverId'},
-			{text:'userName',dataIndex:'username',width:150},
-			{text:'uid',dataIndex:'uid',width:100},
-			{text:'address',dataIndex:'address',width:200},
-			{text:'loginTime',dataIndex:'loginTime',width:200}
+			{text:'roomId',width:150,dataIndex:'roomId'},
+			{text:'jackPot',dataIndex:'jackPot',width:100},
+			{text:'totalBet',dataIndex:'totalBet',width:100},
+			{text:'usersNumber',dataIndex:'usersNumber',width:100}
 		]
 	});
 
@@ -38,7 +37,7 @@ Ext.onReady(function(){
 		items:[{
 			region:'north',
 			height:30,
-			contentEl:onlineUsersInfo
+			contentEl:roomManager
 		}, userGrid]
 	});
 });
@@ -60,37 +59,32 @@ socket.on('connect', function(){
 });*/
 
 setInterval(function() {
-	window.parent.client.request('onlineUser', null, function(err, msg) {
+	window.parent.client.request('roomManager', {hello:'world'}, function(err, msg) {
 		if(err) {
-			console.error('fail to request online user:');
+			console.error('fail to request roomManager user:');
 			console.error(err);
 			return;
 		}
 
-		console.log("msg -->>>", msg);
+		var rooms = [];
 
-		var totalConnCount = 0, loginedCount = 0, info, list = [];
-		for(var sid in msg) {
-			info = msg[sid];
-			totalConnCount += msg[sid].totalConnCount;
-			loginedCount += msg[sid].loginedCount;
-			var lists = msg[sid].loginedList;
-			for(var i=0;i<lists.length;i++){
-				list.push({
-					address : lists[i].address,
-					serverId : sid,
-					username : lists[i].username,
-					loginTime : new Date(lists[i].loginTime),
-					uid : lists[i].uid
-				});
-			}
-		}	
+		if(!err && !!msg){
+			console.log('response---',msg);
+			rooms = msg;
+		}
+
+		var totalConnCount = 0, loginedCount = 0;
+
+		totalConnCount += rooms.length;
+
+		rooms.forEach(function(room) {
+			loginedCount += room.usersNumber;
+		});
 
 		contentUpdate(totalConnCount, loginedCount);
-
 		var store = Ext.getCmp('userGridId').getStore();
-		console.log(list);
-		store.loadData(list);
+		console.log(rooms);
+		store.loadData(rooms);
 	});
 }, STATUS_INTERVAL);
 

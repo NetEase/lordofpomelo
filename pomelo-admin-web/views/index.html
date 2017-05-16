@@ -7,21 +7,22 @@
 	<body>
 		<script src="/ext-4.0.7-gpl/ext-all.js"></script>
 		<script src="/js/main.js"></script>
-		<script src="/js/socket.io.js"></script>
 		<script src="/js/util/protocol.js"></script>
+		<script src="/js/util/browserMqtt.js"></script>
+		<script src="/js/util/mqttClient.js"></script>
 		<script src="/js/client.js"></script>
 		<script>
 			var host = '<%= host %>';
-			var port = <%= port %>;
+			var port = <%= webPort %>;
 			var username = '<%= username %>';
 			var password = '<%= password %>';
+
 			var client = window.client = new ConsoleClient({
 				username: username,
 				password: password,
 				md5: false
 			});
 			// TODO: add login logic
-            console.log('host: ', host, ' port:' ,port, ' username:', username, ' password:', password);
 			client.connect('browser-' + Date.now(), host, port, function(err){
 				if(err) {
 					console.error('fail to connect to admin console server:');
@@ -31,7 +32,7 @@
 					console.info('admin console connected.');
 				}
 			});
-			console.log('client: ',window.client);
+			console.log(window.client);
 		</script>
 	</body>	
 </html>
