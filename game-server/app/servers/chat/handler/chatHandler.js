@@ -6,6 +6,7 @@ var utils = require('../../../util/utils');
 var consts = require('../../../consts/consts');
 var pomelo = require('pomelo');
 
+
 module.exports = function(app) {
   return new ChannelHandler(app, app.get('chatService'));
 };
