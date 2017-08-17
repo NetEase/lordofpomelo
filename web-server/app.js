@@ -44,6 +44,7 @@ app.get('/auth_success', function(req, res) {
 app.post('/login', function(req, res) {
   var msg = req.body;
 
+  console.log('msg: ',msg);
   var username = msg.username;
   var pwd = msg.password;
   if (!username || !pwd) {

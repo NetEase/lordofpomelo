@@ -1,1 +1,1 @@
-result = logger.info("hello");fd
+result = logger.info("hello");

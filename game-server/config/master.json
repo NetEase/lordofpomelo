@@ -1,6 +1,6 @@
   {
   	"development":{
-  		"id": "master-server-1", "host": "127.0.0.1", "port": 3005
+  		"id": "master-server-1", "host": "0.0.0.0", "port": 3005
       },
 
   	"production":

@@ -1,6 +1,14 @@
 {
-        "masterha":[
-               {"id": "master-server-1", "host": "127.0.0.1", "port":3006},
-               {"id": "master-server-1", "host": "127.0.0.1", "port":3007}
-         ]
+  "masterha": [
+    {
+      "id": "master-server-2",
+      "host": "127.0.0.1",
+      "port": 3006
+    },
+    {
+      "id": "master-server-3",
+      "host": "127.0.0.1",
+      "port": 3007
+    }
+  ]
 }

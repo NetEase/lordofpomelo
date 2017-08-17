@@ -20,16 +20,18 @@ NND.init = function(app){
  * @param {fuction} cb Callback function.
  * 
  */
-NND.query = function(sql, args, cb){
-	_pool.acquire(function(err, client) {
-		if (!!err) {
-			console.error('[sqlqueryErr] '+err.stack);
-			return;
-		}
+NND.query = function(sql, args, callback){
+	const resourcePromise = _pool.acquire();
+	resourcePromise.then(function(client) {
 		client.query(sql, args, function(err, res) {
 			_pool.release(client);
-			cb(err, res);
+			callback.apply(null, [err, res]);
 		});
+	}).catch(function(err){
+		if(!!err){
+			console.error('query error:',err);
+		}
+		callback(err);
 	});
 };
 
@@ -37,7 +39,9 @@ NND.query = function(sql, args, cb){
  * Close connection pool.
  */
 NND.shutdown = function(){
-	_pool.destroyAllNow();
+	_pool.drain().then(function(){
+		_pool.clear();
+	});
 };
 
 /**

@@ -10,8 +10,9 @@ var NND = {};
  * @param {Object} app The app for the server.
  */
 NND.init = function(){
-	if(!_pool)
+	if(!_pool){
 		_pool = require('./dao-pool').createMysqlPool();
+	}
 };
 
 /**
@@ -22,15 +23,17 @@ NND.init = function(){
  * 
  */
 NND.query = function(sql, args, callback){
-	_pool.acquire(function(err, client) {
-		if (!!err) {
-			console.error('[sqlqueryErr] '+err.stack);
-			return;
-		}
+	const resourcePromise = _pool.acquire();
+	resourcePromise.then(function(client) {
 		client.query(sql, args, function(err, res) {
 			_pool.release(client);
 			callback.apply(null, [err, res]);
 		});
+	}).catch(function(err){
+		if(!!err){
+			console.error('query error:',err);
+		}
+		callback(err);
 	});
 };
 
@@ -38,7 +41,9 @@ NND.query = function(sql, args, callback){
  * Close connection pool.
  */
 NND.shutdown = function(){
-	_pool.destroyAllNow();
+	_pool.drain().then(function(){
+		_pool.clear();
+	});
 };
 
 /**

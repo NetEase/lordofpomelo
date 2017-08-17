@@ -1,0 +1,25 @@
+#!/usr/bin/env node
+
+var cli = require('../lib/cli');
+var util = require('../lib/util');
+var consts = require('../lib/consts');
+var argv = require('optimist').argv;
+
+var extra = argv._;
+
+if (extra && extra.length) {
+	showHelp();
+} else {
+	if(argv['help']){
+		showHelp();
+	} else {
+		cli();
+	}
+}
+
+function showHelp() {
+	var HELP_LOGIN = consts.HELP_LOGIN;
+	for (var i = 0; i < HELP_LOGIN.length; i++) {
+		util.log(HELP_LOGIN[i]);
+	}
+}
